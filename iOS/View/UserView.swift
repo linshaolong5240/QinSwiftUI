@@ -1,0 +1,95 @@
+//
+//  LoginView.swift
+//  Qin
+//
+//  Created by 林少龙 on 2020/6/14.
+//  Copyright © 2020 teenloong. All rights reserved.
+//
+
+import SwiftUI
+
+struct UserView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var store: Store
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
+    @State  var email: String = "linshaolong5240@163.com"
+    @State  var password: String = "LOST74123"
+    private var settings: AppState.Settings { store.appState.settings }
+    
+    var body: some View {
+        ZStack {
+            BackgroundView()
+                .onTapGesture{
+                    UIApplication.shared.endEditing()
+                }
+            VStack(spacing: 20.0) {
+                HStack {
+                    NEUCircleButtonView(systemName: "chevron.backward", size: .medium, active: false).onTapGesture{
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    Spacer()
+                    Text("用户")
+                    Spacer()
+                    NEUCircleButtonView(systemName: "ellipsis", size: .medium, active: false)
+                }
+                .padding(.horizontal)
+                if store.appState.settings.loginUser == nil {
+                    TextField("email", text: $email)
+                        .autocapitalization(.none)
+                        .padding()
+                        .background(colorScheme == .light ? Color.white : Color.black)
+                        .clipShape(Capsule())
+                        .modifier(NEUShadow())
+
+                    TextField("password", text: $password)
+                        .autocapitalization(.none)
+                        .padding()
+                        .background(colorScheme == .light ? Color.white : Color.black)
+                        .clipShape(Capsule())
+                        .modifier(NEUShadow())
+
+                    
+                    Text("Login")
+                        .padding()
+                        .background(colorScheme == .light ? Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)) : Color(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)))
+                        .clipShape(Capsule())
+                        .modifier(NEUShadow())
+                        .onTapGesture {
+                            self.store.dispatch(.login(email: self.email, password: self.password))
+                    }
+                    if store.appState.settings.loginRequesting {
+                        Text("正在登录。。。。")
+                    }
+                    if (store.appState.settings.loginError != nil) {
+                        Text("\(store.appState.settings.loginError!.localizedDescription)")
+                    }
+                }else {
+                    NEUImageView(url: settings.loginUser!.profile.avatarUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 30, style: .continuous))
+                    Text("uid: \(String(settings.loginUser!.uid))")
+                    Text("csrf: \(settings.loginUser!.csrf)")
+                    Text("Logout")
+                        .padding()
+                        .background(colorScheme == .light ? Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)) : Color(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)))
+                        .clipShape(Capsule())
+                        .modifier(NEUShadow())
+                        .onTapGesture {
+                            self.store.dispatch(.logout)
+                    }
+                }
+                Spacer()
+            }
+        }
+        .navigationBarHidden(true)
+    }
+}
+
+#if DEBUG
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        UserView()
+            .environmentObject(Store.shared)
+            .environment(\.colorScheme, .light)
+    }
+}
+#endif
