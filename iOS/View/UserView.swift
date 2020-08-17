@@ -25,13 +25,21 @@ struct UserView: View {
                 }
             VStack(spacing: 20.0) {
                 HStack {
-                    NEUCircleButtonView(systemName: "chevron.backward", size: .medium, active: false).onTapGesture{
+                    Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                    }) {
+                        NEUButtonView(systemName: "chevron.backward", size: .medium)
                     }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
                     Spacer()
                     Text("用户")
                     Spacer()
-                    NEUCircleButtonView(systemName: "ellipsis", size: .medium, active: false)
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        NEUButtonView(systemName: "ellipsis", size: .medium)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 .padding(.horizontal)
                 if store.appState.settings.loginUser == nil {

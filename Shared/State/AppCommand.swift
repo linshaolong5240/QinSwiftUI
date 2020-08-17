@@ -290,7 +290,6 @@ struct PlaylistTracksCommand: AppCommand {
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.playlistTracks(pid: pid, op: op, ids: ids) { (data, error) in
-            print(data)
             guard error == nil else {
                 store.dispatch(.playlistTracksDone(result: .failure(error!)))
                 return
@@ -298,7 +297,7 @@ struct PlaylistTracksCommand: AppCommand {
             if data!["code"] as! Int == 200 {
                 store.dispatch(.playlistTracksDone(result: .success(true)))
             }else {
-                store.dispatch(.playlistTracksDone(result: .failure(.playlistTracksError(code: data!["code"] as! Int, message: data!["message"] as! String))))
+                store.dispatch(.playlistTracksDone(result: .failure(.playlistTracksError(code: data!["code"] as? Int, message: data!["message"] as? String))))
             }
         }
     }
@@ -375,6 +374,9 @@ struct PlayForwardCommand: AppCommand {
     
     func execute(in store: Store) {
         let count = store.appState.playing.playinglist.count
+        guard count > 0 else {
+            return
+        }
         if count > 1 {
             var index = store.appState.playing.index
             index = (index + 1) % count

@@ -47,8 +47,9 @@ struct NEUImageView<S: Shape>: View{
     var body: some View {
         ZStack {
             ZStack {
-                Color.white
-                LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9194737077, green: 0.2849465311, blue: 0.1981146634, alpha: 1)),Color(#colorLiteral(red: 0.9983269572, green: 0.3682751656, blue: 0.2816230953, alpha: 1)),Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                Color.white.opacity(0.9)
+//                LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9194737077, green: 0.2849465311, blue: 0.1981146634, alpha: 1)),Color(#colorLiteral(red: 0.9983269572, green: 0.3682751656, blue: 0.2816230953, alpha: 1)),Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    Color(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
                     .frame(width: size.width - size.innerPadding * 2,
                            height: size.width - size.innerPadding * 2)
                     .clipShape(innerShape)
@@ -70,6 +71,13 @@ struct NEUImageView<S: Shape>: View{
                     radius: 10,
                     x: size.innerPadding,
                 y: size.innerPadding)
+            Image("DefaultCover")
+                .resizable()
+                .renderingMode(.original)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size.width - size.innerPadding * 2,
+                       height: size.width - size.innerPadding * 2)
+                .clipShape(innerShape)
             KFImage(URL(string: url))
                 .resizable()
                 .renderingMode(.original)

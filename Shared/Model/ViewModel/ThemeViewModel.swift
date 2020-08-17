@@ -32,7 +32,7 @@ class NeuTheme {
 struct LightTheme: Theme {
     struct BackgroundView: View {
         var body: some View {
-            LinearGradient(gradient: Gradient(colors: [Color("backgroundColor"),Color("BGC2"),Color("BGC3")]), startPoint: .top, endPoint: .bottom)
+            LinearGradient(Color.lightBackgourdStart, Color.lightBackgourdEnd)
                 .edgesIgnoringSafeArea(.all)
         }
     }

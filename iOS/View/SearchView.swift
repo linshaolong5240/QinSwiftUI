@@ -21,10 +21,12 @@ struct SearchView: View {
             BackgroundView()
             VStack {
                 HStack(spacing: 20.0) {
-                    NEUCircleButtonView(systemName: "chevron.backward", size: .medium, active: false)
-                        .onTapGesture{
-                            presentationMode.wrappedValue.dismiss()
-                        }
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        NEUButtonView(systemName: "chevron.backward", size: .medium)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
                     SearchBarView()
                 }
                 .padding(.horizontal)
@@ -78,10 +80,12 @@ struct SearchBarView: View {
             NavigationLink(destination: SearchView(), isActive: $showSearch) {
                 EmptyView()
             }
-            TextField("搜索", text: keywordBinding, onCommit: {
-                showSearch.toggle()
-            })
-            .padding(10)
+            HStack(spacing: 0.0) {
+                NEUButtonView(systemName: "magnifyingglass", size: .medium)
+                TextField("搜索", text: keywordBinding, onCommit: {
+                    showSearch.toggle()
+                })
+            }
             .background(
                 ZStack {
                     Color.white

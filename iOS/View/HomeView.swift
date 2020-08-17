@@ -23,17 +23,17 @@ struct HomeView: View {
         NavigationView {
             ZStack {
                 BackgroundView()
-                ScrollView {
-                    if user != nil {
+                if user != nil {
+                    ScrollView {
                         VStack {
                             HStack(spacing: 20.0) {
-                                NavigationLink(destination: UserView()) {
-                                    NEUCircleButtonView(systemName: "person", size: .medium, active: false)
+                                Button(action: {}) {
+                                    NavigationLink(destination: UserView()) {
+                                        NEUButtonView(systemName: "person", size: .medium)
+                                    }
                                 }
+                                .buttonStyle(NEUButtonStyle(shape: Circle()))
                                 SearchBarView()
-                                NEUCircleButtonView(systemName: "square.grid.3x3.fill", size: .medium, active: false).onTapGesture{
-                                    self.showUser.toggle()
-                                }
                             }
                             .padding()
                             PlaylistsView(title: "推荐的歌单",
@@ -45,14 +45,13 @@ struct HomeView: View {
                             Spacer()
                                 .frame(height: screen.height / 4)
                         }
-                        //                            .navigationTitle("网抑云")
-                    }else {
-                        UserView()
                     }
-                }
-                VStack {
-                    Spacer()
-                    BottomBarView()
+                    VStack {
+                        Spacer()
+                        BottomBarView()
+                    }
+                }else {
+                    UserView()
                 }
             }
             .navigationBarHidden(true)

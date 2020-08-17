@@ -13,76 +13,81 @@ struct PlayingNowView: View {
     @EnvironmentObject var player: Player
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    private var user: User? {store.appState.settings.loginUser}
     private var playing: AppState.Playing { store.appState.playing }
-    private var PlayingBing: Binding<AppState.Playing> {$store.appState.playing}
+    private var playingBing: Binding<AppState.Playing> {$store.appState.playing}
     private var playlists: AppState.Playlists {store.appState.playlists}
     private var settings: AppState.Settings {store.appState.settings}
-    @State private var selection: String = ""
+    
+    @State private var showList: Bool = false {
+        didSet {
+            if !showList {
+                showCreatedPlaylist = false
+                showComment = false
+            }
+        }
+    }
+    @State private var showCreatedPlaylist: Bool = false
+    @State private var showComment: Bool = false
     
     var body: some View {
         ZStack {
             BackgroundView()
             VStack {
-                if selection == "" {
+                if !showList {
                     HStack {
-                        NEUCircleButtonView(systemName: "chevron.left", size: .medium, active: false).onTapGesture{
+                        Button(action: {
                             presentationMode.wrappedValue.dismiss()
+                        }) {
+                            NEUButtonView(systemName: "chevron.backward", size: .medium)
                         }
+                        .buttonStyle(NEUButtonStyle(shape: Circle()))
                         Spacer()
                         Text("PLAYING NOW")
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.mainTextColor)
                         Spacer()
-                        NEUCircleButtonView(systemName: "plus", size: .medium, active: false)
-                            .onTapGesture{
-                                withAnimation(.default){
-                                    selection = "CreatedPlaylist"
-                                }
+                        Button(action: {
+                            withAnimation(.default){
+                                showCreatedPlaylist = true
+                                showList = true
                             }
+                        }) {
+                            NEUButtonView(systemName: "plus", size: .medium)
+                        }
+                        .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
                     .padding(.horizontal)
                     .transition(.move(edge: .top))
                 }
                 ZStack {
                     HStack {
-                        NEUCircleButtonView(systemName: "heart.fill", size: .medium, active: playing.like)
-                            .onTapGesture{
-                                Store.shared.dispatch(.like(id: self.playing.songDetail.id, like: self.playing.like ? false : true))
-                            }
-                            .offset(x: selection == "Playinglist" || selection == "Commentlist" ? 0 : -screen.width/4)
-                            .transition(.move(edge: .trailing))
+                        Toggle(isOn: playingBing.like) {
+                            NEUButtonView(systemName: "heart.fill", active: playing.like)
+                        }
+                        .toggleStyle(NEUToggleStyle(shape: Circle()))
+                        .offset(x: showList && !showCreatedPlaylist ? 0 : -screen.width/4)
+                        .transition(.move(edge: .trailing))
                         Spacer()
-                        NEUCircleButtonView(systemName: "text.bubble", size: .medium, active: selection == "Commentlist" ? true : false)
-                            .onTapGesture{
-                                withAnimation(.default){
-                                    if selection != "Commentlist" {
-                                        selection = "Commentlist"
-                                    }else {
-                                        selection = ""
-                                    }
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                    Store.shared.dispatch(.commentMusic(id: self.playing.songDetail.id))
-                                }
-                            }
-                            .offset(x: selection == "Playinglist" || selection == "Commentlist" ? 0 : screen.width/4)
-                            .transition(.move(edge: .leading))
+                        Toggle(isOn: $showComment) {
+                            NEUButtonView(systemName: "text.bubble", active: showComment)
+                        }
+                        .toggleStyle(NEUToggleStyle(shape: Circle()))
+                        .offset(x: showList && !showCreatedPlaylist ? 0 : screen.width/4)
+                        .transition(.move(edge: .leading))
                     }
                     .padding(.horizontal)
-                    NEUImageView(url: playing.songDetail.albumPicURL,
-                                 size: selection == "" ? .large: .medium, innerShape: RoundedRectangle(cornerRadius: selection == "" ? 50 : 25, style: .continuous), outerShape: RoundedRectangle(cornerRadius: selection == "" ? 66 : 33, style: .continuous))
-                        .onTapGesture {
-                            withAnimation(.default) {
-                                if selection != "" {
-                                    selection = ""
-                                }else {
-                                    selection = "Playinglist"
-                                }
-                            }
+                    Button(action: {
+                        withAnimation(.default) {
+                            showList.toggle()
                         }
-                    if selection == "" {
+                    }) {
+                        NEUImageView(url: playing.songDetail.albumPicURL,
+                                     size: !showList ? .large: .medium,
+                                     innerShape: RoundedRectangle(cornerRadius: !showList ? 50 : 25, style: .continuous),
+                                     outerShape: RoundedRectangle(cornerRadius: !showList ? 66 : 33, style: .continuous))
+                    }
+                    if !showList {
                         VStack {
                             Spacer()
                             HStack {
@@ -97,22 +102,27 @@ struct PlayingNowView: View {
                         }
                     }
                 }
-                ZStack {
+                if !showList {
                     VStack {
                         Spacer()
                         PlayingNowStatusView()
-                            .offset(y: selection != "" ? screen.height : 0)
+                            //                            .offset(y: showList ? screen.height : 0)
                             .transition(.move(edge: .bottom))
                     }
-                    CommentListView(hotComments: playing.hotComments, comments: playing.comments)
-                        .offset(y: selection == "Commentlist" ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
-                    CreatedPlaylistView(selection: $selection)
-                        .offset(y: selection == "CreatedPlaylist" ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
-                    PlayinglistView(selection: $selection)
-                        .offset(y: selection == "Playinglist" ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
+                }else {
+                    if showComment {
+                        CommentListView()
+                            //                            .offset(y: selection == "Commentlist" ? 0 : screen.height)
+                            .transition(.move(edge: .bottom))
+                    }else if showCreatedPlaylist {
+                        CreatedPlaylistView(showList: $showList)
+                            //                            .offset(y: selection == "CreatedPlaylist" ? 0 : screen.height)
+                            .transition(.move(edge: .bottom))
+                    }else {
+                        PlayinglistView(showList: $showList)
+                            //                            .offset(y: selection == "Playinglist" ? 0 : screen.height)
+                            .transition(.move(edge: .bottom))
+                    }
                 }
             }
         }
@@ -146,23 +156,32 @@ struct LyricView: View {
 struct PlayinglistView: View {
     @EnvironmentObject var store: Store
     private var playing: AppState.Playing { store.appState.playing }
-    @Binding var selection: String
+    @Binding var showList: Bool
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(0 ..< playing.playinglist.count, id: \.self) { index in
-                    Button(action: {
-                        if self.playing.index != index {
-                            Store.shared.dispatch(.playByIndex(index: index))
-                        }else {
-                            withAnimation(.default){
-                                selection = ""
+        VStack {
+            HStack {
+                Text("播放列表")
+                    .font(.title)
+                    .foregroundColor(.secondTextColor)
+                Spacer()
+            }
+            .padding(.horizontal)
+            ScrollView {
+                LazyVStack {
+                    ForEach(0 ..< playing.playinglist.count, id: \.self) { index in
+                        Button(action: {
+                            if self.playing.index != index {
+                                Store.shared.dispatch(.playByIndex(index: index))
+                            }else {
+                                withAnimation(.default){
+                                    showList = true
+                                }
                             }
+                        }) {
+                            PlayingNowListRowView(viewModel: self.playing.playinglist[index], active: self.playing.playinglist[index].id == self.playing.songDetail.id ? true : false)
+                                .padding(.horizontal)
                         }
-                    }) {
-                        PlayingNowListRowView(viewModel: self.playing.playinglist[index], active: self.playing.playinglist[index].id == self.playing.songDetail.id ? true : false)
-                            .padding(.horizontal)
                     }
                 }
             }
@@ -194,16 +213,28 @@ struct PlayingNowListRowView: View {
                 }
                 .foregroundColor(active ? .white : Color.secondTextColor)
                 Spacer()
-                NEUCircleButtonView(systemName: active && player.isPlaying ? "pause.fill" : "play.fill",
-                                    size: .small,
-                                    active: active ?  true : false)
-                    .onTapGesture{
-                        if self.active {
-                            Store.shared.dispatch(.togglePlay)
-                        }else {
-                            Store.shared.dispatch(.playRequest(id: self.viewModel.id))
-                        }
+                Button(action: {
+                    if active {
+                        Store.shared.dispatch(.togglePlay)
+                    }else {
+                        Store.shared.dispatch(.playRequest(id: self.viewModel.id))
                     }
+                }) {
+                    NEUButtonView(systemName: active && player.isPlaying ? "pause.fill" : "play.fill", size: .small, active: active)
+                        .background(
+                            NEUToggleBackground(isHighlighted: active, shadow: false, shape: Circle())
+                        )
+                }
+                //                NEUCircleButtonView(systemName: active && player.isPlaying ? "pause.fill" : "play.fill",
+                //                                    size: .small,
+                //                                    active: active ?  true : false)
+                //                    .onTapGesture{
+                //                        if self.active {
+                //                            Store.shared.dispatch(.togglePlay)
+                //                        }else {
+                //                            Store.shared.dispatch(.playRequest(id: self.viewModel.id))
+                //                        }
+                //                    }
             }
             .padding(10)
             .background(
@@ -244,12 +275,7 @@ struct PlayingNowStatusView: View {
     @EnvironmentObject var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-    private var loadTime: Double {
-        store.appState.playing.loadTime
-    }
-    private var bingdLoadTime: Binding<Double> {
-        $store.appState.playing.loadTime
-    }
+    private var playingBinding: Binding<AppState.Playing> { $store.appState.playing }
     
     var body: some View {
         VStack {
@@ -259,6 +285,7 @@ struct PlayingNowStatusView: View {
                 .foregroundColor(Color.mainTextColor)
                 .lineLimit(1)
             Text(playing.songDetail.artists)
+                .fontWeight(.bold)
                 .foregroundColor(Color.secondTextColor)
                 .lineLimit(1)
             Spacer()
@@ -267,9 +294,9 @@ struct PlayingNowStatusView: View {
                 .lineLimit(2)
             Spacer()
             HStack {
-                Text(String(format: "%02d:%02d", Int(loadTime/60),Int(loadTime)%60))
+                Text(String(format: "%02d:%02d", Int(playing.loadTime/60),Int(playing.loadTime)%60))
                     .frame(width: 50, alignment: Alignment.leading)
-                Slider(value: bingdLoadTime, in: 0...(playing.totalTime > 0 ? playing.totalTime : 1.0), onEditingChanged: { (isEdit) in
+                Slider(value: playingBinding.loadTime, in: 0...(playing.totalTime > 0 ? playing.totalTime : 1.0), onEditingChanged: { (isEdit) in
                     Store.shared.dispatch(.seek(isSeeking: isEdit)
                     )
                 })
@@ -281,18 +308,27 @@ struct PlayingNowStatusView: View {
             .font(.system(size: 13))
             .foregroundColor(Color.secondTextColor)
             HStack(spacing: 20) {
-                NEUCircleButtonView(systemName: "backward.fill", size: .big, active: false)
-                    .onTapGesture{
-                        Store.shared.dispatch(.playBackward)
-                    }
-                NEUCircleButtonView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
-                    .onTapGesture{
+                Button(action: {
+                    Store.shared.dispatch(.playBackward)
+                }) {
+                    NEUButtonView(systemName: "backward.fill", size: .big)
+                }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                
+                NEUButtonView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
+                    .background(
+                        NEUToggleBackground(isHighlighted: true, shape: Circle())
+                    )
+                    .onTapGesture {
                         Store.shared.dispatch(.togglePlay)
                     }
-                NEUCircleButtonView(systemName: "forward.fill", size: .big, active: false)
-                    .onTapGesture{
-                        self.store.dispatch(.playForward)
-                    }
+                
+                Button(action: {
+                    Store.shared.dispatch(.playForward)
+                }) {
+                    NEUButtonView(systemName: "forward.fill", size: .big)
+                }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.vertical)
         }
@@ -303,28 +339,38 @@ struct CommentListView: View {
     @EnvironmentObject var store: Store
     private var playing: AppState.Playing { store.appState.playing }
     
-    let hotComments: [CommentViewModel]
-    let comments: [CommentViewModel]
-    
-    init(hotComments: [CommentViewModel], comments: [CommentViewModel]) {
-        self.hotComments = hotComments
-        self.comments = comments
-    }
-    
     var body: some View {
         VStack {
+            HStack {
+                Text("评论")
+                    .font(.title)
+                    .foregroundColor(.secondTextColor)
+                Spacer()
+                Button(action: {
+                    
+                }) {
+                    NEUButtonView(systemName: "square.and.pencil", size: .small)
+                }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
+            }
+            .padding(.horizontal)
+            .onAppear{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
+                }
+            }
             if playing.commentRequesting {
                 Text("正在加载...")
                     .foregroundColor(.secondTextColor)
             }else {
                 ScrollView {
                     VStack {
-                        ForEach(hotComments) { item in
+                        ForEach(playing.hotComments) { item in
                             CommentRowView(item)
                                 .padding(.horizontal)
                             Divider()
                         }
-                        ForEach(comments) { item in
+                        ForEach(playing.comments) { item in
                             CommentRowView(item)
                                 .padding(.horizontal)
                             Divider()
@@ -332,6 +378,7 @@ struct CommentListView: View {
                     }
                 }
             }
+            Spacer()
         }
     }
 }
@@ -356,7 +403,6 @@ struct CommentRowView: View {
                 Text(viewModel.content)
                     .foregroundColor(.mainTextColor)
             }
-            .padding(.top, 5)
             Spacer()
         }
     }
@@ -368,27 +414,25 @@ struct CreatedPlaylistView: View {
     private var playing: AppState.Playing { store.appState.playing }
     private var playlists: AppState.Playlists {store.appState.playlists}
     
-    @Binding var selection: String
-    
-    @State var showCreate: Bool = false
-    @State var name: String = ""
+    @Binding var showList: Bool
+    @State private var showCreate: Bool = false
+    @State private var name: String = ""
     
     var body: some View {
         ZStack {
             VStack {
                 HStack {
-                    Text("全部歌单")
+                    Text("收藏到歌单")
+                        .font(.title)
+                        .foregroundColor(.secondary)
                     Spacer()
-                    Group {
-                        Text("新建歌单")
-                        Image(systemName: "square.and.pencil")
-                    }
-                    .foregroundColor(.mainTextColor)
-                    .onTapGesture {
+                    Button(action: {
                         self.showCreate.toggle()
+                    }) {
+                        NEUButtonView(systemName: "rectangle.stack.badge.plus", size: .small)
                     }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
-                .foregroundColor(.secondary)
                 .padding(.horizontal)
                 ScrollView {
                     LazyVStack{
@@ -396,7 +440,7 @@ struct CreatedPlaylistView: View {
                             Button(action: {
                                 Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [self.playing.songDetail.id]))
                                 withAnimation(.default){
-                                    selection = ""
+                                    showList = false
                                 }
                             }) {
                                 HStack {

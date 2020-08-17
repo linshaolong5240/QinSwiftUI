@@ -8,6 +8,20 @@
 
 import SwiftUI
 
+extension Color {
+    static let lightBackgourdStart = Color(red: 250 / 255, green: 250 / 255, blue: 250 / 255)
+//    static let lightBackgourdStart = Color(red: 231 / 255, green: 233 / 255, blue: 237 / 255)
+    static let lightBackgourdEnd = Color(red: 231 / 255, green: 233 / 255, blue: 237 / 255)
+    static let darkStart = Color(red: 50 / 255, green: 60 / 255, blue: 65 / 255)
+    static let darkEnd = Color(red: 25 / 255, green: 25 / 255, blue: 30 / 255)
+    static let orangeStart = Color(red: 235 / 255, green: 72 / 255, blue: 50 / 255)
+    static let orangeEnd = Color(red: 246 / 255, green: 143 / 255, blue: 130 / 255)}
+extension LinearGradient {
+    init(_ colors: Color...) {
+        self.init(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+}
+
 struct NEUView: View {
     var body: some View {
 //        NeuDividerView()

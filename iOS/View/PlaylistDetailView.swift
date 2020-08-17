@@ -35,20 +35,24 @@ struct PlaylistDetailView: View {
             BackgroundView()
             VStack {
                 HStack {
-                    NEUCircleButtonView(systemName: "chevron.backward", size: .medium, active: false)
-                        .onTapGesture{
-                            presentationMode.wrappedValue.dismiss()
-                        }
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        NEUButtonView(systemName: "chevron.backward", size: .medium)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
                     Spacer()
-                    Text("Playlist Detail")
+                    Text("PLAYLIST DETAIL")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor)
                     Spacer()
-                    NEUCircleButtonView(systemName: "ellipsis", size: .medium, active: false)
-                        .onTapGesture{
-                            showAction.toggle()
-                        }
+                    Button(action: {
+                        showAction.toggle()
+                    }) {
+                        NEUButtonView(systemName: "ellipsis", size: .medium)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 .padding(.horizontal)
                 if id != playlists.playlistDetail.id {
@@ -182,16 +186,18 @@ struct PlaylistDetailRowView: View {
                 }
                 .foregroundColor(player.isPlaying && viewModel.id == playing.songDetail.id ? .white : Color.secondTextColor)
                 Spacer()
-                NEUCircleButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill",
-                                    size: .small,
-                                    active:viewModel.id == playing.songDetail.id ?  true : false)
-                    .onTapGesture{
-                        if viewModel.id == playing.songDetail.id {
-                            Store.shared.dispatch(.togglePlay)
-                        }else {
-                            Store.shared.dispatch(.playRequest(id: self.viewModel.id))
-                        }
+                Button(action: {
+                    if viewModel.id == playing.songDetail.id {
+                        Store.shared.dispatch(.togglePlay)
+                    }else {
+                        Store.shared.dispatch(.playRequest(id: self.viewModel.id))
                     }
+                }) {
+                    NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill", size: .small, active: viewModel.id == playing.songDetail.id ?  true : false)
+                        .background(
+                            NEUToggleBackground(isHighlighted: viewModel.id == playing.songDetail.id ?  true : false, shadow: false, shape: Circle())
+                        )
+                }
             }
             .padding(10)
             .background(
