@@ -353,6 +353,7 @@ struct PlayBackwardCommand: AppCommand {
     
     func execute(in store: Store) {
         let count = store.appState.playing.playinglist.count
+        
         if count > 1 {
             var index = store.appState.playing.index
             if index == 0 {
@@ -364,8 +365,10 @@ struct PlayBackwardCommand: AppCommand {
             store.appState.playing.songDetail = store.appState.playing.playinglist[index]
             let songId = store.appState.playing.playinglist[index].id
             store.dispatch(.playRequest(id: songId))
-        }else {
+        }else if count == 1 {
             store.dispatch(.replay)
+        }else {
+            return
         }
     }
 }
@@ -384,8 +387,10 @@ struct PlayForwardCommand: AppCommand {
             store.appState.playing.songDetail = store.appState.playing.playinglist[index]
             let songId = store.appState.playing.playinglist[index].id
             store.dispatch(.playRequest(id: songId))
-        }else {
+        }else if count == 1 {
             store.dispatch(.replay)
+        }else {
+            return
         }
     }
 }
