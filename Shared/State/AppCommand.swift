@@ -455,6 +455,9 @@ struct SearchCommand: AppCommand {
     let offset: Int
     
     func execute(in store: Store) {
+        guard keyword.count > 0 else {
+            return
+        }
         NeteaseCloudMusicApi.shared.search(keyword: keyword, type: type, limit: limit, offset: offset) { data, error in
             guard error == nil else {
                 store.dispatch(.searchDone(result: .failure(error!)))

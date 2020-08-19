@@ -25,7 +25,14 @@ struct NEUImageView<S: Shape>: View{
                 return screen.width * 0.7
             }
         }
-        var innerPadding: CGFloat { self.width / 12 }
+        var innerPadding: CGFloat {
+            switch self {
+            case .large:
+                return self.width / 16
+            default:
+                return self.width / 12
+            }
+        }
         var shadowRadius: CGFloat { self.width / 24 }
     }
 
@@ -47,13 +54,13 @@ struct NEUImageView<S: Shape>: View{
     var body: some View {
         ZStack {
             ZStack {
-                Color.white.opacity(0.9)
+                Color.white.opacity(0.8)
 //                LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9194737077, green: 0.2849465311, blue: 0.1981146634, alpha: 1)),Color(#colorLiteral(red: 0.9983269572, green: 0.3682751656, blue: 0.2816230953, alpha: 1)),Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
                     Color(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
                     .frame(width: size.width - size.innerPadding * 2,
                            height: size.width - size.innerPadding * 2)
                     .clipShape(innerShape)
-                    .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.15),
+                    .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.12),
                             radius: 10,
                             x: -size.innerPadding,
                             y: -size.innerPadding)
@@ -67,7 +74,7 @@ struct NEUImageView<S: Shape>: View{
                     radius: 10,
                     x: -size.innerPadding,
                     y: -size.innerPadding)
-            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.15),
+            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).opacity(0.1),
                     radius: 10,
                     x: size.innerPadding,
                 y: size.innerPadding)

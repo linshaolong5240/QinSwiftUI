@@ -290,6 +290,7 @@ struct PlayingNowStatusView: View {
                 .lineLimit(1)
             Spacer()
             Text(playing.lyric)
+                .fontWeight(.bold)
                 .foregroundColor(.secondTextColor)
                 .lineLimit(2)
             Spacer()
