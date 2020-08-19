@@ -6,6 +6,8 @@
 * https://dribbble.com/shots/10864576--Neumorphic-Music-Player
 * https://dribbble.com/shots/9338617-Simple-Music-Player/attachments/1373153?mode=media
 
+## 动图：
+![image](https://github.com/linshaolong5240/QinSwiftUI2/blob/main/Images/GIF_0001.GIF)
 ## 截图:
 ![image](https://github.com/linshaolong5240/QinSwiftUI2/blob/main/Images/IMG_0001.PNG)
 ![image](https://github.com/linshaolong5240/QinSwiftUI2/blob/main/Images/IMG_0002.PNG)
