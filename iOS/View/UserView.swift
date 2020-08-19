@@ -13,8 +13,8 @@ struct UserView: View {
     @EnvironmentObject var store: Store
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
-    @State  var email: String = "linshaolong5240@163.com"
-    @State  var password: String = "LOST74123"
+    @State  var email: String = ""
+    @State  var password: String = ""
     private var settings: AppState.Settings { store.appState.settings }
     
     var body: some View {
