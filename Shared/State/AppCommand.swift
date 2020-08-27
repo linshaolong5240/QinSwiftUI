@@ -361,10 +361,7 @@ struct PlayBackwardCommand: AppCommand {
             }else {
                 index = (index - 1) % count
             }
-            store.appState.playing.index = index
-            store.appState.playing.songDetail = store.appState.playing.playinglist[index]
-            let songId = store.appState.playing.playinglist[index].id
-            store.dispatch(.playRequest(id: songId))
+            store.dispatch(.playByIndex(index: index))
         }else if count == 1 {
             store.dispatch(.replay)
         }else {
@@ -383,10 +380,7 @@ struct PlayForwardCommand: AppCommand {
         if count > 1 {
             var index = store.appState.playing.index
             index = (index + 1) % count
-            store.appState.playing.index = index
-            store.appState.playing.songDetail = store.appState.playing.playinglist[index]
-            let songId = store.appState.playing.playinglist[index].id
-            store.dispatch(.playRequest(id: songId))
+            store.dispatch(.playByIndex(index: index))
         }else if count == 1 {
             store.dispatch(.replay)
         }else {

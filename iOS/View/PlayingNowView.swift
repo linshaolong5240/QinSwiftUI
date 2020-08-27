@@ -62,12 +62,15 @@ struct PlayingNowView: View {
                 }
                 ZStack {
                     HStack {
-                        Toggle(isOn: playingBing.like) {
-                            NEUButtonView(systemName: "heart.fill", active: playing.like)
-                        }
-                        .toggleStyle(NEUToggleStyle(shape: Circle()))
-                        .offset(x: showList && !showCreatedPlaylist ? 0 : -screen.width/4)
-                        .transition(.move(edge: .trailing))
+                        NEUButtonView(systemName: "heart.fill", active: playing.like)
+                            .background(
+                                NEUToggleBackground(isHighlighted: playing.like, shape: Circle())
+                            )
+                            .offset(x: showList && !showCreatedPlaylist ? 0 : -screen.width/4)
+                            .transition(.move(edge: .trailing))
+                            .onTapGesture {
+                                Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
+                            }
                         Spacer()
                         Toggle(isOn: $showComment) {
                             NEUButtonView(systemName: "text.bubble", active: showComment)
