@@ -86,13 +86,24 @@ struct NEUImageView<S: Shape>: View{
                 .frame(width: size.width - size.innerPadding * 2,
                        height: size.width - size.innerPadding * 2)
                 .clipShape(innerShape)
-            KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 50, height: size.width + 50)))])
-                .resizable()
-                .renderingMode(.original)
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size.width - size.innerPadding * 2,
-                       height: size.width - size.innerPadding * 2)
-                .clipShape(innerShape)
+            if size == .large {
+                KFImage(URL(string: url))
+                    .resizable()
+                    .renderingMode(.original)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: size.width - size.innerPadding * 2,
+                           height: size.width - size.innerPadding * 2)
+                    .clipShape(innerShape)
+            }else {
+                KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 50, height: size.width + 50)))])
+                    .resizable()
+                    .renderingMode(.original)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: size.width - size.innerPadding * 2,
+                           height: size.width - size.innerPadding * 2)
+                    .clipShape(innerShape)
+            }
+
         }
     }
 }
