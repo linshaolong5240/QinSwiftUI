@@ -36,7 +36,7 @@ struct SearchView: View {
                     HStack(spacing: 0.0) {
                         NEUButtonView(systemName: "magnifyingglass", size: .medium)
                         TextField("搜索", text: searchBinding.keyword, onCommit: {
-                            store.dispatch(.search(keyword: search.keyword))
+                            store.dispatch(.search(keyword: search.keyword, type: searchType))
                         })
                     }
                     .background(SearchBarBackgroundView())

@@ -61,7 +61,7 @@ struct SearchPlaylist: Codable, Identifiable {
         var alias: [String]
         var artist: Artist
         var artists: [Artist]
-        var blurPicUrl: String
+        var blurPicUrl: String?
         var briefDesc: String
         var commentThreadId: String
         var company: String?
@@ -143,7 +143,7 @@ struct SearchPlaylist: Codable, Identifiable {
     var bookCount: Int
     var coverImgUrl: String
     var creator: Creator
-    var description: String
+    var description: String?
     var highQuality: Bool
     var id: Int
     var name: String
