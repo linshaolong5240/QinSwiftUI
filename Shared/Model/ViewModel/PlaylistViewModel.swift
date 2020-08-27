@@ -24,16 +24,6 @@ class PlaylistViewModel: Codable, Identifiable {
     init() {
         
     }
-    init(_ recommendPlaylist: RecommendPlaylist) {
-        self.count = recommendPlaylist.trackCount
-        self.coverImgUrl = recommendPlaylist.picUrl
-        self.creator = recommendPlaylist.creator.nickname
-        self.description = ""
-        self.id = recommendPlaylist.id
-        self.name = recommendPlaylist.name
-        self.playCount = recommendPlaylist.playcount
-        self.userId = recommendPlaylist.userId
-    }
     init(_ playList: Playlist) {
         self.count = playList.trackCount
         self.coverImgUrl = playList.coverImgUrl
@@ -46,5 +36,25 @@ class PlaylistViewModel: Codable, Identifiable {
         self.trackIds = playList.trackIds?.map({$0.id}) ?? [Int]()
         self.tracks = playList.tracks?.map{ SongViewModel($0) } ?? [SongViewModel]()
         self.userId = playList.userId
+    }
+    init(_ recommendPlaylist: RecommendPlaylist) {
+        self.count = recommendPlaylist.trackCount
+        self.coverImgUrl = recommendPlaylist.picUrl
+        self.creator = recommendPlaylist.creator.nickname
+        self.description = ""
+        self.id = recommendPlaylist.id
+        self.name = recommendPlaylist.name
+        self.playCount = recommendPlaylist.playcount
+        self.userId = recommendPlaylist.userId
+    }
+    init(_ searchPlaylist: SearchPlaylist) {
+        self.count = searchPlaylist.trackCount
+        self.coverImgUrl = searchPlaylist.coverImgUrl
+        self.creator = searchPlaylist.creator.nickname
+        self.description = searchPlaylist.description
+        self.id = searchPlaylist.id
+        self.name = searchPlaylist.name
+        self.playCount = searchPlaylist.playCount
+        self.userId = searchPlaylist.userId
     }
 }

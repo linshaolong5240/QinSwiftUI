@@ -8,7 +8,7 @@
 
 import Foundation
 struct SongDetail: Codable, Identifiable {
-    struct SongAlbum: Codable {
+    struct Album: Codable {
         var id: Int
         var name: String?
         var pic: Int
@@ -16,22 +16,22 @@ struct SongDetail: Codable, Identifiable {
         var pic_str: String?//optional for playlist detail
 //        var tns: [Any]
     }
-    struct SongArtist: Codable {
+    struct Artist: Codable {
         var alias: [String]
         var id: Int
         var name: String?
 //        var tns: [Any]
     }
-    struct SongQuality: Codable {
+    struct Quality: Codable {
         var br: Int
         var fid: Int
         var size: Int
         var vd: Double?
     }
 //    var a: Any?
-    var al: SongAlbum
+    var al: Album
     var alia: [String]
-    var ar: [SongArtist]
+    var ar: [Artist]
     var cd: String?
     var cf: String?
     var copyright: Int
@@ -41,10 +41,10 @@ struct SongDetail: Codable, Identifiable {
     var dt: Int
     var fee: Int
     var ftype: Int
-    var h: SongQuality?
+    var h: Quality?
     var id: Int
-    var l: SongQuality?
-    var m: SongQuality?
+    var l: Quality?
+    var m: Quality?
     var mark: Int
     var mst: Int
     var mv: Int
@@ -75,45 +75,6 @@ extension SongDetail {
             return ""
         }
     }
-}
-
-struct SearchSongDetail: Codable, Identifiable {
-    struct Artist: Codable, Identifiable {
-        var albumSize: Int
-        var alias: [String]
-        var id: Int
-        var img1v1: Int
-        var img1v1Url: String
-        var name: String
-        var picId: Int
-        var picUrl: String?
-//        var trans: Any?
-    }
-    struct Album: Codable, Identifiable {
-        var artist: Artist
-        var copyrightId: Int
-        var id: Int
-        var mark: Int
-        var name: String
-        var picId: Int
-        var publishTime: Int
-        var size: Int
-        var status: Int
-    }
-    var album: Album
-    var alias: [String]
-    var artists: [Artist]
-    var copyrightId: Int
-    var duration: Int
-    var fee: Int
-    var ftype: Int
-    var id: Int
-    var mark: Int
-    var mvid: Int
-    var name: String
-    var rUrl: String?
-    var rtype: Int
-    var status: Int
 }
 //{
 //    br = 804369;

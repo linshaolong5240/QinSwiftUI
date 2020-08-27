@@ -13,12 +13,15 @@ class Store: ObservableObject {
     static let shared = Store()
     
     @Published var appState = AppState()
+    
     init() {
         #if os(macOS)
+        dispatch(.initAction)
         #else
         dispatch(.initAction)
         #endif
     }
+    
     func dispatch(_ action: AppAction) {
         #if DEBUG
         print("[ACTION]: \(action)")
@@ -212,11 +215,19 @@ class Store: ObservableObject {
         case .search(let keyword, let type, let limit, let offset):
             appState.search.searchRequesting = true
             appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)
-        case .searchDone(let result):
+        case .searchPlaylistDone(let result):
+            switch result {
+            case .success(let playlists):
+                appState.search.playlists = playlists
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.search.searchRequesting = false
+        case .searchSongDone(let result):
             switch result {
             case .success(let songs):
                 appState.search.songs = songs.map{SongViewModel($0)}
-                appCommand = SearchDoneCommand()
+                appCommand = SearchSongDoneCommand()
             case .failure(let error):
                 appState.error = error
                 appState.search.searchRequesting = false

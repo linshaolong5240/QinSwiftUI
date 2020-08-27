@@ -85,5 +85,6 @@ extension AppState {
         var keyword: String = ""
         var searchRequesting: Bool = false
         var songs = [SongViewModel]()
+        var playlists = [PlaylistViewModel]()
     }
 }

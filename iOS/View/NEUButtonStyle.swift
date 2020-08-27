@@ -92,6 +92,16 @@ struct NEULightToggleBackground<S: Shape>: View {
             if isHighlighted {
                 if shadow {
                     shape.fill(LinearGradient(.orangeStart, .orangeEnd))
+                        .overlay(
+                            Circle().stroke(Color.gray)
+                                .blur(radius: 4)
+                                .offset(x: 2, y: 2)
+                        )
+                        .overlay(
+                            Circle().stroke(Color.white)
+                                .blur(radius: 4)
+                                .offset(x: -2, y: -2)
+                        )
                         .shadow(color: Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1)), radius: 10, x: -10, y: -10)
                         .shadow(color: Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1)), radius: 10, x: 5, y: 5)
                 }else {

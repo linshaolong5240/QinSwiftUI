@@ -459,21 +459,27 @@ struct SearchCommand: AppCommand {
             return
         }
         NeteaseCloudMusicApi.shared.search(keyword: keyword, type: type, limit: limit, offset: offset) { data, error in
+//            print(data as? NeteaseCloudMusicApi.ResponseData)
             guard error == nil else {
-                store.dispatch(.searchDone(result: .failure(error!)))
+                store.dispatch(.searchSongDone(result: .failure(error!)))
                 return
             }
             if let result = data?["result"] as? NeteaseCloudMusicApi.ResponseData {
-                    let songs = result["songs"] as! [NeteaseCloudMusicApi.ResponseData]
-                store.dispatch(.searchDone(result: .success(songs.map{($0.toData?.toModel(SearchSongDetail.self))!})))
+                if let songs = result["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
+                    store.dispatch(.searchSongDone(result: .success(songs.map{($0.toData?.toModel(SearchSongDetail.self))!})))
+                }
+                if let playlists = result["playlists"] as? [NeteaseCloudMusicApi.ResponseData] {
+                    let playlistsViewModel = playlists.map{$0.toData!.toModel(SearchPlaylist.self)!}.map{PlaylistViewModel($0)}
+                    store.dispatch(.searchPlaylistDone(result: .success(playlistsViewModel)))
+                }
             }else {
-                store.dispatch(.searchDone(result: .failure(.songsDetailError)))
+                store.dispatch(.searchSongDone(result: .failure(.songsDetailError)))
             }
         }
     }
 }
 
-struct SearchDoneCommand: AppCommand {
+struct SearchSongDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         let ids = store.appState.search.songs.map{$0.id}

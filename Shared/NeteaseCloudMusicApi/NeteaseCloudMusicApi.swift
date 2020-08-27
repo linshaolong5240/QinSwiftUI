@@ -331,7 +331,7 @@ extension NeteaseCloudMusicApi {
         case song = 1
         case album = 10
         case artist = 100
-        case playlsit = 1000
+        case playlist = 1000
         case user = 1002
         case mv = 1004
         case lyric = 1006
