@@ -8,6 +8,7 @@
 
 import SwiftUI
 import KingfisherSwiftUI
+import struct Kingfisher.DownsamplingImageProcessor
 
 struct NEUImageView<S: Shape>: View{
     enum CoverSize {
@@ -85,7 +86,7 @@ struct NEUImageView<S: Shape>: View{
                 .frame(width: size.width - size.innerPadding * 2,
                        height: size.width - size.innerPadding * 2)
                 .clipShape(innerShape)
-            KFImage(URL(string: url))
+            KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 50, height: size.width + 50)))])
                 .resizable()
                 .renderingMode(.original)
                 .aspectRatio(contentMode: .fill)
