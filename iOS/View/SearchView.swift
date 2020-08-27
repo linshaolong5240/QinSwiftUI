@@ -29,6 +29,7 @@ struct SearchView: View {
                 HStack(spacing: 20.0) {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
+                        Store.shared.dispatch(.searchClean)
                     }) {
                         NEUButtonView(systemName: "chevron.backward", size: .medium)
                     }
