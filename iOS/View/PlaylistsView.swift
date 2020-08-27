@@ -28,7 +28,7 @@ struct PlaylistsView: View {
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {
-                HStack {
+                HStack(alignment: .top) {
                     ForEach(data) { item in
                         NavigationLink(destination: PlaylistDetailView(item.id)) {
                             PlaylistView(viewModel: item)
