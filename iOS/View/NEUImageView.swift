@@ -95,7 +95,7 @@ struct NEUImageView<S: Shape>: View{
                            height: size.width - size.innerPadding * 2)
                     .clipShape(innerShape)
             }else {
-                KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 50, height: size.width + 50)))])
+                KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 100, height: size.width + 100)))])
                     .resizable()
                     .renderingMode(.original)
                     .aspectRatio(contentMode: .fill)
