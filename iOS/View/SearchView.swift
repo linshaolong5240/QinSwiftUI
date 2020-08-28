@@ -93,8 +93,8 @@ struct SearchPlaylistResultRowView: View {
     let viewModel: PlaylistViewModel
     
     var body: some View {
-        HStack {
-            NEUImageView(url: viewModel.coverImgUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: 25, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous))
+        HStack(alignment: .top) {
+            NEUImageView(url: viewModel.coverImgUrl, size: .small, innerShape:Circle(), outerShape: Circle())
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
