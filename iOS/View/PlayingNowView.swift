@@ -18,14 +18,7 @@ struct PlayingNowView: View {
     private var playlists: AppState.Playlists {store.appState.playlists}
     private var settings: AppState.Settings {store.appState.settings}
     
-    @State private var showList: Bool = false {
-        didSet {
-            if !showList {
-                showCreatedPlaylist = false
-                showComment = false
-            }
-        }
-    }
+    @State private var showList: Bool = false
     @State private var showCreatedPlaylist: Bool = false
     @State private var showComment: Bool = false
     
@@ -66,7 +59,7 @@ struct PlayingNowView: View {
                             .background(
                                 NEUToggleBackground(isHighlighted: playing.like, shape: Circle())
                             )
-                            .offset(x: showList && !showCreatedPlaylist ? 0 : -screen.width/4)
+                            .offset(x: showList ? 0 : -screen.width/4)
                             .transition(.move(edge: .trailing))
                             .onTapGesture {
                                 Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
@@ -76,7 +69,7 @@ struct PlayingNowView: View {
                             .background(
                                 NEUToggleBackground(isHighlighted: showComment, shape: Circle())
                             )
-                            .offset(x: showList && !showCreatedPlaylist ? 0 : screen.width/4)
+                            .offset(x: showList ? 0 : screen.width/4)
                             .transition(.move(edge: .leading))
                             .onTapGesture {
                                 withAnimation(.default) {
@@ -111,12 +104,9 @@ struct PlayingNowView: View {
                     }
                 }
                 if !showList {
-                    VStack {
-                        Spacer()
-                        PlayingNowStatusView()
-                            //                            .offset(y: showList ? screen.height : 0)
-                            .transition(.move(edge: .bottom))
-                    }
+                    PlayingNowStatusView()
+                        //                            .offset(y: showList ? screen.height : 0)
+                        .transition(.move(edge: .bottom))
                 }else {
                     if showComment {
                         CommentListView()
