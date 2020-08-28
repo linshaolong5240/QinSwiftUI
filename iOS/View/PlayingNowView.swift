@@ -82,6 +82,8 @@ struct PlayingNowView: View {
                         withAnimation(.default) {
                             showList.toggle()
                         }
+                        showComment = false
+                        showCreatedPlaylist = false
                     }) {
                         NEUImageView(url: playing.songDetail.albumPicURL,
                                      size: !showList ? .large: .medium,
@@ -113,7 +115,7 @@ struct PlayingNowView: View {
                             //                            .offset(y: selection == "Commentlist" ? 0 : screen.height)
                             .transition(.move(edge: .bottom))
                     }else if showCreatedPlaylist {
-                        CreatedPlaylistView(showList: $showList)
+                        CreatedPlaylistView(showList: $showList, showCreatedPlaylist: $showCreatedPlaylist)
                             //                            .offset(y: selection == "CreatedPlaylist" ? 0 : screen.height)
                             .transition(.move(edge: .bottom))
                     }else {
@@ -414,6 +416,8 @@ struct CreatedPlaylistView: View {
     private var playlists: AppState.Playlists {store.appState.playlists}
     
     @Binding var showList: Bool
+    @Binding var showCreatedPlaylist: Bool
+
     @State private var showCreate: Bool = false
     @State private var name: String = ""
     
@@ -441,6 +445,7 @@ struct CreatedPlaylistView: View {
                                 withAnimation(.default){
                                     showList = false
                                 }
+                                showCreatedPlaylist = false
                             }) {
                                 HStack {
                                     NEUImageView(url: item.coverImgUrl, size: .small, innerShape: RoundedRectangle(cornerRadius: 12, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 15, style: .continuous))
