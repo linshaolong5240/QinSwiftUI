@@ -45,12 +45,14 @@ struct NEUImageView<S: Shape>: View{
     let size: CoverSize
     let innerShape: S
     let outerShape: S
-
-    init(url: String, size: CoverSize = .medium, innerShape: S, outerShape: S) {
+    let isOrigin: Bool
+    
+    init(url: String, size: CoverSize = .medium, innerShape: S, outerShape: S, isOrigin: Bool = false) {
         self.url = url
         self.size = size
         self.innerShape = innerShape
         self.outerShape = outerShape
+        self.isOrigin = isOrigin
     }
     var body: some View {
         ZStack {
@@ -86,7 +88,7 @@ struct NEUImageView<S: Shape>: View{
                 .frame(width: size.width - size.innerPadding * 2,
                        height: size.width - size.innerPadding * 2)
                 .clipShape(innerShape)
-            if size == .large {
+            if isOrigin {
                 KFImage(URL(string: url))
                     .resizable()
                     .renderingMode(.original)

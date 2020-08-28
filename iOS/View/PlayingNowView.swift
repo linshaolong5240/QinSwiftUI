@@ -88,7 +88,7 @@ struct PlayingNowView: View {
                         NEUImageView(url: playing.songDetail.albumPicURL,
                                      size: !showList ? .large: .medium,
                                      innerShape: RoundedRectangle(cornerRadius: !showList ? 50 : 25, style: .continuous),
-                                     outerShape: RoundedRectangle(cornerRadius: !showList ? 66 : 33, style: .continuous))
+                                     outerShape: RoundedRectangle(cornerRadius: !showList ? 66 : 33, style: .continuous), isOrigin: true)
                     }
                     if !showList {
                         VStack {
