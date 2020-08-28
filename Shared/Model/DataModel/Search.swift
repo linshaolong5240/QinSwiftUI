@@ -79,7 +79,7 @@ struct SearchPlaylist: Codable, Identifiable {
 //        var songs: [Any]
         var status: Int
         var tags: String
-        var type: String
+        var type: String?
     }
     struct Creator: Codable {
         var authStatus: Int
