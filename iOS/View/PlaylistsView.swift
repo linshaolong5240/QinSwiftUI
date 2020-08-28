@@ -28,14 +28,14 @@ struct PlaylistsView: View {
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {
-                HStack(alignment: .top) {
+                HStack(alignment: .top, spacing: 10.0) {
                     ForEach(data) { item in
                         NavigationLink(destination: PlaylistDetailView(item.id)) {
                             PlaylistView(viewModel: item)
-                                .padding(20)
                         }
                     }
                 }
+                .padding()
             }
         }
     }
@@ -70,7 +70,7 @@ struct PlaylistView: View {
             Text(viewModel.name)
                 .foregroundColor(Color.mainTextColor)
                 .lineLimit(2)
-                .frame(width: screen.width * 0.3, alignment: .leading)
+                .frame(width: screen.width * 0.3 + 20, alignment: .leading)
             Text("\(viewModel.count) songs")
                 .foregroundColor(Color.secondTextColor)
         }
