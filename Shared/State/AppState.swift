@@ -28,12 +28,16 @@ extension AppState {
         enum PlayMode {
             case playlist, relplay
         }
+        enum Theme: CaseIterable {
+            case dark, light, system
+        }
         var accountBehavior = AccountBehavior.login
         var loginRequesting = false
         var loginUser: User? = DataManager.shared.getUser()
         var loginError: AppError?
         var playMode: PlayMode = .playlist
         var showLoginView = false
+        var theme: Theme = .light
     }
     
     struct Playlists {

@@ -35,9 +35,10 @@ struct UserView: View {
                     Text("用户")
                     Spacer()
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
                     }) {
-                        NEUButtonView(systemName: "ellipsis", size: .medium)
+                        NavigationLink(destination: SettingsView()) {
+                            NEUButtonView(systemName: "gear", size: .medium)
+                        }
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }

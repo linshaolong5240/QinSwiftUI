@@ -12,28 +12,46 @@ struct SettingsView: View {
     @EnvironmentObject var store: Store
     
     var body: some View {
-        NavigationView {
+        Form {
+            Section {
+                NavigationLink(destination: ThemeSelectView()) {
+                    Text("主题")
+                }
+            }
+        }
+    }
+}
+struct ThemeSelectView: View {
+    @EnvironmentObject var store: Store
+    private var settings: AppState.Settings {store.appState.settings}
+    
+    var body: some View {
+        VStack {
             Form {
                 Section {
-                    if store.appState.settings.loginUser != nil {
-                        Text(store.appState.settings.loginUser!.profile.nickname)
-                        Button(action: {self.store.dispatch(.logout)}) {
-                            Text("退出登录")
+                    ForEach(AppState.Settings.Theme.allCases, id: \.self) { item in
+                        Button(action: {
+                        }) {
+                            HStack {
+                                Text("\(String(describing: item))")
+                                Spacer()
+                                if item == settings.theme {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
                         }
-                    }else {
-                        NavigationLink(destination: UserView()) {
-                            Text("登录")
-                        }.buttonStyle(PlainButtonStyle())
                     }
                 }
-            }.navigationBarTitle("Setting")
+            }
         }
     }
 }
 #if DEBUG
 struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView().environmentObject(Store())
+        NavigationView {
+            SettingsView().environmentObject(Store())
+        }
     }
 }
 #endif
