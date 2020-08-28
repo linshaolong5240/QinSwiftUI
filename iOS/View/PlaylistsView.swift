@@ -70,7 +70,7 @@ struct PlaylistView: View {
             Text(viewModel.name)
                 .foregroundColor(Color.mainTextColor)
                 .lineLimit(2)
-                .frame(width: 120, alignment: .leading)
+                .frame(width: screen.width * 0.3, alignment: .leading)
             Text("\(viewModel.count) songs")
                 .foregroundColor(Color.secondTextColor)
         }
