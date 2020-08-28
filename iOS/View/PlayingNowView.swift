@@ -72,12 +72,17 @@ struct PlayingNowView: View {
                                 Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
                             }
                         Spacer()
-                        Toggle(isOn: $showComment) {
-                            NEUButtonView(systemName: "text.bubble", active: showComment)
-                        }
-                        .toggleStyle(NEUToggleStyle(shape: Circle()))
-                        .offset(x: showList && !showCreatedPlaylist ? 0 : screen.width/4)
-                        .transition(.move(edge: .leading))
+                        NEUButtonView(systemName: "text.bubble", active: showComment)
+                            .background(
+                                NEUToggleBackground(isHighlighted: showComment, shape: Circle())
+                            )
+                            .offset(x: showList && !showCreatedPlaylist ? 0 : screen.width/4)
+                            .transition(.move(edge: .leading))
+                            .onTapGesture {
+                                withAnimation(.default) {
+                                    showComment.toggle()
+                                }
+                            }
                     }
                     .padding(.horizontal)
                     Button(action: {
