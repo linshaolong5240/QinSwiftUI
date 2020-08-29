@@ -8,6 +8,13 @@
 
 import SwiftUI
 
+enum PlayingNowBottomType {
+    case commentlist
+    case createdPlaylist
+    case playinglist
+    case playingStatus
+}
+
 struct PlayingNowView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
@@ -18,15 +25,15 @@ struct PlayingNowView: View {
     private var playlists: AppState.Playlists {store.appState.playlists}
     private var settings: AppState.Settings {store.appState.settings}
     
-    @State private var showList: Bool = false
-    @State private var showCreatedPlaylist: Bool = false
+    @State private var showMore: Bool = false
     @State private var showComment: Bool = false
+    @State private var bottomType: PlayingNowBottomType = .playingStatus
     
     var body: some View {
         ZStack {
             BackgroundView()
             VStack {
-                if !showList {
+                if !showMore {
                     HStack {
                         Button(action: {
                             presentationMode.wrappedValue.dismiss()
@@ -42,8 +49,8 @@ struct PlayingNowView: View {
                         Spacer()
                         Button(action: {
                             withAnimation(.default){
-                                showCreatedPlaylist = true
-                                showList = true
+                                showMore = true
+                                bottomType = .createdPlaylist
                             }
                         }) {
                             NEUButtonView(systemName: "plus", size: .medium)
@@ -59,7 +66,7 @@ struct PlayingNowView: View {
                             .background(
                                 NEUToggleBackground(isHighlighted: playing.like, shape: Circle())
                             )
-                            .offset(x: showList ? 0 : -screen.width/4)
+                            .offset(x: showMore ? 0 : -screen.width/4)
                             .transition(.move(edge: .trailing))
                             .onTapGesture {
                                 Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
@@ -69,28 +76,40 @@ struct PlayingNowView: View {
                             .background(
                                 NEUToggleBackground(isHighlighted: showComment, shape: Circle())
                             )
-                            .offset(x: showList ? 0 : screen.width/4)
+                            .offset(x: showMore ? 0 : screen.width/4)
                             .transition(.move(edge: .leading))
+                            .animation(.default)
                             .onTapGesture {
+                                showComment.toggle()
                                 withAnimation(.default) {
-                                    showComment.toggle()
+                                    if showComment {
+                                        bottomType = .commentlist
+                                    }else {
+                                        bottomType = .playinglist
+                                    }
                                 }
                             }
                     }
                     .padding(.horizontal)
                     Button(action: {
                         withAnimation(.default) {
-                            showList.toggle()
+                            showMore.toggle()
+                            if showMore {
+                                bottomType = .playinglist
+                            }else {
+                                bottomType = .playingStatus
+                            }
                         }
-                        showComment = false
-                        showCreatedPlaylist = false
+                        if !showMore {
+                            showComment = false
+                        }
                     }) {
                         NEUImageView(url: playing.songDetail.albumPicURL,
-                                     size: !showList ? .large: .medium,
-                                     innerShape: RoundedRectangle(cornerRadius: !showList ? 50 : 25, style: .continuous),
-                                     outerShape: RoundedRectangle(cornerRadius: !showList ? 66 : 33, style: .continuous), isOrigin: true)
+                                     size: !showMore ? .large: .medium,
+                                     innerShape: RoundedRectangle(cornerRadius: !showMore ? 50 : 25, style: .continuous),
+                                     outerShape: RoundedRectangle(cornerRadius: !showMore ? 66 : 33, style: .continuous), isOrigin: true)
                     }
-                    if !showList {
+                    if !showMore {
                         VStack {
                             Spacer()
                             HStack {
@@ -105,24 +124,21 @@ struct PlayingNowView: View {
                         }
                     }
                 }
-                if !showList {
+                ZStack {
                     PlayingNowStatusView()
-                        //                            .offset(y: showList ? screen.height : 0)
+                        .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                }else {
-                    if showComment {
-                        CommentListView()
-                            //                            .offset(y: selection == "Commentlist" ? 0 : screen.height)
-                            .transition(.move(edge: .bottom))
-                    }else if showCreatedPlaylist {
-                        CreatedPlaylistView(showList: $showList, showCreatedPlaylist: $showCreatedPlaylist)
-                            //                            .offset(y: selection == "CreatedPlaylist" ? 0 : screen.height)
-                            .transition(.move(edge: .bottom))
-                    }else {
-                        PlayinglistView(showList: $showList)
-                            //                            .offset(y: selection == "Playinglist" ? 0 : screen.height)
-                            .transition(.move(edge: .bottom))
-                    }
+                    PlayinglistView(showList: $showMore)
+                        .offset(y: bottomType == .playinglist ? 0 : screen.height)
+                        .transition(.move(edge: .bottom))
+                        .animation(.default)
+                    CommentListView()
+                        .offset(y: bottomType == .commentlist ? 0 : screen.height)
+                        .transition(.move(edge: .bottom))
+                        .animation(.default)
+                    CreatedPlaylistView(showList: $showMore, bottomType: $bottomType)
+                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
+                        .transition(.move(edge: .bottom))
                 }
             }
         }
@@ -416,7 +432,7 @@ struct CreatedPlaylistView: View {
     private var playlists: AppState.Playlists {store.appState.playlists}
     
     @Binding var showList: Bool
-    @Binding var showCreatedPlaylist: Bool
+    @Binding  var bottomType: PlayingNowBottomType
 
     @State private var showCreate: Bool = false
     @State private var name: String = ""
@@ -444,8 +460,8 @@ struct CreatedPlaylistView: View {
                                 Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [self.playing.songDetail.id]))
                                 withAnimation(.default){
                                     showList = false
+                                    bottomType = .playingStatus
                                 }
-                                showCreatedPlaylist = false
                             }) {
                                 HStack {
                                     NEUImageView(url: item.coverImgUrl, size: .small, innerShape: RoundedRectangle(cornerRadius: 12, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 15, style: .continuous))
