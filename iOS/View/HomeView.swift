@@ -24,26 +24,28 @@ struct HomeView: View {
             ZStack {
                 BackgroundView()
                 if user != nil {
-                    ScrollView {
-                        VStack {
-                            HStack(spacing: 20.0) {
-                                Button(action: {}) {
-                                    NavigationLink(destination: UserView()) {
-                                        NEUButtonView(systemName: "person", size: .medium)
-                                    }
+                    VStack {
+                        HStack(spacing: 20.0) {
+                            Button(action: {}) {
+                                NavigationLink(destination: UserView()) {
+                                    NEUButtonView(systemName: "person", size: .medium)
                                 }
-                                .buttonStyle(NEUButtonStyle(shape: Circle()))
-                                SearchBarView()
                             }
-                            .padding()
-                            PlaylistsView(title: "推荐的歌单",
-                                          data: recommendPlaylists)
-                            PlaylistsView(title: "创建的歌单",
-                                          data: playlists.userPlaylists.filter{$0.userId == user!.uid})
-                            PlaylistsView(title: "收藏的歌单",
-                                          data: playlists.userPlaylists.filter{$0.userId != user!.uid})
-                            Spacer()
-                                .frame(height: screen.height / 4)
+                            .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            SearchBarView()
+                        }
+                        .padding(.horizontal)
+                        ScrollView {
+                            VStack {
+                                PlaylistsView(title: "推荐的歌单",
+                                              data: recommendPlaylists)
+                                PlaylistsView(title: "创建的歌单",
+                                              data: playlists.userPlaylists.filter{$0.userId == user!.uid})
+                                PlaylistsView(title: "收藏的歌单",
+                                              data: playlists.userPlaylists.filter{$0.userId != user!.uid})
+                                Spacer()
+                                    .frame(height: screen.height / 5)
+                            }
                         }
                     }
                     VStack {
