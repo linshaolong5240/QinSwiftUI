@@ -78,7 +78,6 @@ struct PlayingNowView: View {
                             )
                             .offset(x: showMore ? 0 : screen.width/4)
                             .transition(.move(edge: .leading))
-                            .animation(.default)
                             .onTapGesture {
                                 showComment.toggle()
                                 withAnimation(.default) {
@@ -131,11 +130,9 @@ struct PlayingNowView: View {
                     PlayinglistView(showList: $showMore)
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                        .animation(.default)
                     CommentListView()
                         .offset(y: bottomType == .commentlist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                        .animation(.default)
                     CreatedPlaylistView(showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
