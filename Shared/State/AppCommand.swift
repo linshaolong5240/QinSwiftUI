@@ -155,8 +155,7 @@ struct LoginCommand: AppCommand {
 
 struct LoginDoneCommand: AppCommand {
     func execute(in store: Store) {
-        store.dispatch(.userPlaylist(uid: store.appState.settings.loginUser!.uid))
-        store.dispatch(.recommendPlaylist)
+        store.dispatch(.initAction)
     }
 }
 
