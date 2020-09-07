@@ -167,6 +167,16 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    //歌曲顺序
+    func songsOrderUpdate(pid: Int, ids: [Int], complete: @escaping CompletionBlock) {
+        let url = "http://interface.music.163.com/weapi/playlist/manipulate/tracks"
+        let data = [
+            "pid": pid,
+            "trackIds": ids,
+            "op": "update"
+            ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     //歌曲链接
     func songsURL(_ ids: [Int], complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/song/enhance/player/url"

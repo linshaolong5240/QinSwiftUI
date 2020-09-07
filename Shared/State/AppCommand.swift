@@ -421,25 +421,6 @@ struct RecommendPlaylistCommand: AppCommand {
         }
     }
 }
-struct SongsDetailCommand: AppCommand {
-    let ids: [Int]
-    
-    func execute(in store: Store) {
-            NeteaseCloudMusicApi.shared.songsDetail(ids) { data, error in
-                guard error == nil else {
-                    store.dispatch(.songsDetailDone(result: .failure(error!)))
-                    return
-                }
-                if let songs = data?["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    if songs.count > 0 {
-                        store.dispatch(.songsDetailDone(result: .success(songs.map{$0.toData!.toModel(SongDetail.self)!})))
-                    }
-                }else {
-                    store.dispatch(.songsDetailDone(result: .failure(.songsDetailError)))
-                }
-            }
-    }
-}
 
 struct SearchCommand: AppCommand {
     let keyword: String
@@ -480,11 +461,50 @@ struct SearchSongDoneCommand: AppCommand {
     }
 }
 
+struct SongsDetailCommand: AppCommand {
+    let ids: [Int]
+    
+    func execute(in store: Store) {
+            NeteaseCloudMusicApi.shared.songsDetail(ids) { data, error in
+                guard error == nil else {
+                    store.dispatch(.songsDetailDone(result: .failure(error!)))
+                    return
+                }
+                if let songs = data?["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
+                    if songs.count > 0 {
+                        store.dispatch(.songsDetailDone(result: .success(songs.map{$0.toData!.toModel(SongDetail.self)!})))
+                    }
+                }else {
+                    store.dispatch(.songsDetailDone(result: .failure(.songsDetailError)))
+                }
+            }
+    }
+}
+
 struct SongsDetailDoneCommand: AppCommand {
     let songsDetail: [SongDetail]
     
     func execute(in store: Store) {
         store.dispatch(.songsURL(ids: songsDetail.map{$0.id}))
+    }
+}
+
+struct SongsOrderUpdateCommand: AppCommand {
+    let pid: Int
+    let ids: [Int]
+    
+    func execute(in store: Store) {
+            NeteaseCloudMusicApi.shared.songsOrderUpdate(pid: pid, ids: ids) { data, error in
+                guard error == nil else {
+                    store.dispatch(.songsOrderUpdateDone(result: .failure(error!)))
+                    return
+                }
+                if data?["code"] as? Int == 200 {
+                    store.dispatch(.songsOrderUpdateDone(result: .success(true)))
+                }else {
+                    store.dispatch(.songsOrderUpdateDone(result: .failure(.songsDetailError)))
+                }
+            }
     }
 }
 

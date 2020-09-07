@@ -9,34 +9,22 @@
 import SwiftUI
 
 struct TestView: View {
-    @State private var isShowingDetailView = false
+    @State private var users = ["Paul", "Taylor", "Adele"]
 
     var body: some View {
-        VStack {
-            ZStack {
-                ZStack {
-                    Color.white
-                        Color.orange
-                        .frame(width: 60, height: 60)
-                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                        .shadow(color: .white, radius: 5, x: 10, y: 10)
-                        .shadow(color: Color.black.opacity(0.15), radius: 10, x: -10, y: -10)
-    //                    .padding(10)
-    //                    .clipShape(RoundedRectangle(cornerRadius: 25.0, style: .continuous))
+        NavigationView {
+            List {
+                ForEach(users, id: \.self) { user in
+                    Text(user)
                 }
-                .frame(width: 80, height: 80)
-                .clipShape(RoundedRectangle(cornerRadius: 25.0, style: .continuous))
-                .shadow(color: .white, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: -10, y: -10)
-                .shadow(color: Color.black.opacity(0.15), radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 10, y: 10)
-                Image("cover")
-                    .resizable()
-                .renderingMode(.original)
-                .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
-                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .onMove(perform: move)
             }
-            NEUImageView(url: "", size: .small, innerShape: RoundedRectangle(cornerRadius: 12, style: .continuous), outerShape: RoundedRectangle(cornerRadius: 15, style: .continuous))
+            .navigationBarItems(trailing: EditButton())
         }
+    }
+
+    func move(from source: IndexSet, to destination: Int) {
+        users.move(fromOffsets: source, toOffset: destination)
     }
 }
 
@@ -46,36 +34,6 @@ struct TestView_Previews: PreviewProvider {
 //            Color.backgroundColor
             BackgroundView()
             TestView()
-        }
-    }
-}
-
-
-struct Test1View: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    var body: some View {
-        HStack {
-            Button(action: {
-               self.presentationMode.wrappedValue.dismiss()
-            }) {
-                Image(systemName: "gobackward").padding()
-            }
-            .navigationBarHidden(true)
-            Spacer()
-        }
-        ScrollView {
-            LazyVStack {
-                ForEach(0 ..< 50) { item in
-                    HStack {
-                        Text("test 1")
-                        Spacer()
-                    }
-                    .padding()
-                }
-            }
-            .navigationTitle("test 1")
-            .navigationBarBackButtonHidden(true)
         }
     }
 }

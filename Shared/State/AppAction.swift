@@ -40,6 +40,8 @@ enum AppAction {
     case setPlayinglist(playinglist: [SongViewModel], index: Int)
     case songsDetail(ids: [Int])
     case songsDetailDone(result: Result<[SongDetail], AppError>)
+    case songsOrderUpdate(pid: Int, ids: [Int])
+    case songsOrderUpdateDone(result: Result<Bool, AppError>)
     case songsURL(ids: [Int])
     case songsURLDone(result: Result<[SongURL], AppError>)
     case userPlaylist(uid: Int)

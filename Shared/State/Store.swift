@@ -254,6 +254,15 @@ class Store: ObservableObject {
             appState.playlists.playlistDetailRequesting = false
             appState.search.searchRequesting = false
             appState.playlists.songsDetailRequesting = false
+        case .songsOrderUpdate(let pid, let ids):
+            appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
+        case .songsOrderUpdateDone(let result):
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                appState.error = error
+            }
         case .songsURL(let ids):
             appState.playlists.songsURLRequesting = true
             appCommand = SongsURLCommand(ids: ids)

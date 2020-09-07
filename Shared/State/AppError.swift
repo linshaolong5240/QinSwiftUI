@@ -21,6 +21,7 @@ enum AppError: Error, Identifiable {
     case playlistTracksError(code: Int?, message: String?)
     case searchError
     case songsDetailError
+    case songsOrderUpdate(code: Int, message: String)
     case songsURLError
     case getUserPlayListError
     case httpRequestError(error: URLError)
@@ -57,6 +58,8 @@ extension AppError {
             return "搜索错误"
         case .songsDetailError:
             return "获取歌曲详情错误"
+        case .songsOrderUpdate(let code, let message):
+            return "歌曲排序错误\nCode: \(code)\nMessage: \(message)"
         case .songsURLError:
             return "获取歌曲链接错误"
         case .getUserPlayListError:
