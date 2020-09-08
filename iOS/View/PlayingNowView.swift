@@ -90,37 +90,23 @@ struct PlayingNowView: View {
                             }
                     }
                     .padding(.horizontal)
-//                    Button(action: {
-//                        withAnimation(.default) {
-//                            showMore.toggle()
-//                            if showMore {
-//                                bottomType = .playinglist
-//                            }else {
-//                                bottomType = .playingStatus
-//                            }
-//                        }
-//                        if !showMore {
-//                            showComment = false
-//                        }
-//                    }) {
-                        NEUImageView(url: playing.songDetail.albumPicURL,
-                                     size: !showMore ? .large: .medium,
-                                     innerShape: RoundedRectangle(cornerRadius: !showMore ? 50 : 25, style: .continuous),
-                                     outerShape: RoundedRectangle(cornerRadius: !showMore ? 66 : 33, style: .continuous), isOrigin: true)
-                                        .onTapGesture {
-                                            withAnimation(.default) {
-                                                showMore.toggle()
-                                                if showMore {
-                                                    bottomType = .playinglist
-                                                }else {
-                                                    bottomType = .playingStatus
-                                                }
-                                            }
-                                            if !showMore {
-                                                showComment = false
-                                            }
-                                        }
-//                    }
+                    NEUImageView(url: playing.songDetail.albumPicURL,
+                                 size: !showMore ? .large: .medium,
+                                 innerShape: RoundedRectangle(cornerRadius: !showMore ? 50 : 25, style: .continuous),
+                                 outerShape: RoundedRectangle(cornerRadius: !showMore ? 66 : 33, style: .continuous), isOrigin: true)
+                        .onTapGesture {
+                            withAnimation(.default) {
+                                showMore.toggle()
+                                if showMore {
+                                    bottomType = .playinglist
+                                }else {
+                                    bottomType = .playingStatus
+                                }
+                            }
+                            if !showMore {
+                                showComment = false
+                            }
+                        }
                     if !showMore {
                         VStack {
                             Spacer()
@@ -443,7 +429,7 @@ struct CreatedPlaylistView: View {
     
     @Binding var showList: Bool
     @Binding  var bottomType: PlayingNowBottomType
-
+    
     @State private var showCreate: Bool = false
     @State private var name: String = ""
     

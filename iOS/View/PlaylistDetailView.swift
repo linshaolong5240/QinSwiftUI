@@ -204,17 +204,17 @@ struct PlaylistDetailSongsView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(0..<viewModel.tracks.count, id: \.self) { index in
-                        Button(action: {
-                            if  playing.songDetail.id == viewModel.tracks[index].id {
-                                showPlayingNow.toggle()
-                            }else {
-                                Store.shared.dispatch(.setPlayinglist(playinglist: self.viewModel.tracks, index: index))
-                                Store.shared.dispatch(.playByIndex(index: index))
+                        PlaylistDetailSongsRowView(viewModel: self.viewModel.tracks[index])
+                            .padding(.horizontal)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                if  playing.songDetail.id == viewModel.tracks[index].id {
+                                    showPlayingNow.toggle()
+                                }else {
+                                    Store.shared.dispatch(.setPlayinglist(playinglist: self.viewModel.tracks, index: index))
+                                    Store.shared.dispatch(.playByIndex(index: index))
+                                }
                             }
-                        }) {
-                            PlaylistDetailSongsRowView(viewModel: self.viewModel.tracks[index])
-                                .padding(.horizontal)
-                        }
                     }
                 }
             }
