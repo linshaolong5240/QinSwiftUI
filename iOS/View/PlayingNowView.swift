@@ -80,6 +80,11 @@ struct PlayingNowView: View {
                             .transition(.move(edge: .leading))
                             .onTapGesture {
                                 showComment.toggle()
+                                if showComment {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
+                                    }
+                                }
                                 withAnimation(.default) {
                                     if showComment {
                                         bottomType = .commentlist
@@ -367,11 +372,6 @@ struct CommentListView: View {
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
-            .onAppear{
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
-                }
-            }
             if playing.commentRequesting {
                 Text("正在加载...")
                     .foregroundColor(.secondTextColor)
