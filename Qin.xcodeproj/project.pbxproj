@@ -10,7 +10,13 @@
 		2B09CF3524F0FC3400E03A12 /* NEUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29824DC5A2B004CAD67 /* NEUView.swift */; };
 		2B09CF3624F0FC5D00E03A12 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29524DC5A2B004CAD67 /* BackgroundView.swift */; };
 		2B2D517824E39C1C007B52A4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D517724E39C1C007B52A4 /* SearchView.swift */; };
-		2B3BBDDF24E7D18400CD94A5 /* NEUButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */; };
+		2B62FB782507A10300097D5B /* NEUButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */; };
+		2B62FB792507A10300097D5B /* NEUButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */; };
+		2B62FB7A2507A10300097D5B /* NEUImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */; };
+		2B62FB7B2507A28F00097D5B /* NEUButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */; };
+		2B62FB7C2507A28F00097D5B /* NEUButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */; };
+		2B62FB7D2507A28F00097D5B /* NEUImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */; };
+		2B62FB7E2507A28F00097D5B /* NEUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29824DC5A2B004CAD67 /* NEUView.swift */; };
 		2BB8558324E63CC800D600BB /* ThemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8558224E63CC800D600BB /* ThemeViewModel.swift */; };
 		2BB8558424E63CC800D600BB /* ThemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB8558224E63CC800D600BB /* ThemeViewModel.swift */; };
 		2BCCB26124DC5671004CAD67 /* QinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB24E24DC566F004CAD67 /* QinApp.swift */; };
@@ -27,11 +33,8 @@
 		2BCCB2A724DC5A2C004CAD67 /* PlaylistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB28E24DC5A2A004CAD67 /* PlaylistsView.swift */; };
 		2BCCB2A924DC5A2C004CAD67 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB28F24DC5A2A004CAD67 /* HomeView.swift */; };
 		2BCCB2AD24DC5A2C004CAD67 /* PlayingNowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */; };
-		2BCCB2B324DC5A2D004CAD67 /* NEUImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */; };
 		2BCCB2B524DC5A2D004CAD67 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29524DC5A2B004CAD67 /* BackgroundView.swift */; };
 		2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29724DC5A2B004CAD67 /* UserView.swift */; };
-		2BCCB2BB24DC5A2D004CAD67 /* NEUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29824DC5A2B004CAD67 /* NEUView.swift */; };
-		2BCCB2BF24DC5A2D004CAD67 /* NEUButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */; };
 		2BCCB2C324DC5DB2004CAD67 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2C224DC5DB2004CAD67 /* CryptoSwift */; };
 		2BCCB2CB24DC74B9004CAD67 /* KingfisherSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2CA24DC74B9004CAD67 /* KingfisherSwiftUI */; };
 		2BCCB2CD24DC74CA004CAD67 /* KingfisherSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2CC24DC74CA004CAD67 /* KingfisherSwiftUI */; };
@@ -156,10 +159,21 @@
 		2B09CF3424F0FC0000E03A12 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2B62FB772507A0E300097D5B /* NEUView */,
 				2BCCB29524DC5A2B004CAD67 /* BackgroundView.swift */,
-				2BCCB29824DC5A2B004CAD67 /* NEUView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		2B62FB772507A0E300097D5B /* NEUView */ = {
+			isa = PBXGroup;
+			children = (
+				2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */,
+				2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */,
+				2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */,
+				2BCCB29824DC5A2B004CAD67 /* NEUView.swift */,
+			);
+			path = NEUView;
 			sourceTree = "<group>";
 		};
 		2BCCB24824DC566F004CAD67 = {
@@ -220,9 +234,6 @@
 			children = (
 				2BCCB28A24DC5A2A004CAD67 /* BottomBarView.swift */,
 				2BCCB28F24DC5A2A004CAD67 /* HomeView.swift */,
-				2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */,
-				2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */,
-				2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */,
 				2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */,
 				2BCCB28D24DC5A2A004CAD67 /* PlaylistDetailView.swift */,
 				2BCCB28E24DC5A2A004CAD67 /* PlaylistsView.swift */,
@@ -418,24 +429,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B62FB7B2507A28F00097D5B /* NEUButtonStyle.swift in Sources */,
+				2B62FB7C2507A28F00097D5B /* NEUButtonView.swift in Sources */,
+				2B62FB7D2507A28F00097D5B /* NEUImageView.swift in Sources */,
+				2B62FB7E2507A28F00097D5B /* NEUView.swift in Sources */,
 				2BB8558324E63CC800D600BB /* ThemeViewModel.swift in Sources */,
 				2BCCB2A724DC5A2C004CAD67 /* PlaylistsView.swift in Sources */,
 				2BCCB2DB24DC79DC004CAD67 /* Color+Extension.swift in Sources */,
 				2BCCB29B24DC5A2B004CAD67 /* TestView.swift in Sources */,
-				2B3BBDDF24E7D18400CD94A5 /* NEUButtonStyle.swift in Sources */,
 				2BCCB2EE24DC7A62004CAD67 /* Playlist.swift in Sources */,
 				2BCCB32424DC7BCD004CAD67 /* AppAction.swift in Sources */,
 				2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */,
 				2BCCB33024DC7EF9004CAD67 /* SongViewModel.swift in Sources */,
 				2BCCB2E024DC7A16004CAD67 /* Lyric.swift in Sources */,
 				2BCCB32C24DC7EF8004CAD67 /* CommentViewModel.swift in Sources */,
-				2BCCB2B324DC5A2D004CAD67 /* NEUImageView.swift in Sources */,
 				2BCCB2D724DC79DC004CAD67 /* UIApplication+Extension.swift in Sources */,
 				2BCCB2F224DC7A62004CAD67 /* comment.swift in Sources */,
 				2B2D517824E39C1C007B52A4 /* SearchView.swift in Sources */,
 				2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
 				2BCCB2F824DC7A62004CAD67 /* SongDetail.swift in Sources */,
-				2BCCB2BF24DC5A2D004CAD67 /* NEUButtonView.swift in Sources */,
 				2BCCB32024DC7BCC004CAD67 /* AppCommand.swift in Sources */,
 				2BCCB26324DC5671004CAD67 /* ContentView.swift in Sources */,
 				2BCCB32224DC7BCD004CAD67 /* AppError.swift in Sources */,
@@ -445,7 +457,6 @@
 				2BCCB2A524DC5A2C004CAD67 /* PlaylistDetailView.swift in Sources */,
 				2BCCB2A924DC5A2C004CAD67 /* HomeView.swift in Sources */,
 				2BCCB32E24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,
-				2BCCB2BB24DC5A2D004CAD67 /* NEUView.swift in Sources */,
 				2BCCB2F624DC7A62004CAD67 /* Account.swift in Sources */,
 				2BCCB2AD24DC5A2C004CAD67 /* PlayingNowView.swift in Sources */,
 				2BCCB29F24DC5A2C004CAD67 /* BottomBarView.swift in Sources */,
@@ -466,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B09CF3524F0FC3400E03A12 /* NEUView.swift in Sources */,
+				2B62FB792507A10300097D5B /* NEUButtonStyle.swift in Sources */,
 				2BCCB26424DC5671004CAD67 /* ContentView.swift in Sources */,
 				2B09CF3624F0FC5D00E03A12 /* BackgroundView.swift in Sources */,
 				2BCCB33124DC7EF9004CAD67 /* SongViewModel.swift in Sources */,
@@ -478,6 +490,7 @@
 				2BCCB32324DC7BCD004CAD67 /* AppError.swift in Sources */,
 				2BCCB33524DC98A7004CAD67 /* DataModel.xcdatamodeld in Sources */,
 				2BCCB2DC24DC79DC004CAD67 /* Color+Extension.swift in Sources */,
+				2B62FB782507A10300097D5B /* NEUButtonView.swift in Sources */,
 				2BCCB2EF24DC7A62004CAD67 /* Playlist.swift in Sources */,
 				2BCCB26224DC5671004CAD67 /* QinApp.swift in Sources */,
 				2BCCB31F24DC7BCC004CAD67 /* AppState.swift in Sources */,
@@ -492,6 +505,7 @@
 				2BCCB2E124DC7A16004CAD67 /* Lyric.swift in Sources */,
 				2BB8558424E63CC800D600BB /* ThemeViewModel.swift in Sources */,
 				2BCCB2DA24DC79DC004CAD67 /* Dictionary+Extension.swift in Sources */,
+				2B62FB7A2507A10300097D5B /* NEUImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

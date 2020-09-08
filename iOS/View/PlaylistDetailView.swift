@@ -12,10 +12,8 @@ import KingfisherSwiftUI
 struct PlaylistDetailView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
-    private var playing: AppState.Playing { store.appState.playing }
     private var playlists: AppState.Playlists { store.appState.playlists }
     private var viewModelBinding: Binding<PlaylistViewModel> {$store.appState.playlists.playlistDetail}
     private var user: User? {store.appState.settings.loginUser}
@@ -24,7 +22,6 @@ struct PlaylistDetailView: View {
     }
     @State var isMoved: Bool = false
     @State var showAction: Bool = false
-    @State var showPlayingNow: Bool = false
     
     let id: Int
     
@@ -37,12 +34,8 @@ struct PlaylistDetailView: View {
             BackgroundView()
             VStack {
                 HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        NEUButtonView(systemName: "chevron.backward", size: .medium)
-                    }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    NEUBackwardButton()
+                        .buttonStyle(NEUButtonStyle(shape: Circle()))
                     Spacer()
                     Text("PLAYLIST DETAIL")
                         .font(.title)
@@ -64,24 +57,14 @@ struct PlaylistDetailView: View {
                             Store.shared.dispatch(.playlistDetail(id: self.id))
                         })
                 }else if !playlists.playlistDetailRequesting {
-                    HStack(alignment: .top) {
-                        NEUImageView(url: viewModel.coverImgUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous))
-                        VStack(alignment: .leading) {
-                            Text(viewModel.name)
-                                .fontWeight(.bold)
-                                .foregroundColor(.mainTextColor)
-                            Text("\(String(viewModel.count)) songs")
-                                .foregroundColor(.secondTextColor)
-                            Text("Id: \(String(viewModel.id))")
-                                .foregroundColor(.secondTextColor)
-                        }
-                        Spacer()
-                    }
-                    .padding(.horizontal)
+                    PlaylistDescription(viewModel: viewModel)
                     HStack {
-                        Text("歌曲列表")
-                            .fontWeight(.bold)
-                            .foregroundColor(.secondTextColor)
+                        Group {
+                            Text("歌曲列表")
+                                .fontWeight(.bold)
+                            Text("\(String(viewModel.count)) songs")
+                        }
+                        .foregroundColor(.secondTextColor)
                         Spacer()
                         if viewModel.userId == user?.uid {
                             NEUButtonView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
@@ -99,75 +82,51 @@ struct PlaylistDetailView: View {
                         }
                     }
                     .padding(.horizontal)
-                    List {
-                        ForEach(0..<viewModel.tracks.count, id: \.self) { index in
-                            Button(action: {
-                                if  playing.songDetail.id == viewModel.tracks[index].id {
-                                    showPlayingNow.toggle()
-                                }else {
-                                    Store.shared.dispatch(.setPlayinglist(playinglist: self.viewModel.tracks, index: index))
-                                    Store.shared.dispatch(.playByIndex(index: index))
-                                }
-                            }) {
-                                PlaylistDetailRowView(viewModel: self.viewModel.tracks[index])
-                            }
-                        }.onDelete { (indexSet) in
-                            if let index = indexSet.first {
-                                self.viewModel.tracks.remove(at: index)
-                                Store.shared.dispatch(.playlistTracks(pid: self.viewModel.id, op: false, ids: [self.viewModel.trackIds[index]]))
-                            }
-                        }
-                        .onMove(perform: move)
-                        .deleteDisabled(viewModel.userId == user?.uid ? false : true)
-                        .moveDisabled(viewModel.userId == user?.uid ? false : true)
+                    if editModeBinding?.wrappedValue.isEditing ?? false {
+                        PlaylistDetailEditSongsView(isMoved: $isMoved)
+                    }else {
+                        PlaylistDetailSongsView()
                     }
-                }
-                NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
-                    EmptyView()
                 }
                 Spacer()
             }
         }
         .navigationBarHidden(true)
-        .actionSheet(isPresented: $showAction) { () -> ActionSheet in
-            let buttons: [ActionSheet.Button]
-            if viewModel.subscribed {
-                buttons = [
-                    .default(Text("取消收藏")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: false)) },
-                    .cancel(Text("取消")) {self.showAction.toggle()},
-                ]
-            }
-            else if viewModel.userId == user?.uid {
-                if viewModel.id == playlists.likedPlaylistId {
-                    buttons = [
-                        .default(Text("歌单信息")) {},
-                        .cancel(Text("取消")) {self.showAction.toggle()},
-                    ]
-                }else {
-                    buttons = [
-                        .default(Text("编辑歌单")) {},
-                        .default(Text("删除歌单")) { Store.shared.dispatch(.playlistDelete(pid: self.viewModel.id)) },
-                        .cancel(Text("取消")) {self.showAction.toggle()},
-                    ]
-                }
-            }
-            else {
-                buttons = [
-                    .default(Text("收藏歌单")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: true)) },
-                    .cancel(Text("取消")) {self.showAction.toggle()},
-                ]
-            }
-            return ActionSheet(title: Text("选项"), buttons: buttons)
-        }
+        .actionSheet(isPresented: $showAction, content: makeActionSheet)
     }
-    
-    func move(from source: IndexSet, to destination: Int) {
-        isMoved = true
-        viewModel.trackIds.move(fromOffsets: source, toOffset: destination)
-        viewModel.tracks.move(fromOffsets: source, toOffset: destination)
+    func makeActionSheet() -> ActionSheet {
+        let buttons: [ActionSheet.Button]
+        if viewModel.subscribed {
+            buttons = [
+                .default(Text("取消收藏")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: false)) },
+                .cancel(Text("取消")) {self.showAction.toggle()},
+            ]
+        }
+        else if viewModel.userId == user?.uid {
+            if viewModel.id == playlists.likedPlaylistId {
+                buttons = [
+                    .default(Text("歌单信息")) {},
+                    .cancel(Text("取消")) {self.showAction.toggle()},
+                ]
+            }else {
+                buttons = [
+                    .default(Text("编辑歌单")) {},
+                    .default(Text("删除歌单")) { Store.shared.dispatch(.playlistDelete(pid: self.viewModel.id)) },
+                    .cancel(Text("取消")) {self.showAction.toggle()},
+                ]
+            }
+        }
+        else {
+            buttons = [
+                .default(Text("收藏歌单")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: true)) },
+                .cancel(Text("取消")) {self.showAction.toggle()},
+            ]
+        }
+        return ActionSheet(title: Text("选项"), buttons: buttons)
     }
 }
 
+#if DEBUG
 struct PlaylistDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
@@ -188,8 +147,85 @@ struct PlaylistDetailView_Previews: PreviewProvider {
         .environmentObject(Player.shared)
     }
 }
+#endif
 
-struct PlaylistDetailRowView: View {
+struct PlaylistDetailEditSongsView: View {
+    @EnvironmentObject var store: Store
+    private var viewModel: PlaylistViewModel {
+        store.appState.playlists.playlistDetail
+    }
+    @Binding var isMoved: Bool
+    
+    var body: some View {
+        List {
+            ForEach(viewModel.tracks) { item in
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(item.name)
+                            .font(.system(size: 20))
+                            .fontWeight(.bold)
+                            .foregroundColor(.mainTextColor )
+                            .lineLimit(1)
+                        Text(item.artists)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.secondTextColor)
+                            .lineLimit(1)
+                    }
+                    Spacer()
+                }
+            }
+            .onDelete(perform: deleteAction)
+            .onMove(perform: moveAction)
+        }
+    }
+    func deleteAction(from source: IndexSet) {
+        if let index = source.first {
+            viewModel.tracks.remove(at: index)
+            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.trackIds[index]]))
+        }
+    }
+    func moveAction(from source: IndexSet, to destination: Int) {
+        isMoved = true
+        viewModel.trackIds.move(fromOffsets: source, toOffset: destination)
+        viewModel.tracks.move(fromOffsets: source, toOffset: destination)
+    }
+}
+
+struct PlaylistDetailSongsView: View {
+    @EnvironmentObject var store: Store
+    private var viewModel: PlaylistViewModel {
+        store.appState.playlists.playlistDetail
+    }
+    private var playing: AppState.Playing { store.appState.playing }
+    @State var showPlayingNow: Bool = false
+    
+    var body: some View {
+        VStack {
+            ScrollView {
+                LazyVStack {
+                    ForEach(0..<viewModel.tracks.count, id: \.self) { index in
+                        Button(action: {
+                            if  playing.songDetail.id == viewModel.tracks[index].id {
+                                showPlayingNow.toggle()
+                            }else {
+                                Store.shared.dispatch(.setPlayinglist(playinglist: self.viewModel.tracks, index: index))
+                                Store.shared.dispatch(.playByIndex(index: index))
+                            }
+                        }) {
+                            PlaylistDetailSongsRowView(viewModel: self.viewModel.tracks[index])
+                                .padding(.horizontal)
+                        }
+                    }
+                }
+            }
+            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
+                EmptyView()
+            }
+        }
+    }
+}
+
+struct PlaylistDetailSongsRowView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var store: Store
@@ -209,6 +245,14 @@ struct PlaylistDetailRowView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor )
                         .lineLimit(1)
+//                    HStack {
+//                        Text(viewModel.artists)
+//                            .fontWeight(.bold)
+//                            .lineLimit(1)
+//                        Spacer()
+//                        Text(String(format: "%02d:%02d", Int(viewModel.durationTime/60),Int(viewModel.durationTime)%60))
+//                    }
+//                    .foregroundColor(Color.secondTextColor)
                     Text(viewModel.artists)
                         .fontWeight(.bold)
                         .foregroundColor(Color.secondTextColor)
@@ -260,5 +304,37 @@ struct PlaylistDetailRowView: View {
                 }
             )
         }
+    }
+}
+
+struct PlaylistDescription: View {
+    let viewModel: PlaylistViewModel
+    @State var showMoreDescription: Bool = false
+
+    var body: some View {
+        HStack(alignment: .top) {
+            NEUImageView(url: viewModel.coverImgUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: 25, style: .continuous), outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous))
+            VStack(alignment: .leading) {
+                Text(viewModel.name)
+                    .fontWeight(.bold)
+                    .foregroundColor(.mainTextColor)
+                Text(viewModel.description ?? "")
+                    .foregroundColor(.secondTextColor)
+                    .lineLimit(showMoreDescription ? nil : 3)
+                    .onTapGesture{
+                        showMoreDescription.toggle()
+                    }
+                Group {
+                    HStack {
+                        Text("\(viewModel.playCount)")
+                        Image(systemName: "headphones")
+                    }
+                    Text("Id: \(String(viewModel.id))")
+                }
+                .foregroundColor(.secondTextColor)
+            }
+            Spacer()
+        }
+        .padding(.horizontal)
     }
 }

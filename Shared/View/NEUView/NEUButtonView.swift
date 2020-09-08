@@ -74,6 +74,26 @@ extension NEUButtonView {
     }
 }
 
+struct NEUBackwardButton: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
+    var body: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            NEUButtonView(systemName: "chevron.backward", size: .medium)
+        }
+    }
+}
+struct NEUToggleButton: View {
+    
+    var body: some View {
+        Button(action: {
+        }) {
+            NEUButtonView(systemName: "chevron.backward", size: .medium)
+        }
+    }
+}
 #if DEBUG
 struct NEUButtonView_Previews: PreviewProvider {
     static var previews: some View {

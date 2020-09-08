@@ -11,6 +11,7 @@ import Foundation
 class SongViewModel: Codable, Identifiable {
     var albumPicURL = ""
     var artists: String = ""
+    var durationTime: Int = 0
     var id: Int = 0
     var name: String = ""
     init() {
@@ -24,11 +25,13 @@ class SongViewModel: Codable, Identifiable {
     init(_ songDetail: SongDetail) {
         self.albumPicURL = songDetail.al.picUrl
         self.artists = songDetail.artists
+        self.durationTime = songDetail.dt / 1000
         self.id = songDetail.id
         self.name = songDetail.name
     }
     init(_ searchSongDetail: SearchSongDetail) {
         self.artists = searchSongDetail.artists.map{ $0.name }.joined(separator: " & ")
+        self.durationTime = searchSongDetail.duration / 1000
         self.id = searchSongDetail.id
         self.name = searchSongDetail.name
     }

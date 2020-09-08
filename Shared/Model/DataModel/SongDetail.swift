@@ -38,7 +38,7 @@ struct SongDetail: Codable, Identifiable {
     var cp: Int
 //    var crbt: Any?
     var djId: Int
-    var dt: Int
+    var dt: Int// duration time
     var fee: Int
     var ftype: Int
     var h: Quality?

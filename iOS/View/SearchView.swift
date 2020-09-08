@@ -125,7 +125,7 @@ struct SearchSongResultView: View {
                             showPlayingNow.toggle()
                         }
                     }) {
-                        PlaylistDetailRowView(viewModel: search.songs[index])
+                        PlaylistDetailSongsRowView(viewModel: search.songs[index])
                             .padding(.horizontal)
                     }
                 }
