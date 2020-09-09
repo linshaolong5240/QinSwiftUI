@@ -245,7 +245,12 @@ struct PlaylistManageView: View {
         if let index = source.first {
             let id = playlists[index].id
             playlists.remove(at: index)
-            Store.shared.dispatch(.playlistDelete(pid: id))
+            if type == .created {
+                Store.shared.dispatch(.playlistDelete(pid: id))
+            }
+            if type == .subscribed {
+                Store.shared.dispatch(.playlistSubscibe(id: id, subscibe: false))
+            }
         }
     }
     func moveAction(from source: IndexSet, offset: Int) {
