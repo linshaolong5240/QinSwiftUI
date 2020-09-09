@@ -109,20 +109,35 @@ struct NEUImageView<S: Shape>: View{
         }
     }
 }
-//#if DEBUG
-//struct CoverView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ZStack {
-//            BackgroundView()
-//            VStack(spacing: 50) {
+#if DEBUG
+struct NEUImageView_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            BackgroundView()
+            VStack(spacing: 50) {
 //                NEUImageView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg", size: .small, innerShape: Circle(), outerShape: Circle())
 //
 //                NEUImageView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg", size: .medium, innerShape: Circle(), outerShape: Circle())
 //
 //                NEUImageView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg", size: .large, innerShape: Circle(), outerShape: Circle())
-//            }
-//        }
-//        .preferredColorScheme(.light)
-//    }
-//}
-//#endif
+                NEUImageView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+                             size: .small,
+                             innerShape: RoundedRectangle(cornerRadius: 15, style: .continuous),
+                             outerShape: RoundedRectangle(cornerRadius: 18, style: .continuous),
+                             isOrigin: false)
+                NEUImageView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+                             size: .medium,
+                             innerShape: RoundedRectangle(cornerRadius: 25, style: .continuous),
+                             outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous),
+                             isOrigin: false)
+                NEUImageView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+                             size: .large,
+                             innerShape: RoundedRectangle(cornerRadius: 50, style: .continuous),
+                             outerShape: RoundedRectangle(cornerRadius: 60, style: .continuous),
+                             isOrigin: true)
+            }
+        }
+        .preferredColorScheme(.light)
+    }
+}
+#endif

@@ -41,18 +41,18 @@ extension AppState {
     }
     
     struct Playlists {
+        var createdPlaylist = [PlaylistViewModel]()
         var likeIds = [Int]()
         var likedPlaylistId: Int = 0
         var playlistDetail = PlaylistViewModel()
-        var playlistsDetailId: Int = 0
         var playlistDetailRequesting: Bool = false
+        var playlistOrderUpdateRequesting: Bool = false
         var recommendPlaylistRequesting: Bool = false
         var recommendPlaylists = [PlaylistViewModel]()
         var songsDetailRequesting: Bool = false
         var songsURLRequesting: Bool = false
-        var showPlaylistDetail: Bool = false
-        var userPlaylists = [PlaylistViewModel]()
         var subscribePlaylists = [PlaylistViewModel]()
+//        var userPlaylists = [PlaylistViewModel]()
     }
     
     struct Playing {

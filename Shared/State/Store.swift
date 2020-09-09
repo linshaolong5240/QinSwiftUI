@@ -164,7 +164,8 @@ class Store: ObservableObject {
         case .playlistDeleteDone(let result):
             switch result {
             case .success:
-                appCommand = PlaylistDeleteDoneCommand()
+//                appCommand = PlaylistDeleteDoneCommand()
+                break
             case .failure(let error):
                 appState.error = error
             }
@@ -181,6 +182,24 @@ class Store: ObservableObject {
                 appState.error = error
                 appState.playlists.playlistDetailRequesting = false
             }
+        case .playlistOrderUpdate(let ids, let type):
+            appState.playlists.playlistOrderUpdateRequesting = true
+            var allIds = [Int]()
+            if type == .created {
+                allIds = ids + appState.playlists.subscribePlaylists.map{$0.id}
+            }
+            if type == .subscribed {
+                allIds = appState.playlists.subscribePlaylists.map{$0.id} + ids
+            }
+            appCommand = PlaylistOrderUpdateCommand(ids: allIds)
+        case .playlistOrderUpdateDone(let result):
+            switch result {
+            case .success:
+                appCommand = PlaylistOrderUpdateDoneCommand()
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.playlists.playlistOrderUpdateRequesting = false
         case .playlistSubscibe(let id, let subscibe):
             appCommand = PlaylisSubscribeCommand(id: id, subcribe: subscibe)
         case .playlistSubscibeDone(let result):
@@ -200,7 +219,6 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-            
         case .recommendPlaylist:
             appState.playlists.recommendPlaylistRequesting = true
             appCommand = RecommendPlaylistCommand()
@@ -259,7 +277,8 @@ class Store: ObservableObject {
         case .songsOrderUpdateDone(let result):
             switch result {
             case .success:
-                break
+//                appCommand = SongsOrderUpdateDoneCommand(pid: pid)
+            break
             case .failure(let error):
                 appState.error = error
             }
@@ -285,16 +304,20 @@ class Store: ObservableObject {
             appState.playing.index = index
         case .togglePlay:
             appCommand = TooglePlayCommand()
-        case .showPlaylistDetail:
-            appState.playlists.showPlaylistDetail.toggle()
         case .userPlaylist(let uid):
             appState.playlists.playlistDetailRequesting = true
-            appCommand = UserPlayListCommand(uid: uid)
-        case .userPlaylistDone(result: let result):
+            if let userId = uid {
+                appCommand = UserPlayListCommand(uid: userId)
+            }else if let userId = appState.settings.loginUser?.uid {
+                appCommand = UserPlayListCommand(uid: userId)
+            }
+        case .userPlaylistDone(let uid, result: let result):
             switch result {
             case .success(let playlists):
                 appState.playlists.likedPlaylistId = playlists[0].id
-                appState.playlists.userPlaylists = playlists.map{PlaylistViewModel($0)}
+                appState.playlists.createdPlaylist = playlists.filter{$0.userId == uid}
+                appState.playlists.subscribePlaylists = playlists.filter{$0.userId != uid}
+//                appState.playlists.userPlaylists = playlists.map{PlaylistViewModel($0)}
             case .failure(let error):
                 appState.error = error
             }

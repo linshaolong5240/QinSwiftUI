@@ -451,7 +451,7 @@ struct CreatedPlaylistView: View {
                 .padding(.horizontal)
                 ScrollView {
                     LazyVStack{
-                        ForEach(playlists.userPlaylists.filter{$0.userId == user!.uid}){ item in
+                        ForEach(playlists.createdPlaylist){ item in
                             Button(action: {
                                 Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [self.playing.songDetail.id]))
                                 withAnimation(.default){

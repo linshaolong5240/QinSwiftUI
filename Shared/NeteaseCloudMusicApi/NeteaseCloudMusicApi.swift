@@ -130,6 +130,14 @@ extension NeteaseCloudMusicApi {
         ]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    //歌单顺序
+    func playlistOrderUpdate(ids: [Int], complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/playlist/order/update"
+        let data = [
+            "ids": ids
+        ]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     //歌单收藏
     func playlistSubscribe(id: Int, subscribe: Bool, complete: @escaping CompletionBlock) {
         let t = subscribe ? "subscribe" : "unsubscribe"

@@ -34,13 +34,10 @@ struct SearchView: View {
                         NEUButtonView(systemName: "chevron.backward", size: .medium)
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
-                    HStack(spacing: 0.0) {
-                        NEUButtonView(systemName: "magnifyingglass", size: .medium)
-                        TextField("搜索", text: searchBinding.keyword, onCommit: {
-                            store.dispatch(.search(keyword: search.keyword, type: searchType))
-                        })
-                    }
-                    .background(SearchBarBackgroundView())
+                    TextField("搜索", text: searchBinding.keyword, onCommit: {
+                        store.dispatch(.search(keyword: search.keyword, type: searchType))
+                    })
+                    .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .medium)))
                 }
                 .padding()
                 Picker(selection: searchTypeBinding, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
@@ -80,7 +77,7 @@ struct SearchPlaylistResultView: View {
         ScrollView {
             LazyVStack {
                 ForEach(search.playlists) { item in
-                    NavigationLink(destination: PlaylistDetailView(item.id)) {
+                    NavigationLink(destination: PlaylistDetailView(id: item.id, type: .other)) {
                         SearchPlaylistResultRowView(viewModel: item)
                             .padding(.horizontal)
                     }
@@ -137,21 +134,6 @@ struct SearchSongResultView: View {
     }
 }
 
-struct SearchBarBackgroundView: View {
-    var body: some View {
-        ZStack {
-            Color.white
-            LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9194737077, green: 0.2849465311, blue: 0.1981146634, alpha: 1)),Color(#colorLiteral(red: 0.9983269572, green: 0.3682751656, blue: 0.2816230953, alpha: 1)),Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .padding(5)
-                .shadow(color: Color.black.opacity(0.25), radius: 5, x: -5, y: -5)
-                .shadow(color: Color.white, radius: 5, x: 5, y: 5)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-    }
-}
-
 struct SearchBarView: View {
     @EnvironmentObject var store: Store
     private var search: AppState.Search {store.appState.search}
@@ -163,15 +145,12 @@ struct SearchBarView: View {
             NavigationLink(destination: SearchView(), isActive: $showSearch) {
                 EmptyView()
             }
-            HStack(spacing: 0.0) {
-                NEUButtonView(systemName: "magnifyingglass", size: .medium)
-                TextField("搜索", text: searchBinding.keyword, onCommit: {
-                    if search.keyword.count > 0 {
-                        showSearch = true
-                    }
-                })
-            }
-            .background(SearchBarBackgroundView())
+            TextField("搜索", text: searchBinding.keyword, onCommit: {
+                if search.keyword.count > 0 {
+                    showSearch = true
+                }
+            })
+            .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .medium)))
         }
     }
 }

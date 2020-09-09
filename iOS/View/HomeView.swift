@@ -16,7 +16,6 @@ struct HomeView: View {
     private var playlists: AppState.Playlists {store.appState.playlists}
     
     private var user: User? {store.appState.settings.loginUser}
-    private var showPlaylistDetail: Bool {store.appState.playlists.showPlaylistDetail}
     @State var showUser: Bool = false
     
     var body: some View {
@@ -38,11 +37,14 @@ struct HomeView: View {
                         ScrollView {
                             VStack {
                                 PlaylistsView(title: "推荐的歌单",
-                                              data: recommendPlaylists)
+                                              data: recommendPlaylists,
+                                              type: .other)
                                 PlaylistsView(title: "创建的歌单",
-                                              data: playlists.userPlaylists.filter{$0.userId == user!.uid})
+                                              data: playlists.createdPlaylist,
+                                              type: .created)
                                 PlaylistsView(title: "收藏的歌单",
-                                              data: playlists.userPlaylists.filter{$0.userId != user!.uid})
+                                              data: playlists.subscribePlaylists,
+                                              type: .subscribed)
                                 Spacer()
                                     .frame(height: screen.height / 5)
                             }

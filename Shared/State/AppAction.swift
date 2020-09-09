@@ -27,6 +27,8 @@ enum AppAction {
     case playlistDeleteDone(result: Result<Int, AppError>)
     case playlistDetail(id: Int)
     case playlistDetailDone(result: Result<Playlist, AppError>)
+    case playlistOrderUpdate(ids: [Int], type: PlaylistType)
+    case playlistOrderUpdateDone(result: Result<Bool, AppError>)
     case playlistSubscibe(id: Int, subscibe: Bool)
     case playlistSubscibeDone(result: Result<Bool, AppError>)
     case playlistTracks(pid: Int, op: Bool, ids: [Int])
@@ -41,11 +43,11 @@ enum AppAction {
     case songsDetail(ids: [Int])
     case songsDetailDone(result: Result<[SongDetail], AppError>)
     case songsOrderUpdate(pid: Int, ids: [Int])
-    case songsOrderUpdateDone(result: Result<Bool, AppError>)
+    case songsOrderUpdateDone(result: Result<Int, AppError>)
     case songsURL(ids: [Int])
     case songsURLDone(result: Result<[SongURL], AppError>)
-    case userPlaylist(uid: Int)
-    case userPlaylistDone(result: Result<[Playlist], AppError>)
+    case userPlaylist(uid: Int? = nil)
+    case userPlaylistDone(uid: Int, result: Result<[PlaylistViewModel], AppError>)
     case showLoginView(show: Bool)
     case pause
     case play
@@ -59,5 +61,4 @@ enum AppAction {
     case replay
     case seek(isSeeking: Bool)
     case togglePlay
-    case showPlaylistDetail
 }

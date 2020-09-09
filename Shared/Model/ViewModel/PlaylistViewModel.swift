@@ -7,6 +7,9 @@
 //
 
 import Foundation
+enum PlaylistType: Int, Codable {
+    case created, subscribed, other
+}
 
 class PlaylistViewModel: Codable, Identifiable {
     var count: Int = 0
@@ -17,6 +20,7 @@ class PlaylistViewModel: Codable, Identifiable {
     var id: Int = 0
     var name: String = ""
     var playCount: Int = 0
+    var playlistType: PlaylistType = .other
     var subscribed: Bool = false
     var trackIds = [Int]()
     var tracks = [SongViewModel]()

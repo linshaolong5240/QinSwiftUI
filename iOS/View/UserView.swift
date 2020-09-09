@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  UserView.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/6/14.
@@ -42,31 +42,20 @@ struct UserView: View {
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
-                .padding(.horizontal)
                 if store.appState.settings.loginUser == nil {
                     TextField("email", text: $email)
+                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "envelope")))
                         .autocapitalization(.none)
-                        .padding()
-                        .background(colorScheme == .light ? Color.white : Color.black)
-                        .clipShape(Capsule())
-                        .modifier(NEUShadow())
-
-                    TextField("password", text: $password)
+                    SecureField("password", text: $password)
+                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "key")))
                         .autocapitalization(.none)
-                        .padding()
-                        .background(colorScheme == .light ? Color.white : Color.black)
-                        .clipShape(Capsule())
-                        .modifier(NEUShadow())
-
-                    
-                    Text("Login")
-                        .padding()
-                        .background(colorScheme == .light ? Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)) : Color(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)))
-                        .clipShape(Capsule())
-                        .modifier(NEUShadow())
-                        .onTapGesture {
-                            self.store.dispatch(.login(email: self.email, password: self.password))
+                    Button(action: {
+                        self.store.dispatch(.login(email: self.email, password: self.password))
+                    }) {
+                        Text("登录")
+                            .padding()
                     }
+                    .buttonStyle(NEUButtonStyle(shape: Capsule()))
                     if store.appState.settings.loginRequesting {
                         Text("正在登录。。。。")
                     }
@@ -88,6 +77,7 @@ struct UserView: View {
                 }
                 Spacer()
             }
+            .padding(.horizontal)
         }
         .navigationBarHidden(true)
     }

@@ -15,8 +15,6 @@ struct PlaylistDetailView: View {
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
     private var playlists: AppState.Playlists { store.appState.playlists }
-    private var viewModelBinding: Binding<PlaylistViewModel> {$store.appState.playlists.playlistDetail}
-    private var user: User? {store.appState.settings.loginUser}
     private var viewModel: PlaylistViewModel {
         store.appState.playlists.playlistDetail
     }
@@ -24,10 +22,7 @@ struct PlaylistDetailView: View {
     @State var showAction: Bool = false
     
     let id: Int
-    
-    init(_ id: Int) {
-        self.id = id
-    }
+    let type: PlaylistType
     
     var body: some View {
         ZStack {
@@ -66,7 +61,7 @@ struct PlaylistDetailView: View {
                         }
                         .foregroundColor(.secondTextColor)
                         Spacer()
-                        if viewModel.userId == user?.uid {
+                        if type == .created {
                             NEUButtonView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
                                 .background(NEUToggleBackground(isHighlighted: editModeBinding?.wrappedValue.isEditing ?? false, shape: Circle()))
                                 .onTapGesture {
@@ -96,14 +91,9 @@ struct PlaylistDetailView: View {
     }
     func makeActionSheet() -> ActionSheet {
         let buttons: [ActionSheet.Button]
-        if viewModel.subscribed {
-            buttons = [
-                .default(Text("取消收藏")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: false)) },
-                .cancel(Text("取消")) {self.showAction.toggle()},
-            ]
-        }
-        else if viewModel.userId == user?.uid {
-            if viewModel.id == playlists.likedPlaylistId {
+        switch type {
+        case .created:
+            if id == playlists.likedPlaylistId {
                 buttons = [
                     .default(Text("歌单信息")) {},
                     .cancel(Text("取消")) {self.showAction.toggle()},
@@ -115,13 +105,18 @@ struct PlaylistDetailView: View {
                     .cancel(Text("取消")) {self.showAction.toggle()},
                 ]
             }
-        }
-        else {
+        case .subscribed:
+            buttons = [
+                .default(Text("取消收藏")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: false)) },
+                .cancel(Text("取消")) {self.showAction.toggle()},
+            ]
+        case .other:
             buttons = [
                 .default(Text("收藏歌单")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: true)) },
                 .cancel(Text("取消")) {self.showAction.toggle()},
             ]
         }
+
         return ActionSheet(title: Text("选项"), buttons: buttons)
     }
 }
@@ -132,7 +127,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
         ZStack {
             BackgroundView()
             VStack {
-                PlaylistDetailView(1)
+                PlaylistDetailView(id: 1, type: .other)
                 //                List {
                 //                    SongRowView(viewModel: SongViewModel(id: 0, name: "test", artists: "test"), active: false)
                 //                        .environment(\.colorScheme, .light)

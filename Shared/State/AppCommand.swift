@@ -105,7 +105,7 @@ struct LyricCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.lyric(id: id) { (data, error) in
             guard error == nil else {
-                store.dispatch(.playlistDetailDone(result: .failure(error!)))
+                store.dispatch(.lyricDone(id: self.id, result: .failure(error!)))
                 return
             }
             if data!["code"] as! Int == 200 {
@@ -217,8 +217,8 @@ struct PlaylistDeleteCommand: AppCommand {
 struct PlaylistDeleteDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        if let user = store.appState.settings.loginUser {
-            store.dispatch(.userPlaylist(uid: user.uid))
+        if let uid = store.appState.settings.loginUser?.uid {
+            store.dispatch(.userPlaylist(uid: uid))
         }
     }
 }
@@ -250,6 +250,32 @@ struct PlaylistDetailDoneCommand: AppCommand {
     func execute(in store: Store) {
         if let ids = playlistDetail.trackIds?.map({$0.id}) {
             store.dispatch(.songsDetail(ids: ids))
+        }
+    }
+}
+
+struct PlaylistOrderUpdateCommand: AppCommand {
+    let ids: [Int]
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.playlistOrderUpdate(ids: ids) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.playlistOrderUpdateDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                store.dispatch(.playlistOrderUpdateDone(result: .success(true)))
+            }else {
+                store.dispatch(.playlistOrderUpdateDone(result: .failure(.playlistOrderUpdateError(code: data!["code"] as! Int, message: data!["msg"] as! String))))
+            }
+        }
+    }
+}
+
+struct PlaylistOrderUpdateDoneCommand: AppCommand {
+    func execute(in store: Store) {
+        if let uid = store.appState.settings.loginUser?.uid {
+            store.dispatch(.userPlaylist(uid: uid))
         }
     }
 }
@@ -296,7 +322,7 @@ struct PlaylistTracksCommand: AppCommand {
             if data!["code"] as! Int == 200 {
                 store.dispatch(.playlistTracksDone(result: .success(true)))
             }else {
-                store.dispatch(.playlistTracksDone(result: .failure(.playlistTracksError(code: data!["code"] as? Int, message: data!["message"] as? String))))
+                store.dispatch(.playlistTracksDone(result: .failure(.playlistTracksError(code: data!["code"] as! Int, message: data!["message"] as! String))))
             }
         }
     }
@@ -500,11 +526,19 @@ struct SongsOrderUpdateCommand: AppCommand {
                     return
                 }
                 if data?["code"] as? Int == 200 {
-                    store.dispatch(.songsOrderUpdateDone(result: .success(true)))
+                    store.dispatch(.songsOrderUpdateDone(result: .success(pid)))
                 }else {
-                    store.dispatch(.songsOrderUpdateDone(result: .failure(.songsDetailError)))
+                    store.dispatch(.songsOrderUpdateDone(result: .failure(.playlistOrderUpdateError(code: data!["code"] as! Int, message: data!["message"] as! String))))
                 }
             }
+    }
+}
+
+struct SongsOrderUpdateDoneCommand: AppCommand {
+    let pid: Int
+    
+    func execute(in store: Store) {
+        store.dispatch(.playlistDelete(pid: pid))
     }
 }
 
@@ -563,19 +597,16 @@ struct UserPlayListCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.userPlayList(uid) { (data, error) in
             guard error == nil else {
-                store.dispatch(.userPlaylistDone(result: .failure(error!)))
+                store.dispatch(.userPlaylistDone(uid: uid, result: .failure(error!)))
                 return
             }
             if data!["code"] as! Int == 200 {
-                var playLists = [Playlist]()
                 if let lists = data?["playlist"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    for list in lists {
-                        playLists.append((list.toData?.toModel(Playlist.self))!)
-                    }
+                    let playlists = lists.map{PlaylistViewModel($0.toData!.toModel(Playlist.self)!)}
+                    store.dispatch(.userPlaylistDone(uid: uid, result: .success(playlists)))
                 }
-                store.dispatch(.userPlaylistDone(result: .success(playLists)))
             }else {
-                store.dispatch(.userPlaylistDone(result: .failure(.getUserPlayListError)))
+                store.dispatch(.userPlaylistDone(uid: uid, result: .failure(.getUserPlayListError)))
             }
         }
     }

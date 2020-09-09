@@ -17,8 +17,9 @@ enum AppError: Error, Identifiable {
     case playlistCreateError
     case playlistDeleteError
     case playlistDetailError
+    case playlistOrderUpdateError(code: Int, message: String)
     case playlistSubscribeError
-    case playlistTracksError(code: Int?, message: String?)
+    case playlistTracksError(code: Int, message: String)
     case searchError
     case songsDetailError
     case songsOrderUpdate(code: Int, message: String)
@@ -46,20 +47,18 @@ extension AppError {
             return "删除歌单错误"
         case .playlistDetailError:
             return "获取歌单详情错误"
+        case .playlistOrderUpdateError(let code, let message):
+            return errorFormat(error: "歌单排序错误", code: code, message: message)
         case .playlistSubscribeError:
             return "歌单订阅错误"
         case .playlistTracksError(let code, let message):
-            if message != nil && code != nil {
-                return "code: \(code!)\n\(message!)"
-            }else {
-                return "歌单添加或删除歌曲错误"
-            }
+            return errorFormat(error: "歌单添加或删除歌曲错误", code: code, message: message)
         case .searchError:
             return "搜索错误"
         case .songsDetailError:
             return "获取歌曲详情错误"
         case .songsOrderUpdate(let code, let message):
-            return "歌曲排序错误\nCode: \(code)\nMessage: \(message)"
+            return errorFormat(error: "歌曲排序错误", code: code, message: message)
         case .songsURLError:
             return "获取歌曲链接错误"
         case .getUserPlayListError:
@@ -67,9 +66,12 @@ extension AppError {
         case .httpRequestError(let error):
             return error.localizedDescription
         case .loginError(let code, let message):
-            return "账号或密码错误 code:\(code) message:\(message)"
+            return errorFormat(error: "账号或密码错误", code: code, message: message)
         case .playingError(let message):
             return "播放错误： \(message)"
         }
+    }
+    func errorFormat(error: String, code: Int, message: String) -> String {
+        return "\(error)\n\(code)\n\(message)"
     }
 }
