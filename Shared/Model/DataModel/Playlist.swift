@@ -70,6 +70,16 @@ struct RecommendPlaylist: Codable, Identifiable {
     var type: Int
     var userId: Int
 }
+struct RecommendSongsPlaylist: Codable {
+    struct RecommendReasons: Codable {
+        var reason: String
+        var songId: Int
+    }
+    var dailySongs: [SongDetail]
+//    var orderSongs: [Any]
+    var recommendReasons: [RecommendReasons]
+}
+
 struct Creator: Codable {
     var accountStatus: Int
     var authStatus: Int

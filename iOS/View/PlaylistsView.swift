@@ -56,7 +56,7 @@ struct PlaylistsView: View {
 //                            .environment(\.editMode, Binding.constant(EditMode.active))
 //                    }
 //                }
-                if type != .other {
+                if type == .created || type == .subscribed {
                     Menu {
                         Button("管理歌单",
                                action: {

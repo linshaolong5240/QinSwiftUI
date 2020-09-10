@@ -170,9 +170,13 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistDetail(let id):
-            appState.playlists.playlistDetailRequesting = true
-            appState.playlists.playlistDetail = PlaylistViewModel()
-            appCommand = PlaylistDetailCommand(id: id)
+            if id != 0 {
+                appState.playlists.playlistDetailRequesting = true
+                appState.playlists.playlistDetail = PlaylistViewModel()
+                appCommand = PlaylistDetailCommand(id: id)
+            }else {
+                appState.playlists.playlistDetail = appState.playlists.recommendSongsPlaylist
+            }
         case .playlistDetailDone(let result):
             switch result {
             case .success(let playlist):
@@ -223,13 +227,25 @@ class Store: ObservableObject {
             appState.playlists.recommendPlaylistRequesting = true
             appCommand = RecommendPlaylistCommand()
         case .recommendPlaylistDone(let result):
-            appState.playlists.recommendPlaylistRequesting = false
             switch result {
             case .success(let recommendPlaylists):
                 appState.playlists.recommendPlaylists = recommendPlaylists.map{PlaylistViewModel($0)}
+                appCommand = RecommendPlaylistDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
+        case .recommendSongs:
+            appCommand = RecommendSongsCommand()
+        case .recommendSongsDone(let result):
+            switch result {
+            case .success(let playlsit):
+                appState.playlists.playlistDetail = playlsit
+                appState.playlists.recommendSongsPlaylist = playlsit
+                appState.playlists.recommendPlaylists = [playlsit] + appState.playlists.recommendPlaylists
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.playlists.recommendPlaylistRequesting = false
         case .search(let keyword, let type, let limit, let offset):
             appState.search.searchRequesting = true
             appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)

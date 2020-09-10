@@ -77,7 +77,7 @@ struct SearchPlaylistResultView: View {
         ScrollView {
             LazyVStack {
                 ForEach(search.playlists) { item in
-                    NavigationLink(destination: PlaylistDetailView(id: item.id, type: .other)) {
+                    NavigationLink(destination: PlaylistDetailView(id: item.id, type: .recommend)) {
                         SearchPlaylistResultRowView(viewModel: item)
                             .padding(.horizontal)
                     }

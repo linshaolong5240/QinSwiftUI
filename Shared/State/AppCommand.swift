@@ -426,6 +426,7 @@ struct PlayToEndActionCommand: AppCommand {
         }
     }
 }
+
 struct RecommendPlaylistCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.recommendResource { (data, error) in
@@ -437,12 +438,35 @@ struct RecommendPlaylistCommand: AppCommand {
                 if let recommendPlaylists = data?["recommend"] as? [NeteaseCloudMusicApi.ResponseData] {
 
 //                    let playlist = playlistDict.toData?.toModel(Playlist.self)
-                    store.dispatch(.recommendPlaylistDone(result: .success(recommendPlaylists.map {
-                        ($0.toData?.toModel(RecommendPlaylist.self))!
-                    })))
+                    store.dispatch(.recommendPlaylistDone(result: .success(recommendPlaylists.map { $0.toData!.toModel(RecommendPlaylist.self)!})))
                 }
             }else {
                 store.dispatch(.recommendPlaylistDone(result: .failure(.playlistDetailError)))
+            }
+        }
+    }
+}
+
+struct RecommendPlaylistDoneCommand: AppCommand {
+    func execute(in store: Store) {
+        store.dispatch(.recommendSongs)
+    }
+}
+
+struct RecommendSongsCommand: AppCommand {
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.recommendSongs { (data, error) in
+            guard error == nil else {
+                store.dispatch(.recommendSongsDone(result: .failure(error!)))
+                return
+            }
+            if data!["code"] as! Int == 200 {
+                if let recommendSongsPlaylist = data?["data"] as? NeteaseCloudMusicApi.ResponseData {
+                    let playlist = recommendSongsPlaylist.toData!.toModel(RecommendSongsPlaylist.self)!
+                    store.dispatch(.recommendSongsDone(result: .success(PlaylistViewModel(playlist))))
+                }
+            }else {
+                store.dispatch(.recommendSongsDone(result: .failure(.playlistDetailError)))
             }
         }
     }
@@ -606,7 +630,7 @@ struct UserPlayListCommand: AppCommand {
                     store.dispatch(.userPlaylistDone(uid: uid, result: .success(playlists)))
                 }
             }else {
-                store.dispatch(.userPlaylistDone(uid: uid, result: .failure(.getUserPlayListError)))
+                store.dispatch(.userPlaylistDone(uid: uid, result: .failure(.userPlaylistError)))
             }
         }
     }

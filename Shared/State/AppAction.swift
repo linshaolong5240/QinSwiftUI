@@ -35,6 +35,8 @@ enum AppAction {
     case playlistTracksDone(result: Result<Bool, AppError>)
     case recommendPlaylist
     case recommendPlaylistDone(result: Result<[RecommendPlaylist], AppError>)
+    case recommendSongs
+    case recommendSongsDone(result: Result<PlaylistViewModel, AppError>)
     case search(keyword: String, type: NeteaseCloudMusicApi.SearchType = .song, limit: Int = 30, offset: Int = 0)
     case searchClean
     case searchSongDone(result: Result<[SearchSongDetail], AppError>)

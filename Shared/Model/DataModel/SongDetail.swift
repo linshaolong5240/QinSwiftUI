@@ -22,6 +22,23 @@ struct SongDetail: Codable, Identifiable {
         var name: String?
 //        var tns: [Any]
     }
+    struct Privilege: Codable {//recommendSongs
+        var cp: Int
+        var cs: Bool
+        var dl: Int
+        var fee: Int
+        var fl: Int
+        var flag: Int
+        var id: Int
+        var maxbr: Int
+        var payed: Int
+        var pl: Int
+        var preSell: Bool
+        var sp: Int
+        var st: Int
+        var subp: Int
+        var toast: Bool
+    }
     struct Quality: Codable {
         var br: Int
         var fid: Int
@@ -53,7 +70,9 @@ struct SongDetail: Codable, Identifiable {
 //    var noCopyrightRcmd: Any?
     var originCoverType: Int
     var pop: Int
+    var privilege: Privilege?//optional for recommendSongs
     var pst: Int
+    var reason: String? //optional for recommendSongs
     var publishTime: Int
     var rt: String?//optional for playlist detail
     var rtUrl: String?

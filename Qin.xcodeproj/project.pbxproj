@@ -265,9 +265,9 @@
 			isa = PBXGroup;
 			children = (
 				2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */,
+				2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */,
 				2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */,
 				2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */,
-				2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -289,10 +289,10 @@
 				2BCCB2EB24DC7A61004CAD67 /* Account.swift */,
 				2BCCB2E924DC7A61004CAD67 /* comment.swift */,
 				2BCCB2EA24DC7A61004CAD67 /* DataManager.swift */,
-				2BCCB2E624DC7A61004CAD67 /* Playlist.swift */,
-				2BCCB2EC24DC7A61004CAD67 /* SongDetail.swift */,
 				2BCCB33224DC98A6004CAD67 /* DataModel.xcdatamodeld */,
+				2BCCB2E624DC7A61004CAD67 /* Playlist.swift */,
 				2BE2607024F6C2860039A39E /* Search.swift */,
+				2BCCB2EC24DC7A61004CAD67 /* SongDetail.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";

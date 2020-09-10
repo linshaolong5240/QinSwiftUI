@@ -90,7 +90,7 @@ struct PlaylistDetailView: View {
         .actionSheet(isPresented: $showAction, content: makeActionSheet)
     }
     func makeActionSheet() -> ActionSheet {
-        let buttons: [ActionSheet.Button]
+        var buttons = [ActionSheet.Button]()
         switch type {
         case .created:
             if id == playlists.likedPlaylistId {
@@ -105,14 +105,16 @@ struct PlaylistDetailView: View {
                     .cancel(Text("取消")) {self.showAction.toggle()},
                 ]
             }
+        case .recommend:
+            buttons = [
+                .default(Text("收藏歌单")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: true)) },
+                .cancel(Text("取消")) {self.showAction.toggle()},
+            ]
+        case .recommendSongs:
+            break
         case .subscribed:
             buttons = [
                 .default(Text("取消收藏")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: false)) },
-                .cancel(Text("取消")) {self.showAction.toggle()},
-            ]
-        case .other:
-            buttons = [
-                .default(Text("收藏歌单")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: true)) },
                 .cancel(Text("取消")) {self.showAction.toggle()},
             ]
         }
@@ -127,7 +129,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
         ZStack {
             BackgroundView()
             VStack {
-                PlaylistDetailView(id: 1, type: .other)
+                PlaylistDetailView(id: 1, type: .recommend)
                 //                List {
                 //                    SongRowView(viewModel: SongViewModel(id: 0, name: "test", artists: "test"), active: false)
                 //                        .environment(\.colorScheme, .light)

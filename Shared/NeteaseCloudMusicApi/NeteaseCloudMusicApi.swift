@@ -158,9 +158,15 @@ extension NeteaseCloudMusicApi {
         let url = "https://music.163.com/weapi/playlist/manipulate/tracks"
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
-    //推荐歌单
+    //推荐歌单( 需要登录 )
     func recommendResource(complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/discovery/recommend/resource"
+        let data = ResponseData()
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    //推荐歌曲( 需要登录 )
+    func recommendSongs(complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/v3/discovery/recommend/songs"
         let data = ResponseData()
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }

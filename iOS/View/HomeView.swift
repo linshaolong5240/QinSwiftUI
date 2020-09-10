@@ -38,7 +38,7 @@ struct HomeView: View {
                             VStack {
                                 PlaylistsView(title: "推荐的歌单",
                                               data: recommendPlaylists,
-                                              type: .other)
+                                              type: .recommend)
                                 PlaylistsView(title: "创建的歌单",
                                               data: playlists.createdPlaylist,
                                               type: .created)

@@ -49,6 +49,7 @@ extension AppState {
         var playlistOrderUpdateRequesting: Bool = false
         var recommendPlaylistRequesting: Bool = false
         var recommendPlaylists = [PlaylistViewModel]()
+        var recommendSongsPlaylist = PlaylistViewModel()
         var songsDetailRequesting: Bool = false
         var songsURLRequesting: Bool = false
         var subscribePlaylists = [PlaylistViewModel]()

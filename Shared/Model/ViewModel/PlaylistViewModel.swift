@@ -8,7 +8,7 @@
 
 import Foundation
 enum PlaylistType: Int, Codable {
-    case created, subscribed, other
+    case created, recommend, recommendSongs, subscribed
 }
 
 class PlaylistViewModel: Codable, Identifiable {
@@ -20,7 +20,7 @@ class PlaylistViewModel: Codable, Identifiable {
     var id: Int = 0
     var name: String = ""
     var playCount: Int = 0
-    var playlistType: PlaylistType = .other
+    var playlistType: PlaylistType = .recommend
     var subscribed: Bool = false
     var trackIds = [Int]()
     var tracks = [SongViewModel]()
@@ -50,6 +50,13 @@ class PlaylistViewModel: Codable, Identifiable {
         self.name = recommendPlaylist.name
         self.playCount = recommendPlaylist.playcount
         self.userId = recommendPlaylist.userId
+    }
+    init(_ recommendSongs: RecommendSongsPlaylist) {
+        self.count = recommendSongs.dailySongs.count
+//        self.description = recommendSongs.recommendReasons.map{$0.reason}.joined(separator: "\n")
+        self.description = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
+        self.name = "每日歌曲推荐"
+        self.tracks = recommendSongs.dailySongs.map{SongViewModel($0)}
     }
     init(_ searchPlaylist: SearchPlaylist) {
         self.count = searchPlaylist.trackCount

@@ -20,11 +20,12 @@ enum AppError: Error, Identifiable {
     case playlistOrderUpdateError(code: Int, message: String)
     case playlistSubscribeError
     case playlistTracksError(code: Int, message: String)
+    case recommendSongsError
     case searchError
     case songsDetailError
     case songsOrderUpdate(code: Int, message: String)
     case songsURLError
-    case getUserPlayListError
+    case userPlaylistError
     case httpRequestError(error: URLError)
     case loginError(code: Int, message: String)
     case playingError(message: String)
@@ -53,6 +54,8 @@ extension AppError {
             return "歌单订阅错误"
         case .playlistTracksError(let code, let message):
             return errorFormat(error: "歌单添加或删除歌曲错误", code: code, message: message)
+        case .recommendSongsError:
+            return "获取每日推荐歌曲错误"
         case .searchError:
             return "搜索错误"
         case .songsDetailError:
@@ -61,7 +64,7 @@ extension AppError {
             return errorFormat(error: "歌曲排序错误", code: code, message: message)
         case .songsURLError:
             return "获取歌曲链接错误"
-        case .getUserPlayListError:
+        case .userPlaylistError:
             return "获取用户歌单错误"
         case .httpRequestError(let error):
             return error.localizedDescription
