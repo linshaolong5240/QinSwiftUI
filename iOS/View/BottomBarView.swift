@@ -9,8 +9,6 @@
 import SwiftUI
 
 struct BottomBarView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
     
@@ -62,15 +60,6 @@ struct BottomBarView: View {
         }
         .background(
             NEUBackgroundView()
-            //            ZStack {
-            //                if colorScheme == .light {
-            //                    LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)),Color("BGC3")]), startPoint: .topLeading, endPoint: .bottomTrailing)
-            //                }
-            //                else {
-            //                    BackgroundView()
-            //                }
-            //            }
-            //            .shadow(radius: 10)
         )
         .clipShape(Capsule())
     }
