@@ -20,15 +20,9 @@ struct BottomBarView: View {
         ZStack {
             HStack {
                 ZStack {
-                    if colorScheme == .light {
-                        RingProgressView(percent: playing.loadPercent)
-                            .frame(width: 90, height: 90)
-                    } else {
-                        RingProgressView(percent: playing.loadPercent)
-                            .frame(width: 90, height: 90)
-                            .shadow(color: Color.white.opacity(0.25), radius: 5, x: -5, y: -5)
-                            .shadow(color: Color.black, radius: 5, x: 5, y: 5)
-                    }
+                    NEURingProgressView(percent: playing.loadPercent)
+                        .padding()
+                        .frame(width: 90, height: 90)
                     NEUButtonView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
                         .background(
                             NEUToggleBackground(isHighlighted: true, shadow: false, shape: Circle())
@@ -84,6 +78,16 @@ struct BottomBarView: View {
 #if DEBUG
 struct BottomBarView_Previews: PreviewProvider {
     static var previews: some View {
+        ZStack {
+            NEUBackgroundView()
+            VStack {
+                Spacer()
+                BottomBarView()
+            }
+        }
+        .environmentObject(Store.shared)
+        .environmentObject(Player.shared)
+        .environment(\.colorScheme, .light)
         ZStack {
             NEUBackgroundView()
             VStack {
