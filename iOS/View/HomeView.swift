@@ -34,17 +34,14 @@ struct HomeView: View {
                             SearchBarView()
                         }
                         .padding()
-                        NEUDivider()
                         ScrollView {
                             VStack {
                                 PlaylistsView(title: "推荐的歌单",
                                               data: recommendPlaylists,
                                               type: .recommend)
-                                NEUDivider()
                                 PlaylistsView(title: "创建的歌单",
                                               data: playlists.createdPlaylist,
                                               type: .created)
-                                NEUDivider()
                                 PlaylistsView(title: "收藏的歌单",
                                               data: playlists.subscribePlaylists,
                                               type: .subscribed)

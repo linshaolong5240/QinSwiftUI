@@ -50,6 +50,7 @@ struct PlaylistDetailView: View {
                         .onAppear(perform: {
                             Store.shared.dispatch(.playlistDetail(id: self.id))
                         })
+                    Spacer()
                 }else if !playlists.playlistDetailRequesting {
                     PlaylistDetailDescriptionView(viewModel: viewModel)
                     HStack {
@@ -76,14 +77,12 @@ struct PlaylistDetailView: View {
                         }
                     }
                     .padding(.horizontal)
-                    NEUDivider()
                     if editModeBinding?.wrappedValue.isEditing ?? false {
                         PlaylistDetailEditSongsView(isMoved: $isMoved)
                     }else {
                         PlaylistDetailSongsView()
                     }
                 }
-                Spacer()
             }
         }
         .navigationBarHidden(true)

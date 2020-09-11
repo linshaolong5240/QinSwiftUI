@@ -56,19 +56,43 @@ struct PlaylistsView: View {
 //                            .environment(\.editMode, Binding.constant(EditMode.active))
 //                    }
 //                }
-                if type == .created || type == .subscribed {
+                if type == .created {
                     Menu {
-                        Button("管理歌单",
-                               action: {
-                                sheetType = .manage
+                        Button(action: {
+                            sheetType = .manage
+                            showSheet.toggle()
+                        }){
+                            HStack {
+                                Image(systemName: "rectangle.stack.badge.person.crop")
+                                Text("管理歌单")
+                                Spacer()
+                            }
+                        }
+                        Button(action: {
+                                sheetType = .create
                                 showSheet.toggle()
-                               })
-                        if type == .created {
-                            Button("创建歌单",
-                                   action: {
-                                    sheetType = .create
-                                    showSheet.toggle()
-                                   })
+                               }){
+                            HStack {
+                                Image(systemName: "rectangle.stack.badge.plus")
+                                Text("创建歌单")
+                                Spacer()
+                            }
+                        }
+                    } label: {
+                        NEUButtonView(systemName: "ellipsis", size: .small)
+                    }
+                    .menuStyle(NEUMenuStyle(shape: Circle()))
+                }
+                if type == .subscribed {
+                    Menu {
+                        Button(action: {
+                            sheetType = .manage
+                            showSheet.toggle()
+                        }){
+                            HStack {
+                                Image(systemName: "heart")
+                                Text("管理歌单")
+                            }
                         }
                     } label: {
                         NEUButtonView(systemName: "ellipsis", size: .small)
@@ -91,7 +115,8 @@ struct PlaylistsView: View {
         .sheet(isPresented: $showSheet) {
             if sheetType == .create {
                 PlaylistCreateView(showSheet: $showSheet)
-            }else if sheetType == .manage {
+            }
+            if sheetType == .manage {
                 PlaylistManageView(showSheet: $showSheet, playlists: data, type: type)
                     .environment(\.editMode, Binding.constant(EditMode.active))
             }
