@@ -41,7 +41,7 @@ extension NEUButtonView {
             case .medium:
                 return 50
             case .big:
-                return 80
+                return 70
             case .large:
                 return 90
             }
@@ -53,7 +53,7 @@ extension NEUButtonView {
             case .medium:
                 return 50
             case .big:
-                return 80
+                return 70
             case .large:
                 return 90
             }
@@ -81,24 +81,17 @@ struct NEUBackwardButton: View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
         }) {
-            NEUButtonView(systemName: "chevron.backward", size: .medium)
+            NEUButtonView(systemName: "chevron.backward" ,size: .medium)
         }
+        .buttonStyle(NEUButtonStyle(shape: Circle()))
     }
 }
-struct NEUToggleButton: View {
-    
-    var body: some View {
-        Button(action: {
-        }) {
-            NEUButtonView(systemName: "chevron.backward", size: .medium)
-        }
-    }
-}
+
 #if DEBUG
 struct NEUButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
 //            VStack(spacing: 20.0) {
 //                NEUCircleButtonView(systemName: "arrow.left", size: .small, active: true)
 //                NEUCircleButtonView(systemName: "arrow.left", size: .medium, active: true)

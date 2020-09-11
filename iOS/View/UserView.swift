@@ -11,7 +11,6 @@ import SwiftUI
 struct UserView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var store: Store
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     @State  var email: String = ""
     @State  var password: String = ""
@@ -19,18 +18,13 @@ struct UserView: View {
     
     var body: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
                 .onTapGesture{
                     UIApplication.shared.endEditing()
                 }
             VStack(spacing: 20.0) {
                 HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        NEUButtonView(systemName: "chevron.backward", size: .medium)
-                    }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    NEUBackwardButton()
                     Spacer()
                     Text("用户")
                     Spacer()
@@ -44,10 +38,10 @@ struct UserView: View {
                 }
                 if store.appState.settings.loginUser == nil {
                     TextField("email", text: $email)
-                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "envelope")))
+                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "envelope", size: .medium)))
                         .autocapitalization(.none)
                     SecureField("password", text: $password)
-                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "key")))
+                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "key", size: .medium)))
                         .autocapitalization(.none)
                     Button(action: {
                         self.store.dispatch(.login(email: self.email, password: self.password))

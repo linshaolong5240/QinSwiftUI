@@ -26,11 +26,10 @@ struct PlaylistDetailView: View {
     
     var body: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 HStack {
                     NEUBackwardButton()
-                        .buttonStyle(NEUButtonStyle(shape: Circle()))
                     Spacer()
                     Text("PLAYLIST DETAIL")
                         .font(.title)
@@ -44,7 +43,7 @@ struct PlaylistDetailView: View {
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
-                .padding(.horizontal)
+                .padding()
                 if id != playlists.playlistDetail.id {
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
@@ -52,7 +51,7 @@ struct PlaylistDetailView: View {
                             Store.shared.dispatch(.playlistDetail(id: self.id))
                         })
                 }else if !playlists.playlistDetailRequesting {
-                    PlaylistDescription(viewModel: viewModel)
+                    PlaylistDetailDescriptionView(viewModel: viewModel)
                     HStack {
                         Group {
                             Text("歌曲列表")
@@ -77,6 +76,7 @@ struct PlaylistDetailView: View {
                         }
                     }
                     .padding(.horizontal)
+                    NEUDivider()
                     if editModeBinding?.wrappedValue.isEditing ?? false {
                         PlaylistDetailEditSongsView(isMoved: $isMoved)
                     }else {
@@ -127,7 +127,7 @@ struct PlaylistDetailView: View {
 struct PlaylistDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 PlaylistDetailView(id: 1, type: .recommend)
                 //                List {
@@ -190,6 +190,7 @@ struct PlaylistDetailEditSongsView: View {
 
 struct PlaylistDetailSongsView: View {
     @EnvironmentObject var store: Store
+    @EnvironmentObject var player: Player
     private var viewModel: PlaylistViewModel {
         store.appState.playlists.playlistDetail
     }
@@ -201,17 +202,24 @@ struct PlaylistDetailSongsView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(0..<viewModel.tracks.count, id: \.self) { index in
-                        PlaylistDetailSongsRowView(viewModel: self.viewModel.tracks[index])
-                            .padding(.horizontal)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                if  playing.songDetail.id == viewModel.tracks[index].id {
-                                    showPlayingNow.toggle()
-                                }else {
-                                    Store.shared.dispatch(.setPlayinglist(playinglist: self.viewModel.tracks, index: index))
-                                    Store.shared.dispatch(.playByIndex(index: index))
-                                }
+                        SongRowView(viewModel: viewModel.tracks[index], index: index, action: {
+                            if  playing.songDetail.id == viewModel.tracks[index].id {
+                                store.dispatch(.PlayerPlayOrPause)
+                            }else {
+                                Store.shared.dispatch(.setPlayinglist(playinglist: viewModel.tracks, index: index))
+                                Store.shared.dispatch(.playByIndex(index: index))
                             }
+                        })
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if  playing.songDetail.id == viewModel.tracks[index].id {
+                                showPlayingNow.toggle()
+                            }else {
+                                Store.shared.dispatch(.setPlayinglist(playinglist: viewModel.tracks, index: index))
+                                Store.shared.dispatch(.playByIndex(index: index))
+                            }
+                        }
+                        .padding(.horizontal)
                     }
                 }
             }
@@ -222,89 +230,7 @@ struct PlaylistDetailSongsView: View {
     }
 }
 
-struct PlaylistDetailSongsRowView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
-    private var playing: AppState.Playing {
-        store.appState.playing
-    }
-    
-    let viewModel: SongViewModel
-    
-    var body: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(viewModel.name)
-                        .font(.system(size: 20))
-                        .fontWeight(.bold)
-                        .foregroundColor(.mainTextColor )
-                        .lineLimit(1)
-//                    HStack {
-//                        Text(viewModel.artists)
-//                            .fontWeight(.bold)
-//                            .lineLimit(1)
-//                        Spacer()
-//                        Text(String(format: "%02d:%02d", Int(viewModel.durationTime/60),Int(viewModel.durationTime)%60))
-//                    }
-//                    .foregroundColor(Color.secondTextColor)
-                    Text(viewModel.artists)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color.secondTextColor)
-                        .lineLimit(1)
-                }
-                .foregroundColor(player.isPlaying && viewModel.id == playing.songDetail.id ? .white : Color.secondTextColor)
-                Spacer()
-                Button(action: {
-                    if viewModel.id == playing.songDetail.id {
-                        Store.shared.dispatch(.togglePlay)
-                    }else {
-                        Store.shared.dispatch(.playRequest(id: self.viewModel.id))
-                    }
-                }) {
-                    NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill", size: .small, active: viewModel.id == playing.songDetail.id ?  true : false)
-                        .background(
-                            NEUToggleBackground(isHighlighted: viewModel.id == playing.songDetail.id ?  true : false, shadow: false, shape: Circle())
-                        )
-                }
-            }
-            .padding(10)
-            .background(
-                VStack {
-                    if viewModel.id == playing.songDetail.id {
-                        if colorScheme == .light {
-                            ZStack {
-                                Color.white
-                                LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9194737077, green: 0.2849465311, blue: 0.1981146634, alpha: 1)),Color(#colorLiteral(red: 0.9983269572, green: 0.3682751656, blue: 0.2816230953, alpha: 1)),Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                    .padding(5)
-                                    .shadow(color: Color.black.opacity(0.25), radius: 5, x: -5, y: -5)
-                                    .shadow(color: Color.white, radius: 5, x: 5, y: 5)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                            }
-                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                        }else {
-                            ZStack {
-                                Color("backgroundColor")
-                                LinearGradient(gradient: Gradient(colors: [Color("LbackgroundColor"),Color("LBGC2"),Color("LBGC3")]), startPoint: .top, endPoint: .bottom)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                                    .padding(1)
-                                    .blur(radius: 1)
-                            }
-                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                        }
-                    }else {
-                        Color(.clear)
-                    }
-                }
-            )
-        }
-    }
-}
-
-struct PlaylistDescription: View {
+struct PlaylistDetailDescriptionView: View {
     let viewModel: PlaylistViewModel
     @State var showMoreDescription: Bool = false
 
@@ -323,10 +249,15 @@ struct PlaylistDescription: View {
                     }
                 Group {
                     HStack {
-                        Text("\(viewModel.playCount)")
                         Image(systemName: "headphones")
+                        Text(":")
+                        Text("\(viewModel.playCount)")
                     }
-                    Text("Id: \(String(viewModel.id))")
+                    HStack {
+                        Text("Id")
+                        Text(":")
+                        Text("\(String(viewModel.id))")
+                    }
                 }
                 .foregroundColor(.secondTextColor)
             }

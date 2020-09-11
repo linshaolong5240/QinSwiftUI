@@ -34,7 +34,7 @@ struct BottomBarView: View {
                             NEUToggleBackground(isHighlighted: true, shadow: false, shape: Circle())
                         )
                         .onTapGesture {
-                            Store.shared.dispatch(.togglePlay)
+                            Store.shared.dispatch(.PlayerPlayOrPause)
                         }
                 }
                 NavigationLink(destination: PlayingNowView()) {
@@ -67,7 +67,7 @@ struct BottomBarView: View {
             .padding(.trailing)
         }
         .background(
-            BackgroundView()
+            NEUBackgroundView()
             //            ZStack {
             //                if colorScheme == .light {
             //                    LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)),Color("BGC3")]), startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -85,7 +85,7 @@ struct BottomBarView: View {
 struct BottomBarView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 Spacer()
                 BottomBarView()

@@ -318,7 +318,7 @@ class Store: ObservableObject {
         case .setPlayinglist(let playlist, let index):
             appState.playing.playinglist = playlist
             appState.playing.index = index
-        case .togglePlay:
+        case .PlayerPlayOrPause:
             appCommand = TooglePlayCommand()
         case .userPlaylist(let uid):
             appState.playlists.playlistDetailRequesting = true

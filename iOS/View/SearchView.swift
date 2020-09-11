@@ -24,20 +24,14 @@ struct SearchView: View {
         })
 
         return ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 HStack(spacing: 20.0) {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                        Store.shared.dispatch(.searchClean)
-                    }) {
-                        NEUButtonView(systemName: "chevron.backward", size: .medium)
-                    }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    NEUBackwardButton()
                     TextField("搜索", text: searchBinding.keyword, onCommit: {
                         store.dispatch(.search(keyword: search.keyword, type: searchType))
                     })
-                    .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .medium)))
+                    .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .small)))
                 }
                 .padding()
                 Picker(selection: searchTypeBinding, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
@@ -122,8 +116,24 @@ struct SearchSongResultView: View {
                             showPlayingNow.toggle()
                         }
                     }) {
-                        PlaylistDetailSongsRowView(viewModel: search.songs[index])
-                            .padding(.horizontal)
+                        SongRowView(viewModel: search.songs[index], index: index, action: {
+                            if  playing.songDetail.id == search.songs[index].id {
+                                store.dispatch(.PlayerPlayOrPause)
+                            }else {
+                                Store.shared.dispatch(.setPlayinglist(playinglist: search.songs, index: index))
+                                Store.shared.dispatch(.playByIndex(index: index))
+                            }
+                        })
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if  playing.songDetail.id == search.songs[index].id {
+                                showPlayingNow.toggle()
+                            }else {
+                                Store.shared.dispatch(.setPlayinglist(playinglist: search.songs, index: index))
+                                Store.shared.dispatch(.playByIndex(index: index))
+                            }
+                        }
+                        .padding(.horizontal)
                     }
                 }
             }
@@ -150,7 +160,7 @@ struct SearchBarView: View {
                     showSearch = true
                 }
             })
-            .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .medium)))
+            .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .small)))
         }
     }
 }

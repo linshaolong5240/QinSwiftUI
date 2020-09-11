@@ -32,7 +32,7 @@ struct TestView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
 //            Color.backgroundColor
-            BackgroundView()
+            NEUBackgroundView()
             TestView()
         }
     }

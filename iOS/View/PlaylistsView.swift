@@ -85,7 +85,7 @@ struct PlaylistsView: View {
                         }
                     }
                 }
-                .padding()
+                .padding(.top)
             }
         }
         .sheet(isPresented: $showSheet) {
@@ -107,7 +107,7 @@ struct PlaylistsView_Previews: PreviewProvider {
 
     static var previews: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 PlaylistsView(title: "test", data: playlistsData, type: .subscribed)
                     .environmentObject(Store.shared)
@@ -140,14 +140,18 @@ struct PlaylistColumnView: View {
     let viewModel: PlaylistViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10.0) {
+        VStack(alignment: .leading) {
             NEUImageView(url: viewModel.coverImgUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: 25, style: .continuous), outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous))
-            Text(viewModel.name)
-                .foregroundColor(Color.mainTextColor)
-                .lineLimit(2)
-                .frame(width: screen.width * 0.3 + 20, alignment: .leading)
-            Text("\(viewModel.count) songs")
-                .foregroundColor(Color.secondTextColor)
+                .padding()
+            Group {
+                Text(viewModel.name)
+                    .foregroundColor(Color.mainTextColor)
+                    .lineLimit(2)
+                    .frame(width: screen.width * 0.3 + 20, alignment: .leading)
+                Text("\(viewModel.count) songs")
+                    .foregroundColor(Color.secondTextColor)
+            }
+            .padding(.leading)
         }
     }
 }
@@ -159,14 +163,14 @@ struct PlaylistCreateView: View {
     
     var body: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 HStack {
                     Spacer()
                     Button(action: {
                         showSheet.toggle()
                     }, label: {
-                        NEUButtonView(systemName: "checkmark")
+                        NEUButtonView(systemName: "checkmark", size:  .medium)
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
@@ -185,7 +189,7 @@ struct PlaylistCreateView: View {
                     Store.shared.dispatch(.playlistCreate(name: name))
                 }){
                     HStack(spacing: 0.0) {
-                        NEUButtonView(systemName: "rectangle.stack.badge.plus")
+                        NEUButtonView(systemName: "rectangle.stack.badge.plus", size: .medium)
                             .padding(.horizontal)
                     }
                 }
@@ -205,7 +209,7 @@ struct PlaylistManageView: View {
     
     var body: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 HStack {
                     Spacer()
@@ -218,7 +222,7 @@ struct PlaylistManageView: View {
                             Store.shared.dispatch(.userPlaylist())
                         }
                     }, label: {
-                        NEUButtonView(systemName: "checkmark")
+                        NEUButtonView(systemName: "checkmark", size: .medium)
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }

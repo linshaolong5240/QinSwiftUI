@@ -20,7 +20,7 @@ struct NEUMenuStyle<S>: MenuStyle where S: Shape{
 struct NEUMenuStyle_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             Menu {
                 Button("Open in Preview", action: {})
                 Button("Save as PDF", action: {})

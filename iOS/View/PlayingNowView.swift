@@ -18,7 +18,6 @@ enum PlayingNowBottomType {
 struct PlayingNowView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     private var playing: AppState.Playing { store.appState.playing }
     private var playingBing: Binding<AppState.Playing> {$store.appState.playing}
@@ -31,16 +30,11 @@ struct PlayingNowView: View {
     
     var body: some View {
         ZStack {
-            BackgroundView()
+            NEUBackgroundView()
             VStack {
                 if !showMore {
                     HStack {
-                        Button(action: {
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            NEUButtonView(systemName: "chevron.backward", size: .medium)
-                        }
-                        .buttonStyle(NEUButtonStyle(shape: Circle()))
+                        NEUBackwardButton()
                         Spacer()
                         Text("PLAYING NOW")
                             .font(.title)
@@ -53,16 +47,16 @@ struct PlayingNowView: View {
                                 bottomType = .createdPlaylist
                             }
                         }) {
-                            NEUButtonView(systemName: "plus", size: .medium)
+                            NEUButtonView(systemName: "plus" , size:  .medium)
                         }
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
-                    .padding(.horizontal)
+                    .padding()
                     .transition(.move(edge: .top))
                 }
                 ZStack {
                     HStack {
-                        NEUButtonView(systemName: "heart.fill", active: playing.like)
+                        NEUButtonView(systemName: "heart.fill", size: .medium, active: playing.like)
                             .background(
                                 NEUToggleBackground(isHighlighted: playing.like, shape: Circle())
                             )
@@ -72,7 +66,7 @@ struct PlayingNowView: View {
                                 Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
                             }
                         Spacer()
-                        NEUButtonView(systemName: "text.bubble", active: showComment)
+                        NEUButtonView(systemName: "text.bubble", size: .medium, active: showComment)
                             .background(
                                 NEUToggleBackground(isHighlighted: showComment, shape: Circle())
                             )
@@ -131,7 +125,7 @@ struct PlayingNowView: View {
                     PlayingNowStatusView()
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                    PlayinglistView(showList: $showMore)
+                    PlayinglistView(showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     CommentListView()
@@ -174,7 +168,8 @@ struct PlayinglistView: View {
     @EnvironmentObject var store: Store
     private var playing: AppState.Playing { store.appState.playing }
     @Binding var showList: Bool
-    
+    @Binding var bottomType: PlayingNowBottomType
+
     var body: some View {
         VStack {
             HStack {
@@ -187,18 +182,25 @@ struct PlayinglistView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(0 ..< playing.playinglist.count, id: \.self) { index in
-                        Button(action: {
+                        SongRowView(viewModel: playing.playinglist[index], index: index, action: {
                             if self.playing.index != index {
                                 Store.shared.dispatch(.playByIndex(index: index))
                             }else {
+                                Store.shared.dispatch(.PlayerPlayOrPause)
+                            }
+                        })
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if playing.index != index {
+                                Store.shared.dispatch(.playByIndex(index: index))
+                            }else {
                                 withAnimation(.default){
-                                    showList = true
+                                    showList = false
+                                    bottomType = .playingStatus
                                 }
                             }
-                        }) {
-                            PlayingNowListRowView(viewModel: self.playing.playinglist[index], active: self.playing.playinglist[index].id == self.playing.songDetail.id ? true : false)
-                                .padding(.horizontal)
                         }
+                        .padding(.horizontal)
                     }
                 }
             }
@@ -206,86 +208,6 @@ struct PlayinglistView: View {
     }
 }
 
-struct PlayingNowListRowView: View {
-    @Environment(\.colorScheme) var colorScheme
-    
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
-    
-    let viewModel: SongViewModel
-    let active: Bool
-    
-    var body: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(viewModel.name)
-                        .font(.system(size: 20))
-                        .fontWeight(.bold)
-                        .foregroundColor(.mainTextColor )
-                        .lineLimit(1)
-                    Text(viewModel.artists)
-                        .foregroundColor(Color.secondTextColor)
-                        .lineLimit(1)
-                }
-                .foregroundColor(active ? .white : Color.secondTextColor)
-                Spacer()
-                Button(action: {
-                    if active {
-                        Store.shared.dispatch(.togglePlay)
-                    }else {
-                        Store.shared.dispatch(.playRequest(id: self.viewModel.id))
-                    }
-                }) {
-                    NEUButtonView(systemName: active && player.isPlaying ? "pause.fill" : "play.fill", size: .small, active: active)
-                        .background(
-                            NEUToggleBackground(isHighlighted: active, shadow: false, shape: Circle())
-                        )
-                }
-                //                NEUCircleButtonView(systemName: active && player.isPlaying ? "pause.fill" : "play.fill",
-                //                                    size: .small,
-                //                                    active: active ?  true : false)
-                //                    .onTapGesture{
-                //                        if self.active {
-                //                            Store.shared.dispatch(.togglePlay)
-                //                        }else {
-                //                            Store.shared.dispatch(.playRequest(id: self.viewModel.id))
-                //                        }
-                //                    }
-            }
-            .padding(10)
-            .background(
-                VStack {
-                    if active {
-                        if colorScheme == .light {
-                            ZStack {
-                                Color.white
-                                LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9194737077, green: 0.2849465311, blue: 0.1981146634, alpha: 1)),Color(#colorLiteral(red: 0.9983269572, green: 0.3682751656, blue: 0.2816230953, alpha: 1)),Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                    .padding(5)
-                                    .shadow(color: Color.black.opacity(0.25), radius: 5, x: -5, y: -5)
-                                    .shadow(color: Color.white, radius: 5, x: 5, y: 5)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                            }
-                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                        }else {
-                            ZStack {
-                                Color("backgroundColor")
-                                LinearGradient(gradient: Gradient(colors: [Color("LbackgroundColor"),Color("LBGC2"),Color("LBGC3")]), startPoint: .top, endPoint: .bottom)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                                    .padding(1)
-                                    .blur(radius: 1)
-                            }
-                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                        }
-                    }else {
-                        Color(.clear)
-                    }
-                }
-            )
-        }
-    }
-}
 struct PlayingNowStatusView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var store: Store
@@ -296,15 +218,18 @@ struct PlayingNowStatusView: View {
     
     var body: some View {
         VStack {
-            Text(playing.songDetail.name)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(Color.mainTextColor)
-                .lineLimit(1)
-            Text(playing.songDetail.artists)
-                .fontWeight(.bold)
-                .foregroundColor(Color.secondTextColor)
-                .lineLimit(1)
+            VStack {
+                Text(playing.songDetail.name)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .lineLimit(1)
+                    .foregroundColor(Color.mainTextColor)
+                Text(playing.songDetail.artists)
+                    .fontWeight(.bold)
+                    .lineLimit(1)
+                    .foregroundColor(Color.secondTextColor)
+            }
+            .padding()
             Spacer()
             Text(playing.lyric)
                 .fontWeight(.bold)
@@ -338,7 +263,7 @@ struct PlayingNowStatusView: View {
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
                     )
                     .onTapGesture {
-                        Store.shared.dispatch(.togglePlay)
+                        Store.shared.dispatch(.PlayerPlayOrPause)
                     }
                 
                 Button(action: {

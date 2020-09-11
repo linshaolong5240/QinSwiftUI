@@ -62,5 +62,5 @@ enum AppAction {
     case playToendAction
     case replay
     case seek(isSeeking: Bool)
-    case togglePlay
+    case PlayerPlayOrPause
 }

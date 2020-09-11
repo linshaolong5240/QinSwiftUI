@@ -21,27 +21,30 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                BackgroundView()
+                NEUBackgroundView()
                 if user != nil {
-                    VStack {
+                    VStack(spacing: 0.0) {
                         HStack(spacing: 20.0) {
                             Button(action: {}) {
                                 NavigationLink(destination: UserView()) {
-                                    NEUButtonView(systemName: "person", size: .medium)
+                                    NEUButtonView(systemName: "person", size:  .small)
                                 }
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             SearchBarView()
                         }
-                        .padding(.horizontal)
+                        .padding()
+                        NEUDivider()
                         ScrollView {
                             VStack {
                                 PlaylistsView(title: "推荐的歌单",
                                               data: recommendPlaylists,
                                               type: .recommend)
+                                NEUDivider()
                                 PlaylistsView(title: "创建的歌单",
                                               data: playlists.createdPlaylist,
                                               type: .created)
+                                NEUDivider()
                                 PlaylistsView(title: "收藏的歌单",
                                               data: playlists.subscribePlaylists,
                                               type: .subscribed)

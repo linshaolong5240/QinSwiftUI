@@ -25,19 +25,22 @@ struct NEUTextFieldStyle<Label>: TextFieldStyle where Label: View {
 #if DEBUG
 struct NEUTextFieldStyle_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            TextField(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/.constant("")/*@END_MENU_TOKEN@*/)
-                .textFieldStyle(NEUTextFieldStyle(label: Text("test").padding()))
+        ZStack {
+            NEUBackgroundView()
+            VStack {
+                TextField(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/, text: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Value@*/.constant("")/*@END_MENU_TOKEN@*/)
+                    .textFieldStyle(NEUTextFieldStyle(label: Text("test").padding()))
+            }
         }
     }
 }
 #endif
 
-struct NEUTextFieldBackground: View {
+struct NEULightTextFieldBackground: View {
     var body: some View {
         ZStack {
-            Color.white
-            LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0.9194737077, green: 0.2849465311, blue: 0.1981146634, alpha: 1)),Color(#colorLiteral(red: 0.9983269572, green: 0.3682751656, blue: 0.2816230953, alpha: 1)),Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1))]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            Color.lightBackgourdStart
+            LinearGradient(.lightOrangeEnd, .lightOrangeMiddle, .lightOrangeStart)
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .padding(5)
                 .shadow(color: Color.black.opacity(0.25), radius: 5, x: -5, y: -5)
@@ -45,5 +48,30 @@ struct NEUTextFieldBackground: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
         }
         .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+    }
+}
+struct NEUDarkTextFieldBackground: View {
+    var body: some View {
+        ZStack {
+            Color.darkBackgourdStart
+            LinearGradient(.darkOrangeEnd, .darkOrangeMiddle, .darkOrangeStart)
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .padding(5)
+                .shadow(color: .darkBackgourdEnd, radius: 5, x: -5, y: -5)
+                .shadow(color: .darkBackgourdStart, radius: 5, x: 5, y: 5)
+                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+    }
+}
+struct NEUTextFieldBackground: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        if colorScheme == .light {
+            NEULightTextFieldBackground()
+        }else {
+            NEUDarkTextFieldBackground()
+        }
     }
 }
