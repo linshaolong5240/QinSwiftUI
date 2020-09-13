@@ -143,6 +143,41 @@ struct NEUButtonStyle<S: Shape>: ButtonStyle {
             )
     }
 }
+
+struct NEUButtonToggleBackground<S: Shape>: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    var isHighlighted: Bool
+    let shadow: Bool
+    let shape: S
+
+    var body: some View {
+        if colorScheme == .light {
+            NEULightToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+        }else {
+            NEUDarkToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+        }
+    }
+}
+
+struct NEUButtonToggleStyle<S: Shape>: ButtonStyle {
+    let isHighlighted: Bool
+    let shadow: Bool
+    let shape: S
+    init(isHighlighted: Bool, shadow: Bool = true, shape: S) {
+        self.isHighlighted = isHighlighted
+        self.shadow = shadow
+        self.shape = shape
+    }
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .contentShape(shape)
+            .background(
+                NEUButtonToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+            )
+    }
+}
+
 struct NEUBigButtonStyle<S: Shape>: ButtonStyle {
     let shape: S
     

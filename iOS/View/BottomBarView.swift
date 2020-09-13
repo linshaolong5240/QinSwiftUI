@@ -22,13 +22,11 @@ struct BottomBarView: View {
                         .progressViewStyle(NEURingProgressViewStyle())
                         .padding()
                         .frame(width: 90, height: 90)
-                    NEUButtonView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
-                        .background(
-                            NEUToggleBackground(isHighlighted: true, shadow: false, shape: Circle())
-                        )
-                        .onTapGesture {
-                            Store.shared.dispatch(.PlayerPlayOrPause)
-                        }
+                    Button(action: {
+                        Store.shared.dispatch(.PlayerPlayOrPause)
+                    }) {
+                        NEUButtonView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
+                    }.buttonStyle(NEUButtonToggleStyle(isHighlighted: true, shadow: false, shape: Circle()))
                 }
                 NavigationLink(destination: PlayingNowView()) {
                     VStack(alignment: .leading) {

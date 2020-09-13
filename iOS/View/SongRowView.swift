@@ -47,13 +47,12 @@ struct SongRowView: View {
             }
             .foregroundColor(player.isPlaying && viewModel.id == playing.songDetail.id ? .white : Color.secondTextColor)
             Spacer()
-            NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill", size: .small, active: viewModel.id == playing.songDetail.id ?  true : false)
-                .background(
-                    NEUToggleBackground(isHighlighted: viewModel.id == playing.songDetail.id ?  true : false, shadow: false, shape: Circle())
-                )
-                .onTapGesture {
-                    action()
-                }
+            Button(action: {
+                action()
+            }) {
+                NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill", size: .small, active: viewModel.id == playing.songDetail.id ?  true : false)
+            }
+            .buttonStyle((NEUButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id ?  true : false, shadow: false, shape: Circle())))
         }
         .padding(10)
         .background(

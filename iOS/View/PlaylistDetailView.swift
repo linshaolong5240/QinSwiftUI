@@ -61,18 +61,19 @@ struct PlaylistDetailView: View {
                         .foregroundColor(.secondTextColor)
                         Spacer()
                         if type == .created {
-                            NEUButtonView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
-                                .background(NEUToggleBackground(isHighlighted: editModeBinding?.wrappedValue.isEditing ?? false, shape: Circle()))
-                                .onTapGesture {
-                                    if editModeBinding?.wrappedValue.isEditing ?? false {
-                                        editModeBinding?.wrappedValue = .inactive
-                                        if isMoved {
-                                            Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.trackIds))
-                                        }
-                                    }else {
-                                        editModeBinding?.wrappedValue = .active
+                            Button(action: {
+                                if editModeBinding?.wrappedValue.isEditing ?? false {
+                                    editModeBinding?.wrappedValue = .inactive
+                                    if isMoved {
+                                        Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.trackIds))
                                     }
+                                }else {
+                                    editModeBinding?.wrappedValue = .active
                                 }
+                            }) {
+                                NEUButtonView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
+                            }
+                            .buttonStyle(NEUButtonToggleStyle(isHighlighted: editModeBinding?.wrappedValue.isEditing ?? false, shape: Circle()))
                         }
                     }
                     .padding(.horizontal)

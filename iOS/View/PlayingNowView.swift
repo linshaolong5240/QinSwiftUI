@@ -66,27 +66,26 @@ struct PlayingNowView: View {
                                 Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
                             }
                         Spacer()
-                        NEUButtonView(systemName: "text.bubble", size: .medium, active: showComment)
-                            .background(
-                                NEUToggleBackground(isHighlighted: showComment, shape: Circle())
-                            )
-                            .offset(x: showMore ? 0 : screen.width/4)
-                            .transition(.move(edge: .leading))
-                            .onTapGesture {
-                                showComment.toggle()
-                                if showComment {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
-                                    }
-                                }
-                                withAnimation(.default) {
-                                    if showComment {
-                                        bottomType = .commentlist
-                                    }else {
-                                        bottomType = .playinglist
-                                    }
+                        Button(action: {
+                            showComment.toggle()
+                            if showComment {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
                                 }
                             }
+                            withAnimation(.default) {
+                                if showComment {
+                                    bottomType = .commentlist
+                                }else {
+                                    bottomType = .playinglist
+                                }
+                            }
+                        }) {
+                            NEUButtonView(systemName: "text.bubble", size: .medium, active: showComment)
+                        }
+                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: showComment, shape: Circle()))
+                        .offset(x: showMore ? 0 : screen.width/4)
+                        .transition(.move(edge: .leading))
                     }
                     .padding(.horizontal)
                     NEUImageView(url: playing.songDetail.albumPicURL,
