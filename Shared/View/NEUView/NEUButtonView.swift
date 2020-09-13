@@ -12,17 +12,25 @@ struct NEUButtonView: View {
     let systemName: String
     let size: ButtonSize
     let active: Bool
-    init(systemName: String, size: ButtonSize = .medium, active: Bool = false) {
+    let activeColor: Color
+    let inactiveColor: Color
+    init(systemName: String,
+         size: ButtonSize = .medium,
+         active: Bool = false,
+         activeColor: Color = .white,
+         inactiveColor: Color = .mainTextColor) {
         self.systemName = systemName
         self.size = size
         self.active = active
+        self.activeColor = activeColor
+        self.inactiveColor = inactiveColor
     }
     var body: some View {
         VStack {
             Image(systemName: systemName)
                 .font(.system(size: size.fontSize, weight: .bold))
                 .frame(width: size.width, height: size.height)
-                .foregroundColor(active ? Color.white : Color.mainTextColor)
+                .foregroundColor(active ? activeColor : inactiveColor)
         }
     }
 }

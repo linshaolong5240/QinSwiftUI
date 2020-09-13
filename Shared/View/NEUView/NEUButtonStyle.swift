@@ -84,6 +84,11 @@ struct NEUDarkButtonBackground<S: Shape>: View {
             }else {
                 shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
                     .overlay(
+                        shape.stroke(LinearGradient(Color.white.opacity(0.2), Color.darkBackgourdEnd), lineWidth: 1)
+                            .blur(radius: 2)
+                            .offset(x: 1, y: 1)
+                    )
+                    .overlay(
                         shape.stroke(LinearGradient(Color( red: 43 / 255, green: 46 / 255, blue: 54 / 255), Color(red: 42 / 255, green: 46 / 255, blue: 54 / 255)), lineWidth: 3)
                     )
                     .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
@@ -103,12 +108,12 @@ struct NEUDarkBigButtonBackground<S: Shape>: View {
         ZStack {
             if isHighlighted {
                 shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
-                    .overlay(
-                        shape.stroke(Color.black, lineWidth: 1)
-                            .padding(3)
-                            .blur(radius: 3)
-                            .offset(x: 1, y: 1)
-                    )
+//                    .overlay(
+//                        shape.stroke(Color.black, lineWidth: 1)
+//                            .padding(3)
+//                            .blur(radius: 3)
+//                            .offset(x: 1, y: 1)
+//                    )
                     .overlay(
                         shape.stroke(LinearGradient(darkStart, darkEnd), lineWidth: 4)
                     )

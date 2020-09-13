@@ -16,7 +16,7 @@ struct NEUListStyle_Previews: PreviewProvider {
                 .frame(height: 60)
                 .padding()
         }
-        .environment(\.colorScheme, .dark)
+        .environment(\.colorScheme, .light)
     }
 }
 #endif
@@ -38,16 +38,21 @@ struct NEULightListRowBackgroundView: View {
     
     var body: some View {
         if isHighlighted {
-            ZStack {
-                Color.lightBackgourdStart
-                LinearGradient(.lightOrangeEnd, .lightOrangeMiddle, .lightOrangeStart)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                    .padding(5)
-                    .shadow(color: Color.black.opacity(0.25), radius: 5, x: -5, y: -5)
-                    .shadow(color: Color.white, radius: 5, x: 5, y: 5)
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+//            ZStack {
+//                Color.lightBackgourdStart
+//                LinearGradient(.lightOrangeEnd, .lightOrangeMiddle, .lightOrangeStart)
+//                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+//                    .padding(5)
+//                    .shadow(color: Color.black.opacity(0.25), radius: 5, x: -5, y: -5)
+//                    .shadow(color: Color.white, radius: 5, x: 5, y: 5)
+//                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+//            }
+//            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+            LinearGradient(gradient: Gradient(colors: [Color.lightBackgourdEnd, Color.lightBackgourdStart]), startPoint: .top, endPoint: .bottom)
+                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                .shadow(color: .lightBackgourdStart, radius: 1, y: -2)
+                .shadow(color: .lightBackgourdEnd, radius: 1, y: 2)
+
         }else{
             Color(.clear)
         }

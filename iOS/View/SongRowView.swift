@@ -50,9 +50,13 @@ struct SongRowView: View {
             Button(action: {
                 action()
             }) {
-                NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill", size: .small, active: viewModel.id == playing.songDetail.id ?  true : false)
+                NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill",
+                              size: .small,
+                              active: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false,
+                              activeColor: .white,
+                              inactiveColor: Color(colorScheme == .light ? #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1) : #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1) ))
             }
-            .buttonStyle((NEUButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id ?  true : false, shadow: true, shape: Circle())))
+            .buttonStyle((NEUButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false, shadow: true, shape: Circle())))
         }
         .padding(10)
         .background(
