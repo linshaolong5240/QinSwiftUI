@@ -43,14 +43,13 @@ struct PlaylistDetailView: View {
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
-                .padding()
+                .padding(.horizontal)
                 if id != playlists.playlistDetail.id {
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
                         .onAppear(perform: {
                             Store.shared.dispatch(.playlistDetail(id: self.id))
                         })
-                    Spacer()
                 }else if !playlists.playlistDetailRequesting {
                     PlaylistDetailDescriptionView(viewModel: viewModel)
                     HStack {
@@ -82,6 +81,9 @@ struct PlaylistDetailView: View {
                     }else {
                         PlaylistDetailSongsView()
                     }
+                }
+                if playlists.playlistDetailRequesting {
+                    Spacer()
                 }
             }
         }

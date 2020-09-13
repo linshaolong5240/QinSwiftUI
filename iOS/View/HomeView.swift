@@ -33,7 +33,7 @@ struct HomeView: View {
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             SearchBarView()
                         }
-                        .padding()
+                        .padding(.horizontal)
                         ScrollView {
                             VStack {
                                 PlaylistsView(title: "推荐的歌单",

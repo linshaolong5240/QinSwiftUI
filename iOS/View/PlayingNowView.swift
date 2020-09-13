@@ -51,7 +51,7 @@ struct PlayingNowView: View {
                         }
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
-                    .padding()
+                    .padding(.horizontal)
                     .transition(.move(edge: .top))
                 }
                 ZStack {

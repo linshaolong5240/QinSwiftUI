@@ -33,7 +33,7 @@ struct SearchView: View {
                     })
                     .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .small)))
                 }
-                .padding()
+                .padding(.horizontal)
                 Picker(selection: searchTypeBinding, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
                     Text("单曲").tag(NeteaseCloudMusicApi.SearchType.song)
                     Text("歌单").tag(NeteaseCloudMusicApi.SearchType.playlist)
@@ -161,6 +161,7 @@ struct SearchBarView: View {
                 }
             })
             .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .small)))
+            .foregroundColor(.mainTextColor)
         }
     }
 }
@@ -168,10 +169,14 @@ struct SearchBarView: View {
 #if DEBUG
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-//        SearchView()
-//            .environmentObject(Store.shared)
-        SearchPlaylistResultRowView(viewModel: PlaylistViewModel())
-            .padding(.horizontal)
+        ZStack {
+            NEUBackgroundView()
+            SearchView()
+                .environmentObject(Store.shared)
+        }
+        
+//        SearchPlaylistResultRowView(viewModel: PlaylistViewModel())
+//            .padding(.horizontal)
     }
 }
 #endif

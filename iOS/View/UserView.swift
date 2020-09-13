@@ -57,17 +57,16 @@ struct UserView: View {
                         Text("\(store.appState.settings.loginError!.localizedDescription)")
                     }
                 }else {
-                    NEUImageView(url: settings.loginUser!.profile.avatarUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 30, style: .continuous))
+                    NEUImageView(url: settings.loginUser!.profile.avatarUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: 25.0, style: .continuous), outerShape: RoundedRectangle(cornerRadius: 30, style: .continuous))
                     Text("uid: \(String(settings.loginUser!.uid))")
                     Text("csrf: \(settings.loginUser!.csrf)")
-                    Text("Logout")
-                        .padding()
-                        .background(colorScheme == .light ? Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)) : Color(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)))
-                        .clipShape(Capsule())
-                        .modifier(NEUShadow())
-                        .onTapGesture {
-                            self.store.dispatch(.logout)
+                    Button(action: {
+                        Store.shared.dispatch(.logout)
+                    }) {
+                        Text("退出登录")
+                            .padding()
                     }
+                    .buttonStyle(NEUButtonStyle(shape: Capsule()))
                 }
                 Spacer()
             }
