@@ -13,7 +13,8 @@ struct NEUListStyle_Previews: PreviewProvider {
         ZStack {
             NEUBackgroundView()
             NEUListRowBackgroundView(isHighlighted: true)
-                .frame(height: 100)
+                .frame(height: 60)
+                .padding()
         }
         .environment(\.colorScheme, .dark)
     }
@@ -54,6 +55,9 @@ struct NEULightListRowBackgroundView: View {
 }
 
 struct NEUDarkListRowBackgroundView: View {
+    let darkStart = Color(red: 26 / 255, green: 28 / 255, blue: 31 / 255)
+    let darkEnd = Color(red: 18 / 255, green: 19 / 255, blue: 21 / 255)
+
     let isHighlighted: Bool
 
     var body: some View {
@@ -67,10 +71,10 @@ struct NEUDarkListRowBackgroundView: View {
 //                    .shadow(color: .darkBackgourdStart, radius: 5, x: 5, y: 5)
 //                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
 //            }
-            VStack {
-                LinearGradient(.black, .darkBackgourdEnd)
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-            }
+            LinearGradient(gradient: Gradient(colors: [darkEnd, darkStart]), startPoint: .top, endPoint: .bottom)
+                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                .shadow(color: .darkBackgourdStart, radius: 1, y: -2)
+                .shadow(color: .black, radius: 1, y: 2)
         }else {
             Color.clear
         }
