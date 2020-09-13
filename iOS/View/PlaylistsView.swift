@@ -148,7 +148,7 @@ struct PlaylistRowView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            NEUImageView(url: viewModel.coverImgUrl, size: .small, innerShape: RoundedRectangle(cornerRadius: 15, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 18, style: .continuous))
+            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .small)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .fontWeight(.bold)
@@ -166,7 +166,7 @@ struct PlaylistColumnView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUImageView(url: viewModel.coverImgUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: 25, style: .continuous), outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous))
+            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .medium)
                 .padding()
             Group {
                 Text(viewModel.name)

@@ -238,7 +238,7 @@ struct PlaylistDetailDescriptionView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            NEUImageView(url: viewModel.coverImgUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: 25, style: .continuous), outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous))
+            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .medium)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .fontWeight(.bold)

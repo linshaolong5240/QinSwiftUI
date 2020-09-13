@@ -57,7 +57,7 @@ struct UserView: View {
                         Text("\(store.appState.settings.loginError!.localizedDescription)")
                     }
                 }else {
-                    NEUImageView(url: settings.loginUser!.profile.avatarUrl, size: .medium, innerShape: RoundedRectangle(cornerRadius: 25.0, style: .continuous), outerShape: RoundedRectangle(cornerRadius: 30, style: .continuous))
+                    NEUCoverView(url: settings.loginUser!.profile.avatarUrl, coverShape: .rectangle, size: .medium)
                     Text("uid: \(String(settings.loginUser!.uid))")
                     Text("csrf: \(settings.loginUser!.csrf)")
                     Button(action: {

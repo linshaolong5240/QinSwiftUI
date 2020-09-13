@@ -95,6 +95,8 @@
 		2BCCB33524DC98A7004CAD67 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB33224DC98A6004CAD67 /* DataModel.xcdatamodeld */; };
 		2BE2607124F6C2860039A39E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE2607024F6C2860039A39E /* Search.swift */; };
 		2BE2607224F6C2860039A39E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE2607024F6C2860039A39E /* Search.swift */; };
+		2BEB5C26250EE64700EEF5E0 /* NEUCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */; };
+		2BEB5C27250EE64700EEF5E0 /* NEUCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -150,6 +152,7 @@
 		2BCCB32B24DC7EF8004CAD67 /* SongViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongViewModel.swift; sourceTree = "<group>"; };
 		2BCCB33324DC98A6004CAD67 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		2BE2607024F6C2860039A39E /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUCoverView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +191,7 @@
 				2BCCB29524DC5A2B004CAD67 /* NEUBackgroundView.swift */,
 				2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */,
 				2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */,
+				2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */,
 				2B47BE4C250BC22600848354 /* NEUDivider.swift */,
 				2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */,
 				2BC664A7250BFA3700A08BD7 /* NEUListStyle.swift */,
@@ -475,6 +479,7 @@
 				2B47BE4D250BC22600848354 /* NEUDivider.swift in Sources */,
 				2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
 				2BCCB2F824DC7A62004CAD67 /* SongDetail.swift in Sources */,
+				2BEB5C26250EE64700EEF5E0 /* NEUCoverView.swift in Sources */,
 				2BCCB32024DC7BCC004CAD67 /* AppCommand.swift in Sources */,
 				2BCCB26324DC5671004CAD67 /* ContentView.swift in Sources */,
 				2BCCB32224DC7BCD004CAD67 /* AppError.swift in Sources */,
@@ -541,6 +546,7 @@
 				2BB8558424E63CC800D600BB /* ThemeViewModel.swift in Sources */,
 				2BCCB2DA24DC79DC004CAD67 /* Dictionary+Extension.swift in Sources */,
 				2BC664AC250C03F700A08BD7 /* SongRowView.swift in Sources */,
+				2BEB5C27250EE64700EEF5E0 /* NEUCoverView.swift in Sources */,
 				2B62FB7A2507A10300097D5B /* NEUImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

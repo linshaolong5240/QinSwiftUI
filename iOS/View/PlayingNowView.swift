@@ -88,10 +88,20 @@ struct PlayingNowView: View {
                         .transition(.move(edge: .leading))
                     }
                     .padding(.horizontal)
+//                    NEUCoverView(url: playing.songDetail.albumPicURL,
+//                                 coverShape: .circle, size: !showMore ? .large: .medium)
+//                    NEUImageView(url: playing.songDetail.albumPicURL,
+//                                 size: !showMore ? .large: .medium,
+//                                 innerShape: RoundedRectangle(cornerRadius: !showMore ? 50 : 25, style: .continuous),
+//                                 outerShape: RoundedRectangle(cornerRadius: !showMore ? 66 : 33, style: .continuous),
+//                                 innerPadding: !showMore ? 20 : 10, isOrigin: true)
                     NEUImageView(url: playing.songDetail.albumPicURL,
                                  size: !showMore ? .large: .medium,
-                                 innerShape: RoundedRectangle(cornerRadius: !showMore ? 50 : 25, style: .continuous),
-                                 outerShape: RoundedRectangle(cornerRadius: !showMore ? 66 : 33, style: .continuous), isOrigin: true)
+                                 innerShape: Circle(),
+                                 outerShape: Circle(),
+                                 innerPadding: !showMore ? 12 : 6,
+                                 shadowReverse: true,
+                                 isOrigin: true)
                         .onTapGesture {
                             withAnimation(.default) {
                                 showMore.toggle()
@@ -328,7 +338,7 @@ struct CommentRowView: View {
     }
     var body: some View {
         HStack(alignment: .top) {
-            NEUImageView(url: viewModel.avatarUrl, size: .small, innerShape: RoundedRectangle(cornerRadius: 12, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 15, style: .continuous))
+            NEUCoverView(url: viewModel.avatarUrl, coverShape: .rectangle, size: .small)
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
                     Text(viewModel.nickname)
@@ -384,7 +394,7 @@ struct CreatedPlaylistView: View {
                                 }
                             }) {
                                 HStack {
-                                    NEUImageView(url: item.coverImgUrl, size: .small, innerShape: RoundedRectangle(cornerRadius: 12, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/), outerShape: RoundedRectangle(cornerRadius: 15, style: .continuous))
+                                    NEUCoverView(url: item.coverImgUrl, coverShape: .rectangle, size: .small)
                                     VStack(alignment: .leading) {
                                         Text(item.name)
                                             .foregroundColor(.mainTextColor)
