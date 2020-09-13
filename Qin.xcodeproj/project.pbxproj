@@ -188,13 +188,13 @@
 				2BCCB29524DC5A2B004CAD67 /* NEUBackgroundView.swift */,
 				2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */,
 				2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */,
-				2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */,
-				2BCCB29824DC5A2B004CAD67 /* NEUView.swift */,
-				2B549B4A2509483900EA37B5 /* NEUTextFieldStyle.swift */,
-				2B81DCBA250961810036EF0B /* NEUMenuStyle.swift */,
 				2B47BE4C250BC22600848354 /* NEUDivider.swift */,
+				2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */,
 				2BC664A7250BFA3700A08BD7 /* NEUListStyle.swift */,
+				2B81DCBA250961810036EF0B /* NEUMenuStyle.swift */,
 				2B17DA76250E32F0009C6E7E /* NEUProgressStyle.swift */,
+				2B549B4A2509483900EA37B5 /* NEUTextFieldStyle.swift */,
+				2BCCB29824DC5A2B004CAD67 /* NEUView.swift */,
 			);
 			path = NEUView;
 			sourceTree = "<group>";

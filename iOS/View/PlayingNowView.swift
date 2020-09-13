@@ -149,7 +149,7 @@ struct PlayingView_Previews: PreviewProvider {
         PlayingNowView()
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
-            .environment(\.colorScheme, .light)
+            .environment(\.colorScheme, .dark)
     }
 }
 #endif
@@ -256,7 +256,7 @@ struct PlayingNowStatusView: View {
                 }) {
                     NEUButtonView(systemName: "backward.fill", size: .big)
                 }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .buttonStyle(NEUBigButtonStyle(shape: Circle()))
                 
                 NEUButtonView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
                     .background(
@@ -271,7 +271,7 @@ struct PlayingNowStatusView: View {
                 }) {
                     NEUButtonView(systemName: "forward.fill", size: .big)
                 }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .buttonStyle(NEUBigButtonStyle(shape: Circle()))
             }
             .padding(.vertical)
         }

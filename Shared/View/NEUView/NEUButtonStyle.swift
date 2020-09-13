@@ -21,6 +21,22 @@ struct NEUButtonBackground<S: Shape>: View {
         }
     }
 }
+
+struct NEUBigButtonBackground<S: Shape>: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    var isHighlighted: Bool
+
+    let shape: S
+    var body: some View {
+        if colorScheme == .light {
+            NEULightButtonBackground(isHighlighted: isHighlighted, shape: shape)
+        }else {
+            NEUDarkBigButtonBackground(isHighlighted: isHighlighted, shape: shape)
+        }
+    }
+}
+
 struct NEULightButtonBackground<S: Shape>: View {
     var isHighlighted: Bool
     let shape: S
@@ -76,7 +92,68 @@ struct NEUDarkButtonBackground<S: Shape>: View {
         }
     }
 }
+struct NEUDarkBigButtonBackground<S: Shape>: View {
+    let darkStart = Color( red: 33 / 255, green: 37 / 255, blue: 42 / 255)
+    let darkEnd = Color( red: 22 / 255, green: 22 / 255, blue: 22 / 255)
+    
+    var isHighlighted: Bool
+    
+    let shape: S
+    var body: some View {
+        ZStack {
+            if isHighlighted {
+                shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
+                    .overlay(
+                        shape.stroke(Color.black, lineWidth: 1)
+                            .padding(3)
+                            .blur(radius: 3)
+                            .offset(x: 1, y: 1)
+                    )
+                    .overlay(
+                        shape.stroke(LinearGradient(darkStart, darkEnd), lineWidth: 4)
+                    )
+                    .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
+                    .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
+            }else {
+                shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
+                    .overlay(
+                        shape.stroke(LinearGradient(Color.white.opacity(0.2), Color.darkBackgourdEnd), lineWidth: 1)
+                            .padding(3)
+                            .blur(radius: 3)
+                            .offset(x: 1, y: 1)
+                    )
+                    .overlay(
+                        shape.stroke(LinearGradient(darkStart, darkEnd), lineWidth: 4)
+                    )
+                    .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
+                    .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
+            }
+        }
+    }
+}
 
+struct NEUButtonStyle<S: Shape>: ButtonStyle {
+    let shape: S
+    
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .contentShape(shape)
+            .background(
+                NEUButtonBackground(isHighlighted: configuration.isPressed, shape: shape)
+            )
+    }
+}
+struct NEUBigButtonStyle<S: Shape>: ButtonStyle {
+    let shape: S
+    
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .contentShape(shape)
+            .background(
+                NEUBigButtonBackground(isHighlighted: configuration.isPressed, shape: shape)
+            )
+    }
+}
 struct NEULightToggleBackground<S: Shape>: View {
     var isHighlighted: Bool
     let shadow: Bool
@@ -172,17 +249,6 @@ struct NEUToggleBackground<S: Shape>: View {
         }
     }
 }
-struct NEUButtonStyle<S: Shape>: ButtonStyle {
-    let shape: S
-    
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .contentShape(shape)
-            .background(
-                NEUButtonBackground(isHighlighted: configuration.isPressed, shape: shape)
-            )
-    }
-}
 
 struct NEUToggleStyle<S: Shape>: ToggleStyle {
     let shape: S
@@ -224,7 +290,7 @@ struct NEUButtonStyleDebugView: View {
                 }) {
                     NEUButtonView(systemName: "heart", size: .big)
                 }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .buttonStyle(NEUBigButtonStyle(shape: Circle()))
 
                 Toggle(isOn: $vibrateOnRing, label: {
                     NEUButtonView(systemName: "heart", size: .big)
