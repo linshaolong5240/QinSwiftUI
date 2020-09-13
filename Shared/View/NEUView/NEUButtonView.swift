@@ -37,7 +37,7 @@ extension NEUButtonView {
         var width: CGFloat {
             switch self {
             case .small:
-                return 44
+                return 40
             case .medium:
                 return 48
             case .big:
@@ -49,7 +49,7 @@ extension NEUButtonView {
         var height: CGFloat {
             switch self {
             case .small:
-                return 44
+                return 40
             case .medium:
                 return 48
             case .big:

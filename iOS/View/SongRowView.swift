@@ -52,7 +52,7 @@ struct SongRowView: View {
             }) {
                 NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill", size: .small, active: viewModel.id == playing.songDetail.id ?  true : false)
             }
-            .buttonStyle((NEUButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id ?  true : false, shadow: false, shape: Circle())))
+            .buttonStyle((NEUButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id ?  true : false, shadow: true, shape: Circle())))
         }
         .padding(10)
         .background(
