@@ -10,8 +10,10 @@ import SwiftUI
 
 extension Color {
     static let lightBackgourdStart = Color(red: 250 / 255, green: 250 / 255, blue: 250 / 255)
+    
     static let lightBackgourdEnd = Color(red: 231 / 255, green: 233 / 255, blue: 237 / 255)
     static let darkBackgourdStart = Color(red: 54 / 255, green: 58 / 255, blue: 64 / 255)
+    static let darkBackgourdMiddle = Color(red: 37 / 255, green: 40 / 255, blue: 44 / 255)
     static let darkBackgourdEnd = Color(red: 24 / 255, green: 25 / 255, blue: 28 / 255)
 
     static let darkOrangeStart = Color(red: 225 / 255, green: 84 / 255, blue: 10 / 255)

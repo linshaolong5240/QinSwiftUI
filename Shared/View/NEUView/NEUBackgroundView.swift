@@ -27,7 +27,7 @@ struct NEULightBackgroundView: View {
 }
 struct NEUDarkBackgroundView: View {
     var body: some View {
-        LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd)
+        LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdMiddle,  Color.darkBackgourdEnd)
             .edgesIgnoringSafeArea(.all)
     }
 }
