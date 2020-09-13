@@ -1,28 +1,27 @@
 //
-//  NEUProgressView.swift
+//  NEUProgressViewStyle.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/9/12.
+//  Created by 林少龙 on 2020/9/13.
 //
 
 import SwiftUI
 
+struct NEURingProgressViewStyle: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        NEURingProgressView(percent: configuration.fractionCompleted ?? 0)
+    }
+}
+
 #if DEBUG
-struct NEUProgressView_Previews: PreviewProvider {
+struct NEUProgressViewStyle_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-            NEURingProgressView(percent: 0.6)
-                .frame(width: 90, height: 90, alignment: .center)
+            ProgressView(value: /*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/)
+                .progressViewStyle(NEURingProgressViewStyle())
+                .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
         }
-        .environment(\.colorScheme, .light)
-
-        ZStack {
-            NEUBackgroundView()
-            NEURingProgressView(percent: 0.6)
-                .frame(width: 90, height: 90, alignment: .center)
-        }
-        .environment(\.colorScheme, .dark)
     }
 }
 #endif

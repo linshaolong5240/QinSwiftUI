@@ -18,7 +18,8 @@ struct BottomBarView: View {
         ZStack {
             HStack {
                 ZStack {
-                    NEURingProgressView(percent: playing.loadPercent)
+                    ProgressView(value: playing.loadPercent)
+                        .progressViewStyle(NEURingProgressViewStyle())
                         .padding()
                         .frame(width: 90, height: 90)
                     NEUButtonView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)

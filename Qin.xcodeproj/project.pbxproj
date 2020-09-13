@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2B09CF3524F0FC3400E03A12 /* NEUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29824DC5A2B004CAD67 /* NEUView.swift */; };
 		2B09CF3624F0FC5D00E03A12 /* NEUBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29524DC5A2B004CAD67 /* NEUBackgroundView.swift */; };
+		2B17DA77250E32F0009C6E7E /* NEUProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17DA76250E32F0009C6E7E /* NEUProgressStyle.swift */; };
+		2B17DA78250E32F0009C6E7E /* NEUProgressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17DA76250E32F0009C6E7E /* NEUProgressStyle.swift */; };
 		2B2D517824E39C1C007B52A4 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D517724E39C1C007B52A4 /* SearchView.swift */; };
 		2B47BE4D250BC22600848354 /* NEUDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47BE4C250BC22600848354 /* NEUDivider.swift */; };
 		2B47BE4E250BC22600848354 /* NEUDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47BE4C250BC22600848354 /* NEUDivider.swift */; };
@@ -29,8 +31,6 @@
 		2BC664A9250BFA3700A08BD7 /* NEUListStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC664A7250BFA3700A08BD7 /* NEUListStyle.swift */; };
 		2BC664AB250C03F700A08BD7 /* SongRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC664AA250C03F700A08BD7 /* SongRowView.swift */; };
 		2BC664AC250C03F700A08BD7 /* SongRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC664AA250C03F700A08BD7 /* SongRowView.swift */; };
-		2BC664AE250C0B7700A08BD7 /* NEUProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC664AD250C0B7700A08BD7 /* NEUProgressView.swift */; };
-		2BC664AF250C0B7700A08BD7 /* NEUProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC664AD250C0B7700A08BD7 /* NEUProgressView.swift */; };
 		2BCCB26124DC5671004CAD67 /* QinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB24E24DC566F004CAD67 /* QinApp.swift */; };
 		2BCCB26224DC5671004CAD67 /* QinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB24E24DC566F004CAD67 /* QinApp.swift */; };
 		2BCCB26324DC5671004CAD67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB24F24DC566F004CAD67 /* ContentView.swift */; };
@@ -98,6 +98,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B17DA76250E32F0009C6E7E /* NEUProgressStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUProgressStyle.swift; sourceTree = "<group>"; };
 		2B2D517724E39C1C007B52A4 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUButtonStyle.swift; sourceTree = "<group>"; };
 		2B47BE4C250BC22600848354 /* NEUDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUDivider.swift; sourceTree = "<group>"; };
@@ -106,7 +107,6 @@
 		2BB8558224E63CC800D600BB /* ThemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewModel.swift; sourceTree = "<group>"; };
 		2BC664A7250BFA3700A08BD7 /* NEUListStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUListStyle.swift; sourceTree = "<group>"; };
 		2BC664AA250C03F700A08BD7 /* SongRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRowView.swift; sourceTree = "<group>"; };
-		2BC664AD250C0B7700A08BD7 /* NEUProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUProgressView.swift; sourceTree = "<group>"; };
 		2BCCB24E24DC566F004CAD67 /* QinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QinApp.swift; sourceTree = "<group>"; };
 		2BCCB24F24DC566F004CAD67 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2BCCB25024DC5671004CAD67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -194,7 +194,7 @@
 				2B81DCBA250961810036EF0B /* NEUMenuStyle.swift */,
 				2B47BE4C250BC22600848354 /* NEUDivider.swift */,
 				2BC664A7250BFA3700A08BD7 /* NEUListStyle.swift */,
-				2BC664AD250C0B7700A08BD7 /* NEUProgressView.swift */,
+				2B17DA76250E32F0009C6E7E /* NEUProgressStyle.swift */,
 			);
 			path = NEUView;
 			sourceTree = "<group>";
@@ -483,13 +483,13 @@
 				2BCCB2F424DC7A62004CAD67 /* DataManager.swift in Sources */,
 				2BCCB2A524DC5A2C004CAD67 /* PlaylistDetailView.swift in Sources */,
 				2BCCB2A924DC5A2C004CAD67 /* HomeView.swift in Sources */,
+				2B17DA77250E32F0009C6E7E /* NEUProgressStyle.swift in Sources */,
 				2BCCB32E24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,
 				2BCCB2F624DC7A62004CAD67 /* Account.swift in Sources */,
 				2BCCB2AD24DC5A2C004CAD67 /* PlayingNowView.swift in Sources */,
 				2BC664AB250C03F700A08BD7 /* SongRowView.swift in Sources */,
 				2BCCB29F24DC5A2C004CAD67 /* BottomBarView.swift in Sources */,
 				2BCCB2A324DC5A2C004CAD67 /* SettingsView.swift in Sources */,
-				2BC664AE250C0B7700A08BD7 /* NEUProgressView.swift in Sources */,
 				2B549B4B2509483900EA37B5 /* NEUTextFieldStyle.swift in Sources */,
 				2BCCB32624DC7BCD004CAD67 /* Store.swift in Sources */,
 				2BCCB2D224DC79D4004CAD67 /* Data+Extension.swift in Sources */,
@@ -525,6 +525,7 @@
 				2B62FB782507A10300097D5B /* NEUButtonView.swift in Sources */,
 				2BCCB2EF24DC7A62004CAD67 /* Playlist.swift in Sources */,
 				2BCCB26224DC5671004CAD67 /* QinApp.swift in Sources */,
+				2B17DA78250E32F0009C6E7E /* NEUProgressStyle.swift in Sources */,
 				2B47BE4E250BC22600848354 /* NEUDivider.swift in Sources */,
 				2BCCB31F24DC7BCC004CAD67 /* AppState.swift in Sources */,
 				2BCCB2D824DC79DC004CAD67 /* UIApplication+Extension.swift in Sources */,
@@ -538,7 +539,6 @@
 				2B81DCBC250961810036EF0B /* NEUMenuStyle.swift in Sources */,
 				2BCCB2E124DC7A16004CAD67 /* Lyric.swift in Sources */,
 				2BB8558424E63CC800D600BB /* ThemeViewModel.swift in Sources */,
-				2BC664AF250C0B7700A08BD7 /* NEUProgressView.swift in Sources */,
 				2BCCB2DA24DC79DC004CAD67 /* Dictionary+Extension.swift in Sources */,
 				2BC664AC250C03F700A08BD7 /* SongRowView.swift in Sources */,
 				2B62FB7A2507A10300097D5B /* NEUImageView.swift in Sources */,
