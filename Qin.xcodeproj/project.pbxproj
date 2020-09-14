@@ -16,11 +16,11 @@
 		2B47BE4E250BC22600848354 /* NEUDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B47BE4C250BC22600848354 /* NEUDivider.swift */; };
 		2B549B4B2509483900EA37B5 /* NEUTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B549B4A2509483900EA37B5 /* NEUTextFieldStyle.swift */; };
 		2B549B4C2509483900EA37B5 /* NEUTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B549B4A2509483900EA37B5 /* NEUTextFieldStyle.swift */; };
-		2B62FB782507A10300097D5B /* NEUButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */; };
+		2B62FB782507A10300097D5B /* NEUButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29A24DC5A2B004CAD67 /* NEUButton.swift */; };
 		2B62FB792507A10300097D5B /* NEUButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */; };
 		2B62FB7A2507A10300097D5B /* NEUImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */; };
 		2B62FB7B2507A28F00097D5B /* NEUButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */; };
-		2B62FB7C2507A28F00097D5B /* NEUButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */; };
+		2B62FB7C2507A28F00097D5B /* NEUButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29A24DC5A2B004CAD67 /* NEUButton.swift */; };
 		2B62FB7D2507A28F00097D5B /* NEUImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */; };
 		2B62FB7E2507A28F00097D5B /* NEUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29824DC5A2B004CAD67 /* NEUView.swift */; };
 		2B81DCBB250961810036EF0B /* NEUMenuStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B81DCBA250961810036EF0B /* NEUMenuStyle.swift */; };
@@ -129,7 +129,7 @@
 		2BCCB29524DC5A2B004CAD67 /* NEUBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUBackgroundView.swift; sourceTree = "<group>"; };
 		2BCCB29724DC5A2B004CAD67 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		2BCCB29824DC5A2B004CAD67 /* NEUView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUView.swift; sourceTree = "<group>"; };
-		2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUButtonView.swift; sourceTree = "<group>"; };
+		2BCCB29A24DC5A2B004CAD67 /* NEUButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUButton.swift; sourceTree = "<group>"; };
 		2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 			children = (
 				2BCCB29524DC5A2B004CAD67 /* NEUBackgroundView.swift */,
 				2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */,
-				2BCCB29A24DC5A2B004CAD67 /* NEUButtonView.swift */,
+				2BCCB29A24DC5A2B004CAD67 /* NEUButton.swift */,
 				2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */,
 				2B47BE4C250BC22600848354 /* NEUDivider.swift */,
 				2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */,
@@ -458,7 +458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B62FB7B2507A28F00097D5B /* NEUButtonStyle.swift in Sources */,
-				2B62FB7C2507A28F00097D5B /* NEUButtonView.swift in Sources */,
+				2B62FB7C2507A28F00097D5B /* NEUButton.swift in Sources */,
 				2B62FB7D2507A28F00097D5B /* NEUImageView.swift in Sources */,
 				2B62FB7E2507A28F00097D5B /* NEUView.swift in Sources */,
 				2BB8558324E63CC800D600BB /* ThemeViewModel.swift in Sources */,
@@ -527,7 +527,7 @@
 				2BCCB32324DC7BCD004CAD67 /* AppError.swift in Sources */,
 				2BCCB33524DC98A7004CAD67 /* DataModel.xcdatamodeld in Sources */,
 				2BCCB2DC24DC79DC004CAD67 /* Color+Extension.swift in Sources */,
-				2B62FB782507A10300097D5B /* NEUButtonView.swift in Sources */,
+				2B62FB782507A10300097D5B /* NEUButton.swift in Sources */,
 				2BCCB2EF24DC7A62004CAD67 /* Playlist.swift in Sources */,
 				2BCCB26224DC5671004CAD67 /* QinApp.swift in Sources */,
 				2B17DA78250E32F0009C6E7E /* NEUProgressStyle.swift in Sources */,

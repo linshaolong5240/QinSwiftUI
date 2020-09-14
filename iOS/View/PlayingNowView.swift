@@ -56,15 +56,15 @@ struct PlayingNowView: View {
                 }
                 ZStack {
                     HStack {
-                        NEUButtonView(systemName: "heart.fill", size: .medium, active: playing.like)
-                            .background(
-                                NEUToggleBackground(isHighlighted: playing.like, shape: Circle())
-                            )
-                            .offset(x: showMore ? 0 : -screen.width/4)
-                            .transition(.move(edge: .trailing))
-                            .onTapGesture {
-                                Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
-                            }
+                        Button(action: {
+                            Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
+                        }) {
+                            NEUButtonView(systemName: playing.like ? "heart.fill" : "heart", size: .medium, active: playing.like)
+
+                        }
+                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: playing.like, shape: Circle()))
+                        .offset(x: showMore ? 0 : -screen.width/4)
+                        .transition(.move(edge: .trailing))
                         Spacer()
                         Button(action: {
                             showComment.toggle()
@@ -81,7 +81,7 @@ struct PlayingNowView: View {
                                 }
                             }
                         }) {
-                            NEUButtonView(systemName: "text.bubble", size: .medium, active: showComment)
+                            NEUButtonView(systemName: showComment ? "text.bubble.fill" : "text.bubble", size: .medium, active: showComment)
                         }
                         .buttonStyle(NEUButtonToggleStyle(isHighlighted: showComment, shape: Circle()))
                         .offset(x: showMore ? 0 : screen.width/4)
