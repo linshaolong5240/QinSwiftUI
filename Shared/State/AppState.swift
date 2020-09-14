@@ -25,6 +25,10 @@ extension AppState {
         enum AccountBehavior: CaseIterable {
             case login, logout
         }
+        enum CoverShape: CaseIterable {
+            case circle
+            case rectangle
+        }
         enum PlayMode {
             case playlist, relplay
         }
@@ -32,6 +36,7 @@ extension AppState {
             case dark, light, system
         }
         var accountBehavior = AccountBehavior.login
+        var CoverShape: CoverShape = .rectangle
         var loginRequesting = false
         var loginUser: User? = DataManager.shared.getUser()
         var loginError: AppError?
