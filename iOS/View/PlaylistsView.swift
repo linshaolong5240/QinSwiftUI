@@ -12,9 +12,7 @@ import KingfisherSwiftUI
 struct PlaylistsView: View {
     enum SheetType {
         case create, manage
-    }
-    @EnvironmentObject var store: Store
-    
+    }    
     let title: String
     let data: [PlaylistViewModel]
     let type: PlaylistType

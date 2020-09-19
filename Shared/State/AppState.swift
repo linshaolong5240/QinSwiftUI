@@ -13,8 +13,9 @@ import CoreData
 
 struct AppState {
     var lyric = Lyric()
-    var playlists = Playlists()
     var playing = Playing()
+    var playlists = Playlists()
+    var playlistDetail = PlaylistDetail()
     var search = Search()
     var settings = Settings()
     var error: AppError?
@@ -45,12 +46,17 @@ extension AppState {
         var theme: Theme = .light
     }
     
+    struct PlaylistDetail {
+        var detail = PlaylistViewModel()
+        var playlistDetailRequesting: Bool = false
+    }
+    
     struct Playlists {
         var createdPlaylist = [PlaylistViewModel]()
         var likeIds = [Int]()
         var likedPlaylistId: Int = 0
-        var playlistDetail = PlaylistViewModel()
-        var playlistDetailRequesting: Bool = false
+//        var playlistDetail = PlaylistViewModel()
+//        var playlistDetailRequesting: Bool = false
         var playlistOrderUpdateRequesting: Bool = false
         var recommendPlaylistRequesting: Bool = false
         var recommendPlaylists = [PlaylistViewModel]()
@@ -58,7 +64,7 @@ extension AppState {
         var songsDetailRequesting: Bool = false
         var songsURLRequesting: Bool = false
         var subscribePlaylists = [PlaylistViewModel]()
-//        var userPlaylists = [PlaylistViewModel]()
+        var userPlaylistRequesting: Bool = false
     }
     
     struct Playing {
@@ -91,6 +97,7 @@ extension AppState {
         var lyricParser = LyricParser()
         var lyrics = Dictionary<Int, Dictionary<Int, String>>()
     }
+    
     struct Search {
         var keyword: String = ""
         var searchRequesting: Bool = false

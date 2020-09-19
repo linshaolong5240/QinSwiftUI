@@ -14,10 +14,8 @@ struct PlaylistDetailView: View {
     @EnvironmentObject var player: Player
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
-    private var playlists: AppState.Playlists { store.appState.playlists }
-    private var viewModel: PlaylistViewModel {
-        store.appState.playlists.playlistDetail
-    }
+    private var playlistDetail: AppState.PlaylistDetail { store.appState.playlistDetail }
+    private var viewModel: PlaylistViewModel { store.appState.playlistDetail.detail }
     @State var isMoved: Bool = false
     @State var showAction: Bool = false
     
@@ -44,13 +42,13 @@ struct PlaylistDetailView: View {
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 .padding(.horizontal)
-                if id != playlists.playlistDetail.id {
+                if id != playlistDetail.detail.id {
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
                         .onAppear(perform: {
                             Store.shared.dispatch(.playlistDetail(id: self.id))
                         })
-                }else if !playlists.playlistDetailRequesting {
+                }else if !playlistDetail.playlistDetailRequesting {
                     PlaylistDetailDescriptionView(viewModel: viewModel)
                     HStack {
                         Group {
@@ -88,7 +86,7 @@ struct PlaylistDetailView: View {
                         PlaylistDetailSongsView()
                     }
                 }
-                if playlists.playlistDetailRequesting {
+                if playlistDetail.playlistDetailRequesting {
                     Spacer()
                 }
             }
@@ -96,22 +94,16 @@ struct PlaylistDetailView: View {
         .navigationBarHidden(true)
         .actionSheet(isPresented: $showAction, content: makeActionSheet)
     }
+    
     func makeActionSheet() -> ActionSheet {
         var buttons = [ActionSheet.Button]()
         switch type {
         case .created:
-            if id == playlists.likedPlaylistId {
-                buttons = [
-                    .default(Text("歌单信息")) {},
-                    .cancel(Text("取消")) {self.showAction.toggle()},
-                ]
-            }else {
-                buttons = [
-                    .default(Text("编辑歌单")) {},
-                    .default(Text("删除歌单")) { Store.shared.dispatch(.playlistDelete(pid: self.viewModel.id)) },
-                    .cancel(Text("取消")) {self.showAction.toggle()},
-                ]
-            }
+            buttons = [
+                .default(Text("编辑歌单")) {},
+                .default(Text("删除歌单")) { Store.shared.dispatch(.playlistDelete(pid: self.viewModel.id)) },
+                .cancel(Text("取消")) {self.showAction.toggle()},
+            ]
         case .recommend:
             buttons = [
                 .default(Text("收藏歌单")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: true)) },
@@ -156,7 +148,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 struct PlaylistDetailEditSongsView: View {
     @EnvironmentObject var store: Store
     private var viewModel: PlaylistViewModel {
-        store.appState.playlists.playlistDetail
+        store.appState.playlistDetail.detail
     }
     @Binding var isMoved: Bool
     
@@ -199,7 +191,7 @@ struct PlaylistDetailSongsView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
     private var viewModel: PlaylistViewModel {
-        store.appState.playlists.playlistDetail
+        store.appState.playlistDetail.detail
     }
     private var playing: AppState.Playing { store.appState.playing }
     @State var showPlayingNow: Bool = false

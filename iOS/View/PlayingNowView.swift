@@ -22,7 +22,6 @@ struct PlayingNowView: View {
     private var playing: AppState.Playing { store.appState.playing }
     private var playingBing: Binding<AppState.Playing> {$store.appState.playing}
     private var playlists: AppState.Playlists {store.appState.playlists}
-    private var settings: AppState.Settings {store.appState.settings}
     
     @State private var showMore: Bool = false
     @State private var showComment: Bool = false
@@ -116,18 +115,7 @@ struct PlayingNowView: View {
                             }
                         }
                     if !showMore {
-                        VStack {
-                            Spacer()
-                            HStack {
-                                Spacer()
-                                Image(systemName: settings.playMode == .playlist ? "repeat" : "repeat.1")
-                                    .foregroundColor(Color.secondTextColor)
-                                    .onTapGesture {
-                                        Store.shared.dispatch(.playModeToggle)
-                                    }
-                            }
-                            .padding(.horizontal)
-                        }
+                        PlayingExtensionControllView()
                     }
                 }
                 ZStack {
@@ -140,7 +128,7 @@ struct PlayingNowView: View {
                     CommentListView()
                         .offset(y: bottomType == .commentlist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                    CreatedPlaylistView(showList: $showMore, bottomType: $bottomType)
+                    CreatedPlaylistView(playlists: playlists.createdPlaylist, songId: playing.songDetail.id, showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                 }
@@ -356,76 +344,81 @@ struct CommentRowView: View {
 }
 
 struct CreatedPlaylistView: View {
-    @EnvironmentObject var store: Store
-    private var user: User? {store.appState.settings.loginUser}
-    private var playing: AppState.Playing { store.appState.playing }
-    private var playlists: AppState.Playlists {store.appState.playlists}
-    
+//    @EnvironmentObject var store: Store
+//    private var playing: AppState.Playing { store.appState.playing }
+//    private var playlists: AppState.Playlists {store.appState.playlists}
+//
+    let playlists: [PlaylistViewModel]
+    let songId: Int
     @Binding var showList: Bool
     @Binding  var bottomType: PlayingNowBottomType
     
     @State private var showCreate: Bool = false
-    @State private var name: String = ""
     
     var body: some View {
-        ZStack {
-            VStack {
-                HStack {
-                    Text("收藏到歌单")
-                        .font(.title)
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Button(action: {
-                        self.showCreate.toggle()
-                    }) {
-                        NEUButtonView(systemName: "rectangle.stack.badge.plus", size: .small)
-                    }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+        VStack {
+            HStack {
+                Text("收藏到歌单")
+                    .font(.title)
+                    .foregroundColor(.secondary)
+                Spacer()
+                Button(action: {
+                    self.showCreate.toggle()
+                }) {
+                    NEUButtonView(systemName: "rectangle.stack.badge.plus", size: .small)
                 }
-                .padding(.horizontal)
-                ScrollView {
-                    LazyVStack{
-                        ForEach(playlists.createdPlaylist){ item in
-                            Button(action: {
-                                Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [self.playing.songDetail.id]))
-                                withAnimation(.default){
-                                    showList = false
-                                    bottomType = .playingStatus
-                                }
-                            }) {
-                                HStack {
-                                    NEUCoverView(url: item.coverImgUrl, coverShape: .rectangle, size: .small)
-                                    VStack(alignment: .leading) {
-                                        Text(item.name)
-                                            .foregroundColor(.mainTextColor)
-                                        Text("\(item.count) songs")
-                                            .foregroundColor(.secondTextColor)
-                                    }
-                                    Spacer()
-                                }
-                                .padding(.horizontal)
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .sheet(isPresented: $showCreate) {
+                    PlaylistCreateView(showSheet: $showCreate)
+                }
+            }
+            .padding(.horizontal)
+            ScrollView {
+                LazyVStack{
+                    ForEach(playlists){ item in
+                        Button(action: {
+                            Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
+                            withAnimation(.default){
+                                showList = false
+                                bottomType = .playingStatus
                             }
+                        }) {
+                            HStack {
+                                NEUCoverView(url: item.coverImgUrl, coverShape: .rectangle, size: .small)
+                                VStack(alignment: .leading) {
+                                    Text(item.name)
+                                        .foregroundColor(.mainTextColor)
+                                    Text("\(item.count) songs")
+                                        .foregroundColor(.secondTextColor)
+                                }
+                                Spacer()
+                            }
+                            .padding(.horizontal)
                         }
                     }
                 }
-                Spacer()
             }
-            .offset(y: showCreate ? screen.height : 0)
-            VStack {
-                TextField("name", text: $name)
-                    .autocapitalization(.none)
-                    .keyboardType(.default)
-                    .padding()
-                Button(action: {
-                    Store.shared.dispatch(.playlistCreate(name: self.name))
-                    self.name = ""
-                    self.showCreate.toggle()
-                }) {
-                    Text("添加")
-                }
-                Spacer()
+            Spacer()
+        }
+    }
+}
+
+struct PlayingExtensionControllView: View {
+    @EnvironmentObject var store: Store
+
+    private var settings: AppState.Settings {store.appState.settings}
+
+    var body: some View {
+        HStack(alignment: .bottom) {
+            VStack(spacing: 20) {
+                Image(systemName: "rectangle")
+                Image(systemName: settings.playMode == .playlist ? "repeat" : "repeat.1")
+                    .onTapGesture {
+                        Store.shared.dispatch(.playModeToggle)
+                    }
             }
-            .offset(y: showCreate ? 0 : screen.height)
+            .foregroundColor(Color.secondTextColor)
+            .padding(.horizontal)
         }
     }
 }
