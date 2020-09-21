@@ -11,6 +11,7 @@ import Foundation
 enum AppAction {
     case commentMusic(id: Int, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0)
     case commentMusicDone(result: Result<([Comment],[Comment]), AppError>)
+    case coverShape
     case initAction
     case like(id: Int, like: Bool)
     case likelist(uid: Int)
@@ -58,7 +59,7 @@ enum AppAction {
     case playBackward
     case playByIndex(index: Int)
     case playForward
-    case playModeToggle
+    case playMode
     case playToendAction
     case replay
     case seek(isSeeking: Bool)

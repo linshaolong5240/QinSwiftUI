@@ -26,13 +26,37 @@ struct NEUCoverView_Previews: PreviewProvider {
             }
         }
         .environment(\.colorScheme, .dark)
+//        ZStack {
+//            NEUBackgroundView()
+//            VStack(spacing: 50) {
+//                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+//                             coverShape: .circle,
+//                             size: .small)
+//                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+//                             coverShape: .circle,
+//                             size: .medium)
+//                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+//                             coverShape: .circle,
+//                             size: .large)
+//
+//            }
+//        }
+//        .environment(\.colorScheme, .dark)
     }
 }
 #endif
 
-enum NEUCoverShape {
+enum NEUCoverShape: CaseIterable {
     case circle
     case rectangle
+    var systemName: String {
+        switch self {
+        case .circle:
+            return "circle"
+        case .rectangle:
+            return "rectangle"
+        }
+    }
 }
 
 struct NEUCoverView: View {
@@ -44,9 +68,9 @@ struct NEUCoverView: View {
         case .circle:
             switch size {
             case .large:
-                return size.width / 32
+                return size.width / 24
             default:
-                return size.width / 18
+                return size.width / 16
             }
         case .rectangle:
             switch size {
@@ -92,22 +116,22 @@ struct NEUCoverView: View {
             case .small:
                 NEUImageView(url: url,
                              size: size,
-                             innerShape: RoundedRectangle(cornerRadius: 15, style: .continuous),
-                             outerShape: RoundedRectangle(cornerRadius: 18, style: .continuous),
+                             innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
+                             outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),
                              innerPadding: innerPadding,
                              isOrigin: false)
             case .medium:
                 NEUImageView(url: url,
                              size: size,
-                             innerShape: RoundedRectangle(cornerRadius: 25, style: .continuous),
-                             outerShape: RoundedRectangle(cornerRadius: 33, style: .continuous),
+                             innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
+                             outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),
                              innerPadding: innerPadding,
                              isOrigin: false)
             case .large:
                 NEUImageView(url: url,
                              size: size,
-                             innerShape: RoundedRectangle(cornerRadius: 50, style: .continuous),
-                             outerShape: RoundedRectangle(cornerRadius: 60, style: .continuous),
+                             innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
+                             outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),
                              innerPadding: innerPadding,
                              isOrigin: true)
             }

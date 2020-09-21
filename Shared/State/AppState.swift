@@ -26,18 +26,22 @@ extension AppState {
         enum AccountBehavior: CaseIterable {
             case login, logout
         }
-        enum CoverShape: CaseIterable {
-            case circle
-            case rectangle
-        }
-        enum PlayMode {
+        enum PlayMode: CaseIterable {
             case playlist, relplay
+            var systemName: String {
+                switch self {
+                case .playlist:
+                    return "repeat"
+                case .relplay:
+                    return "repeat.1"
+                }
+            }
         }
         enum Theme: CaseIterable {
             case dark, light, system
         }
         var accountBehavior = AccountBehavior.login
-        var CoverShape: CoverShape = .rectangle
+        var coverShape: NEUCoverShape = .rectangle
         var loginRequesting = false
         var loginUser: User? = DataManager.shared.getUser()
         var loginError: AppError?
@@ -53,7 +57,7 @@ extension AppState {
     
     struct Playlists {
         var createdPlaylist = [PlaylistViewModel]()
-        var likeIds = [Int]()
+        var likeIds = Array<Int>()//[Int]()
         var likedPlaylistId: Int = 0
 //        var playlistDetail = PlaylistViewModel()
 //        var playlistDetailRequesting: Bool = false

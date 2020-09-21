@@ -39,6 +39,8 @@ class Store: ObservableObject {
         var appCommand: AppCommand? = nil
         
         switch action {
+        case .coverShape:
+            appState.settings.coverShape = appState.settings.coverShape.next()
         case .commentMusic(let id, let limit, let offset, let beforeTime):
             appState.playing.commentRequesting = true
             appState.playing.hotComments = [CommentViewModel]()
@@ -122,12 +124,8 @@ class Store: ObservableObject {
             appState.playing.like =  appState.playlists.likeIds.contains(song.id)
             appState.playing.songDetail = song
             appCommand = PlayRequestCommand(id: song.id)
-        case .playModeToggle:
-            if appState.settings.playMode == .playlist {
-                appState.settings.playMode = .relplay
-            }else {
-                appState.settings.playMode = .playlist
-            }
+        case .playMode:
+            appState.settings.playMode = appState.settings.playMode.next()
         case .playRequest(let id):
             appCommand = PlayRequestCommand(id: id)
         case .playRequestDone(let result):

@@ -22,11 +22,11 @@ struct PlayingNowView: View {
     private var playing: AppState.Playing { store.appState.playing }
     private var playingBing: Binding<AppState.Playing> {$store.appState.playing}
     private var playlists: AppState.Playlists {store.appState.playlists}
-    
+
     @State private var showMore: Bool = false
-    @State private var showComment: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
-    
+    @State private var showComment: Bool = false
+
     var body: some View {
         ZStack {
             NEUBackgroundView()
@@ -87,35 +87,12 @@ struct PlayingNowView: View {
                         .transition(.move(edge: .leading))
                     }
                     .padding(.horizontal)
-//                    NEUCoverView(url: playing.songDetail.albumPicURL,
-//                                 coverShape: .circle, size: !showMore ? .large: .medium)
-//                    NEUImageView(url: playing.songDetail.albumPicURL,
-//                                 size: !showMore ? .large: .medium,
-//                                 innerShape: RoundedRectangle(cornerRadius: !showMore ? 50 : 25, style: .continuous),
-//                                 outerShape: RoundedRectangle(cornerRadius: !showMore ? 66 : 33, style: .continuous),
-//                                 innerPadding: !showMore ? 20 : 10, isOrigin: true)
-                    NEUImageView(url: playing.songDetail.albumPicURL,
-                                 size: !showMore ? .large: .medium,
-                                 innerShape: Circle(),
-                                 outerShape: Circle(),
-                                 innerPadding: !showMore ? 12 : 6,
-                                 shadowReverse: true,
-                                 isOrigin: true)
-                        .onTapGesture {
-                            withAnimation(.default) {
-                                showMore.toggle()
-                                if showMore {
-                                    bottomType = .playinglist
-                                }else {
-                                    bottomType = .playingStatus
-                                }
-                            }
-                            if !showMore {
-                                showComment = false
-                            }
+                    PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType, showComment: $showComment)
+                    HStack {
+                        Spacer()
+                        if !showMore {
+                            PlayingExtensionControllView()
                         }
-                    if !showMore {
-                        PlayingExtensionControllView()
                     }
                 }
                 ZStack {
@@ -409,16 +386,67 @@ struct PlayingExtensionControllView: View {
     private var settings: AppState.Settings {store.appState.settings}
 
     var body: some View {
-        HStack(alignment: .bottom) {
-            VStack(spacing: 20) {
-                Image(systemName: "rectangle")
-                Image(systemName: settings.playMode == .playlist ? "repeat" : "repeat.1")
-                    .onTapGesture {
-                        Store.shared.dispatch(.playModeToggle)
-                    }
+        VStack(spacing: 20) {
+            Spacer()
+            Button(action: {
+                store.dispatch(.coverShape)
+            }) {
+                Image(systemName: settings.coverShape.systemName)
             }
-            .foregroundColor(Color.secondTextColor)
-            .padding(.horizontal)
+            
+            Button(action: {
+                Store.shared.dispatch(.playMode)
+            }) {
+                Image(systemName: settings.playMode.systemName)
+            }
+        }
+        .foregroundColor(Color.secondTextColor)
+        .padding(.horizontal)
+    }
+}
+
+struct PlayingNowCoverView: View {
+    @EnvironmentObject var store: Store
+    private var playing: AppState.Playing { store.appState.playing }
+    private var settings: AppState.Settings {store.appState.settings}
+    
+    @Binding var showMore: Bool
+    @Binding var bottomType: PlayingNowBottomType
+    @Binding var showComment: Bool
+
+    var body: some View {
+        switch settings.coverShape {
+        case .circle:
+            NEUImageView(url: playing.songDetail.albumPicURL,
+                         size: !showMore ? .large: .medium,
+                         innerShape: Circle(),
+                         outerShape: Circle(),
+                         innerPadding: showMore ? (screen.width * 0.3 / 16) : (screen.width * 0.7 / 24),
+                         shadowReverse: true,
+                         isOrigin: true)
+                .onTapGesture(perform: tapAction)
+        case .rectangle:
+            NEUImageView(url: playing.songDetail.albumPicURL,
+                         size: showMore ? .medium: .large,
+                         innerShape: RoundedRectangle(cornerRadius: showMore ? 25 : 50, style: .continuous),
+                         outerShape: RoundedRectangle(cornerRadius: showMore ? 35 : 65, style: .continuous),
+                         innerPadding: showMore ? (screen.width * 0.3 / 12) : (screen.width * 0.7 / 16),
+                         shadowReverse: false,
+                         isOrigin: true)
+                .onTapGesture(perform: tapAction)
+        }
+    }
+    func tapAction() {
+        withAnimation(.default) {
+            showMore.toggle()
+            if showMore {
+                bottomType = .playinglist
+            }else {
+                bottomType = .playingStatus
+            }
+        }
+        if !showMore {
+            showComment = false
         }
     }
 }
