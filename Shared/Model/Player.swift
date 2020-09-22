@@ -96,7 +96,7 @@ class Player: AVPlayer, ObservableObject {
                             let store = Store.shared
                             if !store.appState.playing.isSeeking{
                                 let loadTime = Player.shared.currentTime().seconds
-                                let lyric = store.appState.lyric.lyricParser.lyricByTime(loadTime)
+                                let lyric = store.appState.lyric.lyricParser.lyricByTime(loadTime, offset: -1.0)
                                 if let totalTime = Player.shared.currentItem?.duration.seconds {
                                     if totalTime > 0 {
                                         store.appState.playing.totalTime = totalTime

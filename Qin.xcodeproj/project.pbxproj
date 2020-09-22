@@ -63,8 +63,8 @@
 		2BCCB2DA24DC79DC004CAD67 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */; };
 		2BCCB2DB24DC79DC004CAD67 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */; };
 		2BCCB2DC24DC79DC004CAD67 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */; };
-		2BCCB2E024DC7A16004CAD67 /* Lyric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DE24DC7A16004CAD67 /* Lyric.swift */; };
-		2BCCB2E124DC7A16004CAD67 /* Lyric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DE24DC7A16004CAD67 /* Lyric.swift */; };
+		2BCCB2E024DC7A16004CAD67 /* LyricParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */; };
+		2BCCB2E124DC7A16004CAD67 /* LyricParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */; };
 		2BCCB2E224DC7A17004CAD67 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DF24DC7A16004CAD67 /* Player.swift */; };
 		2BCCB2E324DC7A17004CAD67 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DF24DC7A16004CAD67 /* Player.swift */; };
 		2BCCB2EE24DC7A62004CAD67 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2E624DC7A61004CAD67 /* Playlist.swift */; };
@@ -142,7 +142,7 @@
 		2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
-		2BCCB2DE24DC7A16004CAD67 /* Lyric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lyric.swift; sourceTree = "<group>"; };
+		2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricParser.swift; sourceTree = "<group>"; };
 		2BCCB2DF24DC7A16004CAD67 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2BCCB2E624DC7A61004CAD67 /* Playlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		2BCCB2E924DC7A61004CAD67 /* comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = comment.swift; sourceTree = "<group>"; };
@@ -294,12 +294,12 @@
 		2BCCB2D024DC79AB004CAD67 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */,
+				2B1E4B302518176900D71F4A /* CaseIterable+Extension.swift */,
 				2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */,
 				2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */,
 				2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */,
 				2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */,
-				2B1E4B302518176900D71F4A /* CaseIterable+Extension.swift */,
-				2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 			children = (
 				2BCCB32824DC7EDF004CAD67 /* ViewModel */,
 				2BCCB2E524DC7A34004CAD67 /* DataModel */,
-				2BCCB2DE24DC7A16004CAD67 /* Lyric.swift */,
+				2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */,
 				2BCCB2DF24DC7A16004CAD67 /* Player.swift */,
 			);
 			path = Model;
@@ -484,7 +484,7 @@
 				2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */,
 				2BCCB33024DC7EF9004CAD67 /* SongViewModel.swift in Sources */,
 				2BE89B15250F7F5100E0F278 /* NEUButton.swift in Sources */,
-				2BCCB2E024DC7A16004CAD67 /* Lyric.swift in Sources */,
+				2BCCB2E024DC7A16004CAD67 /* LyricParser.swift in Sources */,
 				2BCCB32C24DC7EF8004CAD67 /* CommentViewModel.swift in Sources */,
 				2BCCB2D724DC79DC004CAD67 /* UIApplication+Extension.swift in Sources */,
 				2BCCB2F224DC7A62004CAD67 /* comment.swift in Sources */,
@@ -558,7 +558,7 @@
 				2BCCB2E324DC7A17004CAD67 /* Player.swift in Sources */,
 				2BCCB2D324DC79D5004CAD67 /* Data+Extension.swift in Sources */,
 				2B81DCBC250961810036EF0B /* NEUMenuStyle.swift in Sources */,
-				2BCCB2E124DC7A16004CAD67 /* Lyric.swift in Sources */,
+				2BCCB2E124DC7A16004CAD67 /* LyricParser.swift in Sources */,
 				2BB8558424E63CC800D600BB /* ThemeViewModel.swift in Sources */,
 				2BCCB2DA24DC79DC004CAD67 /* Dictionary+Extension.swift in Sources */,
 				2BC664AC250C03F700A08BD7 /* SongRowView.swift in Sources */,
