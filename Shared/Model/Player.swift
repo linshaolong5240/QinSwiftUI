@@ -75,7 +75,7 @@ class Player: AVPlayer, ObservableObject {
     func seek(seconds: Double) {
         let cmtime = CMTime(seconds: seconds, preferredTimescale: 600)
         super.seek(to: cmtime)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//在global 会出错
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//在global 会出错,在main中更新UI状态
             Player.shared.updateMPNowPlayingInfo()//seek 后 AVPlayer 的当前时间获取有延迟
         }
     }

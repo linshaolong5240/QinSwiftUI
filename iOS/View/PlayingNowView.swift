@@ -68,7 +68,7 @@ struct PlayingNowView: View {
                         Button(action: {
                             showComment.toggle()
                             if showComment {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
                                     Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
                                 }
                             }
@@ -354,7 +354,9 @@ struct CreatedPlaylistView: View {
                 LazyVStack{
                     ForEach(playlists){ item in
                         Button(action: {
-                            Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
+                            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                                Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
+                            }
                             withAnimation(.default){
                                 showList = false
                                 bottomType = .playingStatus
