@@ -77,18 +77,12 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .lyric(let id):
-            if appState.lyric.lyrics[id] == nil {
-                appState.lyric.getLyricRequesting = true
-                appCommand = LyricCommand(id: id)
-            }
-        case .lyricDone(let id, result: let result):
+            appState.lyric.getLyricRequesting = true
+            appCommand = LyricCommand(id: id)
+        case .lyricDone(result: let result):
             switch result {
             case .success(let lyric):
-                //                appState.playing.lyric = lyric
-                appState.lyric.lyric[id] = lyric
-                appState.lyric.lyricParser = LyricParser(lyric)
-//                appState.lyric.lyrics[id] = parseLyric(lyric)
-            //                appState.lyric.lyric = parseLyric(lyric)
+                appState.lyric.lyric = LyricViewModel(lyric: lyric, every: 0.1, offset: -1)
             case .failure(let error):
                 appState.lyric.getlyricError = error
             }

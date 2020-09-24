@@ -40,9 +40,7 @@ struct BottomBarView: View {
                                 .fontWeight(.bold)
                                 .lineLimit(1)
                                 .foregroundColor(Color.secondTextColor)
-                            Text(playing.lyric)
-                                .foregroundColor(.secondTextColor)
-                                .lineLimit(1)
+                            LyricView(isOneLine: true)
                             Spacer()
                         }
                     }

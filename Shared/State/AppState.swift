@@ -82,7 +82,6 @@ extension AppState {
         
         var playinglist = [SongViewModel]()//PlaylistViewModel()
         var playingError: AppError?
-        var lyric: String = ""
         var songDetail = SongViewModel()
         var songUrl: String?
         
@@ -97,9 +96,7 @@ extension AppState {
     struct Lyric {
         var getLyricRequesting = false
         var getlyricError: AppError?
-        var lyric = Dictionary<Int, String>()
-        var lyricParser = LyricParser()
-        var lyrics = Dictionary<Int, Dictionary<Int, String>>()
+        var lyric = LyricViewModel(lyric: "", every: 1)
     }
     
     struct Search {

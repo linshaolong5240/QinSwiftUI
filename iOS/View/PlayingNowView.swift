@@ -129,11 +129,36 @@ struct PlayingView_Previews: PreviewProvider {
 #endif
 
 struct LyricView: View {
-    let lyric: String
+    @EnvironmentObject var store: Store
+    
+    private var viewModel: LyricViewModel { store.appState.lyric.lyric }
+    let isOneLine: Bool
+
     var body: some View {
-        ScrollView {
-            Text(lyric)
-                .foregroundColor(.secondTextColor)
+        VStack {
+            if isOneLine {
+                Text(viewModel.lyric)
+                    .fontWeight(.bold)
+                    .foregroundColor(.secondTextColor)
+                    .lineLimit(1)
+            }else {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        ForEach(0..<viewModel.lyricParser.lyrics.count, id: \.self) { index in
+                            Text(viewModel.lyricParser.lyrics[index])
+                                .lineLimit(1)
+                                .fontWeight(index == viewModel.index ? .bold : .none)
+                                .foregroundColor(index == viewModel.index ? .orange : .secondTextColor)
+                                .id(index)
+                        }
+                    }
+                    .onReceive(viewModel.$index, perform: { value in
+                        withAnimation(.easeInOut) {
+                            proxy.scrollTo(value, anchor: .center)
+                        }
+                    })
+                }
+            }
         }
     }
 }
@@ -205,10 +230,7 @@ struct PlayingNowStatusView: View {
             }
             .padding()
             Spacer()
-            Text(playing.lyric)
-                .fontWeight(.bold)
-                .foregroundColor(.secondTextColor)
-                .lineLimit(2)
+            LyricView(isOneLine: false)
             Spacer()
             HStack {
                 Text(String(format: "%02d:%02d", Int(playing.loadTime/60),Int(playing.loadTime)%60))

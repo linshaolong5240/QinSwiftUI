@@ -105,16 +105,16 @@ struct LyricCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.lyric(id: id) { (data, error) in
             guard error == nil else {
-                store.dispatch(.lyricDone(id: self.id, result: .failure(error!)))
+                store.dispatch(.lyricDone(result: .failure(error!)))
                 return
             }
             if data!["code"] as! Int == 200 {
                 if let lrc = data?["lrc"] as? NeteaseCloudMusicApi.ResponseData {
                     let lyric = lrc["lyric"] as! String
-                    store.dispatch(.lyricDone(id: self.id, result: .success(lyric)))
+                    store.dispatch(.lyricDone(result: .success(lyric)))
                 }
             }else {
-                store.dispatch(.lyricDone(id: self.id, result: .failure(.lyricError)))
+                store.dispatch(.lyricDone(result: .failure(.lyricError)))
             }
         }
     }
@@ -363,7 +363,6 @@ struct PlayRequestDoneCommand: AppCommand {
     func execute(in store: Store) {
         let index = store.appState.playing.index
         let songId = store.appState.playing.playinglist[index].id
-        store.appState.playing.lyric = ""
         store.appState.playing.loadTime = 0
         store.appState.playing.loadTimelabel = "00:00"
         store.appState.playing.totalTime = 0

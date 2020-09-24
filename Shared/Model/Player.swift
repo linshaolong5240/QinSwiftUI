@@ -42,7 +42,7 @@ class Player: AVPlayer, ObservableObject {
         super.play()
         self.addPeriodicTimeObserver()
         updateMPNowPlayingInfo()
-}
+    }
     func playWithURL(url: String) {
         self.removePeriodicTimeObserver()
         prepareToPlay(urlStr: url)
@@ -96,7 +96,6 @@ class Player: AVPlayer, ObservableObject {
                             let store = Store.shared
                             if !store.appState.playing.isSeeking{
                                 let loadTime = Player.shared.currentTime().seconds
-                                let lyric = store.appState.lyric.lyricParser.lyricByTime(loadTime, offset: -0.3)
                                 if let totalTime = Player.shared.currentItem?.duration.seconds {
                                     if totalTime > 0 {
                                         store.appState.playing.totalTime = totalTime
@@ -106,7 +105,6 @@ class Player: AVPlayer, ObservableObject {
                                 }
                                 store.appState.playing.loadTime = loadTime
                                 store.appState.playing.loadTimelabel = String(format: "%02d:%02d", Int(loadTime/60),Int(loadTime)%60)
-                                store.appState.playing.lyric = lyric
                             }
                         })
     }

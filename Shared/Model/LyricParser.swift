@@ -11,7 +11,7 @@ import Foundation
 class LyricParser {
     private var lyric: String = ""
     private var times = [[Double]]()
-    private var lyrics = [String]()
+    var lyrics = [String]()
     init() {
     }
     init(_ lyric: String) {
@@ -66,23 +66,26 @@ class LyricParser {
 //        print(lyrics)
     }
     
-    func lyricByTime(_ time: Double, offset: Double = 0.0) -> String {
-        guard time > 0 && times.count > 0 else {
-            return ""
-        }
+    func lyricByTime(_ time: Double, offset: Double = 0.0) -> (String, Int) {
         var lyric = ""
-        var index: Int = -1
+        var i: Int = -1
+        var index: Int = 0
         var delta: Double = 10 * 60.0
         
+        guard time > 0 && times.count > 0 else {
+            return ("", index)
+        }
+        
         for ts in times {
-            index += 1
+            i += 1
             for t in ts {
                 if abs(time - t) < delta && time > (t + offset) {
                     delta = abs(time - t)
-                    lyric = lyrics[index]
+                    lyric = lyrics[i]
+                    index = i
                 }
             }
         }
-        return lyric
+        return (lyric, index)
     }
 }
