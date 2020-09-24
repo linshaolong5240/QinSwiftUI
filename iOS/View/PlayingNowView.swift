@@ -140,15 +140,14 @@ struct LyricView: View {
                 Text(viewModel.lyric)
                     .fontWeight(.bold)
                     .foregroundColor(.secondTextColor)
-                    .lineLimit(1)
             }else {
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(0..<viewModel.lyricParser.lyrics.count, id: \.self) { index in
                             Text(viewModel.lyricParser.lyrics[index])
-                                .lineLimit(1)
                                 .fontWeight(index == viewModel.index ? .bold : .none)
                                 .foregroundColor(index == viewModel.index ? .orange : .secondTextColor)
+                                .lineLimit(1)
                                 .id(index)
                         }
                     }
