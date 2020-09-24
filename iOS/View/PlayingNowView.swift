@@ -140,6 +140,7 @@ struct LyricView: View {
                 Text(viewModel.lyric)
                     .fontWeight(.bold)
                     .foregroundColor(.secondTextColor)
+                    .lineLimit(1)
             }else {
                 ScrollViewReader { proxy in
                     ScrollView {
