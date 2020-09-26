@@ -325,6 +325,8 @@ struct CommentRowView: View {
     let id: Int
     let type: NeteaseCloudMusicApi.CommentType
     
+    @State var showBeReplied = false
+    
     var body: some View {
         HStack(alignment: .top) {
             NEUCoverView(url: viewModel.avatarUrl, coverShape: .rectangle, size: .small)
@@ -344,8 +346,19 @@ struct CommentRowView: View {
                 Text(viewModel.content)
                     .foregroundColor(.mainTextColor)
                 if viewModel.beReplied.count > 0 {
-                    Text("\(viewModel.beReplied.count)条回复")
-                        .foregroundColor(.secondary)
+                    Button(action: {
+                        showBeReplied.toggle()
+                    }, label: {
+                        HStack(spacing: 0.0) {
+                            Text("\(viewModel.beReplied.count)条回复")
+                            Image(systemName: showBeReplied ? "chevron.down" : "chevron.up")
+                        }
+                    })
+                }
+                if showBeReplied {
+                    ForEach(viewModel.beReplied) { item in
+                        CommentRowView(viewModel: item, id: id, type: type)
+                    }
                 }
             }
             Spacer()
