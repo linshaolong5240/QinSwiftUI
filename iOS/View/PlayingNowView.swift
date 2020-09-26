@@ -20,7 +20,6 @@ struct PlayingNowView: View {
     @EnvironmentObject var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-    private var playingBing: Binding<AppState.Playing> {$store.appState.playing}
     private var playlists: AppState.Playlists {store.appState.playlists}
 
     @State private var showMore: Bool = false
@@ -68,7 +67,7 @@ struct PlayingNowView: View {
                         Button(action: {
                             showComment.toggle()
                             if showComment {
-                                DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
                                 }
                             }
@@ -102,7 +101,7 @@ struct PlayingNowView: View {
                     PlayinglistView(showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                    CommentListView()
+                    CommentListView(id: playing.songDetail.id)
                         .offset(y: bottomType == .commentlist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     CreatedPlaylistView(playlists: playlists.createdPlaylist, songId: playing.songDetail.id, showList: $showMore, bottomType: $bottomType)
@@ -276,7 +275,8 @@ struct PlayingNowStatusView: View {
 
 struct CommentListView: View {
     @EnvironmentObject var store: Store
-    private var playing: AppState.Playing { store.appState.playing }
+    private var comment: AppState.Comment { store.appState.comment }
+    let id: Int
     
     var body: some View {
         VStack {
@@ -293,22 +293,22 @@ struct CommentListView: View {
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
-            if playing.commentRequesting {
+            if comment.commentRequesting {
                 Text("正在加载...")
                     .foregroundColor(.secondTextColor)
             }else {
                 ScrollView {
                     VStack(alignment: .leading) {
-                        Text("热门评论(\(String(playing.hotComments.count)))")
+                        Text("热门评论(\(String(comment.hotComments.count)))")
                             .foregroundColor(.mainTextColor)
-                        ForEach(playing.hotComments) { item in
-                            CommentRowView(item)
+                        ForEach(comment.hotComments) { item in
+                            CommentRowView(viewModel: item, id: id, type: .song)
                             Divider()
                         }
-                        Text("最新评论(\(String(playing.comments.count)))")
+                        Text("最新评论(\(String(comment.comments.count)))")
                             .foregroundColor(.mainTextColor)
-                        ForEach(playing.comments) { item in
-                            CommentRowView(item)
+                        ForEach(comment.comments) { item in
+                            CommentRowView(viewModel: item, id: id, type: .song)
                             Divider()
                         }
                     }
@@ -321,11 +321,10 @@ struct CommentListView: View {
 }
 
 struct CommentRowView: View {
-    let viewModel: CommentViewModel
+    @StateObject var viewModel: CommentViewModel
+    let id: Int
+    let type: NeteaseCloudMusicApi.CommentType
     
-    init(_ viewModel: CommentViewModel) {
-        self.viewModel = viewModel
-    }
     var body: some View {
         HStack(alignment: .top) {
             NEUCoverView(url: viewModel.avatarUrl, coverShape: .rectangle, size: .small)
@@ -334,7 +333,12 @@ struct CommentRowView: View {
                     Text(viewModel.nickname)
                     Spacer()
                     Text(String(viewModel.likedCount))
-                    Image(systemName: viewModel.liked ? "hand.thumbsup.fill" : "hand.thumbsup")
+                    Button(action: {
+                        Store.shared.dispatch(.commentLike(id: id, cid:viewModel.commentId, like: viewModel.liked ? false : true, type: type))
+                        viewModel.liked.toggle()
+                    }, label: {
+                        Image(systemName: viewModel.liked ? "hand.thumbsup.fill" : "hand.thumbsup")
+                    })
                 }
                 .foregroundColor(.secondTextColor)
                 Text(viewModel.content)
@@ -383,7 +387,7 @@ struct CreatedPlaylistView: View {
                 LazyVStack{
                     ForEach(playlists){ item in
                         Button(action: {
-                            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
                             }
                             withAnimation(.default){

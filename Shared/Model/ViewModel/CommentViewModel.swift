@@ -8,12 +8,12 @@
 
 import Foundation
 
-class CommentViewModel: Codable, Identifiable {
+class CommentViewModel: ObservableObject, Identifiable {
     var beReplied = [CommentViewModel]()
     var commentId: Int = 0
     var content: String = ""
-    var id: Int = 0
-    var liked: Bool = false
+    var id: Int = 0 // commentId for Identifiable
+    @Published var liked: Bool = false
     var likedCount: Int = 0
     var parentCommentId: Int = 0
     

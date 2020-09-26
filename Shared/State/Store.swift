@@ -39,23 +39,25 @@ class Store: ObservableObject {
         var appCommand: AppCommand? = nil
         
         switch action {
+        case .commentLike(let id, let cid, let like, let type):
+            appCommand = CommentLikeCommand(id: id, cid: cid, like: like, type: type)
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
             UserDefaults.standard.integer(forKey: "coverShape")
         case .commentMusic(let id, let limit, let offset, let beforeTime):
-            appState.playing.commentRequesting = true
-            appState.playing.hotComments = [CommentViewModel]()
-            appState.playing.comments = [CommentViewModel]()
+            appState.comment.commentRequesting = true
+            appState.comment.hotComments = [CommentViewModel]()
+            appState.comment.comments = [CommentViewModel]()
             appCommand = CommentMusicCommand(id: id, limit: limit, offset: offset, beforeTime: beforeTime)
         case .commentMusicDone(let result):
             switch result {
             case .success(let comments):
-                appState.playing.hotComments = comments.0.map({CommentViewModel($0)})
-                appState.playing.comments = comments.1.map({CommentViewModel($0)})
+                appState.comment.hotComments = comments.0.map({CommentViewModel($0)})
+                appState.comment.comments = comments.1.map({CommentViewModel($0)})
             case .failure(let error):
                 appState.error = error
             }
-            appState.playing.commentRequesting = false
+            appState.comment.commentRequesting = false
         case .initAction:
             appCommand = InitAcionCommand()
         case .like(let id, let like):

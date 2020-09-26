@@ -12,6 +12,7 @@ import Combine
 import CoreData
 
 struct AppState {
+    var comment = Comment()
     var lyric = Lyric()
     var playing = Playing()
     var playlists = Playlists()
@@ -63,7 +64,11 @@ extension AppState {
         var showLoginView = false
         var theme: Theme = .light
     }
-    
+    struct Comment {
+        var commentRequesting = false
+        var hotComments = [CommentViewModel]()
+        var comments = [CommentViewModel]()
+    }
     struct PlaylistDetail {
         var detail = PlaylistViewModel()
         var playlistDetailRequesting: Bool = false
@@ -86,10 +91,6 @@ extension AppState {
     }
     
     struct Playing {
-        var commentRequesting = false
-        var hotComments = [CommentViewModel]()
-        var comments = [CommentViewModel]()
-        
         var index: Int = 0
         var like: Bool = false
         var isSeeking: Bool = false
