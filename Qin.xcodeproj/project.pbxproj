@@ -203,13 +203,13 @@
 				2BCCB29524DC5A2B004CAD67 /* NEUBackgroundView.swift */,
 				2BE89B14250F7F5100E0F278 /* NEUButton.swift */,
 				2B3BBDDE24E7D18400CD94A5 /* NEUButtonStyle.swift */,
-				2BCCB29A24DC5A2B004CAD67 /* NEUSFView.swift */,
 				2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */,
 				2B47BE4C250BC22600848354 /* NEUDivider.swift */,
 				2BCCB29424DC5A2B004CAD67 /* NEUImageView.swift */,
 				2BC664A7250BFA3700A08BD7 /* NEUListStyle.swift */,
 				2B81DCBA250961810036EF0B /* NEUMenuStyle.swift */,
 				2B17DA76250E32F0009C6E7E /* NEUProgressStyle.swift */,
+				2BCCB29A24DC5A2B004CAD67 /* NEUSFView.swift */,
 				2B549B4A2509483900EA37B5 /* NEUTextFieldStyle.swift */,
 				2BCCB29824DC5A2B004CAD67 /* NEUView.swift */,
 			);
@@ -279,10 +279,10 @@
 				2BCCB28E24DC5A2A004CAD67 /* PlaylistsView.swift */,
 				2B2D517724E39C1C007B52A4 /* SearchView.swift */,
 				2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */,
+				2BC664AA250C03F700A08BD7 /* SongRowView.swift */,
 				2BCCB28824DC5A2A004CAD67 /* TestView.swift */,
 				2BCCB29724DC5A2B004CAD67 /* UserView.swift */,
 				2BCCB28924DC5A2A004CAD67 /* ViewModifier.swift */,
-				2BC664AA250C03F700A08BD7 /* SongRowView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

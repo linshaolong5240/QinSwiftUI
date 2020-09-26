@@ -174,7 +174,7 @@ struct PlayinglistView: View {
             HStack {
                 Text("播放列表")
                     .font(.title)
-                    .foregroundColor(.secondTextColor)
+                    .foregroundColor(.mainTextColor)
                 Spacer()
             }
             .padding(.horizontal)
@@ -283,7 +283,7 @@ struct CommentListView: View {
             HStack {
                 Text("评论")
                     .font(.title)
-                    .foregroundColor(.secondTextColor)
+                    .foregroundColor(.mainTextColor)
                 Spacer()
                 Button(action: {
                     
@@ -336,6 +336,10 @@ struct CommentRowView: View {
                 .foregroundColor(.secondTextColor)
                 Text(viewModel.content)
                     .foregroundColor(.mainTextColor)
+                if viewModel.beReplied.count > 0 {
+                    Text("\(viewModel.beReplied.count)条回复")
+                        .foregroundColor(.secondary)
+                }
             }
             Spacer()
         }

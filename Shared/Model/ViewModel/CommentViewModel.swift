@@ -22,8 +22,15 @@ class CommentViewModel: Codable, Identifiable {
     
     init() {
     }
-    
+    init(_ comment: Comment.RepliedComment) {
+        self.commentId = comment.beRepliedCommentId
+        self.content = comment.content ?? ""
+        self.id = comment.user.userId
+        self.avatarUrl = comment.user.avatarUrl
+        self.nickname = comment.user.nickname
+    }
     init(_ comment: Comment) {
+        self.beReplied = comment.beReplied.map{CommentViewModel($0)}
         self.commentId = comment.commentId
         self.content = comment.content
         self.id = comment.commentId
