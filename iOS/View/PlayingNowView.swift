@@ -410,18 +410,18 @@ struct PlayingExtensionControllView: View {
     private var settings: AppState.Settings {store.appState.settings}
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack {
             Spacer()
             Button(action: {
                 store.dispatch(.coverShape)
             }) {
-                Image(systemName: settings.coverShape.systemName)
+                NEUButtonView(systemName: settings.coverShape.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }
             
             Button(action: {
                 Store.shared.dispatch(.playMode)
             }) {
-                Image(systemName: settings.playMode.systemName)
+                NEUButtonView(systemName: settings.playMode.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }
         }
         .foregroundColor(Color.secondTextColor)
