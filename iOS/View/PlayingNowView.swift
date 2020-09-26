@@ -298,18 +298,21 @@ struct CommentListView: View {
                     .foregroundColor(.secondTextColor)
             }else {
                 ScrollView {
-                    VStack {
+                    VStack(alignment: .leading) {
+                        Text("热门评论(\(String(playing.hotComments.count)))")
+                            .foregroundColor(.mainTextColor)
                         ForEach(playing.hotComments) { item in
                             CommentRowView(item)
-                                .padding(.horizontal)
                             Divider()
                         }
+                        Text("最新评论(\(String(playing.comments.count)))")
+                            .foregroundColor(.mainTextColor)
                         ForEach(playing.comments) { item in
                             CommentRowView(item)
-                                .padding(.horizontal)
                             Divider()
                         }
                     }
+                    .padding(.horizontal)
                 }
             }
             Spacer()
