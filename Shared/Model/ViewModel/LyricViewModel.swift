@@ -15,22 +15,21 @@ class LyricViewModel: ObservableObject {
     @Published var index: Int = 0
     @Published var lyric: String = ""
     
-    init(lyric: String,every: Double, offset: Double = 0.0) {
+    init(lyric: String) {
         self.lyricParser = LyricParser(lyric)
-        if self.lyricParser.lyrics.count > 1 {
-            setTimer(every: every, offset: offset)
-        }
     }
     
     func setTimer(every: Double, offset: Double = 0.0) {
-        cancell = Timer.publish(every: every, on: .main, in: .default)
-            .autoconnect()
-            .sink(receiveValue: { (value) in
-                let result =  self.lyricParser.lyricByTime(Player.shared.currentTime().seconds, offset: offset)
-                self.lyric = result.0
-                self.index = result.1
-//                print(result.0)
-            })
+        if lyricParser.lyrics.count > 1 {
+            cancell = Timer.publish(every: every, on: .main, in: .default)
+                .autoconnect()
+                .sink(receiveValue: { (value) in
+                    let result =  self.lyricParser.lyricByTime(Player.shared.currentTime().seconds, offset: offset)
+                    self.lyric = result.0
+                    self.index = result.1
+    //                print(result.0)
+                })
+        }
     }
     
     func stopTimer() {
