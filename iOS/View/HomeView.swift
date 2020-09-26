@@ -27,7 +27,7 @@ struct HomeView: View {
                         HStack(spacing: 20.0) {
                             Button(action: {}) {
                                 NavigationLink(destination: UserView()) {
-                                    NEUButtonView(systemName: "person", size:  .small)
+                                    NEUSFView(systemName: "person", size:  .small)
                                 }
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))

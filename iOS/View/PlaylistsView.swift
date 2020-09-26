@@ -77,7 +77,7 @@ struct PlaylistsView: View {
                             }
                         }
                     } label: {
-                        NEUButtonView(systemName: "ellipsis", size: .small)
+                        NEUSFView(systemName: "ellipsis", size: .small)
                     }
                     .menuStyle(NEUMenuStyle(shape: Circle()))
                 }
@@ -93,7 +93,7 @@ struct PlaylistsView: View {
                             }
                         }
                     } label: {
-                        NEUButtonView(systemName: "ellipsis", size: .small)
+                        NEUSFView(systemName: "ellipsis", size: .small)
                     }
                     .menuStyle(NEUMenuStyle(shape: Circle()))
                 }
@@ -193,7 +193,7 @@ struct PlaylistCreateView: View {
                     Button(action: {
                         showSheet.toggle()
                     }, label: {
-                        NEUButtonView(systemName: "checkmark", size:  .medium)
+                        NEUSFView(systemName: "checkmark", size:  .medium)
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
@@ -212,7 +212,7 @@ struct PlaylistCreateView: View {
                     Store.shared.dispatch(.playlistCreate(name: name))
                 }){
                     HStack(spacing: 0.0) {
-                        NEUButtonView(systemName: "rectangle.stack.badge.plus", size: .medium)
+                        NEUSFView(systemName: "rectangle.stack.badge.plus", size: .medium)
                             .padding(.horizontal)
                     }
                 }
@@ -245,7 +245,7 @@ struct PlaylistManageView: View {
                             Store.shared.dispatch(.userPlaylist())
                         }
                     }, label: {
-                        NEUButtonView(systemName: "checkmark", size: .medium)
+                        NEUSFView(systemName: "checkmark", size: .medium)
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }

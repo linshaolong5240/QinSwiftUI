@@ -37,7 +37,7 @@ struct PlaylistDetailView: View {
                     Button(action: {
                         showAction.toggle()
                     }) {
-                        NEUButtonView(systemName: "ellipsis", size: .medium)
+                        NEUSFView(systemName: "ellipsis", size: .medium)
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }

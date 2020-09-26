@@ -25,7 +25,7 @@ struct NEUMenuStyle_Previews: PreviewProvider {
                 Button("Open in Preview", action: {})
                 Button("Save as PDF", action: {})
             } label: {
-                NEUButtonView(systemName: "ellipsis")
+                NEUSFView(systemName: "ellipsis")
             }
             .menuStyle(NEUMenuStyle(shape: Circle()))
         }

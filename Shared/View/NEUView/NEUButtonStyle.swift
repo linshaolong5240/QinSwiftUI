@@ -333,24 +333,24 @@ struct NEUButtonStyleDebugView: View {
                 Button(action: {
                     print("pressed")
                 }) {
-                    NEUButtonView(systemName: "heart", size: .small)
+                    NEUSFView(systemName: "heart", size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
                 Button(action: {
                     print("pressed")
                 }) {
-                    NEUButtonView(systemName: "heart", size: .medium)
+                    NEUSFView(systemName: "heart", size: .medium)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
                 Button(action: {
                     print("pressed")
                 }) {
-                    NEUButtonView(systemName: "heart", size: .big)
+                    NEUSFView(systemName: "heart", size: .big)
                 }
                 .buttonStyle(NEUBigButtonStyle(shape: Circle()))
 
                 Toggle(isOn: $vibrateOnRing, label: {
-                    NEUButtonView(systemName: "heart", size: .big)
+                    NEUSFView(systemName: "heart", size: .big)
                 }).toggleStyle(NEUToggleStyle(shape: Circle()))
             }
         }

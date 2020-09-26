@@ -25,7 +25,7 @@ struct BottomBarView: View {
                     Button(action: {
                         Store.shared.dispatch(.PlayerPlayOrPause)
                     }) {
-                        NEUButtonView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
+                        NEUSFView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
                     }.buttonStyle(NEUButtonToggleStyle(isHighlighted: true, shadow: false, shape: Circle()))
                 }
                 NavigationLink(destination: PlayingNowView()) {
@@ -49,7 +49,7 @@ struct BottomBarView: View {
                 Button(action: {
                     Store.shared.dispatch(.playForward)
                 }) {
-                    NEUButtonView(systemName: "forward.fill", size: .medium)
+                    NEUSFView(systemName: "forward.fill", size: .medium)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }

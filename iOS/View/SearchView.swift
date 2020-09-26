@@ -31,7 +31,7 @@ struct SearchView: View {
                     TextField("搜索", text: searchBinding.keyword, onCommit: {
                         store.dispatch(.search(keyword: search.keyword, type: searchType))
                     })
-                    .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .medium)))
+                    .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
                 }
                 .padding(.horizontal)
                 Picker(selection: searchTypeBinding, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
@@ -160,7 +160,7 @@ struct SearchBarView: View {
                     showSearch = true
                 }
             })
-            .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "magnifyingglass", size: .medium)))
+            .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
             .foregroundColor(.mainTextColor)
         }
     }

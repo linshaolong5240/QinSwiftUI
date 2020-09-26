@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct NEUButtonView: View {
+struct NEUSFView: View {
     let systemName: String
     let size: ButtonSize
     let active: Bool
@@ -35,7 +35,7 @@ struct NEUButtonView: View {
     }
 }
 
-extension NEUButtonView {
+extension NEUSFView {
     enum ButtonSize {
         case small
         case medium

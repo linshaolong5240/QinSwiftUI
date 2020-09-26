@@ -48,7 +48,7 @@ struct SongRowView: View {
             Button(action: {
                 action()
             }) {
-                NEUButtonView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill",
+                NEUSFView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill",
                               size: .small,
                               active: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false,
                               activeColor: .white,

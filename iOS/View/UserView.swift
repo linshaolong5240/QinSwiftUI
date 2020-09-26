@@ -31,17 +31,17 @@ struct UserView: View {
                     Button(action: {
                     }) {
                         NavigationLink(destination: SettingsView()) {
-                            NEUButtonView(systemName: "gear", size: .medium)
+                            NEUSFView(systemName: "gear", size: .medium)
                         }
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 if store.appState.settings.loginUser == nil {
                     TextField("email", text: $email)
-                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "envelope", size: .medium)))
+                        .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "envelope", size: .medium)))
                         .autocapitalization(.none)
                     SecureField("password", text: $password)
-                        .textFieldStyle(NEUTextFieldStyle(label: NEUButtonView(systemName: "key", size: .medium)))
+                        .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "key", size: .medium)))
                         .autocapitalization(.none)
                     Button(action: {
                         self.store.dispatch(.login(email: self.email, password: self.password))

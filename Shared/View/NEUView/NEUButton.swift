@@ -28,7 +28,7 @@ struct NEUBackwardButton: View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
         }) {
-            NEUButtonView(systemName: "chevron.backward" ,size: .medium)
+            NEUSFView(systemName: "chevron.backward" ,size: .medium)
         }
         .buttonStyle(NEUButtonStyle(shape: Circle()))
     }
@@ -51,7 +51,7 @@ struct NEUEditButton: View {
                 editModeBinding?.wrappedValue = .active
             }
         }) {
-            NEUButtonView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
+            NEUSFView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
         }
         .buttonStyle(NEUButtonToggleStyle(isHighlighted: editModeBinding?.wrappedValue.isEditing ?? false, shape: Circle()))
     }

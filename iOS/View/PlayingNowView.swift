@@ -46,7 +46,7 @@ struct PlayingNowView: View {
                                 bottomType = .createdPlaylist
                             }
                         }) {
-                            NEUButtonView(systemName: "plus" , size:  .medium)
+                            NEUSFView(systemName: "plus" , size:  .medium)
                         }
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
@@ -58,7 +58,7 @@ struct PlayingNowView: View {
                         Button(action: {
                             Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
                         }) {
-                            NEUButtonView(systemName: playing.like ? "heart.fill" : "heart", size: .medium, active: playing.like)
+                            NEUSFView(systemName: playing.like ? "heart.fill" : "heart", size: .medium, active: playing.like)
 
                         }
                         .buttonStyle(NEUButtonToggleStyle(isHighlighted: playing.like, shape: Circle()))
@@ -80,7 +80,7 @@ struct PlayingNowView: View {
                                 }
                             }
                         }) {
-                            NEUButtonView(systemName: showComment ? "text.bubble.fill" : "text.bubble", size: .medium, active: showComment)
+                            NEUSFView(systemName: showComment ? "text.bubble.fill" : "text.bubble", size: .medium, active: showComment)
                         }
                         .buttonStyle(NEUButtonToggleStyle(isHighlighted: showComment, shape: Circle()))
                         .offset(x: showMore ? 0 : screen.width/4)
@@ -250,11 +250,11 @@ struct PlayingNowStatusView: View {
                 Button(action: {
                     Store.shared.dispatch(.playBackward)
                 }) {
-                    NEUButtonView(systemName: "backward.fill", size: .big)
+                    NEUSFView(systemName: "backward.fill", size: .big)
                 }
                 .buttonStyle(NEUBigButtonStyle(shape: Circle()))
                 
-                NEUButtonView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
+                NEUSFView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
                     .background(
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
                     )
@@ -265,7 +265,7 @@ struct PlayingNowStatusView: View {
                 Button(action: {
                     Store.shared.dispatch(.playForward)
                 }) {
-                    NEUButtonView(systemName: "forward.fill", size: .big)
+                    NEUSFView(systemName: "forward.fill", size: .big)
                 }
                 .buttonStyle(NEUBigButtonStyle(shape: Circle()))
             }
@@ -288,7 +288,7 @@ struct CommentListView: View {
                 Button(action: {
                     
                 }) {
-                    NEUButtonView(systemName: "square.and.pencil", size: .small)
+                    NEUSFView(systemName: "square.and.pencil", size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
@@ -364,7 +364,7 @@ struct CreatedPlaylistView: View {
                 Button(action: {
                     self.showCreate.toggle()
                 }) {
-                    NEUButtonView(systemName: "rectangle.stack.badge.plus", size: .small)
+                    NEUSFView(systemName: "rectangle.stack.badge.plus", size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
                 .sheet(isPresented: $showCreate) {
@@ -415,13 +415,13 @@ struct PlayingExtensionControllView: View {
             Button(action: {
                 store.dispatch(.coverShape)
             }) {
-                NEUButtonView(systemName: settings.coverShape.systemName, size: .small, inactiveColor: Color.secondTextColor)
+                NEUSFView(systemName: settings.coverShape.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }
             
             Button(action: {
                 Store.shared.dispatch(.playMode)
             }) {
-                NEUButtonView(systemName: settings.playMode.systemName, size: .small, inactiveColor: Color.secondTextColor)
+                NEUSFView(systemName: settings.playMode.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }
         }
         .foregroundColor(Color.secondTextColor)
