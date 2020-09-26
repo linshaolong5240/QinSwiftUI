@@ -46,9 +46,8 @@ struct NEUCoverView_Previews: PreviewProvider {
 }
 #endif
 
-enum NEUCoverShape: CaseIterable {
-    case circle
-    case rectangle
+enum NEUCoverShape: Int, CaseIterable {
+    case circle = 0 ,rectangle
     var systemName: String {
         switch self {
         case .circle:

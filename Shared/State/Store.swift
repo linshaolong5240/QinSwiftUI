@@ -41,6 +41,7 @@ class Store: ObservableObject {
         switch action {
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
+            UserDefaults.standard.integer(forKey: "coverShape")
         case .commentMusic(let id, let limit, let offset, let beforeTime):
             appState.playing.commentRequesting = true
             appState.playing.hotComments = [CommentViewModel]()

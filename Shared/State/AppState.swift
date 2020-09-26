@@ -26,8 +26,8 @@ extension AppState {
         enum AccountBehavior: CaseIterable {
             case login, logout
         }
-        enum PlayMode: CaseIterable {
-            case playlist, relplay
+        enum PlayMode: Int, CaseIterable {
+            case playlist = 0, relplay
             var systemName: String {
                 switch self {
                 case .playlist:
@@ -41,11 +41,25 @@ extension AppState {
             case dark, light, system
         }
         var accountBehavior = AccountBehavior.login
-        var coverShape: NEUCoverShape = .rectangle
+        var coverShape: NEUCoverShape {
+            get {
+                NEUCoverShape(rawValue: UserDefaults.standard.integer(forKey: "coverShape"))!
+            }
+            set {
+                UserDefaults.standard.set(newValue.rawValue, forKey: "coverShape")
+            }
+        }
         var loginRequesting = false
         var loginUser: User? = DataManager.shared.getUser()
         var loginError: AppError?
-        var playMode: PlayMode = .playlist
+        var playMode: PlayMode {
+            get {
+                PlayMode(rawValue: UserDefaults.standard.integer(forKey: "playMode"))!
+            }
+            set {
+                UserDefaults.standard.set(newValue.rawValue, forKey: "playMode")
+            }
+        }
         var showLoginView = false
         var theme: Theme = .light
     }
