@@ -153,7 +153,7 @@ struct LyricView: View {
                     }
                     .onReceive(viewModel.$index, perform: { value in
                         withAnimation(.easeInOut) {
-                            proxy.scrollTo(value, anchor: .center)
+                            proxy.scrollTo(value, anchor: .top)
                         }
                     })
                 }
