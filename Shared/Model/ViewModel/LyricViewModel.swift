@@ -25,9 +25,12 @@ class LyricViewModel: ObservableObject {
                 .autoconnect()
                 .sink(receiveValue: { (value) in
                     let result =  self.lyricParser.lyricByTime(Player.shared.currentTime().seconds, offset: offset)
-                    self.lyric = result.0
-                    self.index = result.1
-    //                print(result.0)
+                    if self.lyric != result.0 {
+                        self.lyric = result.0
+                    }
+                    if self.index != result.1 {
+                        self.index = result.1
+                    }
                 })
         }
     }
