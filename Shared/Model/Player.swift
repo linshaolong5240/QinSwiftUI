@@ -41,7 +41,7 @@ class Player: AVPlayer, ObservableObject {
     override func play() {
         super.play()
         self.addPeriodicTimeObserver()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//等待封面图片下载完成
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {//等待封面图片下载完成
             Player.shared.updateMPNowPlayingInfo()
         }
     }
