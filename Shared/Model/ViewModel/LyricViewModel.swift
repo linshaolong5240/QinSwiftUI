@@ -23,13 +23,15 @@ class LyricViewModel: ObservableObject {
         if lyricParser.lyrics.count > 1 {
             cancell = Timer.publish(every: every, on: .main, in: .default)
                 .autoconnect()
-                .sink(receiveValue: { (value) in
-                    let result =  self.lyricParser.lyricByTime(Player.shared.currentTime().seconds, offset: offset)
-                    if self.lyric != result.0 {
-                        self.lyric = result.0
-                    }
-                    if self.index != result.1 {
-                        self.index = result.1
+                .sink(receiveValue: { [weak self] (value) in
+                    if let lyricViewModel = self {
+                        let result =  lyricViewModel.lyricParser.lyricByTime(Player.shared.currentTime().seconds, offset: offset)
+                        if lyricViewModel.lyric != result.0 {
+                            lyricViewModel.lyric = result.0
+                        }
+                        if lyricViewModel.index != result.1 {
+                            lyricViewModel.index = result.1
+                        }
                     }
                 })
         }
