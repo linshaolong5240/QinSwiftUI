@@ -95,7 +95,7 @@ struct PlayingNowView: View {
                     }
                 }
                 ZStack {
-                    PlayingNowStatusView()
+                    PlayingNowStatusView(showMore: $showMore)
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     PlayinglistView(showList: $showMore, bottomType: $bottomType)
@@ -213,7 +213,8 @@ struct PlayingNowStatusView: View {
     
     private var playing: AppState.Playing { store.appState.playing }
     private var playingBinding: Binding<AppState.Playing> { $store.appState.playing }
-    
+    @Binding var showMore: Bool
+
     var body: some View {
         VStack {
             VStack {
@@ -230,6 +231,11 @@ struct PlayingNowStatusView: View {
             .padding()
             Spacer()
             LyricView(isOneLine: false)
+                .onTapGesture(perform: {
+                    withAnimation(.default) {
+                        showMore.toggle()
+                    }
+                })
             Spacer()
             HStack {
                 Text(String(format: "%02d:%02d", Int(playing.loadTime/60),Int(playing.loadTime)%60))
