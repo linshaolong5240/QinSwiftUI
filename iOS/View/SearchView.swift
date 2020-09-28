@@ -31,7 +31,9 @@ struct SearchView: View {
                     NEUBackwardButton()
                     TextField("搜索", text: searchBinding.keyword,
                               onEditingChanged: { isEditing in
-                                showCancel = isEditing
+                                if showCancel != isEditing {
+                                    showCancel = isEditing
+                                }
                               },
                               onCommit: {
                                 store.dispatch(.search(keyword: search.keyword, type: searchType))
@@ -172,7 +174,9 @@ struct SearchBarView: View {
                 TextField("搜索",
                           text: searchBinding.keyword,
                           onEditingChanged: { isEditing in
-                            showCancel = isEditing
+                            if showCancel != isEditing {
+                                showCancel = isEditing
+                            }
                           },
                           onCommit: {
                             if search.keyword.count > 0 {
