@@ -19,9 +19,6 @@ struct UserView: View {
     var body: some View {
         ZStack {
             NEUBackgroundView()
-                .onTapGesture{
-                    UIApplication.shared.endEditing()
-                }
             VStack(spacing: 20.0) {
                 HStack {
                     NEUBackwardButton()

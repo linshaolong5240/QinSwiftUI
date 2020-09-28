@@ -57,8 +57,8 @@
 		2BCCB2CF24DC74CD004CAD67 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2CE24DC74CD004CAD67 /* CryptoSwift */; };
 		2BCCB2D224DC79D4004CAD67 /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */; };
 		2BCCB2D324DC79D5004CAD67 /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */; };
-		2BCCB2D724DC79DC004CAD67 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */; };
-		2BCCB2D824DC79DC004CAD67 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */; };
+		2BCCB2D724DC79DC004CAD67 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */; };
+		2BCCB2D824DC79DC004CAD67 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */; };
 		2BCCB2D924DC79DC004CAD67 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */; };
 		2BCCB2DA24DC79DC004CAD67 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */; };
 		2BCCB2DB24DC79DC004CAD67 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */; };
@@ -141,7 +141,7 @@
 		2BCCB29824DC5A2B004CAD67 /* NEUView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUView.swift; sourceTree = "<group>"; };
 		2BCCB29A24DC5A2B004CAD67 /* NEUSFView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUSFView.swift; sourceTree = "<group>"; };
 		2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
-		2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
+		2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricParser.swift; sourceTree = "<group>"; };
@@ -302,7 +302,7 @@
 				2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */,
 				2BCCB2D124DC79D4004CAD67 /* Data+Extension.swift */,
 				2BCCB2D524DC79DC004CAD67 /* Dictionary+Extension.swift */,
-				2BCCB2D424DC79DC004CAD67 /* UIApplication+Extension.swift */,
+				2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -490,7 +490,7 @@
 				2BE89B15250F7F5100E0F278 /* NEUButton.swift in Sources */,
 				2BCCB2E024DC7A16004CAD67 /* LyricParser.swift in Sources */,
 				2BCCB32C24DC7EF8004CAD67 /* CommentViewModel.swift in Sources */,
-				2BCCB2D724DC79DC004CAD67 /* UIApplication+Extension.swift in Sources */,
+				2BCCB2D724DC79DC004CAD67 /* View+Extension.swift in Sources */,
 				2BCCB2F224DC7A62004CAD67 /* comment.swift in Sources */,
 				2B2D517824E39C1C007B52A4 /* SearchView.swift in Sources */,
 				2B47BE4D250BC22600848354 /* NEUDivider.swift in Sources */,
@@ -554,7 +554,7 @@
 				2B17DA78250E32F0009C6E7E /* NEUProgressStyle.swift in Sources */,
 				2B47BE4E250BC22600848354 /* NEUDivider.swift in Sources */,
 				2BCCB31F24DC7BCC004CAD67 /* AppState.swift in Sources */,
-				2BCCB2D824DC79DC004CAD67 /* UIApplication+Extension.swift in Sources */,
+				2BCCB2D824DC79DC004CAD67 /* View+Extension.swift in Sources */,
 				2BCCB2F324DC7A62004CAD67 /* comment.swift in Sources */,
 				2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
 				2BCCB32F24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,

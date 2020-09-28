@@ -14,6 +14,7 @@ struct SearchView: View {
     private var search: AppState.Search {store.appState.search}
     private var searchBinding: Binding<AppState.Search> {$store.appState.search}
     @State private var searchType: NeteaseCloudMusicApi.SearchType = .song
+    @State private var showCancel = false
     
     var body: some View {
         let searchTypeBinding = Binding<NeteaseCloudMusicApi.SearchType>(get: {
@@ -26,12 +27,23 @@ struct SearchView: View {
         return ZStack {
             NEUBackgroundView()
             VStack {
-                HStack(spacing: 20.0) {
+                HStack {
                     NEUBackwardButton()
-                    TextField("搜索", text: searchBinding.keyword, onCommit: {
-                        store.dispatch(.search(keyword: search.keyword, type: searchType))
-                    })
+                    TextField("搜索", text: searchBinding.keyword,
+                              onEditingChanged: { isEditing in
+                                showCancel = isEditing
+                              },
+                              onCommit: {
+                                store.dispatch(.search(keyword: search.keyword, type: searchType))
+                              })
                     .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
+                    if showCancel {
+                        Button(action: {
+                            hideKeyboard()
+                        }, label: {
+                            Text("取消")
+                        })
+                    }
                 }
                 .padding(.horizontal)
                 Picker(selection: searchTypeBinding, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
@@ -39,7 +51,7 @@ struct SearchView: View {
                     Text("歌单").tag(NeteaseCloudMusicApi.SearchType.playlist)
                 }/*@END_MENU_TOKEN@*/
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
+                .padding()
                 if search.searchRequesting {
                     Text("正在搜索...")
                         .foregroundColor(.secondTextColor)
@@ -149,19 +161,34 @@ struct SearchBarView: View {
     private var search: AppState.Search {store.appState.search}
     private var searchBinding: Binding<AppState.Search> {$store.appState.search}
     @State private var showSearch: Bool = false
+    @State private var showCancel = false
 
     var body: some View {
         VStack {
             NavigationLink(destination: SearchView(), isActive: $showSearch) {
                 EmptyView()
             }
-            TextField("搜索", text: searchBinding.keyword, onCommit: {
-                if search.keyword.count > 0 {
-                    showSearch = true
+            HStack {
+                TextField("搜索",
+                          text: searchBinding.keyword,
+                          onEditingChanged: { isEditing in
+                            showCancel = isEditing
+                          },
+                          onCommit: {
+                            if search.keyword.count > 0 {
+                                showSearch = true
+                            }
+                          })
+                .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
+                .foregroundColor(.mainTextColor)
+                if showCancel {
+                    Button(action: {
+                        hideKeyboard()
+                    }, label: {
+                        Text("取消")
+                    })
                 }
-            })
-            .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
-            .foregroundColor(.mainTextColor)
+            }
         }
     }
 }
