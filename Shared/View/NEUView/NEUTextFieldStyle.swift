@@ -17,6 +17,7 @@ struct NEUTextFieldStyle<Label>: TextFieldStyle where Label: View {
             label
                 .foregroundColor(.mainTextColor)
             configuration
+                .padding(.trailing)
         }
         .background(NEUTextFieldBackground())
     }
