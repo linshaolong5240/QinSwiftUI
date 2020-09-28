@@ -59,6 +59,11 @@ extension NeteaseCloudMusicApi {
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌曲评论
+//    说明 : 调用此接口 , 传入音乐 id 和 limit 参数 , 可获得该音乐的所有评论 ( 不需要 登录 )
+//    必选参数 : id: 音乐 id
+//    可选参数 : limit: 取出评论数量 , 默认为 20
+//    offset: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)*20, 其中 20 为 limit 的值
+//    before: 分页参数,取上一页最后一项的 time 获取下一页数据(获取超过5000条评论的时候需要用到)
     func commentMusic(id: Int, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/resource/comments/R_SO_4_\(id)"
         let data = ["rid": id,
