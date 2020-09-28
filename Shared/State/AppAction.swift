@@ -11,7 +11,8 @@ import Foundation
 enum AppAction {
     case commentLike(id: Int, cid: Int, like: Bool, type: NeteaseCloudMusicApi.CommentType)
     case commentMusic(id: Int, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0)
-    case commentMusicDone(result: Result<([Comment],[Comment]), AppError>)
+    case commentMusicDone(result: Result<([Comment],[Comment],Int), AppError>)
+    case commentMusicLoadMore
     case coverShape
     case initAction
     case like(id: Int, like: Bool)

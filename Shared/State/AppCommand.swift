@@ -48,6 +48,12 @@ struct CommentMusicCommand: AppCommand {
     let offset: Int
     let beforeTime: Int
     
+    init(id: Int = 0, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0) {
+        self.id = id
+        self.limit = limit
+        self.offset = offset
+        self.beforeTime = beforeTime
+    }
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.commentMusic(id: id, limit: limit, offset: offset, beforeTime: beforeTime) { (data, error) in
             guard error == nil else {
@@ -57,14 +63,15 @@ struct CommentMusicCommand: AppCommand {
             if data!["code"] as! Int == 200 {
                 var hotComments = [Comment]()
                 var comments = [Comment]()
+               
                 if let hotCommentsArray = data?["hotComments"] as? [NeteaseCloudMusicApi.ResponseData] {
                     hotComments = hotCommentsArray.map({$0.toData!.toModel(Comment.self)!})
                 }
                 if let commentsArray = data?["comments"] as? [NeteaseCloudMusicApi.ResponseData] {
                     comments = commentsArray.map({$0.toData!.toModel(Comment.self)!})
                 }
-                comments.append(contentsOf: hotComments)
-                store.dispatch(.commentMusicDone(result: .success((hotComments,comments))))
+                let total = data!["total"] as! Int
+                store.dispatch(.commentMusicDone(result: .success((hotComments,comments,total))))
             }else {
                 store.dispatch(.commentMusicDone(result: .failure(.commentMusic)))
             }

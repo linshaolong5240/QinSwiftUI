@@ -282,6 +282,7 @@ struct PlayingNowStatusView: View {
 struct CommentListView: View {
     @EnvironmentObject var store: Store
     private var comment: AppState.Comment { store.appState.comment }
+
     let id: Int
     
     var body: some View {
@@ -302,6 +303,7 @@ struct CommentListView: View {
             if comment.commentRequesting {
                 Text("正在加载...")
                     .foregroundColor(.secondTextColor)
+                Spacer()
             }else {
                 ScrollView {
                     VStack(alignment: .leading) {
@@ -311,7 +313,7 @@ struct CommentListView: View {
                             CommentRowView(viewModel: item, id: id, type: .song)
                             Divider()
                         }
-                        Text("最新评论(\(String(comment.comments.count)))")
+                        Text("最新评论(\(String(comment.total)))")
                             .foregroundColor(.mainTextColor)
                         ForEach(comment.comments) { item in
                             CommentRowView(viewModel: item, id: id, type: .song)
@@ -319,9 +321,17 @@ struct CommentListView: View {
                         }
                     }
                     .padding(.horizontal)
+                    if comment.comments.count < comment.total {
+                        Button(action: {
+                            Store.shared.dispatch(.commentMusicLoadMore)
+                        }, label: {
+                            Text("加载更多")
+                        })
+                    }
+                    Spacer()
+                        .frame(height: 20)
                 }
             }
-            Spacer()
         }
     }
 }

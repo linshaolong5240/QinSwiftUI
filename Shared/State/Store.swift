@@ -41,23 +41,29 @@ class Store: ObservableObject {
         switch action {
         case .commentLike(let id, let cid, let like, let type):
             appCommand = CommentLikeCommand(id: id, cid: cid, like: like, type: type)
-        case .coverShape:
-            appState.settings.coverShape = appState.settings.coverShape.next()
-            UserDefaults.standard.integer(forKey: "coverShape")
         case .commentMusic(let id, let limit, let offset, let beforeTime):
             appState.comment.commentRequesting = true
-            appState.comment.hotComments = [CommentViewModel]()
-            appState.comment.comments = [CommentViewModel]()
+            appState.comment.id = id
+            appState.comment.offset = offset
             appCommand = CommentMusicCommand(id: id, limit: limit, offset: offset, beforeTime: beforeTime)
         case .commentMusicDone(let result):
             switch result {
-            case .success(let comments):
-                appState.comment.hotComments = comments.0.map({CommentViewModel($0)})
-                appState.comment.comments = comments.1.map({CommentViewModel($0)})
+            case .success(let result):
+                appState.comment.hotComments.append(contentsOf: result.0.map({CommentViewModel($0)}))
+                appState.comment.comments.append(contentsOf: result.1.map({CommentViewModel($0)}))
+                appState.comment.total = result.2
             case .failure(let error):
                 appState.error = error
             }
             appState.comment.commentRequesting = false
+        case .commentMusicLoadMore:
+            appState.comment.offset += 1
+            let id = appState.comment.id
+            let offset = appState.comment.offset
+            appCommand = CommentMusicCommand(id: id, offset: offset)
+        case .coverShape:
+            appState.settings.coverShape = appState.settings.coverShape.next()
+            UserDefaults.standard.integer(forKey: "coverShape")
         case .initAction:
             appCommand = InitAcionCommand()
         case .like(let id, let like):

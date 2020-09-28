@@ -68,6 +68,9 @@ extension AppState {
         var commentRequesting = false
         var hotComments = [CommentViewModel]()
         var comments = [CommentViewModel]()
+        var id: Int = 0
+        var offset: Int = 0
+        var total: Int = 0
     }
     struct PlaylistDetail {
         var detail = PlaylistViewModel()

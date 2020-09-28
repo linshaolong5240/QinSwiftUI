@@ -63,7 +63,7 @@ extension NeteaseCloudMusicApi {
         let url = "https://music.163.com/weapi/v1/resource/comments/R_SO_4_\(id)"
         let data = ["rid": id,
                     "limit": limit,
-                    "offset": offset,
+                    "offset": offset * limit,
                     "beforeTime": beforeTime
         ]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
