@@ -45,6 +45,24 @@ extension NeteaseCloudMusicApi {
         let data = ["id": id]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    // 发送与删除评论
+    func comment(id: Int, cid: Int, content: String = "", type: CommentType, action: CommentAction, complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/resource/comments/\(action.rawValue)"
+        var data:[String : Any] = ["threadId": type.rawValue + String(id)]
+        if type == .event {
+            data["threadId"] = id
+        }
+        switch action {
+        case .add:
+            data["content"] = content
+        case .delete:
+            data["commentId"] = cid
+        case .reply:
+            data["commentId"] = cid
+            data["content"] = content
+        }
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     // 点赞与取消点赞评论
     // 动态点赞不需要传入 id 参数，需要传入动态的 threadId 参数
     func commentLike(id: Int, cid: Int, like: Bool, type: CommentType, complete: @escaping CompletionBlock) {
@@ -388,6 +406,11 @@ extension NeteaseCloudMusicApi {
         case dj = "A_DJ_1_"//  电台
         case vedio = "R_VI_62_"//  视频
         case event = "A_EV_2_"//  动态
+    }
+    enum CommentAction: String {
+        case add = "add"
+        case delete = "delete"
+        case reply = "reply"
     }
 }
 extension NeteaseCloudMusicApi {

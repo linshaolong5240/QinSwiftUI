@@ -12,6 +12,45 @@ protocol AppCommand {
     func execute(in store: Store)
 }
 
+struct CommentCommand: AppCommand {
+    let id: Int
+    let cid: Int
+    let content: String
+    let type: NeteaseCloudMusicApi.CommentType
+    let action: NeteaseCloudMusicApi.CommentAction
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.comment(id: id, cid: cid, content: content,type: type, action: action) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.commentDone(result: .failure(error!)))
+                return
+            }
+            if data!["code"] as! Int == 200 {
+                let args = (id, type)
+                store.dispatch(.commentDone(result: .success(args)))
+            }else {
+                if let code = data?["code"] as? Int ?? 0 {
+                    if let message = data?["message"] as? String ?? "" {
+                        store.dispatch(.commentDone(result: .failure(.comment(code: code, message: message))))
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct CommentDoneCommand: AppCommand {
+    let id: Int
+    let type: NeteaseCloudMusicApi.CommentType
+    
+    func execute(in store: Store) {
+        if type == .song {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                store.dispatch(.commentMusic(id: id))
+            }
+        }
+    }
+}
 struct CommentLikeCommand: AppCommand {
     let id: Int
     let cid: Int

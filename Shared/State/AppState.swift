@@ -66,6 +66,7 @@ extension AppState {
     }
     struct Comment {
         var commentRequesting = false
+        var commentMusicRequesting = false
         var hotComments = [CommentViewModel]()
         var comments = [CommentViewModel]()
         var id: Int = 0

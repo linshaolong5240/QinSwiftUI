@@ -67,8 +67,10 @@ struct PlayingNowView: View {
                         Button(action: {
                             showComment.toggle()
                             if showComment {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
+                                if store.appState.comment.id != playing.songDetail.id {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
+                                    }
                                 }
                             }
                             withAnimation(.default) {
@@ -282,7 +284,8 @@ struct PlayingNowStatusView: View {
 struct CommentListView: View {
     @EnvironmentObject var store: Store
     private var comment: AppState.Comment { store.appState.comment }
-
+    @State var editComment: String = ""
+    
     let id: Int
     
     var body: some View {
@@ -291,18 +294,21 @@ struct CommentListView: View {
                 Text("评论")
                     .font(.title)
                     .foregroundColor(.mainTextColor)
-                Spacer()
+                TextField("编辑评论", text: $editComment)
+                    .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "text.bubble", size: .small)))
                 Button(action: {
-                    
+                    hideKeyboard()
+                    Store.shared.dispatch(.comment(id: id, content: editComment, type: .song, action: .add))
+                    editComment = ""
                 }) {
-                    NEUSFView(systemName: "square.and.pencil", size: .small)
+                    NEUSFView(systemName: "arrow.up.message", size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
-            if comment.commentRequesting {
+            if comment.commentMusicRequesting {
                 Text("正在加载...")
-                    .foregroundColor(.secondTextColor)
+                    .foregroundColor(.mainTextColor)
                 Spacer()
             }else {
                 ScrollView {

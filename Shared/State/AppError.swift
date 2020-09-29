@@ -10,6 +10,7 @@ import Foundation
 
 enum AppError: Error, Identifiable {
     var id: String { localizedDescription }
+    case comment(code: Int, message: String)
     case commentMusic
     case like
     case likelist
@@ -34,6 +35,8 @@ enum AppError: Error, Identifiable {
 extension AppError {
     var localizedDescription: String {
         switch self {
+        case .comment(let code, let message):
+            return errorFormat(error: "发送评论错误", code: code, message: message)
         case .commentMusic:
             return "获取评论错误"
         case .like:

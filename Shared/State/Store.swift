@@ -39,12 +39,27 @@ class Store: ObservableObject {
         var appCommand: AppCommand? = nil
         
         switch action {
+        case .comment(let id, let cid, let content, let type, let action):
+            appState.comment.commentRequesting = true
+            appCommand = CommentCommand(id: id, cid: cid, content: content, type: type, action: action)
+        case .commentDone(let result):
+            switch result {
+            case .success(let args):
+                appCommand = CommentDoneCommand(id: args.id, type: args.type)
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.comment.commentRequesting = false
         case .commentLike(let id, let cid, let like, let type):
             appCommand = CommentLikeCommand(id: id, cid: cid, like: like, type: type)
         case .commentMusic(let id, let limit, let offset, let beforeTime):
-            appState.comment.commentRequesting = true
+            appState.comment.commentMusicRequesting = true
             appState.comment.id = id
             appState.comment.offset = offset
+            if offset == 0 {
+                appState.comment.hotComments = [CommentViewModel]()
+                appState.comment.comments = [CommentViewModel]()
+            }
             appCommand = CommentMusicCommand(id: id, limit: limit, offset: offset, beforeTime: beforeTime)
         case .commentMusicDone(let result):
             switch result {
@@ -55,7 +70,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-            appState.comment.commentRequesting = false
+            appState.comment.commentMusicRequesting = false
         case .commentMusicLoadMore:
             appState.comment.offset += 1
             let id = appState.comment.id
