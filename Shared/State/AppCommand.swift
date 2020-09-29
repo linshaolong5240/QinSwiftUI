@@ -26,7 +26,7 @@ struct CommentCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                let args = (id, type)
+                let args = (id, cid, type , action)
                 store.dispatch(.commentDone(result: .success(args)))
             }else {
                 if let code = data?["code"] as? Int ?? 0 {
@@ -42,7 +42,8 @@ struct CommentCommand: AppCommand {
 struct CommentDoneCommand: AppCommand {
     let id: Int
     let type: NeteaseCloudMusicApi.CommentType
-    
+    let action: NeteaseCloudMusicApi.CommentAction
+
     func execute(in store: Store) {
         if type == .song {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

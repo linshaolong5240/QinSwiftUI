@@ -63,6 +63,14 @@ extension AppState {
         }
         var showLoginView = false
         var theme: Theme = .light
+        var userId: Int {
+            get {
+                UserDefaults.standard.value(forKey: "userId") as! Int
+            }
+            set {
+                UserDefaults.standard.set(newValue, forKey: "userId")
+            }
+        }
     }
     struct Comment {
         var commentRequesting = false

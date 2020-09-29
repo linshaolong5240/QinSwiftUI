@@ -21,7 +21,7 @@ struct PlayingNowView: View {
     
     private var playing: AppState.Playing { store.appState.playing }
     private var playlists: AppState.Playlists {store.appState.playlists}
-
+    
     @State private var showMore: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
@@ -343,6 +343,9 @@ struct CommentListView: View {
 }
 
 struct CommentRowView: View {
+    @EnvironmentObject var store: Store
+    private var userId: Int {store.appState.settings.userId}
+
     @StateObject var viewModel: CommentViewModel
     let id: Int
     let type: NeteaseCloudMusicApi.CommentType
@@ -367,15 +370,25 @@ struct CommentRowView: View {
                 .foregroundColor(.secondTextColor)
                 Text(viewModel.content)
                     .foregroundColor(.mainTextColor)
-                if viewModel.beReplied.count > 0 {
-                    Button(action: {
-                        showBeReplied.toggle()
-                    }, label: {
-                        HStack(spacing: 0.0) {
-                            Text("\(viewModel.beReplied.count)条回复")
-                            Image(systemName: showBeReplied ? "chevron.down" : "chevron.up")
-                        }
-                    })
+                HStack {
+                    if viewModel.beReplied.count > 0 {
+                        Button(action: {
+                            showBeReplied.toggle()
+                        }, label: {
+                            HStack(spacing: 0.0) {
+                                Text("\(viewModel.beReplied.count)条回复")
+                                Image(systemName: showBeReplied ? "chevron.down" : "chevron.up")
+                            }
+                        })
+                    }
+                    Spacer()
+                    if viewModel.userId == userId {
+                        Button(action: {
+                            Store.shared.dispatch(.comment(id: id, cid: viewModel.commentId, type: type, action: .delete))
+                        }, label: {
+                            Text("删除")
+                        })
+                    }
                 }
                 if showBeReplied {
                     ForEach(viewModel.beReplied) { item in

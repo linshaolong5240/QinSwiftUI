@@ -45,7 +45,7 @@ class Store: ObservableObject {
         case .commentDone(let result):
             switch result {
             case .success(let args):
-                appCommand = CommentDoneCommand(id: args.id, type: args.type)
+                appCommand = CommentDoneCommand(id: args.id, type: args.type, action: args.action)
             case .failure(let error):
                 appState.error = error
             }
@@ -120,6 +120,7 @@ class Store: ObservableObject {
             switch result {
             case .success(let user):
                 appState.settings.loginUser = user
+                appState.settings.userId = user.uid
                 appCommand = LoginDoneCommand()
             case .failure(let error):
                 appState.settings.loginError = error
@@ -128,6 +129,7 @@ class Store: ObservableObject {
             appState.settings.showLoginView = show
         case .logout:
             appState.settings.loginUser = nil
+            appState.settings.userId = 0
             appCommand = LogoutCommand()
         case .pause:
             Player.shared.pause()

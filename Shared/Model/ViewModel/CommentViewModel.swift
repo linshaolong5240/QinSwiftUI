@@ -16,7 +16,7 @@ class CommentViewModel: ObservableObject, Identifiable {
     @Published var liked: Bool = false
     var likedCount: Int = 0
     var parentCommentId: Int = 0
-    
+    var userId: Int = 0
     var avatarUrl: String = ""
     var nickname: String = ""
     
@@ -37,7 +37,7 @@ class CommentViewModel: ObservableObject, Identifiable {
         self.liked = comment.liked
         self.likedCount = comment.likedCount
         self.parentCommentId = comment.parentCommentId
-        
+        self.userId = comment.user.userId
         self.avatarUrl = comment.user.avatarUrl
         self.nickname = comment.user.nickname
     }

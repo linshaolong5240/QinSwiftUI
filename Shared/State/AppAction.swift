@@ -10,7 +10,7 @@ import Foundation
 
 enum AppAction {
     case comment(id: Int = 0, cid: Int = 0, content: String = "", type: NeteaseCloudMusicApi.CommentType, action: NeteaseCloudMusicApi.CommentAction)
-    case commentDone(result: Result<(id: Int, type: NeteaseCloudMusicApi.CommentType), AppError>)
+    case commentDone(result: Result<(id: Int, cid: Int, type: NeteaseCloudMusicApi.CommentType, action: NeteaseCloudMusicApi.CommentAction), AppError>)
     case commentLike(id: Int, cid: Int, like: Bool, type: NeteaseCloudMusicApi.CommentType)
     case commentMusic(id: Int, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0)
     case commentMusicDone(result: Result<([Comment],[Comment],Int), AppError>)
