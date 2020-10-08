@@ -52,7 +52,7 @@ struct PlaylistDetailView: View {
                 }else {
                     DescriptionView(viewModel: viewModel)
                     HStack {
-                        Text("歌曲列表(\(String(viewModel.count))")
+                        Text("歌曲列表(\(String(viewModel.count)))")
                             .fontWeight(.bold)
                             .foregroundColor(.secondTextColor)
                         Spacer()
@@ -78,13 +78,10 @@ struct PlaylistDetailView: View {
                         }
                     }
                     .padding(.horizontal)
-                    VStack(spacing: 0) {
-                        Divider()
-                        if editModeBinding?.wrappedValue.isEditing ?? false {
-                            PlaylistDetailEditSongsView(isMoved: $isMoved)
-                        }else {
-                            SongListView(songs: viewModel.songs)
-                        }
+                    if editModeBinding?.wrappedValue.isEditing ?? false {
+                        PlaylistDetailEditSongsView(isMoved: $isMoved)
+                    }else {
+                        SongListView(songs: viewModel.songs)
                     }
                 }
             }

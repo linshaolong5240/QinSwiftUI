@@ -50,7 +50,7 @@ struct ArtistDetailView: View {
                         Text("MV").tag(Selection.mv)
                     }/*@END_MENU_TOKEN@*/
                     .pickerStyle(SegmentedPickerStyle())
-                    .padding()
+                    .padding(.horizontal)
                     switch selection {
                     case .album:
                         ArtistAlbumView(albums: artist.artistViewModel.albums)

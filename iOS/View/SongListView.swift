@@ -15,34 +15,32 @@ struct SongListView: View {
     @State var showPlayingNow: Bool = false
     
     var body: some View {
-        VStack {
-            ScrollView {
-                LazyVStack {
-                    ForEach(0..<songs.count, id: \.self) { index in
-                        SongRowView(viewModel: songs[index], action: {
-                            if  playing.songDetail.id == songs[index].id {
-                                store.dispatch(.PlayerPlayOrPause)
-                            }else {
-                                Store.shared.dispatch(.setPlayinglist(playinglist: songs, index: index))
-                                Store.shared.dispatch(.playByIndex(index: index))
-                            }
-                        })
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if  playing.songDetail.id == songs[index].id {
-                                showPlayingNow.toggle()
-                            }else {
-                                Store.shared.dispatch(.setPlayinglist(playinglist: songs, index: index))
-                                Store.shared.dispatch(.playByIndex(index: index))
-                            }
+        ScrollView {
+            LazyVStack {
+                ForEach(0..<songs.count, id: \.self) { index in
+                    SongRowView(viewModel: songs[index], action: {
+                        if  playing.songDetail.id == songs[index].id {
+                            store.dispatch(.PlayerPlayOrPause)
+                        }else {
+                            Store.shared.dispatch(.setPlayinglist(playinglist: songs, index: index))
+                            Store.shared.dispatch(.playByIndex(index: index))
                         }
-                        .padding(.horizontal)
+                    })
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if  playing.songDetail.id == songs[index].id {
+                            showPlayingNow.toggle()
+                        }else {
+                            Store.shared.dispatch(.setPlayinglist(playinglist: songs, index: index))
+                            Store.shared.dispatch(.playByIndex(index: index))
+                        }
                     }
+                    .padding(.horizontal)
                 }
             }
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
-                EmptyView()
-            }
+        }
+        NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
+            EmptyView()
         }
     }
 }

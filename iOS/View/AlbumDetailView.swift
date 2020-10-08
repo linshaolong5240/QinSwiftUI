@@ -39,9 +39,7 @@ struct AlbumDetailView: View {
                     Spacer()
                 }else {
                     DescriptionView(viewModel: album.albumViewModel)
-                    ScrollView {
-                        SongListView(songs: album.albumViewModel.songs)
-                    }
+                    SongListView(songs: album.albumViewModel.songs)
                 }
             }
         }
