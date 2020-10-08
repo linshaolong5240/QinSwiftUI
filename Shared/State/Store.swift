@@ -261,12 +261,12 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistDetail(let id):
-            if id != 0 && id != appState.playlistDetail.playlistViewModel.id {
+            if id == 0 {
+                appState.playlistDetail.playlistViewModel = appState.playlists.recommendSongsPlaylist
+            }else if id != appState.playlistDetail.playlistViewModel.id {
                 appState.playlistDetail.playlistDetailRequesting = true
                 appState.playlistDetail.playlistViewModel = PlaylistViewModel()
                 appCommand = PlaylistDetailCommand(id: id)
-            }else {
-                appState.playlistDetail.playlistViewModel = appState.playlists.recommendSongsPlaylist
             }
         case .playlistDetailDone(let result):
             switch result {
