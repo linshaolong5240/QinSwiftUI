@@ -42,7 +42,7 @@ struct DescriptionView: View {
                     .foregroundColor(.mainTextColor)
                 Text(configuration.description)
                     .foregroundColor(.secondTextColor)
-                    .lineLimit(showMoreDescription ? nil : 4)
+                    .lineLimit(showMoreDescription ? nil : 5)
             }
             .onTapGesture{
                 showMoreDescription.toggle()
