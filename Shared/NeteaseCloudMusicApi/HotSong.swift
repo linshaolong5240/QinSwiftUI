@@ -9,7 +9,7 @@ import Foundation
 
 struct HotSong: Codable, Identifiable {
     struct NoCopyrightRcmd: Codable {
-        var songId: Int?
+        var songId: String?
         var type: Int
         var typeDesc: String
     }
