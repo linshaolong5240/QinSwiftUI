@@ -9,6 +9,8 @@
 import Foundation
 
 enum AppAction {
+    case album(id: Int)
+    case albumDone(result: Result<AlbumViewModel, AppError>)
     case artistAlbum(id: Int,limit: Int = 30, offset: Int = 0)
     case artistAlbumDone(result: Result<[AlbumViewModel], AppError>)
     case artistMV(id: Int,limit: Int = 30, offset: Int = 0)

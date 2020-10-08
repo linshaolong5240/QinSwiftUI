@@ -23,7 +23,7 @@ struct HomeView: View {
             ZStack {
                 NEUBackgroundView()
                 if user != nil {
-                    VStack {
+                    VStack(spacing: 0) {
                         HStack(spacing: 20.0) {
                             Button(action: {}) {
                                 NavigationLink(destination: UserView()) {
@@ -34,6 +34,7 @@ struct HomeView: View {
                             SearchBarView()
                         }
                         .padding([.leading, .bottom, .trailing])
+                        Divider()
                         ScrollView {
                             PlaylistsView(title: "推荐的歌单",
                                           data: recommendPlaylists,

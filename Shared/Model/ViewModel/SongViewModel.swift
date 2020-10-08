@@ -26,12 +26,12 @@ class SongViewModel: Identifiable {
         self.id = id
         self.name = name
     }
-    init(_ hotSong: HotSong) {
-        self.albumPicURL = hotSong.album.picUrl
-        self.artists = hotSong.artists.map{Artist(id: $0.id, name: $0.name)}
-        self.durationTime = hotSong.duration
-        self.id = hotSong.id
-        self.name = hotSong.name
+    init(_ song: Song) {
+        self.albumPicURL = song.album.picUrl
+        self.artists = song.artists.map{Artist(id: $0.id, name: $0.name)}
+        self.durationTime = song.duration
+        self.id = song.id
+        self.name = song.name
     }
     init(_ songDetail: SongDetail) {
         self.albumPicURL = songDetail.al.picUrl

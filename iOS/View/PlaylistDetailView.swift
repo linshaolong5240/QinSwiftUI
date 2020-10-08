@@ -15,7 +15,7 @@ struct PlaylistDetailView: View {
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
     private var playlistDetail: AppState.PlaylistDetail { store.appState.playlistDetail }
-    private var viewModel: PlaylistViewModel { store.appState.playlistDetail.detail }
+    private var viewModel: PlaylistViewModel { store.appState.playlistDetail.playlistViewModel }
     @State var isMoved: Bool = false
     @State var showAction: Bool = false
     
@@ -42,14 +42,15 @@ struct PlaylistDetailView: View {
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 .padding(.horizontal)
-                if id != playlistDetail.detail.id {
+                .onAppear(perform: {
+                    Store.shared.dispatch(.playlistDetail(id: self.id))
+                })
+                if playlistDetail.playlistDetailRequesting {
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
-                        .onAppear(perform: {
-                            Store.shared.dispatch(.playlistDetail(id: self.id))
-                        })
-                }else if !playlistDetail.playlistDetailRequesting {
-                    PlaylistDetailDescriptionView(viewModel: viewModel)
+                    Spacer()
+                }else {
+                    DescriptionView(viewModel: viewModel)
                     HStack {
                         Group {
                             Text("歌曲列表")
@@ -61,7 +62,7 @@ struct PlaylistDetailView: View {
                         if type == .created {
                             NEUEditButton(action: {
                                 if isMoved {
-                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.trackIds))
+                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
                                 }
                             })
 //                            Button(action: {
@@ -80,14 +81,14 @@ struct PlaylistDetailView: View {
                         }
                     }
                     .padding(.horizontal)
-                    if editModeBinding?.wrappedValue.isEditing ?? false {
-                        PlaylistDetailEditSongsView(isMoved: $isMoved)
-                    }else {
-                        PlaylistDetailSongsView()
+                    VStack(spacing: 0) {
+                        Divider()
+                        if editModeBinding?.wrappedValue.isEditing ?? false {
+                            PlaylistDetailEditSongsView(isMoved: $isMoved)
+                        }else {
+                            SongListView(songs: viewModel.songs)
+                        }
                     }
-                }
-                if playlistDetail.playlistDetailRequesting {
-                    Spacer()
                 }
             }
         }
@@ -148,13 +149,13 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 struct PlaylistDetailEditSongsView: View {
     @EnvironmentObject var store: Store
     private var viewModel: PlaylistViewModel {
-        store.appState.playlistDetail.detail
+        store.appState.playlistDetail.playlistViewModel
     }
     @Binding var isMoved: Bool
     
     var body: some View {
         List {
-            ForEach(viewModel.tracks) { item in
+            ForEach(viewModel.songs) { item in
                 HStack {
                     VStack(alignment: .leading) {
                         Text(item.name)
@@ -180,92 +181,13 @@ struct PlaylistDetailEditSongsView: View {
     }
     func deleteAction(from source: IndexSet) {
         if let index = source.first {
-            viewModel.tracks.remove(at: index)
-            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.trackIds[index]]))
+            viewModel.songs.remove(at: index)
+            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.songIds[index]]))
         }
     }
     func moveAction(from source: IndexSet, to destination: Int) {
         isMoved = true
-        viewModel.trackIds.move(fromOffsets: source, toOffset: destination)
-        viewModel.tracks.move(fromOffsets: source, toOffset: destination)
-    }
-}
-
-struct PlaylistDetailSongsView: View {
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
-    private var viewModel: PlaylistViewModel {
-        store.appState.playlistDetail.detail
-    }
-    private var playing: AppState.Playing { store.appState.playing }
-    @State var showPlayingNow: Bool = false
-    
-    var body: some View {
-        VStack {
-            ScrollView {
-                LazyVStack {
-                    ForEach(0..<viewModel.tracks.count, id: \.self) { index in
-                        SongRowView(viewModel: viewModel.tracks[index], action: {
-                            if  playing.songDetail.id == viewModel.tracks[index].id {
-                                store.dispatch(.PlayerPlayOrPause)
-                            }else {
-                                Store.shared.dispatch(.setPlayinglist(playinglist: viewModel.tracks, index: index))
-                                Store.shared.dispatch(.playByIndex(index: index))
-                            }
-                        })
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if  playing.songDetail.id == viewModel.tracks[index].id {
-                                showPlayingNow.toggle()
-                            }else {
-                                Store.shared.dispatch(.setPlayinglist(playinglist: viewModel.tracks, index: index))
-                                Store.shared.dispatch(.playByIndex(index: index))
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-            }
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
-                EmptyView()
-            }
-        }
-    }
-}
-
-struct PlaylistDetailDescriptionView: View {
-    let viewModel: PlaylistViewModel
-    @State var showMoreDescription: Bool = false
-
-    var body: some View {
-        HStack(alignment: .top) {
-            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .medium)
-            VStack(alignment: .leading) {
-                Text(viewModel.name)
-                    .fontWeight(.bold)
-                    .foregroundColor(.mainTextColor)
-                Text(viewModel.description ?? "")
-                    .foregroundColor(.secondTextColor)
-                    .lineLimit(showMoreDescription ? nil : 3)
-                    .onTapGesture{
-                        showMoreDescription.toggle()
-                    }
-                Group {
-                    HStack {
-                        Image(systemName: "headphones")
-                        Text(":")
-                        Text("\(viewModel.playCount)")
-                    }
-                    HStack {
-                        Text("Id")
-                        Text(":")
-                        Text("\(String(viewModel.id))")
-                    }
-                }
-                .foregroundColor(.secondTextColor)
-            }
-            Spacer()
-        }
-        .padding(.horizontal)
+        viewModel.songIds.move(fromOffsets: source, toOffset: destination)
+        viewModel.songs.move(fromOffsets: source, toOffset: destination)
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 
 enum AppError: Error, Identifiable {
     var id: String { localizedDescription }
+    case album(code: Int, message: String)
     case artist(code: Int, message: String)
     case artistAlbum(code: Int, message: String)
     case artistIntroduction(code: Int, message: String)
@@ -40,6 +41,8 @@ enum AppError: Error, Identifiable {
 extension AppError {
     var localizedDescription: String {
         switch self {
+        case .album(let code, let message):
+            return errorFormat(error: "获取专辑详情错误", code: code, message: message)
         case .artist(let code, let message):
             return errorFormat(error: "获取歌手信息错误", code: code, message: message)
         case .artistAlbum(let code, let message):

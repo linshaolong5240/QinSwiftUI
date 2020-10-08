@@ -57,17 +57,17 @@ struct SearchView: View {
                 if search.searchRequesting {
                     Text("正在搜索...")
                         .foregroundColor(.secondTextColor)
+                    Spacer()
                 }else {
                     switch searchType {
                     case .song:
-                        SearchSongResultView()
+                        SongListView(songs: search.songs)
                     case .playlist:
                         SearchPlaylistResultView()
                     default:
-                        SearchSongResultView()
+                        Spacer()
                     }
                 }
-                Spacer()
             }
             .onAppear{
                 Store.shared.dispatch(.search(keyword: search.keyword))
@@ -107,53 +107,6 @@ struct SearchPlaylistResultRowView: View {
                     .foregroundColor(Color.secondTextColor)
             }
             Spacer()
-        }
-    }
-}
-struct SearchSongResultView: View {
-    @EnvironmentObject var store: Store
-    
-    private var playing: AppState.Playing {store.appState.playing}
-    private var search: AppState.Search {store.appState.search}
-
-    @State var showPlayingNow: Bool = false
-
-    var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(0..<search.songs.count, id: \.self) { index in
-                    Button(action: {
-                        Store.shared.dispatch(.setPlayinglist(playinglist: search.songs, index: index))
-                        if search.songs[index].id != playing.songDetail.id {
-                            Store.shared.dispatch(.playByIndex(index: index))
-                        }else {
-                            showPlayingNow.toggle()
-                        }
-                    }) {
-                        SongRowView(viewModel: search.songs[index], action: {
-                            if  playing.songDetail.id == search.songs[index].id {
-                                store.dispatch(.PlayerPlayOrPause)
-                            }else {
-                                Store.shared.dispatch(.setPlayinglist(playinglist: search.songs, index: index))
-                                Store.shared.dispatch(.playByIndex(index: index))
-                            }
-                        })
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if  playing.songDetail.id == search.songs[index].id {
-                                showPlayingNow.toggle()
-                            }else {
-                                Store.shared.dispatch(.setPlayinglist(playinglist: search.songs, index: index))
-                                Store.shared.dispatch(.playByIndex(index: index))
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-            }
-        }
-        NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
-            EmptyView()
         }
     }
 }

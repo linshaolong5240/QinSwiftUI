@@ -8,6 +8,41 @@
 import Foundation
 
 struct Album: Codable, Identifiable {
+    struct CommentThread: Codable {
+        var commentCount: Int
+        var hotCount: Int
+        var id: String
+//            var latestLikedUsers: [Any]?
+        var likedCount: Int
+        var resourceId: Int
+        var resourceInfo: ResourceInfo
+        var resourceOwnerId: Int
+        var resourceTitle: String
+        var resourceType: Int
+        var shareCount: Int
+    }
+    struct ResourceInfo: Codable {
+        var creator: Creator?
+//        var encodedId: Any?
+        var id: Int
+        var imgUrl: String
+        var name: String
+        var subTitle: String?
+        var userId: Int
+        var webUrl: String?
+    }
+    struct Info: Codable {
+        var commentCount: Int
+        var commentThread: CommentThread
+//        var comments: Any?
+//        var latestLikedUsers: Any?
+        var liked: Int
+        var likedCount: Int
+        var resourceId: Int
+        var resourceType: Int
+        var shareCount: Int
+        var threadId: String
+    }
     var alias: [String]
     var artist: Artist
     var artists: [Artist]
@@ -19,6 +54,7 @@ struct Album: Codable, Identifiable {
     var copyrightId: Int
     var description: String
     var id: Int
+    var Info: Info?
     var isSub: Bool?
     var mark: Int
     var name: String
@@ -30,7 +66,7 @@ struct Album: Codable, Identifiable {
     var picUrl: String
     var publishTime: Int
     var size: Int
-//    var songs: Any
+    var songs: [Song]?
     var status: Int
     var subType: String?
     var tags: String

@@ -8,13 +8,23 @@
 import Foundation
 
 class AlbumViewModel: Identifiable {
+    var coverUrl: String = ""
+    var description: String = ""
     var id: Int = 0
     var name: String = ""
-    var picUrl: String = ""
-
+    var songs = [SongViewModel]()
+    
+    init() {
+        
+    }
+    
     init(_ album: Album) {
+        self.coverUrl = album.picUrl
+        self.description = album.description
         self.id = album.id
         self.name = album.name
-        self.picUrl = album.picUrl
+        if let songs = album.songs {
+            self.songs = songs.map{SongViewModel($0)}
+        }
     }
 }

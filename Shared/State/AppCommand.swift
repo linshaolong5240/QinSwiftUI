@@ -12,6 +12,29 @@ protocol AppCommand {
     func execute(in store: Store)
 }
 
+struct AlbumCommand: AppCommand {
+    let id: Int
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.album(id: id) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.albumDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                let albumDict = data!["album"] as! NeteaseCloudMusicApi.ResponseData
+                let album = albumDict.toData!.toModel(Album.self)!
+                let albumViewModel = AlbumViewModel(album)
+                store.dispatch(.albumDone(result: .success(albumViewModel)))
+            }else {
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.albumDone(result: .failure(.album(code: code, message: message))))
+            }
+        }
+    }
+}
+
 struct ArtistAlbumCommand: AppCommand {
     let id: Int
     let limit: Int
@@ -112,7 +135,7 @@ struct ArtistsCommand: AppCommand {
                 let artist = artistDict.toData!.toModel(Artist.self)!
                 let hotSongsDictArray = data!["hotSongs"] as! [NeteaseCloudMusicApi.ResponseData]
                 let hotSongs = hotSongsDictArray
-                                .map{$0.toData!.toModel(HotSong.self)!}
+                                .map{$0.toData!.toModel(Song.self)!}
                                 .map{SongViewModel($0)}
                 let artistviewModel = ArtistDetailViewModel(artist: artist, hotSongs: hotSongs)
                 store.dispatch(.artistsDone(result: .success(artistviewModel)))

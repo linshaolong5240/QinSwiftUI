@@ -12,6 +12,7 @@ import Combine
 import CoreData
 
 struct AppState {
+    var album = Album()
     var artist = Artist()
     var comment = Comment()
     var lyric = Lyric()
@@ -74,6 +75,12 @@ extension AppState {
         }
     }
     
+    struct Album {
+        var albumRequesting: Bool = false
+        var albumViewModel =  AlbumViewModel()
+        var id: Int = 0
+    }
+    
     struct Artist {
         var artistRequesting: Bool = false
         var artistAlbumRequesting: Bool = false
@@ -96,7 +103,7 @@ extension AppState {
         var total: Int = 0
     }
     struct PlaylistDetail {
-        var detail = PlaylistViewModel()
+        var playlistViewModel = PlaylistViewModel()
         var playlistDetailRequesting: Bool = false
     }
     

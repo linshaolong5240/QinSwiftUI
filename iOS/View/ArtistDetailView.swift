@@ -43,19 +43,7 @@ struct ArtistDetailView: View {
                     Text("正在加载")
                     Spacer()
                 }else {
-                    HStack(alignment: .top) {
-                        NEUCoverView(url: artist.artistViewModel.img1v1Url, coverShape: .rectangle, size: .medium)
-                        VStack {
-                            Text(artist.artistViewModel.briefDesc)
-                                .lineLimit(showDesc ? nil : 6)
-                                .onTapGesture(perform: {
-                                    showDesc.toggle()
-                                })
-                        }
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-
+                    DescriptionView(viewModel: artist.artistViewModel)
                     Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
                         Text("热门歌曲").tag(Selection.hotSong)
                         Text("专辑").tag(Selection.album)
@@ -67,7 +55,7 @@ struct ArtistDetailView: View {
                     case .album:
                         ArtistAlbumView(albums: artist.artistViewModel.albums)
                     case .hotSong:
-                        ArtistHotSongView(hotSongs: artist.artistViewModel.hotSongs)
+                        SongListView(songs: artist.artistViewModel.hotSongs)
                     case .mv:
                         ArtistMVView(mvs: artist.artistViewModel.mvs)
                     }
@@ -86,21 +74,6 @@ struct ArtistView_Previews: PreviewProvider {
 }
 #endif
 
-struct ArtistHotSongView: View {
-    let hotSongs: [SongViewModel]
-    
-    var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(0..<hotSongs.count) { index in
-                    SongRowView(viewModel: hotSongs[index], action: {})
-                }
-            }
-            .padding(.horizontal)
-        }
-    }
-}
-
 struct ArtistAlbumView: View {
     let albums: [AlbumViewModel]
     
@@ -109,7 +82,9 @@ struct ArtistAlbumView: View {
         ScrollView {
             LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
                 ForEach(albums) { item in
-                    AlbumView(viewModel: item)
+                    NavigationLink(destination: AlbumDetailView(id: item.id)) {
+                        AlbumView(viewModel: item)
+                    }
                 }
             }/*@END_MENU_TOKEN@*/
         }
@@ -121,7 +96,7 @@ struct AlbumView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.picUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: viewModel.coverUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
                 Text(viewModel.name)

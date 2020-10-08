@@ -22,6 +22,7 @@ struct ArtistSublistView: View {
                 Text("\(artistSublist.count)收藏的歌手")
                     .foregroundColor(Color.secondTextColor)
             }
+            .padding(.horizontal)
             ScrollView(Axis.Set.horizontal) {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(artistSublist) { item in

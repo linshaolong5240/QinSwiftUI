@@ -16,14 +16,14 @@ class PlaylistViewModel: Identifiable {
     var coverImgUrl: String = ""
     var creator: String = ""
     var creatorId: Int = 0
-    var description: String?
+    var description: String = ""
     var id: Int = 0
     var name: String = ""
     var playCount: Int = 0
     var playlistType: PlaylistType = .recommend
     var subscribed: Bool = false
-    var trackIds = [Int]()
-    var tracks = [SongViewModel]()
+    var songIds = [Int]()
+    var songs = [SongViewModel]()
     var userId: Int = 0
     init() {
         
@@ -32,13 +32,13 @@ class PlaylistViewModel: Identifiable {
         self.count = playList.trackCount
         self.coverImgUrl = playList.coverImgUrl
         self.creator = playList.creator.nickname
-        self.description = playList.description
+        self.description = playList.description ?? ""
         self.id = playList.id
         self.name = playList.name
         self.playCount = playList.playCount
         self.subscribed = playList.subscribed
-        self.trackIds = playList.trackIds?.map({$0.id}) ?? [Int]()
-        self.tracks = playList.tracks?.map{ SongViewModel($0) } ?? [SongViewModel]()
+        self.songIds = playList.trackIds?.map({$0.id}) ?? [Int]()
+        self.songs = playList.tracks?.map{ SongViewModel($0) } ?? [SongViewModel]()
         self.userId = playList.userId
     }
     init(_ recommendPlaylist: RecommendPlaylist) {
@@ -56,13 +56,13 @@ class PlaylistViewModel: Identifiable {
 //        self.description = recommendSongs.recommendReasons.map{$0.reason}.joined(separator: "\n")
         self.description = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
         self.name = "每日歌曲推荐"
-        self.tracks = recommendSongs.dailySongs.map{SongViewModel($0)}
+        self.songs = recommendSongs.dailySongs.map{SongViewModel($0)}
     }
     init(_ searchPlaylist: SearchPlaylist) {
         self.count = searchPlaylist.trackCount
         self.coverImgUrl = searchPlaylist.coverImgUrl
         self.creator = searchPlaylist.creator.nickname
-        self.description = searchPlaylist.description
+        self.description = searchPlaylist.description ?? ""
         self.id = searchPlaylist.id
         self.name = searchPlaylist.name
         self.playCount = searchPlaylist.playCount

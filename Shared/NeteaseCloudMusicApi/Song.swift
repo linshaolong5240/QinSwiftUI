@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HotSong: Codable, Identifiable {
+struct Song: Codable, Identifiable {
     struct NoCopyrightRcmd: Codable {
         var songId: String?
         var type: Int
@@ -29,8 +29,10 @@ struct HotSong: Codable, Identifiable {
     var artists: [Artist]
 //    var audition: Any?
     var bMusic: Quality?
+    var commentThreadId: String?// album
     var copyFrom: String
     var copyright: Int?
+    var copyrightId: Int?// album
 //    var crbt: Any?
     var dayPlays: Int
     var disc: String
@@ -50,6 +52,7 @@ struct HotSong: Codable, Identifiable {
     var noCopyrightRcmd: NoCopyrightRcmd?
     var playedNum: Int
     var popularity: Int
+    var position: Int?// album
 //    var ringtone: Any?
 //    var rtUrl: String?
 //    var rtUrls: [String]?
