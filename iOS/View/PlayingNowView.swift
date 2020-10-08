@@ -182,7 +182,7 @@ struct PlayinglistView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(0 ..< playing.playinglist.count, id: \.self) { index in
-                        SongRowView(viewModel: playing.playinglist[index], index: index, action: {
+                        SongRowView(viewModel: playing.playinglist[index], action: {
                             if self.playing.index != index {
                                 Store.shared.dispatch(.playByIndex(index: index))
                             }else {
@@ -225,10 +225,11 @@ struct PlayingNowStatusView: View {
                     .fontWeight(.bold)
                     .lineLimit(1)
                     .foregroundColor(Color.mainTextColor)
-                Text(playing.songDetail.artists)
-                    .fontWeight(.bold)
-                    .lineLimit(1)
-                    .foregroundColor(Color.secondTextColor)
+                HStack {
+                    ForEach(playing.songDetail.artists) { item in
+                        NavigationLink("\(item.name )", destination: ArtistDetailView(id: item.id))
+                    }
+                }
             }
             .padding()
             Spacer()

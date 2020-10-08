@@ -15,11 +15,9 @@ struct SongRowView: View {
     }
     
     let viewModel: SongViewModel
-    let index: Int
     let action: () -> Void
-    init(viewModel: SongViewModel, index: Int = 0, action: @escaping () -> Void = {}) {
+    init(viewModel: SongViewModel, action: @escaping () -> Void = {}) {
         self.viewModel = viewModel
-        self.index = index
         self.action = action
     }
     var body: some View {
@@ -38,10 +36,14 @@ struct SongRowView: View {
 //                        Text(String(format: "%02d:%02d", Int(viewModel.durationTime/60),Int(viewModel.durationTime)%60))
 //                    }
 //                    .foregroundColor(Color.secondTextColor)
-                Text(viewModel.artists)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.secondTextColor)
-                    .lineLimit(1)
+                HStack {
+                    ForEach(viewModel.artists) { item in
+                        Text(item.name)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.secondTextColor)
+                            .lineLimit(1)
+                    }
+                }
             }
             .foregroundColor(player.isPlaying && viewModel.id == playing.songDetail.id ? .white : Color.secondTextColor)
             Spacer()

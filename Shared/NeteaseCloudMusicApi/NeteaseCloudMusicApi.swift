@@ -34,7 +34,29 @@ extension NeteaseCloudMusicApi {
         let data = ResponseData()
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
-    func artist(id: Int, complete: @escaping CompletionBlock) {
+    // 歌手专辑
+    func artistAlbum(id: Int, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/artist/albums/\(id)"
+        let data = [
+            "limit": limit,
+            "offset": offset * limit,
+            "total": true
+        ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    // 歌手MV
+    func artistMV(id: Int, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/artist/mvs"
+        let data = [
+            "artistId": id,
+            "limit": limit,
+            "offset": offset * limit,
+            "total": true
+        ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    // 歌手单曲
+    func artists(id: Int, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/\(id)"
         let data = ResponseData()
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)

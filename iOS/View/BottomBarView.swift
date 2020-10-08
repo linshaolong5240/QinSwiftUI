@@ -36,10 +36,12 @@ struct BottomBarView: View {
                             .lineLimit(1)
                             .foregroundColor(Color.mainTextColor)
                         HStack {
-                            Text(playing.songDetail.artists)
-                                .fontWeight(.bold)
-                                .lineLimit(1)
-                                .foregroundColor(Color.secondTextColor)
+                            ForEach(playing.songDetail.artists) { item in
+                                Text(item.name)
+                                    .fontWeight(.bold)
+                                    .lineLimit(1)
+                                    .foregroundColor(Color.secondTextColor)
+                            }
                             LyricView(isOneLine: true)
                             Spacer()
                         }

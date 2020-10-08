@@ -72,7 +72,7 @@ struct SearchPlaylist: Codable, Identifiable {
         var name: String
         var pic: Int
         var picId: Int
-//        var picId_str: String
+//        var picId_str: String?
         var picUrl: String
         var publishTime: Int
         var size: Int

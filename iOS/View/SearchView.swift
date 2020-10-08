@@ -130,7 +130,7 @@ struct SearchSongResultView: View {
                             showPlayingNow.toggle()
                         }
                     }) {
-                        SongRowView(viewModel: search.songs[index], index: index, action: {
+                        SongRowView(viewModel: search.songs[index], action: {
                             if  playing.songDetail.id == search.songs[index].id {
                                 store.dispatch(.PlayerPlayOrPause)
                             }else {

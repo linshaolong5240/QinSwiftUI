@@ -162,10 +162,14 @@ struct PlaylistDetailEditSongsView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.mainTextColor )
                             .lineLimit(1)
-                        Text(item.artists)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color.secondTextColor)
-                            .lineLimit(1)
+                        HStack {
+                            ForEach(item.artists) { item in
+                                Text(item.name)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color.secondTextColor)
+                                    .lineLimit(1)
+                            }
+                        }
                     }
                     Spacer()
                 }
@@ -201,7 +205,7 @@ struct PlaylistDetailSongsView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(0..<viewModel.tracks.count, id: \.self) { index in
-                        SongRowView(viewModel: viewModel.tracks[index], index: index, action: {
+                        SongRowView(viewModel: viewModel.tracks[index], action: {
                             if  playing.songDetail.id == viewModel.tracks[index].id {
                                 store.dispatch(.PlayerPlayOrPause)
                             }else {

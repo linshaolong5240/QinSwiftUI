@@ -12,6 +12,130 @@ protocol AppCommand {
     func execute(in store: Store)
 }
 
+struct ArtistAlbumCommand: AppCommand {
+    let id: Int
+    let limit: Int
+    let offset: Int
+    
+    init(id: Int, limit: Int = 30, offset: Int = 0) {
+        self.id = id
+        self.limit = limit
+        self.offset = offset
+    }
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.artistAlbum(id: id, limit: limit, offset: offset) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.artistAlbumDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                let albumsDict = data!["hotAlbums"] as! [NeteaseCloudMusicApi.ResponseData]
+                let albums = albumsDict.map{$0.toData!.toModel(Album.self)!}
+                let albumsViewModel = albums.map{ AlbumViewModel($0) }
+                store.dispatch(.artistAlbumDone(result: .success(albumsViewModel)))
+            }else {
+                if let code = data?["code"] as? Int ?? 0 {
+                    if let message = data?["message"] as? String ?? "" {
+                        store.dispatch(.artistAlbumDone(result: .failure(.comment(code: code, message: message))))
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ArtistMVCommand: AppCommand {
+    let id: Int
+    let limit: Int
+    let offset: Int
+    
+    init(id: Int, limit: Int = 30, offset: Int = 0) {
+        self.id = id
+        self.limit = limit
+        self.offset = offset
+    }
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.artistMV(id: id, limit: limit, offset: offset) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.artistMVDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                let mvsDict = data!["mvs"] as! [NeteaseCloudMusicApi.ResponseData]
+                let mvs = mvsDict.map{$0.toData!.toModel(MV.self)!}
+                store.dispatch(.artistMVDone(result: .success(mvs)))
+            }else {
+                if let code = data?["code"] as? Int ?? 0 {
+                    if let message = data?["message"] as? String ?? "" {
+                        store.dispatch(.artistMVDone(result: .failure(.artistMV(code: code, message: message))))
+                    }
+                }
+            }
+        }
+    }
+}
+struct ArtistsCommand: AppCommand {
+    let id: Int
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.artists(id: id) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.artistsDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                let artistDict = data!["artist"] as! NeteaseCloudMusicApi.ResponseData
+                let artist = artistDict.toData!.toModel(Artist.self)!
+                let hotSongsDictArray = data!["hotSongs"] as! [NeteaseCloudMusicApi.ResponseData]
+                let hotSongs = hotSongsDictArray
+                                .map{$0.toData!.toModel(HotSong.self)!}
+                                .map{SongViewModel($0)}
+                let artistviewModel = ArtistDetailViewModel(artist: artist, hotSongs: hotSongs)
+                store.dispatch(.artistsDone(result: .success(artistviewModel)))
+            }else {
+                if let code = data?["code"] as? Int ?? 0 {
+                    if let message = data?["message"] as? String ?? "" {
+                        store.dispatch(.artistsDone(result: .failure(.comment(code: code, message: message))))
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct ArtistsDoneCommand: AppCommand {
+    let id: Int
+    
+    func execute(in store: Store) {
+        store.dispatch(.artistIntroduction(id: id))
+        store.dispatch(.artistAlbum(id: id))
+        store.dispatch(.artistMV(id: id))
+    }
+}
+
+struct ArtistIntroductionCommand: AppCommand {
+    let id: Int
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.artistIntroduction(id: id) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.artistIntroductionDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                let briefDesc = data!["briefDesc"] as! String
+                store.dispatch(.artistIntroductionDone(result: .success(briefDesc)))
+            }else {
+                if let code = data?["code"] as? Int ?? 0 {
+                    if let message = data?["message"] as? String ?? "" {
+                        store.dispatch(.artistIntroductionDone(result: .failure(.comment(code: code, message: message))))
+                    }
+                }
+            }
+        }
+    }
+}
+
 struct CommentCommand: AppCommand {
     let id: Int
     let cid: Int

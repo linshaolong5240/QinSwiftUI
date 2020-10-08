@@ -39,6 +39,52 @@ class Store: ObservableObject {
         var appCommand: AppCommand? = nil
         
         switch action {
+        case .artistAlbum(let id, let limit, let offset):
+            appState.artist.artistAlbumRequesting = true
+            appCommand = ArtistAlbumCommand(id: id, limit: limit, offset: offset)
+        case .artistAlbumDone(let result):
+            switch result {
+            case .success(let albums):
+                appState.artist.artistViewModel.albums = albums
+            case .failure(let error):
+                appState.artist.error = error
+            }
+            appState.artist.artistAlbumRequesting = false
+        case .artistMV(let id, let limit, let offset):
+            appState.artist.artistMVRequesting = true
+            appCommand = ArtistMVCommand(id: id, limit: limit, offset: offset)
+        case .artistMVDone(let result):
+            switch result {
+            case .success(let mvs):
+                appState.artist.artistViewModel.mvs = mvs
+            case .failure(let error):
+                appState.artist.error = error
+            }
+            appState.artist.artistMVRequesting = false
+        case .artists(let id):
+            if id != appState.artist.id {
+                appState.artist.artistRequesting = true
+                appState.artist.id = id
+                appCommand = ArtistsCommand(id: id)
+            }
+        case .artistsDone(let result):
+            switch result {
+            case .success(let artistViewModel):
+                appState.artist.artistViewModel = artistViewModel
+                appCommand = ArtistsDoneCommand(id: appState.artist.id)
+            case .failure(let error):
+                appState.artist.error = error
+            }
+            appState.artist.artistRequesting = false
+        case .artistIntroduction(let id):
+            appCommand = ArtistIntroductionCommand(id: id)
+        case .artistIntroductionDone(let result):
+            switch result {
+            case .success(let briefDesc):
+                appState.artist.artistViewModel.briefDesc = briefDesc
+            case .failure(let error):
+                appState.artist.error = error
+            }
         case .comment(let id, let cid, let content, let type, let action):
             appState.comment.commentRequesting = true
             appCommand = CommentCommand(id: id, cid: cid, content: content, type: type, action: action)
