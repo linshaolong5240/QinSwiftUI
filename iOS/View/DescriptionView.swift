@@ -30,23 +30,22 @@ struct DescriptionView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            NEUCoverView(url: configuration.coverUrl, coverShape: .rectangle, size: .medium)
+            VStack(alignment: .leading) {
+                NEUCoverView(url: configuration.coverUrl, coverShape: .rectangle, size: .medium)
+                Text("Id:\(String(configuration.id))")
+                    .foregroundColor(.secondTextColor)
+            }
             VStack(alignment: .leading) {
                 Text(configuration.name)
                     .fontWeight(.bold)
+                    .lineLimit(showMoreDescription ? nil : 1)
                     .foregroundColor(.mainTextColor)
                 Text(configuration.description)
                     .foregroundColor(.secondTextColor)
                     .lineLimit(showMoreDescription ? nil : 4)
-                    .onTapGesture{
-                        showMoreDescription.toggle()
-                    }
-                HStack {
-                    Text("Id")
-                    Text(":")
-                    Text("\(String(configuration.id))")
-                }
-                .foregroundColor(.secondTextColor)
+            }
+            .onTapGesture{
+                showMoreDescription.toggle()
             }
             Spacer()
         }
