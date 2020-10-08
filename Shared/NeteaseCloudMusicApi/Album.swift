@@ -11,7 +11,7 @@ struct Album: Codable, Identifiable {
     var alias: [String]
     var artist: Artist
     var artists: [Artist]
-    var blurPicUrl: String
+    var blurPicUrl: String? //optional for Artist
     var briefDesc: String
     var commentThreadId: String
     var company: String?

@@ -12,7 +12,7 @@ struct ArtistSublistView: View {
     
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Text("收藏的歌手")
                     .font(.largeTitle)
@@ -27,6 +27,7 @@ struct ArtistSublistView: View {
                     ForEach(artistSublist) { item in
                         NavigationLink(destination: ArtistDetailView(id: item.id)) {
                             ArtistView(artist: item)
+                                .padding(.vertical)
                         }
                     }
                 }/*@END_MENU_TOKEN@*/

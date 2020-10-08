@@ -17,14 +17,13 @@ struct HomeView: View {
     private var artist: AppState.Artist {store.appState.artist}
 
     private var user: User? {store.appState.settings.loginUser}
-    @State var showUser: Bool = false
     
     var body: some View {
         NavigationView {
             ZStack {
                 NEUBackgroundView()
                 if user != nil {
-                    VStack(spacing: 0.0) {
+                    VStack {
                         HStack(spacing: 20.0) {
                             Button(action: {}) {
                                 NavigationLink(destination: UserView()) {
@@ -36,18 +35,16 @@ struct HomeView: View {
                         }
                         .padding([.leading, .bottom, .trailing])
                         ScrollView {
-                            VStack {
-                                PlaylistsView(title: "推荐的歌单",
-                                              data: recommendPlaylists,
-                                              type: .recommend)
-                                PlaylistsView(title: "创建的歌单",
-                                              data: playlists.createdPlaylist,
-                                              type: .created)
-                                PlaylistsView(title: "收藏的歌单",
-                                              data: playlists.subscribePlaylists,
-                                              type: .subscribed)
-                                ArtistSublistView(artistSublist: artist.artistSublist)
-                            }
+                            PlaylistsView(title: "推荐的歌单",
+                                          data: recommendPlaylists,
+                                          type: .recommend)
+                            PlaylistsView(title: "创建的歌单",
+                                          data: playlists.createdPlaylist,
+                                          type: .created)
+                            PlaylistsView(title: "收藏的歌单",
+                                          data: playlists.subscribePlaylists,
+                                          type: .subscribed)
+                            ArtistSublistView(artistSublist: artist.artistSublist)
                         }
                         BottomBarView()
                     }

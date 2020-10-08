@@ -217,11 +217,11 @@ struct NEUDarkImageView<S: Shape>: View {
             }
             .frame(width: size.width, height: size.width)
             .clipShape(outerShape)
-            .shadow(color: Color.white.opacity(0.1),
+            .shadow(color: Color.white.opacity(0.05),
                     radius: 10,
                     x: -innerPadding,
                     y: -innerPadding)
-            .shadow(color: Color.black.opacity(0.5),
+            .shadow(color: Color.black.opacity(0.25),
                     radius: 10,
                     x: innerPadding,
                     y: innerPadding)

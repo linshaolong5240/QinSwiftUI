@@ -22,7 +22,7 @@ struct PlaylistsView: View {
     @State var sheetType: SheetType = .manage
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 Text(title)
                     .font(.largeTitle)
@@ -105,6 +105,7 @@ struct PlaylistsView: View {
                     ForEach(data) { item in
                         NavigationLink(destination: PlaylistDetailView(id: item.id, type: type)) {
                             PlaylistColumnView(viewModel: item)
+                                .padding(.vertical)
                         }
                     }
 
@@ -165,15 +166,15 @@ struct PlaylistColumnView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .medium)
+            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
-                    .lineLimit(2)
-                    .frame(width: 130, alignment: .leading)
-                Text("\(viewModel.count) songs")
-                    .foregroundColor(Color.secondTextColor)
+                    .lineLimit(1)
+                    .frame(width: 110, alignment: .leading)
+//                Text("\(viewModel.count) songs")
+//                    .foregroundColor(Color.secondTextColor)
             }
             .padding(.leading)
         }
