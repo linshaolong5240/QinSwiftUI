@@ -355,7 +355,7 @@ struct CommentRowView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            NEUCoverView(url: viewModel.avatarUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: viewModel.avatarUrl, coverShape: .rectangle, size: .little)
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
                     Text(viewModel.nickname)
@@ -445,7 +445,7 @@ struct CreatedPlaylistView: View {
                             }
                         }) {
                             HStack {
-                                NEUCoverView(url: item.coverImgUrl, coverShape: .rectangle, size: .small)
+                                NEUCoverView(url: item.coverImgUrl, coverShape: .rectangle, size: .little)
                                 VStack(alignment: .leading) {
                                     Text(item.name)
                                         .foregroundColor(.mainTextColor)
@@ -485,7 +485,6 @@ struct PlayingExtensionControllView: View {
             }
         }
         .foregroundColor(Color.secondTextColor)
-        .padding(.horizontal)
     }
 }
 

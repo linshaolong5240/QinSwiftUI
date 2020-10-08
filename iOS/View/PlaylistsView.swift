@@ -100,14 +100,15 @@ struct PlaylistsView: View {
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {
-                HStack(alignment: .top, spacing: 10.0) {
+                let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+                LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(data) { item in
                         NavigationLink(destination: PlaylistDetailView(id: item.id, type: type)) {
                             PlaylistColumnView(viewModel: item)
                         }
                     }
-                }
-                .padding(.top)
+
+                }/*@END_MENU_TOKEN@*/
             }
         }
         .sheet(isPresented: $showSheet) {
@@ -146,7 +147,7 @@ struct PlaylistRowView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .little)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .fontWeight(.bold)
@@ -170,7 +171,7 @@ struct PlaylistColumnView: View {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(2)
-                    .frame(width: screen.width * 0.3 + 20, alignment: .leading)
+                    .frame(width: 130, alignment: .leading)
                 Text("\(viewModel.count) songs")
                     .foregroundColor(Color.secondTextColor)
             }

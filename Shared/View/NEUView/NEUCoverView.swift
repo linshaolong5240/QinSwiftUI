@@ -15,7 +15,7 @@ struct NEUCoverView_Previews: PreviewProvider {
             VStack(spacing: 50) {
                 NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
                              coverShape: .rectangle,
-                             size: .small)
+                             size: .little)
                 NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
                              coverShape: .rectangle,
                              size: .medium)
@@ -85,6 +85,14 @@ struct NEUCoverView: View {
         switch coverShape {
         case .circle:
             switch size {
+            case .little:
+                NEUImageView(url: url,
+                             size: size,
+                             innerShape: Circle(),
+                             outerShape: Circle(),
+                             innerPadding: innerPadding,
+                             shadowReverse: true,
+                             isOrigin: false)
             case .small:
                 NEUImageView(url: url,
                              size: size,
@@ -112,6 +120,13 @@ struct NEUCoverView: View {
             }
         case .rectangle:
             switch size {
+            case .little:
+                NEUImageView(url: url,
+                             size: size,
+                             innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
+                             outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),
+                             innerPadding: innerPadding,
+                             isOrigin: false)
             case .small:
                 NEUImageView(url: url,
                              size: size,

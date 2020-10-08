@@ -99,7 +99,7 @@ struct SearchPlaylistResultRowView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .little)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)

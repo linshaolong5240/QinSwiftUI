@@ -104,7 +104,7 @@ struct ArtistHotSongView: View {
 struct ArtistAlbumView: View {
     let albums: [AlbumViewModel]
     
-    private let columns: [GridItem] = [.init(.adaptive(minimum: screen.width * 0.3 + 20))]
+    private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
@@ -121,13 +121,13 @@ struct AlbumView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.picUrl, coverShape: .rectangle, size: .medium)
+            NEUCoverView(url: viewModel.picUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
-                    .frame(width: screen.width * 0.3 + 20, alignment: .leading)
+                    .frame(width: 110, alignment: .leading)
 //                Text("\(viewModel.count) songs")
 //                    .foregroundColor(Color.secondTextColor)
             }
@@ -139,7 +139,7 @@ struct AlbumView: View {
 struct ArtistMVView: View {
     let mvs: [MV]
     
-    private let columns: [GridItem] = [.init(.adaptive(minimum: screen.width * 0.3 + 20))]
+    private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
@@ -156,13 +156,13 @@ struct MVView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.imgurl, coverShape: .rectangle, size: .medium)
+            NEUCoverView(url: viewModel.imgurl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
-                    .frame(width: screen.width * 0.3 + 20, alignment: .leading)
+                    .frame(width: 110, alignment: .leading)
                 Text("\(viewModel.publishTime)")
                     .foregroundColor(Color.secondTextColor)
             }

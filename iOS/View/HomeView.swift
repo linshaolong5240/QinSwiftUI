@@ -45,13 +45,8 @@ struct HomeView: View {
                                 PlaylistsView(title: "收藏的歌单",
                                               data: playlists.subscribePlaylists,
                                               type: .subscribed)
-                                Spacer()
-                                    .frame(height: screen.height / 5)
                             }
                         }
-                    }
-                    VStack {
-                        Spacer()
                         BottomBarView()
                     }
                 }else {

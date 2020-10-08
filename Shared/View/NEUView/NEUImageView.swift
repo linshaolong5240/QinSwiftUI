@@ -11,18 +11,21 @@ import KingfisherSwiftUI
 import struct Kingfisher.DownsamplingImageProcessor
 
 enum NEUImageSize {
+    case little
     case small
     case medium
     case large
     
     var width: CGFloat {
         switch self {
+        case .little:
+            return 60
         case .small:
-            return screen.width * 0.15
+            return 110
         case .medium:
-            return screen.width * 0.3
+            return 130
         case .large:
-            return screen.width * 0.7
+            return 300
         }
     }
 }
@@ -256,12 +259,28 @@ struct NEUImageView_Previews: PreviewProvider {
         ZStack {
             NEUBackgroundView()
             VStack(spacing: 50) {
-                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
-                             coverShape: .rectangle,
-                             size: .small)
-                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
-                             coverShape: .rectangle,
-                             size: .medium)
+                HStack {
+                    ForEach(0 ..< 6) { item in
+                        NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+                                     coverShape: .rectangle,
+                                 size: .little)
+                    }
+                }
+                HStack {
+                    ForEach(0 ..< 3) { item in
+                        NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+                                     coverShape: .rectangle,
+                                 size: .small)
+                    }
+                }
+//                .padding(.horizontal)
+                HStack {
+                    ForEach(0 ..< 3) { item in
+                        NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+                                     coverShape: .rectangle,
+                                 size: .medium)
+                    }
+                }
                 NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
                              coverShape: .rectangle,
                              size: .large)
@@ -269,22 +288,22 @@ struct NEUImageView_Previews: PreviewProvider {
             }
         }
         .environment(\.colorScheme, .dark)
-        ZStack {
-            NEUBackgroundView()
-            VStack(spacing: 50) {
-                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
-                             coverShape: .circle,
-                             size: .small)
-                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
-                             coverShape: .circle,
-                             size: .medium)
-                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
-                             coverShape: .circle,
-                             size: .large)
-
-            }
-        }
-        .environment(\.colorScheme, .dark)
+//        ZStack {
+//            NEUBackgroundView()
+//            VStack(spacing: 50) {
+//                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+//                             coverShape: .circle,
+//                             size: .little)
+//                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+//                             coverShape: .circle,
+//                             size: .medium)
+//                NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
+//                             coverShape: .circle,
+//                             size: .large)
+//
+//            }
+//        }
+//        .environment(\.colorScheme, .dark)
     }
 }
 #endif
