@@ -34,11 +34,9 @@ struct ArtistAlbumCommand: AppCommand {
                 let albumsViewModel = albums.map{ AlbumViewModel($0) }
                 store.dispatch(.artistAlbumDone(result: .success(albumsViewModel)))
             }else {
-                if let code = data?["code"] as? Int ?? 0 {
-                    if let message = data?["message"] as? String ?? "" {
-                        store.dispatch(.artistAlbumDone(result: .failure(.comment(code: code, message: message))))
-                    }
-                }
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.artistAlbumDone(result: .failure(.artistAlbum(code: code, message: message))))
             }
         }
     }
@@ -65,15 +63,41 @@ struct ArtistMVCommand: AppCommand {
                 let mvs = mvsDict.map{$0.toData!.toModel(MV.self)!}
                 store.dispatch(.artistMVDone(result: .success(mvs)))
             }else {
-                if let code = data?["code"] as? Int ?? 0 {
-                    if let message = data?["message"] as? String ?? "" {
-                        store.dispatch(.artistMVDone(result: .failure(.artistMV(code: code, message: message))))
-                    }
-                }
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.artistMVDone(result: .failure(.artistMV(code: code, message: message))))
             }
         }
     }
 }
+
+struct ArtistSublistCommand: AppCommand {
+    let limit: Int
+    let offset: Int
+    
+    init(limit: Int = 30, offset: Int = 0) {
+        self.limit = limit
+        self.offset = offset
+    }
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.artistSublist(limit: limit, offset: offset) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.artistSublistDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                let artistSublistDict = data!["data"] as! [NeteaseCloudMusicApi.ResponseData]
+                let artistSublist = artistSublistDict.map{$0.toData!.toModel(ArtistSublist.self)!}
+                store.dispatch(.artistSublistDone(result: .success(artistSublist)))
+            }else {
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.artistSublistDone(result: .failure(.artistSublist(code: code, message: message))))
+            }
+        }
+    }
+}
+
 struct ArtistsCommand: AppCommand {
     let id: Int
     
@@ -249,6 +273,7 @@ struct InitAcionCommand: AppCommand {
             store.dispatch(.userPlaylist(uid: user.uid))
             store.dispatch(.recommendPlaylist)
             store.dispatch(.likelist(uid: user.uid))
+            store.dispatch(.artistSublist())
         }
     }
 }

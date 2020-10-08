@@ -55,6 +55,16 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    // 歌手关注列表
+    func artistSublist(limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/artist/sublist"
+        let data = [
+            "limit": limit,
+            "offset": offset * limit,
+            "total": true
+        ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     // 歌手单曲
     func artists(id: Int, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/\(id)"

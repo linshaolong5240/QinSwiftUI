@@ -22,7 +22,7 @@ struct PlaylistsView: View {
     @State var sheetType: SheetType = .manage
     
     var body: some View {
-        VStack(spacing: 0.0) {
+        VStack {
             HStack {
                 Text(title)
                     .font(.largeTitle)

@@ -78,8 +78,10 @@ extension AppState {
         var artistRequesting: Bool = false
         var artistAlbumRequesting: Bool = false
         var artistMVRequesting: Bool = false
-        
+        var artistSublistRequesting: Bool = false
+
         var artistViewModel = ArtistDetailViewModel()
+        var artistSublist = [ArtistSublist]()
         var error: AppError?
         var id: Int = 0
     }

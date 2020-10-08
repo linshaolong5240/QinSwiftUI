@@ -61,6 +61,17 @@ class Store: ObservableObject {
                 appState.artist.error = error
             }
             appState.artist.artistMVRequesting = false
+        case .artistSublist(let limit, let offset):
+            appState.artist.artistSublistRequesting = true
+            appCommand = ArtistSublistCommand(limit: limit, offset: offset)
+        case .artistSublistDone(let result):
+            switch result {
+            case .success(let artistSublist):
+                appState.artist.artistSublist = artistSublist
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.artist.artistSublistRequesting = false
         case .artists(let id):
             if id != appState.artist.id {
                 appState.artist.artistRequesting = true
