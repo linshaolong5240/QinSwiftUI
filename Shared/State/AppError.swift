@@ -11,6 +11,7 @@ import Foundation
 enum AppError: Error, Identifiable {
     var id: String { localizedDescription }
     case album(code: Int, message: String)
+    case albumSub(code: Int, message: String)
     case albumSublist(code: Int, message: String)
     case artist(code: Int, message: String)
     case artistAlbum(code: Int, message: String)
@@ -45,6 +46,8 @@ extension AppError {
         switch self {
         case .album(let code, let message):
             return errorFormat(error: "获取专辑详情错误", code: code, message: message)
+        case .albumSub(let code, let message):
+            return errorFormat(error: "收藏或取消收藏专辑错误", code: code, message: message)
         case .albumSublist(let code, let message):
             return errorFormat(error: "获取收藏的专辑列表错误", code: code, message: message)
         case .artist(let code, let message):

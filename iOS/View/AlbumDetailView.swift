@@ -25,10 +25,14 @@ struct AlbumDetailView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor)
                     Spacer()
-                    Button(action: {}) {
-                        NEUSFView(systemName: "ellipsis", size: .medium)
-                    }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    Button(action: {
+                        album.albumViewModel.isSub.toggle()
+                        Store.shared.dispatch(.albumSub(id: album.albumViewModel.id, sub: album.albumViewModel.isSub))
+                    }, label: {
+                        NEUSFView(systemName: "heart.fill",
+                                    active: album.albumViewModel.isSub)
+                    })
+                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: album.albumViewModel.isSub, shape: Circle()))
                 }
                 .padding(.horizontal)
                 .onAppear(perform: {

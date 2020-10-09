@@ -122,6 +122,7 @@ struct PlayingNowView: View {
         }
     }
 }
+
 #if DEBUG
 struct PlayingView_Previews: PreviewProvider {
     static var previews: some View {

@@ -34,9 +34,10 @@ struct ArtistDetailView: View {
                         artist.viewModel.followed.toggle()
                         Store.shared.dispatch(.artistSub(id: artist.viewModel.id, sub: artist.viewModel.followed))
                     }, label: {
-                        NEUSFView(systemName: artist.viewModel.followed ? "star.fill" : "star")
+                        NEUSFView(systemName: "heart.fill",
+                                  active: artist.viewModel.followed)
                     })
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: artist.viewModel.followed, shape: Circle()))
                 }
                 .padding(.horizontal)
                 .onAppear {

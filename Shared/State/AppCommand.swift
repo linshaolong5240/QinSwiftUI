@@ -63,12 +63,40 @@ struct AlbumDetailCommand: AppCommand {
 }
 
 struct AlbumSubCommand: AppCommand {
+    let id: Int
+    let sub: Bool
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.albumSub(id: id, sub: sub) { (data, error) in
+            print(data)
+            guard error == nil else {
+                store.dispatch(.albumSubDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                store.dispatch(.albumSubDone(result: .success(true)))
+            }else {
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.albumSubDone(result: .failure(.albumSub(code: code, message: message))))
+            }
+        }
+    }
+}
+
+struct AlbumSubDoneCommand: AppCommand {
+    
+    func execute(in store: Store) {
+        store.dispatch(.albumSublist())
+    }
+}
+
+struct AlbumSublistCommand: AppCommand {
     let limit: Int
     let offset: Int
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.albumSublist(limit: limit, offset: offset) { (data, error) in
-            print(data)
             guard error == nil else {
                 store.dispatch(.albumSublistDone(result: .failure(error!)))
                 return

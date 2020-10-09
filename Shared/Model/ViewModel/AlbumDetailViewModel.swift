@@ -11,6 +11,7 @@ class AlbumDetailViewModel: Identifiable {
     var coverUrl: String = ""
     var description: String = ""
     var id: Int = 0
+    var isSub: Bool = false
     var name: String = ""
     var songs = [SongViewModel]()
     
@@ -22,6 +23,7 @@ class AlbumDetailViewModel: Identifiable {
         self.coverUrl = album.picUrl
         self.description = album.description ?? ""
         self.id = album.id
+        self.isSub = album.isSub ?? false
         self.name = album.name
         self.songs = album.songs.map{SongViewModel($0)}
     }

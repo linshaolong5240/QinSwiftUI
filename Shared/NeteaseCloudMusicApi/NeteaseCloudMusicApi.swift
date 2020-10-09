@@ -41,6 +41,15 @@ extension NeteaseCloudMusicApi {
         let data = ["id": id]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    // 收藏与取消收藏专辑
+    func albumSub(id: Int, sub: Bool, complete: @escaping CompletionBlock) {
+        let action = sub ? "sub" : "unsub"
+        let url = "https://music.163.com/weapi/album/\(action)"
+        let data = [
+            "id": id,
+        ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     // 专辑收藏列表
     func albumSublist(limit: Int, offset: Int, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/album/sublist"

@@ -13,6 +13,8 @@ enum AppAction {
     case albumDone(result: Result<AlbumDetailViewModel, AppError>)
     case albumDetail(id: Int)
     case albumDetailDone(result: Result<AlbumDetailViewModel, AppError>)
+    case albumSub(id: Int, sub: Bool)
+    case albumSubDone(result: Result<Bool, AppError>)
     case albumSublist(limit: Int = 100, offset: Int = 0)
     case albumSublistDone(result: Result<[AlbumSub], AppError>)
     case artistAlbum(id: Int,limit: Int = 30, offset: Int = 0)
