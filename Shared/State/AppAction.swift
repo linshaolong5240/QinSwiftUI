@@ -54,7 +54,7 @@ enum AppAction {
     case playlistDetailDone(result: Result<Playlist, AppError>)
     case playlistOrderUpdate(ids: [Int], type: PlaylistType)
     case playlistOrderUpdateDone(result: Result<Bool, AppError>)
-    case playlistSubscibe(id: Int, subscibe: Bool)
+    case playlistSubscibe(id: Int, sub: Bool)
     case playlistSubscibeDone(result: Result<Bool, AppError>)
     case playlistTracks(pid: Int, op: Bool, ids: [Int])
     case playlistTracksDone(result: Result<Bool, AppError>)

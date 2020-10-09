@@ -68,7 +68,6 @@ struct AlbumSubCommand: AppCommand {
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.albumSub(id: id, sub: sub) { (data, error) in
-            print(data)
             guard error == nil else {
                 store.dispatch(.albumSubDone(result: .failure(error!)))
                 return
@@ -602,12 +601,10 @@ struct PlaylistDetailCommand: AppCommand {
 }
 
 struct PlaylistDetailDoneCommand: AppCommand {
-    let playlistDetail: Playlist
+    let ids: [Int]
     
     func execute(in store: Store) {
-        if let ids = playlistDetail.trackIds?.map({$0.id}) {
-            store.dispatch(.songsDetail(ids: ids))
-        }
+        store.dispatch(.songsDetail(ids: ids))
     }
 }
 
@@ -639,16 +636,16 @@ struct PlaylistOrderUpdateDoneCommand: AppCommand {
 
 struct PlaylisSubscribeCommand: AppCommand {
     let id: Int
-    let subcribe: Bool
+    let sub: Bool
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistSubscribe(id: id, subscribe: subcribe) { (data, error) in
+        NeteaseCloudMusicApi.shared.playlistSubscribe(id: id, sub: sub) { (data, error) in
             guard error == nil else {
                 store.dispatch(.playlistSubscibeDone(result: .failure(error!)))
                 return
             }
             if data!["code"] as! Int == 200 {
-                store.dispatch(.playlistSubscibeDone(result: .success(self.subcribe)))
+                store.dispatch(.playlistSubscibeDone(result: .success(true)))
             }else {
                 store.dispatch(.playlistSubscibeDone(result: .failure(.playlistSubscribeError)))
             }

@@ -298,7 +298,7 @@ class Store: ObservableObject {
         case .playlistDeleteDone(let result):
             switch result {
             case .success:
-//                appCommand = PlaylistDeleteDoneCommand()
+                appCommand = PlaylistDeleteDoneCommand()
                 break
             case .failure(let error):
                 appState.error = error
@@ -315,7 +315,12 @@ class Store: ObservableObject {
             switch result {
             case .success(let playlist):
                 appState.playlistDetail.playlistViewModel = PlaylistViewModel(playlist)
-                appCommand = PlaylistDetailDoneCommand(playlistDetail: playlist)
+                let ids = playlist.trackIds?.map({$0.id}) ?? [Int]()
+                if ids.count > 0 {
+                    appCommand = PlaylistDetailDoneCommand(ids: ids)
+                }else {
+                    appState.playlistDetail.playlistDetailRequesting = false
+                }
             case .failure(let error):
                 appState.error = error
                 appState.playlistDetail.playlistDetailRequesting = false
@@ -338,8 +343,8 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.playlists.playlistOrderUpdateRequesting = false
-        case .playlistSubscibe(let id, let subscibe):
-            appCommand = PlaylisSubscribeCommand(id: id, subcribe: subscibe)
+        case .playlistSubscibe(let id, let sub):
+            appCommand = PlaylisSubscribeCommand(id: id, sub: sub)
         case .playlistSubscibeDone(let result):
             switch result {
             case .success(let subscribe):

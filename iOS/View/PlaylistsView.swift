@@ -278,7 +278,7 @@ struct PlaylistManageView: View {
                 Store.shared.dispatch(.playlistDelete(pid: id))
             }
             if type == .subscribed {
-                Store.shared.dispatch(.playlistSubscibe(id: id, subscibe: false))
+                Store.shared.dispatch(.playlistSubscibe(id: id, sub: false))
             }
         }
     }

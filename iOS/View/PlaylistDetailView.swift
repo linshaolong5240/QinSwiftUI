@@ -17,7 +17,6 @@ struct PlaylistDetailView: View {
     private var playlistDetail: AppState.PlaylistDetail { store.appState.playlistDetail }
     private var viewModel: PlaylistViewModel { store.appState.playlistDetail.playlistViewModel }
     @State var isMoved: Bool = false
-    @State var showAction: Bool = false
     
     let id: Int
     let type: PlaylistType
@@ -34,12 +33,24 @@ struct PlaylistDetailView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor)
                     Spacer()
-                    Button(action: {
-                        showAction.toggle()
-                    }) {
-                        NEUSFView(systemName: "ellipsis", size: .medium)
+                    if type == .created {
+                        Button(action: {
+                            Store.shared.dispatch(.playlistDelete(pid: viewModel.id))
+                        }, label: {
+                            NEUSFView(systemName: "trash.fill")
+                        })
+                        .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    if type == .subscribed {
+                        Button(action: {
+                            viewModel.subscribed.toggle()
+                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed))
+                        }, label: {
+                            NEUSFView(systemName: "heart.fill",
+                                      active: viewModel.subscribed)
+                        })
+                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.subscribed, shape: Circle()))
+                    }
                 }
                 .padding(.horizontal)
                 .onAppear(perform: {
@@ -87,33 +98,6 @@ struct PlaylistDetailView: View {
             }
         }
         .navigationBarHidden(true)
-        .actionSheet(isPresented: $showAction, content: makeActionSheet)
-    }
-    
-    func makeActionSheet() -> ActionSheet {
-        var buttons = [ActionSheet.Button]()
-        switch type {
-        case .created:
-            buttons = [
-                .default(Text("编辑歌单")) {},
-                .default(Text("删除歌单")) { Store.shared.dispatch(.playlistDelete(pid: self.viewModel.id)) },
-                .cancel(Text("取消")) {self.showAction.toggle()},
-            ]
-        case .recommend:
-            buttons = [
-                .default(Text("收藏歌单")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: true)) },
-                .cancel(Text("取消")) {self.showAction.toggle()},
-            ]
-        case .recommendSongs:
-            break
-        case .subscribed:
-            buttons = [
-                .default(Text("取消收藏")) { Store.shared.dispatch(.playlistSubscibe(id: self.viewModel.id, subscibe: false)) },
-                .cancel(Text("取消")) {self.showAction.toggle()},
-            ]
-        }
-
-        return ActionSheet(title: Text("选项"), buttons: buttons)
     }
 }
 
