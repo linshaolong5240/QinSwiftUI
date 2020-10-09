@@ -73,19 +73,6 @@ struct PlaylistDetailView: View {
                                     Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
                                 }
                             })
-                            //                            Button(action: {
-                            //                                if editModeBinding?.wrappedValue.isEditing ?? false {
-                            //                                    editModeBinding?.wrappedValue = .inactive
-                            //                                    if isMoved {
-                            //                                        Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.trackIds))
-                            //                                    }
-                            //                                }else {
-                            //                                    editModeBinding?.wrappedValue = .active
-                            //                                }
-                            //                            }) {
-                            //                                NEUButtonView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
-                            //                            }
-                            //                            .buttonStyle(NEUButtonToggleStyle(isHighlighted: editModeBinding?.wrappedValue.isEditing ?? false, shape: Circle()))
                         }
                     }
                     .padding(.horizontal)
