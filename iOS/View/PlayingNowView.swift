@@ -21,10 +21,11 @@ struct PlayingNowView: View {
     
     private var playing: AppState.Playing { store.appState.playing }
     private var playlists: AppState.Playlists {store.appState.playlists}
-    
     @State private var showMore: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
+    @State private var showArtist: Bool = false
+    @State private var artistId: Int = 0
 
     var body: some View {
         ZStack {
@@ -97,7 +98,7 @@ struct PlayingNowView: View {
                     }
                 }
                 ZStack {
-                    PlayingNowStatusView(showMore: $showMore)
+                    PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     PlayinglistView(showList: $showMore, bottomType: $bottomType)
@@ -110,6 +111,9 @@ struct PlayingNowView: View {
                         .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                 }
+            }
+            NavigationLink(destination: ArtistDetailView(id: artistId), isActive: $showArtist) {
+                EmptyView()
             }
         }
         .navigationBarHidden(true)
@@ -209,13 +213,15 @@ struct PlayinglistView: View {
 }
 
 struct PlayingNowStatusView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
+    @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject private var store: Store
+    @EnvironmentObject private var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
     private var playingBinding: Binding<AppState.Playing> { $store.appState.playing }
     @Binding var showMore: Bool
+    @Binding var showArtist: Bool
+    @Binding var artistId: Int
 
     var body: some View {
         VStack {
@@ -227,7 +233,12 @@ struct PlayingNowStatusView: View {
                     .foregroundColor(Color.mainTextColor)
                 HStack {
                     ForEach(playing.songDetail.artists) { item in
-                        NavigationLink("\(item.name )", destination: ArtistDetailView(id: item.id))
+                        Button(action: {
+                            artistId = item.id
+                            showArtist.toggle()
+                        }, label: {
+                            Text("\(item.name)")
+                        })
                     }
                 }
             }
