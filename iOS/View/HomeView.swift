@@ -39,13 +39,13 @@ struct HomeView: View {
                         ScrollView {
                             PlaylistsView(title: "推荐的歌单",
                                           data: recommendPlaylists,
-                                          type: .recommend)
+                                          type: .subable)
                             PlaylistsView(title: "创建的歌单",
                                           data: playlists.createdPlaylist,
                                           type: .created)
                             PlaylistsView(title: "收藏的歌单",
                                           data: playlists.subscribePlaylists,
-                                          type: .subscribed)
+                                          type: .subable)
                             AlbumSublistView(albumSublist: album.albumSublist)
                             ArtistSublistView(artistSublist: artist.artistSublist)
                         }

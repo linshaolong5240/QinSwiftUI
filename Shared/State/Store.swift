@@ -331,7 +331,7 @@ class Store: ObservableObject {
             if type == .created {
                 allIds = ids + appState.playlists.subscribePlaylists.map{$0.id}
             }
-            if type == .subscribed {
+            if type == .subable {
                 allIds = appState.playlists.subscribePlaylists.map{$0.id} + ids
             }
             appCommand = PlaylistOrderUpdateCommand(ids: allIds)

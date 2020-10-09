@@ -81,7 +81,7 @@ struct PlaylistsView: View {
                     }
                     .menuStyle(NEUMenuStyle(shape: Circle()))
                 }
-                if type == .subscribed {
+                if type == .subable {
                     Menu {
                         Button(action: {
                             sheetType = .manage
@@ -134,7 +134,7 @@ struct PlaylistsView_Previews: PreviewProvider {
         ZStack {
             NEUBackgroundView()
             VStack {
-                PlaylistsView(title: "test", data: playlistsData, type: .subscribed)
+                PlaylistsView(title: "test", data: playlistsData, type: .subable)
                     .environmentObject(Store.shared)
 //                PlaylistView(viewModel: PlaylistViewModel())
 //                Spacer()
@@ -277,7 +277,7 @@ struct PlaylistManageView: View {
             if type == .created {
                 Store.shared.dispatch(.playlistDelete(pid: id))
             }
-            if type == .subscribed {
+            if type == .subable {
                 Store.shared.dispatch(.playlistSubscibe(id: id, sub: false))
             }
         }

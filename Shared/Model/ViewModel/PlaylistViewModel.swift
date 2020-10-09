@@ -8,7 +8,7 @@
 
 import Foundation
 enum PlaylistType: Int, Codable {
-    case created, recommend, recommendSongs, subscribed
+    case created, recommendSongs, subable
 }
 
 class PlaylistViewModel: Identifiable {
@@ -20,7 +20,7 @@ class PlaylistViewModel: Identifiable {
     var id: Int = 0
     var name: String = ""
     var playCount: Int = 0
-    var playlistType: PlaylistType = .recommend
+    var playlistType: PlaylistType = .subable
     var subscribed: Bool = false
     var songIds = [Int]()
     var songs = [SongViewModel]()
