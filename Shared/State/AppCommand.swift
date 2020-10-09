@@ -17,7 +17,6 @@ struct AlbumCommand: AppCommand {
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.album(id: id) { (data, error) in
-                        print(data)
             guard error == nil else {
                 store.dispatch(.albumDone(result: .failure(error!)))
                 return

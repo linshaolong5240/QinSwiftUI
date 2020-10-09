@@ -354,7 +354,7 @@ struct CommentRowView: View {
     @State var showBeReplied = false
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: 10) {
             NEUCoverView(url: viewModel.avatarUrl, coverShape: .rectangle, size: .little)
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
@@ -397,7 +397,6 @@ struct CommentRowView: View {
                     }
                 }
             }
-            Spacer()
         }
     }
 }
