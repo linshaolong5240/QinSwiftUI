@@ -35,7 +35,7 @@ struct PlayingNowView: View {
                         NEUBackwardButton()
                         Spacer()
                         Text("PLAYING NOW")
-                            .font(.title)
+//                            .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.mainTextColor)
                         Spacer()

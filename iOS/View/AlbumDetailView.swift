@@ -21,7 +21,7 @@ struct AlbumDetailView: View {
                     NEUBackwardButton()
                     Spacer()
                     Text("专辑详情")
-                        .font(.title)
+//                        .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor)
                     Spacer()

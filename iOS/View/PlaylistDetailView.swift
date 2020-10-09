@@ -29,8 +29,8 @@ struct PlaylistDetailView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    Text("PLAYLIST DETAIL")
-                        .font(.title)
+                    Text("歌单详情")
+//                        .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor)
                     Spacer()

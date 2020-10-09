@@ -26,7 +26,7 @@ struct ArtistDetailView: View {
                     NEUBackwardButton()
                     Spacer()
                     Text("歌手详情")
-                        .font(.title)
+//                        .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor)
                     Spacer()
