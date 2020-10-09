@@ -30,8 +30,11 @@ struct ArtistDetailView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.mainTextColor)
                     Spacer()
-                    Button(action: {}, label: {
-                        NEUSFView(systemName: "ellipsis")
+                    Button(action: {
+                        artist.viewModel.followed.toggle()
+                        Store.shared.dispatch(.artistSub(id: artist.viewModel.id, sub: artist.viewModel.followed))
+                    }, label: {
+                        NEUSFView(systemName: artist.viewModel.followed ? "star.fill" : "star")
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
@@ -43,7 +46,7 @@ struct ArtistDetailView: View {
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: artist.artistViewModel)
+                    DescriptionView(viewModel: artist.viewModel)
                     Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
                         Text("热门歌曲").tag(Selection.hotSong)
                         Text("专辑").tag(Selection.album)
@@ -53,11 +56,11 @@ struct ArtistDetailView: View {
                     .padding(.horizontal)
                     switch selection {
                     case .album:
-                        ArtistAlbumView(albums: artist.artistViewModel.albums)
+                        ArtistAlbumView(albums: artist.viewModel.albums)
                     case .hotSong:
-                        SongListView(songs: artist.artistViewModel.hotSongs)
+                        SongListView(songs: artist.viewModel.hotSongs)
                     case .mv:
-                        ArtistMVView(mvs: artist.artistViewModel.mvs)
+                        ArtistMVView(mvs: artist.viewModel.mvs)
                     }
                 }
             }

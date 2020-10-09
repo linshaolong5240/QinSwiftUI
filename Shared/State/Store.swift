@@ -71,7 +71,7 @@ class Store: ObservableObject {
         case .artistAlbumDone(let result):
             switch result {
             case .success(let albums):
-                appState.artist.artistViewModel.albums = albums
+                appState.artist.viewModel.albums = albums
             case .failure(let error):
                 appState.artist.error = error
             }
@@ -82,11 +82,20 @@ class Store: ObservableObject {
         case .artistMVDone(let result):
             switch result {
             case .success(let mvs):
-                appState.artist.artistViewModel.mvs = mvs
+                appState.artist.viewModel.mvs = mvs
             case .failure(let error):
                 appState.artist.error = error
             }
             appState.artist.artistMVRequesting = false
+        case .artistSub(let id, let sub):
+            appCommand = ArtistSubCommand(id: id, sub: sub)
+        case .artistSubDone(let result):
+            switch result {
+            case .success:
+                appCommand = ArtistSubDoneCommand()
+            case .failure(let error):
+                appState.error = error
+            }
         case .artistSublist(let limit, let offset):
             appState.artist.artistSublistRequesting = true
             appCommand = ArtistSublistCommand(limit: limit, offset: offset)
@@ -107,7 +116,7 @@ class Store: ObservableObject {
         case .artistsDone(let result):
             switch result {
             case .success(let artistViewModel):
-                appState.artist.artistViewModel = artistViewModel
+                appState.artist.viewModel = artistViewModel
                 appCommand = ArtistsDoneCommand(id: appState.artist.id)
             case .failure(let error):
                 appState.artist.error = error
@@ -118,7 +127,7 @@ class Store: ObservableObject {
         case .artistIntroductionDone(let result):
             switch result {
             case .success(let briefDesc):
-                appState.artist.artistViewModel.description = briefDesc
+                appState.artist.viewModel.description = briefDesc
             case .failure(let error):
                 appState.artist.error = error
             }

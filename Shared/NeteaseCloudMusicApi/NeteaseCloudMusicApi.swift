@@ -62,6 +62,16 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    // 收藏与取消收藏歌手
+    func artistSub(id: Int, sub: Bool, complete: @escaping CompletionBlock) {
+        let action = sub ? "sub" : "unsub"
+        let url = "https://music.163.com/weapi/artist/\(action)"
+        let data = [
+            "artistId": id,
+            "artistIds": "[\(id)]"
+        ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     // 歌手关注列表
     func artistSublist(limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/sublist"

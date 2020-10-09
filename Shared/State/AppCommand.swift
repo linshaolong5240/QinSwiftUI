@@ -121,6 +121,34 @@ struct ArtistMVCommand: AppCommand {
     }
 }
 
+struct ArtistSubCommand: AppCommand {
+    let id: Int
+    let sub: Bool
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.artistSub(id: id, sub: sub) { (data, error) in
+            guard error == nil else {
+                store.dispatch(.artistSubDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                store.dispatch(.artistSubDone(result: .success(true)))
+            }else {
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.artistSubDone(result: .failure(.artistSub(code: code, message: message))))
+            }
+        }
+    }
+}
+
+struct ArtistSubDoneCommand: AppCommand {
+    
+    func execute(in store: Store) {
+        store.dispatch(.artistSublist())
+    }
+}
+
 struct ArtistSublistCommand: AppCommand {
     let limit: Int
     let offset: Int
