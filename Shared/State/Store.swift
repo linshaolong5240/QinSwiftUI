@@ -52,6 +52,19 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.album.albumRequesting = false
+        case .albumDetail(let id):
+            if id != appState.album.albumViewModel.id {
+                appState.album.albumRequesting = true
+                appCommand = AlbumDetailCommand(id: id)
+            }
+        case .albumDetailDone(let result):
+            switch result {
+            case .success(let album):
+                appState.album.albumViewModel = album
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.album.albumRequesting = false
         case .artistAlbum(let id, let limit, let offset):
             appState.artist.artistAlbumRequesting = true
             appCommand = ArtistAlbumCommand(id: id, limit: limit, offset: offset)

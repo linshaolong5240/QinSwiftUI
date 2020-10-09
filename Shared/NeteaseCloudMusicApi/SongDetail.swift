@@ -12,20 +12,28 @@ struct SongDetail: Codable, Identifiable {
         var id: Int
         var name: String?
         var pic: Int
-        var picUrl: String
+        var picUrl: String? //optional for album detail
         var pic_str: String?//optional for playlist detail
 //        var tns: [Any]
     }
     struct Artist: Codable, Identifiable {
-        var alias: [String]
+        var alias: [String]? //optional for album detail
         var id: Int
         var name: String?
 //        var tns: [Any]
     }
-    struct Privilege: Codable {//recommendSongs
+    struct Privilege: Codable {// album,recommendSongs
+        struct ChargeInfoList: Codable {// album
+            var chargeMessage: String?
+            var chargeType: Int
+            var chargeUrl: String?
+            var rate: Int
+        }
+        var chargeInfoList: [ChargeInfoList]?//optional for recommendSongs
         var cp: Int
         var cs: Bool
         var dl: Int
+        var downloadMaxbr: Int? // optional for recommendSongs
         var fee: Int
         var fl: Int
         var flag: Int
@@ -51,7 +59,7 @@ struct SongDetail: Codable, Identifiable {
     var ar: [Artist]
     var cd: String?
     var cf: String?
-    var copyright: Int
+    var copyright: Int? //optional for album detail
     var cp: Int
 //    var crbt: Any?
     var djId: Int
@@ -62,25 +70,25 @@ struct SongDetail: Codable, Identifiable {
     var id: Int
     var l: Quality?
     var m: Quality?
-    var mark: Int
+    var mark: Int?//optional for album detail
     var mst: Int
     var mv: Int
     var name: String
     var no: Int
 //    var noCopyrightRcmd: Any?
-    var originCoverType: Int
+    var originCoverType: Int?//optional for album detail
     var pop: Int
     var privilege: Privilege?//optional for recommendSongs
     var pst: Int
-    var reason: String? //optional for recommendSongs
-    var publishTime: Int
+    var reason: String? //optional for album, recommendSongs
+    var publishTime: Int?//optional for album detail
     var rt: String?//optional for playlist detail
     var rtUrl: String?
     var rtUrls: [String]
     var rtype: Int
     var rurl: String?
-    var s_id: Int
-    var single: Int?//optional for playlist detail
+    var s_id: Int?//optional for album detail
+    var single: Int?//optional for album,playlist detail
     var st: Int
     var t: Int
     var v: Int

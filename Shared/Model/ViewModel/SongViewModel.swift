@@ -34,7 +34,7 @@ class SongViewModel: Identifiable {
         self.name = song.name
     }
     init(_ songDetail: SongDetail) {
-        self.albumPicURL = songDetail.al.picUrl
+        self.albumPicURL = songDetail.al.picUrl ?? ""
         self.artists = songDetail.ar.map{Artist(id: $0.id, name: $0.name ?? "None")}
         self.durationTime = songDetail.dt / 1000
         self.id = songDetail.id

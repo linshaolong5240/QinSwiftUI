@@ -47,12 +47,12 @@ struct Album: Codable, Identifiable {
     var artist: Artist
     var artists: [Artist]
     var blurPicUrl: String? //optional for Artist
-    var briefDesc: String
+    var briefDesc: String?
     var commentThreadId: String
     var company: String?
     var companyId: Int
     var copyrightId: Int
-    var description: String
+    var description: String?
     var id: Int
     var Info: Info?
     var isSub: Bool?
@@ -66,7 +66,7 @@ struct Album: Codable, Identifiable {
     var picUrl: String
     var publishTime: Int
     var size: Int
-    var songs: [Song]?
+    var songs: [SongDetail]
     var status: Int
     var subType: String?
     var tags: String

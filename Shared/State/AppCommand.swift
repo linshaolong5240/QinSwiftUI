@@ -17,13 +17,17 @@ struct AlbumCommand: AppCommand {
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.album(id: id) { (data, error) in
+                        print(data)
             guard error == nil else {
                 store.dispatch(.albumDone(result: .failure(error!)))
                 return
             }
             if data?["code"] as? Int == 200 {
                 let albumDict = data!["album"] as! NeteaseCloudMusicApi.ResponseData
-                let album = albumDict.toData!.toModel(Album.self)!
+                var album = albumDict.toData!.toModel(Album.self)!
+                let songDicts = data!["songs"] as! [NeteaseCloudMusicApi.ResponseData]
+                let songs = songDicts.map{$0.toData!.toModel(SongDetail.self)!}
+                album.songs = songs
                 let albumViewModel = AlbumViewModel(album)
                 store.dispatch(.albumDone(result: .success(albumViewModel)))
             }else {
@@ -31,6 +35,30 @@ struct AlbumCommand: AppCommand {
                 let message = data?["message"] as? String ?? "错误信息解码错误"
                 store.dispatch(.albumDone(result: .failure(.album(code: code, message: message))))
             }
+        }
+    }
+}
+
+struct AlbumDetailCommand: AppCommand {
+    let id: Int
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.albumDetail(id: id) { (data, error) in
+//            print(data)
+//            guard error == nil else {
+//                store.dispatch(.albumDone(result: .failure(error!)))
+//                return
+//            }
+//            if data?["code"] as? Int == 200 {
+//                let albumDict = data!["album"] as! NeteaseCloudMusicApi.ResponseData
+//                let album = albumDict.toData!.toModel(Album.self)!
+//                let albumViewModel = AlbumViewModel(album)
+//                store.dispatch(.albumDone(result: .success(albumViewModel)))
+//            }else {
+//                let code = data?["code"] as? Int ?? -1
+//                let message = data?["message"] as? String ?? "错误信息解码错误"
+//                store.dispatch(.albumDone(result: .failure(.album(code: code, message: message))))
+//            }
         }
     }
 }

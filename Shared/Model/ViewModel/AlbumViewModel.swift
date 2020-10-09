@@ -20,11 +20,9 @@ class AlbumViewModel: Identifiable {
     
     init(_ album: Album) {
         self.coverUrl = album.picUrl
-        self.description = album.description
+        self.description = album.description ?? ""
         self.id = album.id
         self.name = album.name
-        if let songs = album.songs {
-            self.songs = songs.map{SongViewModel($0)}
-        }
+        self.songs = album.songs.map{SongViewModel($0)}
     }
 }
