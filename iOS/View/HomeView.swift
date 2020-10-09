@@ -14,6 +14,7 @@ struct HomeView: View {
     
     private var recommendPlaylists: [PlaylistViewModel] {store.appState.playlists.recommendPlaylists}
     private var playlists: AppState.Playlists {store.appState.playlists}
+    private var album: AppState.Album {store.appState.album}
     private var artist: AppState.Artist {store.appState.artist}
 
     private var user: User? {store.appState.settings.loginUser}
@@ -45,6 +46,7 @@ struct HomeView: View {
                             PlaylistsView(title: "收藏的歌单",
                                           data: playlists.subscribePlaylists,
                                           type: .subscribed)
+                            AlbumSublistView(albumSublist: album.albumSublist)
                             ArtistSublistView(artistSublist: artist.artistSublist)
                         }
                         BottomBarView()

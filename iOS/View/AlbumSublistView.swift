@@ -1,33 +1,33 @@
 //
-//  ArtistSublistView.swift
+//  AlbumSublistView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/8.
+//  Created by 林少龙 on 2020/10/9.
 //
 
 import SwiftUI
 
-struct ArtistSublistView: View {
-    let artistSublist: [ArtistSub]
+struct AlbumSublistView: View {
+    let albumSublist: [AlbumSub]
     
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("收藏的歌手")
+                Text("收藏的专辑")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                 Spacer()
-                Text("\(artistSublist.count)收藏的歌手")
+                Text("\(albumSublist.count)收藏的专辑")
                     .foregroundColor(Color.secondTextColor)
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal) {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                    ForEach(artistSublist) { item in
-                        NavigationLink(destination: ArtistDetailView(id: item.id)) {
-                            ArtistView(artist: item)
+                    ForEach(albumSublist) { item in
+                        NavigationLink(destination: AlbumDetailView(id: item.id)) {
+                            AlbumSubView(album: item)
                                 .padding(.vertical)
                         }
                     }
@@ -38,22 +38,22 @@ struct ArtistSublistView: View {
 }
 
 #if DEBUG
-struct ArtistSublistView_Previews: PreviewProvider {
+struct AlbumSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        ArtistSublistView(artistSublist: [ArtistSub]())
+        AlbumSublistView(albumSublist: [AlbumSub]())
     }
 }
 #endif
 
-struct ArtistView: View {
-    let artist: ArtistSub
+struct AlbumSubView: View {
+    let album: AlbumSub
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: artist.picUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: album.picUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
-                Text(artist.name)
+                Text(album.name)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                     .frame(width: 110, alignment: .leading)

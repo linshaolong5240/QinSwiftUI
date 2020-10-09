@@ -77,8 +77,9 @@ extension AppState {
     
     struct Album {
         var albumRequesting: Bool = false
+        var albumSublistRequesting: Bool = false
         var albumViewModel =  AlbumDetailViewModel()
-        var id: Int = 0
+        var albumSublist = [AlbumSub]()
     }
     
     struct Artist {
@@ -88,7 +89,7 @@ extension AppState {
         var artistSublistRequesting: Bool = false
 
         var viewModel = ArtistDetailViewModel()
-        var artistSublist = [ArtistSublist]()
+        var artistSublist = [ArtistSub]()
         var error: AppError?
         var id: Int = 0
     }

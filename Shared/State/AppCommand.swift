@@ -62,6 +62,30 @@ struct AlbumDetailCommand: AppCommand {
     }
 }
 
+struct AlbumSubCommand: AppCommand {
+    let limit: Int
+    let offset: Int
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.albumSublist(limit: limit, offset: offset) { (data, error) in
+            print(data)
+            guard error == nil else {
+                store.dispatch(.albumSublistDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                let sublistDict = data!["data"] as! [NeteaseCloudMusicApi.ResponseData]
+                let sublist = sublistDict.map{$0.toData!.toModel(AlbumSub.self)!}
+                store.dispatch(.albumSublistDone(result: .success(sublist)))
+            }else {
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.albumSublistDone(result: .failure(.albumSublist(code: code, message: message))))
+            }
+        }
+    }
+}
+
 struct ArtistAlbumCommand: AppCommand {
     let id: Int
     let limit: Int
@@ -165,7 +189,7 @@ struct ArtistSublistCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 let artistSublistDict = data!["data"] as! [NeteaseCloudMusicApi.ResponseData]
-                let artistSublist = artistSublistDict.map{$0.toData!.toModel(ArtistSublist.self)!}
+                let artistSublist = artistSublistDict.map{$0.toData!.toModel(ArtistSub.self)!}
                 store.dispatch(.artistSublistDone(result: .success(artistSublist)))
             }else {
                 let code = data?["code"] as? Int ?? -1
@@ -351,6 +375,7 @@ struct InitAcionCommand: AppCommand {
             store.dispatch(.userPlaylist(uid: user.uid))
             store.dispatch(.recommendPlaylist)
             store.dispatch(.likelist(uid: user.uid))
+            store.dispatch(.albumSublist())
             store.dispatch(.artistSublist())
         }
     }

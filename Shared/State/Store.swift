@@ -65,6 +65,17 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.album.albumRequesting = false
+        case .albumSublist(let limit, let offset):
+            appState.album.albumSublistRequesting = true
+            appCommand = AlbumSubCommand(limit: limit, offset: offset)
+        case .albumSublistDone(let result):
+            switch result {
+            case .success(let sublist):
+                appState.album.albumSublist = sublist
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.album.albumSublistRequesting = false
         case .artistAlbum(let id, let limit, let offset):
             appState.artist.artistAlbumRequesting = true
             appCommand = ArtistAlbumCommand(id: id, limit: limit, offset: offset)

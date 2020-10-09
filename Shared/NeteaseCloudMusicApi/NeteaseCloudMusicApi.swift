@@ -41,6 +41,16 @@ extension NeteaseCloudMusicApi {
         let data = ["id": id]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    // 专辑收藏列表
+    func albumSublist(limit: Int, offset: Int, complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/album/sublist"
+        let data = [
+            "limit": limit,
+            "offset": offset * limit,
+            "total": true
+        ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     // 歌手专辑
     func artistAlbum(id: Int, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/albums/\(id)"
@@ -72,7 +82,7 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
-    // 歌手关注列表
+    // 歌手收藏列表
     func artistSublist(limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/sublist"
         let data = [
