@@ -75,7 +75,7 @@ struct ArtistView_Previews: PreviewProvider {
 #endif
 
 struct ArtistAlbumView: View {
-    let albums: [AlbumViewModel]
+    let albums: [AlbumDetailViewModel]
     
     private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
     var body: some View {
@@ -92,7 +92,7 @@ struct ArtistAlbumView: View {
 }
 
 struct AlbumView: View {
-    let viewModel: AlbumViewModel
+    let viewModel: AlbumDetailViewModel
     
     var body: some View {
         VStack(alignment: .leading) {

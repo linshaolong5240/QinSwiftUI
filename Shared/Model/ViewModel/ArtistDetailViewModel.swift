@@ -16,7 +16,7 @@ class ArtistDetailViewModel {
     var id: Int = 0
     var name: String = ""
     
-    var albums = [AlbumViewModel]()
+    var albums = [AlbumDetailViewModel]()
     var hotSongs = [SongViewModel]()
     var mvs = [MV]()
     

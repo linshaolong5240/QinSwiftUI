@@ -77,7 +77,7 @@ extension AppState {
     
     struct Album {
         var albumRequesting: Bool = false
-        var albumViewModel =  AlbumViewModel()
+        var albumViewModel =  AlbumDetailViewModel()
         var id: Int = 0
     }
     

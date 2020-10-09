@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AlbumViewModel: Identifiable {
+class AlbumDetailViewModel: Identifiable {
     var coverUrl: String = ""
     var description: String = ""
     var id: Int = 0

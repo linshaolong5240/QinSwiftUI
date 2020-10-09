@@ -28,7 +28,7 @@ struct AlbumCommand: AppCommand {
                 let songDicts = data!["songs"] as! [NeteaseCloudMusicApi.ResponseData]
                 let songs = songDicts.map{$0.toData!.toModel(SongDetail.self)!}
                 album.songs = songs
-                let albumViewModel = AlbumViewModel(album)
+                let albumViewModel = AlbumDetailViewModel(album)
                 store.dispatch(.albumDone(result: .success(albumViewModel)))
             }else {
                 let code = data?["code"] as? Int ?? -1
@@ -82,7 +82,7 @@ struct ArtistAlbumCommand: AppCommand {
             if data?["code"] as? Int == 200 {
                 let albumsDict = data!["hotAlbums"] as! [NeteaseCloudMusicApi.ResponseData]
                 let albums = albumsDict.map{$0.toData!.toModel(Album.self)!}
-                let albumsViewModel = albums.map{ AlbumViewModel($0) }
+                let albumsViewModel = albums.map{ AlbumDetailViewModel($0) }
                 store.dispatch(.artistAlbumDone(result: .success(albumsViewModel)))
             }else {
                 let code = data?["code"] as? Int ?? -1
