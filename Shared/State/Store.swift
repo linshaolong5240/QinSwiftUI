@@ -70,7 +70,8 @@ class Store: ObservableObject {
             appCommand = AlbumSubCommand(id: id, sub: sub)
         case .albumSubDone(let result):
             switch result {
-            case .success:
+            case .success(let sub):
+                appState.album.albumViewModel.isSub = sub
                 appCommand = AlbumSubDoneCommand()
             case .failure(let error):
                 appState.error = error

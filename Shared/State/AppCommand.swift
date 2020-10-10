@@ -73,7 +73,7 @@ struct AlbumSubCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                store.dispatch(.albumSubDone(result: .success(true)))
+                store.dispatch(.albumSubDone(result: .success(sub)))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"

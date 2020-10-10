@@ -11,8 +11,16 @@ struct AlbumSublistView: View {
     let albumSublist: [AlbumSub]
     
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+    
+    @State private var albumDetailId: Int = 0
+    @State private var showAlbumDetail: Bool = false
+    
     var body: some View {
         VStack(spacing: 0) {
+            NavigationLink(
+                destination: AlbumDetailView(id: albumDetailId),
+                isActive: $showAlbumDetail,
+                label: {EmptyView()})
             HStack {
                 Text("收藏的专辑")
                     .font(.largeTitle)
@@ -26,10 +34,13 @@ struct AlbumSublistView: View {
             ScrollView(Axis.Set.horizontal) {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(albumSublist) { item in
-                        NavigationLink(destination: AlbumDetailView(id: item.id)) {
+                        Button(action: {
+                            albumDetailId = item.id
+                            showAlbumDetail.toggle()
+                        }, label: {
                             AlbumSubView(album: item)
                                 .padding(.vertical)
-                        }
+                        })
                     }
                 }/*@END_MENU_TOKEN@*/
             }

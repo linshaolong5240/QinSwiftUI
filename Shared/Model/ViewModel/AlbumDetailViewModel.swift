@@ -7,11 +7,11 @@
 
 import Foundation
 
-class AlbumDetailViewModel: Identifiable {
+class AlbumDetailViewModel: ObservableObject, Identifiable {
     var coverUrl: String = ""
     var description: String = ""
     var id: Int = 0
-    var isSub: Bool = false
+    @Published var isSub: Bool = false
     var name: String = ""
     var songs = [SongViewModel]()
     
