@@ -94,7 +94,6 @@ struct PlaylistsView: View {
                                 .padding(.vertical)
                         })
                     }
-
                 }/*@END_MENU_TOKEN@*/
             }
         }

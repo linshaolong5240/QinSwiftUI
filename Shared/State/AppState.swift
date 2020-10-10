@@ -88,10 +88,9 @@ extension AppState {
         var artistMVRequesting: Bool = false
         var artistSublistRequesting: Bool = false
 
-        var viewModel = ArtistDetailViewModel()
-        var artistSublist = [ArtistSub]()
+        var viewModel = ArtistViewModel()
+        var artistSublist = [ArtistViewModel]()
         var error: AppError?
-        var id: Int = 0
     }
     
     struct Comment {

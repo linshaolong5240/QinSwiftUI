@@ -130,16 +130,15 @@ class Store: ObservableObject {
             }
             appState.artist.artistSublistRequesting = false
         case .artists(let id):
-            if id != appState.artist.id {
+            if id != appState.artist.viewModel.id {
                 appState.artist.artistRequesting = true
-                appState.artist.id = id
                 appCommand = ArtistsCommand(id: id)
             }
         case .artistsDone(let result):
             switch result {
             case .success(let artistViewModel):
                 appState.artist.viewModel = artistViewModel
-                appCommand = ArtistsDoneCommand(id: appState.artist.id)
+                appCommand = ArtistsDoneCommand(id: artistViewModel.id)
             case .failure(let error):
                 appState.artist.error = error
             }

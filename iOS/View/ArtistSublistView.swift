@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct ArtistSublistView: View {
-    let artistSublist: [ArtistSub]
+    let artistSublist: [ArtistViewModel]
     
+    @State private var artistDetailId: Int = 0
+    @State private var showArtistDetail: Bool = false
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+    
     var body: some View {
         VStack(spacing: 0) {
+            NavigationLink(
+                destination: ArtistDetailView(id: artistDetailId),
+                isActive: $showArtistDetail,
+                label: {EmptyView()})
             HStack {
                 Text("收藏的歌手")
                     .font(.largeTitle)
@@ -26,10 +33,13 @@ struct ArtistSublistView: View {
             ScrollView(Axis.Set.horizontal) {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(artistSublist) { item in
-                        NavigationLink(destination: ArtistDetailView(id: item.id)) {
-                            ArtistView(artist: item)
+                        Button(action: {
+                            artistDetailId = item.id
+                            showArtistDetail.toggle()
+                        }, label: {
+                            ArtistView(item)
                                 .padding(.vertical)
-                        }
+                        })
                     }
                 }/*@END_MENU_TOKEN@*/
             }
@@ -40,20 +50,24 @@ struct ArtistSublistView: View {
 #if DEBUG
 struct ArtistSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        ArtistSublistView(artistSublist: [ArtistSub]())
+        ArtistSublistView(artistSublist: [ArtistViewModel]())
     }
 }
 #endif
 
 struct ArtistView: View {
-    let artist: ArtistSub
+    let viewModel: ArtistViewModel
+    
+    init(_ viewModel: ArtistViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: artist.picUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: viewModel.coverUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
-                Text(artist.name)
+                Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                     .frame(width: 110, alignment: .leading)
