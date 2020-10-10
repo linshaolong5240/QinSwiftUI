@@ -16,13 +16,19 @@ struct PlaylistsView: View {
     let title: String
     let data: [PlaylistViewModel]
     let type: PlaylistType
-    @State var isManaging: Bool = false
-    @State var isCreating: Bool = false
-    @State var showSheet: Bool = false
-    @State var sheetType: SheetType = .manage
+    @State private var playlistDetailId: Int = 0
+    @State private var showPlaylistDetail: Bool = false
+    @State private var isManaging: Bool = false
+    @State private var isCreating: Bool = false
+    @State private var showSheet: Bool = false
+    @State private var sheetType: SheetType = .manage
     
     var body: some View {
         VStack(spacing: 0) {
+            NavigationLink(
+                destination: PlaylistDetailView(id: playlistDetailId, type: type),
+                isActive: $showPlaylistDetail,
+                label: {EmptyView()})
             HStack {
                 Text(title)
                     .font(.largeTitle)
@@ -31,29 +37,6 @@ struct PlaylistsView: View {
                 Spacer()
                 Text("\(data.count) \(title)")
                     .foregroundColor(Color.secondTextColor)
-//                if type == .created {
-//                    Button(action: {
-//                        isCreating.toggle()
-//                    }, label: {
-//                        NEUButtonView(systemName: "rectangle.stack.badge.plus", size: .small)
-//                    })
-//                    .buttonStyle(NEUButtonStyle(shape: Circle()))
-//                    .sheet(isPresented: $isCreating) {
-//                        PlaylistCreateView(isCreating: $isCreating)
-//                    }
-//                }
-//                if type == .created || type == .subscribed {
-//                    Button(action: {
-//                        isManaging.toggle()
-//                    }, label: {
-//                        NEUButtonView(systemName: "rectangle.stack", size: .small)
-//                    })
-//                    .buttonStyle(NEUButtonStyle(shape: Circle()))
-//                    .sheet(isPresented: $isManaging) {
-//                        PlaylistManageView(title: title, data: data, type: type, isManaging: $isManaging)
-//                            .environment(\.editMode, Binding.constant(EditMode.active))
-//                    }
-//                }
                 if type == .created {
                     Menu {
                         Button(action: {
@@ -103,10 +86,13 @@ struct PlaylistsView: View {
                 let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(data) { item in
-                        NavigationLink(destination: PlaylistDetailView(id: item.id, type: type)) {
-                            PlaylistColumnView(viewModel: item)
+                        Button(action: {
+                            playlistDetailId = item.id
+                            showPlaylistDetail.toggle()
+                        }, label: {
+                            PlaylistColumnView(item)
                                 .padding(.vertical)
-                        }
+                        })
                     }
 
                 }/*@END_MENU_TOKEN@*/
@@ -164,6 +150,9 @@ struct PlaylistRowView: View {
 struct PlaylistColumnView: View {
     let viewModel: PlaylistViewModel
     
+    init(_ viewModel: PlaylistViewModel) {
+        self.viewModel = viewModel
+    }
     var body: some View {
         VStack(alignment: .leading) {
             NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .small)
