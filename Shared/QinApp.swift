@@ -6,24 +6,16 @@
 //
 
 import SwiftUI
-#if os(iOS)
-let screen = UIScreen.main.bounds
-#endif
+
 @main
 struct QinApp: App {
     @StateObject var store = Store.shared
     @StateObject var player = Player.shared
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-            #if !os(macOS)
-            HomeView()
+            ContentView()
                 .environmentObject(store)
                 .environmentObject(player)
-            #else
-            Text("hello world")
-                .padding()
-            #endif
         }
     }
 }

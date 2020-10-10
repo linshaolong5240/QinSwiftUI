@@ -208,6 +208,12 @@ extension NeteaseCloudMusicApi {
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //新建歌单
+    func playlistCatlist(complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/playlist/catalogue"
+        let data = [String : Any]()
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    //新建歌单
     func playlistCreate(name: String, privacy: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/playlist/create"
         let data = [

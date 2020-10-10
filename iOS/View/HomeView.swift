@@ -7,7 +7,9 @@
 //
 
 import SwiftUI
-
+#if os(iOS)
+let screen = UIScreen.main.bounds
+#endif
 struct HomeView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
@@ -33,6 +35,12 @@ struct HomeView: View {
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             SearchBarView()
+                            Button(action: {}) {
+                                NavigationLink(destination: DiscoverView()) {
+                                    NEUSFView(systemName: "square.grid.3x3.fill", size:  .small)
+                                }
+                            }
+                            .buttonStyle(NEUButtonStyle(shape: Circle()))
                         }
                         .padding([.leading, .bottom, .trailing])
                         Divider()

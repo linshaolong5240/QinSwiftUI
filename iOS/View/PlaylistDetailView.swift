@@ -15,7 +15,7 @@ struct PlaylistDetailView: View {
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
     private var playlistDetail: AppState.PlaylistDetail { store.appState.playlistDetail }
-    private var viewModel: PlaylistViewModel { store.appState.playlistDetail.playlistViewModel }
+    private var viewModel: PlaylistViewModel { store.appState.playlistDetail.viewModel }
     @State var isMoved: Bool = false
     
     let id: Int
@@ -41,10 +41,9 @@ struct PlaylistDetailView: View {
                         })
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
-                    if type == .subable {
+                    if type == .subable && viewModel.id != 0 {
                         Button(action: {
-                            viewModel.subscribed.toggle()
-                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed))
+                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed ? false : true))
                         }, label: {
                             NEUSFView(systemName: "heart.fill",
                                       active: viewModel.subscribed)
@@ -56,7 +55,7 @@ struct PlaylistDetailView: View {
                 .onAppear(perform: {
                     Store.shared.dispatch(.playlistDetail(id: self.id))
                 })
-                if playlistDetail.playlistDetailRequesting {
+                if playlistDetail.requesting {
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
                     Spacer()
@@ -114,7 +113,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 struct PlaylistDetailEditSongsView: View {
     @EnvironmentObject var store: Store
     private var viewModel: PlaylistViewModel {
-        store.appState.playlistDetail.playlistViewModel
+        store.appState.playlistDetail.viewModel
     }
     @Binding var isMoved: Bool
     

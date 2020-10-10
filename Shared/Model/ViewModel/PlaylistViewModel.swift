@@ -11,7 +11,7 @@ enum PlaylistType: Int, Codable {
     case created, recommendSongs, subable
 }
 
-class PlaylistViewModel: Identifiable {
+class PlaylistViewModel: ObservableObject, Identifiable {
     var count: Int = 0
     var coverImgUrl: String = ""
     var creator: String = ""
@@ -20,7 +20,7 @@ class PlaylistViewModel: Identifiable {
     var id: Int = 0
     var name: String = ""
     var playCount: Int = 0
-    var subscribed: Bool = false
+    @Published var subscribed: Bool = false
     var songIds = [Int]()
     var songs = [SongViewModel]()
     var userId: Int = 0

@@ -524,6 +524,33 @@ struct LogoutCommand: AppCommand {
     }
 }
 
+struct PlaylistCatlistCommand: AppCommand {
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.playlistCatlist { (data, error) in
+            debugPrint(data)
+            let alldict = data!["all"] as! NeteaseCloudMusicApi.ResponseData
+            let all = alldict.toData!.toModel(PlaylistTag.self)!
+            let categorydict = data!["categories"] as! NeteaseCloudMusicApi.ResponseData
+            let category = categorydict.toData!.toModel(PlaylistTagCategory.self)!
+            let subcategorydict = data!["sub"] as! [NeteaseCloudMusicApi.ResponseData]
+            let subcategory = subcategorydict.map{$0.toData!.toModel(PlaylistTag.self)!}
+            print(all)
+            print(category)
+            print(subcategory)
+
+//            guard error == nil else {
+//                store.dispatch(.playlistCreateDone(result: .failure(error!)))
+//                return
+//            }
+//            if data!["code"] as! Int == 200 {
+//                store.dispatch(.playlistCreateDone(result: .success(true)))
+//            }else {
+//                store.dispatch(.playlistCreateDone(result: .failure(.playlistCreateError)))
+//            }
+        }
+    }
+}
+
 struct PlaylistCreateCommand: AppCommand {
     let name: String
     let privacy: Int
@@ -645,7 +672,7 @@ struct PlaylisSubscribeCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                store.dispatch(.playlistSubscibeDone(result: .success(true)))
+                store.dispatch(.playlistSubscibeDone(result: .success(sub)))
             }else {
                 store.dispatch(.playlistSubscibeDone(result: .failure(.playlistSubscribeError)))
             }

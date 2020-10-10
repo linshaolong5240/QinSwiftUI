@@ -282,6 +282,10 @@ class Store: ObservableObject {
             appCommand = PlayToEndActionCommand()
         case .replay:
             appCommand = RePlayCommand()
+        case .playlistCatlist:
+            appCommand = PlaylistCatlistCommand()
+        case .playlistCatlistDone:
+            break
         case .playlistCreate(let name, let privacy):
             appCommand = PlaylistCreateCommand(name: name, privacy: privacy)
         case .playlistCreateDone(let result):
@@ -293,7 +297,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistDelete(let pid):
-            appState.playlistDetail.playlistViewModel = PlaylistViewModel()
+            appState.playlistDetail.viewModel = PlaylistViewModel()
             appCommand = PlaylistDeleteCommand(pid: pid)
         case .playlistDeleteDone(let result):
             switch result {
@@ -305,25 +309,25 @@ class Store: ObservableObject {
             }
         case .playlistDetail(let id):
             if id == 0 {
-                appState.playlistDetail.playlistViewModel = appState.playlists.recommendSongsPlaylist
-            }else if id != appState.playlistDetail.playlistViewModel.id {
-                appState.playlistDetail.playlistDetailRequesting = true
-                appState.playlistDetail.playlistViewModel = PlaylistViewModel()
+                appState.playlistDetail.viewModel = appState.playlists.recommendSongsPlaylist
+            }else if id != appState.playlistDetail.viewModel.id {
+                appState.playlistDetail.requesting = true
+                appState.playlistDetail.viewModel = PlaylistViewModel()
                 appCommand = PlaylistDetailCommand(id: id)
             }
         case .playlistDetailDone(let result):
             switch result {
             case .success(let playlist):
-                appState.playlistDetail.playlistViewModel = PlaylistViewModel(playlist)
+                appState.playlistDetail.viewModel = PlaylistViewModel(playlist)
                 let ids = playlist.trackIds?.map({$0.id}) ?? [Int]()
                 if ids.count > 0 {
                     appCommand = PlaylistDetailDoneCommand(ids: ids)
                 }else {
-                    appState.playlistDetail.playlistDetailRequesting = false
+                    appState.playlistDetail.requesting = false
                 }
             case .failure(let error):
                 appState.error = error
-                appState.playlistDetail.playlistDetailRequesting = false
+                appState.playlistDetail.requesting = false
             }
         case .playlistOrderUpdate(let ids, let type):
             appState.playlists.playlistOrderUpdateRequesting = true
@@ -348,7 +352,7 @@ class Store: ObservableObject {
         case .playlistSubscibeDone(let result):
             switch result {
             case .success(let subscribe):
-                appState.playlistDetail.playlistViewModel.subscribed = subscribe
+                appState.playlistDetail.viewModel.subscribed = subscribe
                 appCommand = PlaylisSubscribeDoneCommand()
             case .failure(let error):
                 appState.error = error
@@ -378,7 +382,7 @@ class Store: ObservableObject {
         case .recommendSongsDone(let result):
             switch result {
             case .success(let playlsit):
-                appState.playlistDetail.playlistViewModel = playlsit
+                appState.playlistDetail.viewModel = playlsit
                 appState.playlists.recommendSongsPlaylist = playlsit
                 appState.playlists.recommendPlaylists = [playlsit] + appState.playlists.recommendPlaylists
             case .failure(let error):
@@ -414,8 +418,8 @@ class Store: ObservableObject {
         case .songsDetailDone(let result):
             switch result {
             case .success(let songs):
-                if appState.playlistDetail.playlistDetailRequesting {
-                    appState.playlistDetail.playlistViewModel.songs = songs.map{SongViewModel($0)}
+                if appState.playlistDetail.requesting {
+                    appState.playlistDetail.viewModel.songs = songs.map{SongViewModel($0)}
                 }
                 if appState.search.searchRequesting {
                     appState.search.songs = songs.map{SongViewModel($0)}
@@ -424,7 +428,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-            appState.playlistDetail.playlistDetailRequesting = false
+            appState.playlistDetail.requesting = false
             appState.search.searchRequesting = false
             appState.playlists.songsDetailRequesting = false
         case .songsOrderUpdate(let pid, let ids):

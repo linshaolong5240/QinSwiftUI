@@ -104,8 +104,8 @@ extension AppState {
         var total: Int = 0
     }
     struct PlaylistDetail {
-        var playlistViewModel = PlaylistViewModel()
-        var playlistDetailRequesting: Bool = false
+        var viewModel = PlaylistViewModel()
+        var requesting: Bool = false
     }
     
     struct Playlists {
