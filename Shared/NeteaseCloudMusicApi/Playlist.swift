@@ -8,6 +8,23 @@
 
 import Foundation
 
+extension NeteaseCloudMusicApi {
+    //获取分类歌单
+    func playlist(cat: String, hot: Bool, limit: Int, offset: Int, complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/playlist/list"
+        let order = hot ? "hot" : "new"
+        
+        let data = [
+            "cat": cat,
+            "order": order,
+            "limit": limit,
+            "offset": limit * offset,
+            "total": true,
+          ] as [String : Any]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+}
+
 struct Playlist: Codable, Identifiable {
     struct TrackId: Codable, Identifiable {
 //        var alg: Any?
@@ -16,15 +33,18 @@ struct Playlist: Codable, Identifiable {
         var v: Int
     }
     var adType: Int
+    var alg: String?
     var anonimous: Bool?// optional for user playlsit
 //    var artists: Any?
-    var backgroundCoverId: Int
+    var backgroundCoverId: Int?
     var backgroundCoverUrl: String?
     var cloudTrackCount: Int
+    var commentCount: Int?
     var commentThreadId: String
     var coverImgId: Int
     var coverImgId_str: String?//optional for user playlist
     var coverImgUrl: String
+    var coverStatus: Int?
     var createTime: Int
     var creator: Creator
     var description: String?
@@ -33,7 +53,7 @@ struct Playlist: Codable, Identifiable {
     var id: Int
     var name: String
     var newImported: Bool
-    var opRecommend: Bool
+    var opRecommend: Bool?
     var ordered: Bool
     var playCount: Int
     var privacy: Int
@@ -44,8 +64,8 @@ struct Playlist: Codable, Identifiable {
     var subscribed: Bool
     var subscribedCount: Int
 //    var subscribers: [Any]
-//    var tags: [Any]
-    var titleImage: Int
+    var tags: [String]?
+    var titleImage: Int?
     var titleImageUrl: String?
     var totalDuration: Int?//optional for playlist detail
     var trackCount: Int
@@ -57,6 +77,7 @@ struct Playlist: Codable, Identifiable {
     var updateTime: Int
     var userId: Int
 }
+
 struct RecommendPlaylist: Codable, Identifiable {
     var alg: String
     var copywriter: String
@@ -70,6 +91,7 @@ struct RecommendPlaylist: Codable, Identifiable {
     var type: Int
     var userId: Int
 }
+
 struct RecommendSongsPlaylist: Codable {
     struct RecommendReasons: Codable {
         var reason: String

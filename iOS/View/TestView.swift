@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+#if DEBUG
 struct TestView: View {
     @State private var users = ["Paul", "Taylor", "Adele"]
 
@@ -23,6 +24,7 @@ struct TestView: View {
     }
 }
 
+
 struct TestView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
@@ -31,3 +33,4 @@ struct TestView_Previews: PreviewProvider {
         }
     }
 }
+#endif

@@ -128,6 +128,7 @@ struct PlaylistsView_Previews: PreviewProvider {
     }
 }
 #endif
+
 struct PlaylistRowView: View {
     let viewModel: PlaylistViewModel
     

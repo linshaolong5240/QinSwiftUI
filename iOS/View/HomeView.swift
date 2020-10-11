@@ -14,8 +14,7 @@ struct HomeView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
     
-    private var recommendPlaylists: [PlaylistViewModel] {store.appState.playlists.recommendPlaylists}
-    private var playlists: AppState.Playlists {store.appState.playlists}
+    private var playlists: AppState.Playlist {store.appState.playlist}
     private var album: AppState.Album {store.appState.album}
     private var artist: AppState.Artist {store.appState.artist}
 
@@ -36,8 +35,8 @@ struct HomeView: View {
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             SearchBarView()
                             Button(action: {}) {
-                                NavigationLink(destination: DiscoverView()) {
-                                    NEUSFView(systemName: "square.grid.3x3.fill", size:  .small)
+                                NavigationLink(destination: DiscoverPlaylistView()) {
+                                    NEUSFView(systemName: "square.grid.2x2", size:  .small)
                                 }
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
@@ -46,7 +45,7 @@ struct HomeView: View {
                         Divider()
                         ScrollView {
                             PlaylistsView(title: "推荐的歌单",
-                                          data: recommendPlaylists,
+                                          data: playlists.recommendPlaylists,
                                           type: .subable)
                             PlaylistsView(title: "创建的歌单",
                                           data: playlists.createdPlaylist,

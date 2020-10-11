@@ -17,7 +17,7 @@ struct AppState {
     var comment = Comment()
     var lyric = Lyric()
     var playing = Playing()
-    var playlists = Playlists()
+    var playlist = Playlist()
     var playlistDetail = PlaylistDetail()
     var search = Search()
     var settings = Settings()
@@ -107,19 +107,28 @@ extension AppState {
         var requesting: Bool = false
     }
     
-    struct Playlists {
+    struct Playlist {
+        var categories = [PlaylistCategoryViewModel]()
+        var categoriesRequesting: Bool = false
+        
+        //用户相关歌单
         var createdPlaylist = [PlaylistViewModel]()
-        var likeIds = Array<Int>()//[Int]()
-        var likedPlaylistId: Int = 0
-//        var playlistDetail = PlaylistViewModel()
-//        var playlistDetailRequesting: Bool = false
-        var playlistOrderUpdateRequesting: Bool = false
-        var recommendPlaylistRequesting: Bool = false
         var recommendPlaylists = [PlaylistViewModel]()
         var recommendSongsPlaylist = PlaylistViewModel()
+        var subscribePlaylists = [PlaylistViewModel]()
+        
+        //分类歌单
+        var playlistRequesting: Bool = false
+        var playlists = [PlaylistViewModel]()
+        var hasMore: Bool = false
+        var total: Int = 0
+        
+        var likeIds = [Int]()
+        var likedPlaylistId: Int = 0
+        var playlistOrderUpdateRequesting: Bool = false
+        var recommendPlaylistRequesting: Bool = false
         var songsDetailRequesting: Bool = false
         var songsURLRequesting: Bool = false
-        var subscribePlaylists = [PlaylistViewModel]()
         var userPlaylistRequesting: Bool = false
     }
     

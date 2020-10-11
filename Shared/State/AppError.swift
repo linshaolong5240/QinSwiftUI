@@ -24,6 +24,8 @@ enum AppError: Error, Identifiable {
     case like
     case likelist
     case lyricError
+    case playlist(code: Int, message: String)
+    case playlistCategories(code: Int, message: String)
     case playlistCreateError
     case playlistDeleteError
     case playlistDetailError
@@ -72,6 +74,10 @@ extension AppError {
             return "获取喜欢的音乐列表错误"
         case .lyricError:
             return "获取歌词错误"
+        case .playlist(let code, let message):
+            return errorFormat(error: "获取热门歌单错误", code: code, message: message)
+        case .playlistCategories(let code, let message):
+            return errorFormat(error: "获取歌单分类错误", code: code, message: message)
         case .playlistCreateError:
             return "新建歌单错误"
         case .playlistDeleteError:
