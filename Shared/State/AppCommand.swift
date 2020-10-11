@@ -543,7 +543,6 @@ struct PlaylistCommand: AppCommand {
                 let more = data!["more"]! as! Bool
                 let total = data!["total"] as! Int
                 let result = (playlists: playlists, total: total , more: more)
-                print(playlists)
                 store.dispatch(.playlistDone(result: .success(result)))
             }else {
                 let code = data?["code"] as? Int ?? -1
