@@ -49,6 +49,11 @@ struct DiscoverPlaylistView: View {
                         }/*@END_MENU_TOKEN@*/
                         .pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
+                        .onChange(of: categories, perform: { [playlist] value in
+                            if value == playlist.categories.last?.id {
+                                Store.shared.dispatch(.playlist(cat: playlist.categories.last!.name))
+                            }
+                        })
                         .onAppear(perform: {
                             categories = playlist.categories.last?.id ?? 0
                         })
