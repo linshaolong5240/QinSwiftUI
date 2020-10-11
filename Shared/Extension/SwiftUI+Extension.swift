@@ -41,7 +41,7 @@ struct SwiftUI_Extension_Previews: PreviewProvider {
 }
 #endif
 
-
+//参考 https://stackoverflow.com/questions/62102647/swiftui-hstack-with-wrap-and-dynamic-height
 struct MultilineHStack<Data: RandomAccessCollection,  Content: View>: View where Data.Element: Hashable {
     let data: Data
     let HSpacing: CGFloat
@@ -100,6 +100,7 @@ struct MultilineHStack<Data: RandomAccessCollection,  Content: View>: View where
     }
 }
 
+//参考 https://stackoverflow.com/questions/62102647/swiftui-hstack-with-wrap-and-dynamic-height
 struct MultilineHStackScrollable<Data: RandomAccessCollection,  Content: View>: View where Data.Element: Hashable {
     let data: Data
     let geometry: GeometryProxy
