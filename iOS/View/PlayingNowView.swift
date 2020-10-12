@@ -134,41 +134,6 @@ struct PlayingView_Previews: PreviewProvider {
 }
 #endif
 
-struct LyricView: View {
-    @EnvironmentObject var store: Store
-    
-    private var viewModel: LyricViewModel { store.appState.lyric.lyric }
-    let isOneLine: Bool
-
-    var body: some View {
-        VStack {
-            if isOneLine {
-                Text(viewModel.lyric)
-                    .fontWeight(.bold)
-                    .foregroundColor(.secondTextColor)
-                    .lineLimit(1)
-            }else {
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        ForEach(0..<viewModel.lyricParser.lyrics.count, id: \.self) { index in
-                            Text(viewModel.lyricParser.lyrics[index])
-                                .fontWeight(index == viewModel.index ? .bold : .none)
-                                .foregroundColor(index == viewModel.index ? .orange : .secondTextColor)
-                                .lineLimit(1)
-                                .id(index)
-                        }
-                    }
-                    .onReceive(viewModel.$index, perform: { value in
-                        withAnimation(.easeInOut) {
-                            proxy.scrollTo(value, anchor: .top)
-                        }
-                    })
-                }
-            }
-        }
-    }
-}
-
 struct PlayinglistView: View {
     @EnvironmentObject var store: Store
     private var playing: AppState.Playing { store.appState.playing }
@@ -246,6 +211,7 @@ struct PlayingNowStatusView: View {
             .padding()
             Spacer()
             LyricView(isOneLine: false)
+                .padding(.horizontal)
                 .onTapGesture(perform: {
                     withAnimation(.default) {
                         showMore.toggle()
