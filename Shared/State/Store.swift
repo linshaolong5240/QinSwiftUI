@@ -153,8 +153,10 @@ class Store: ObservableObject {
                 appState.artist.error = error
             }
         case .comment(let id, let cid, let content, let type, let action):
-            appState.comment.commentRequesting = true
-            appCommand = CommentCommand(id: id, cid: cid, content: content, type: type, action: action)
+            if content.count > 0 {
+                appState.comment.commentRequesting = true
+                appCommand = CommentCommand(id: id, cid: cid, content: content, type: type, action: action)
+            }
         case .commentDone(let result):
             switch result {
             case .success(let args):
