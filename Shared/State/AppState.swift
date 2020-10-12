@@ -108,9 +108,6 @@ extension AppState {
     }
     
     struct Playlist {
-        var categories = [PlaylistCategoryViewModel]()
-        var categoriesRequesting: Bool = false
-        
         //用户相关歌单
         var createdPlaylist = [PlaylistViewModel]()
         var recommendPlaylists = [PlaylistViewModel]()
@@ -118,13 +115,9 @@ extension AppState {
         var subscribePlaylists = [PlaylistViewModel]()
         
         //分类歌单
-        var playlistRequesting: Bool = false
-        var playlists = [PlaylistViewModel]()
-        var hasMore: Bool = false
-        var total: Int = 0
+        var discoverPlaylistViewModel = DiscoverPlaylistViewModel()
         
         var likeIds = [Int]()
-        var likedPlaylistId: Int = 0
         var playlistOrderUpdateRequesting: Bool = false
         var recommendPlaylistRequesting: Bool = false
         var songsDetailRequesting: Bool = false

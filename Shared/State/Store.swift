@@ -282,31 +282,35 @@ class Store: ObservableObject {
             appCommand = PlayToEndActionCommand()
         case .replay:
             appCommand = RePlayCommand()
-        case .playlist(let cat, let hot, let limit, let offset):
-            appState.playlist.playlistRequesting = true
-            appCommand = PlaylistCommand(cat: cat, hot: hot, limit: limit, offset: offset)
+        case .playlist(let category, let hot, let limit, let offset):
+            if category != appState.playlist.discoverPlaylistViewModel.subcategory || appState.playlist.discoverPlaylistViewModel.playlists.count == 0 {
+                appState.playlist.discoverPlaylistViewModel.playlistRequesting = true
+                appCommand = PlaylistCommand(cat: category, hot: hot, limit: limit, offset: offset)
+            }
         case .playlistDone(let result):
             switch result {
             case .success(let result):
-                appState.playlist.playlists = result.playlists
-                appState.playlist.hasMore = result.more
-                appState.playlist.total = result.total
+                appState.playlist.discoverPlaylistViewModel.playlists  = result.playlists
+                appState.playlist.discoverPlaylistViewModel.subcategory  = result.category
+                appState.playlist.discoverPlaylistViewModel.more  = result.more
+                appState.playlist.discoverPlaylistViewModel.total  = result.total
             case .failure(let error):
                 appState.error = error
             }
-            appState.playlist.playlistRequesting = false
+            appState.playlist.discoverPlaylistViewModel.playlistRequesting = false
         case .playlistCategories:
-            appState.playlist.categoriesRequesting = true
+            appState.playlist.discoverPlaylistViewModel.categoriesRequesting = true
             appCommand = PlaylistCategoriesCommand()
         case .playlistCategoriesDone(let result):
             switch result {
             case .success(let categories):
-                appState.playlist.categories = categories
-                appCommand = PlaylistCategoriesDoneCommand()
+                appState.playlist.discoverPlaylistViewModel.categories = categories
+                appState.playlist.discoverPlaylistViewModel.category = categories.last?.id ?? 0
+                appState.playlist.discoverPlaylistViewModel.subcategory = categories.last?.name ?? ""
             case .failure(let error):
                 appState.error = error
             }
-            appState.playlist.categoriesRequesting = false
+            appState.playlist.discoverPlaylistViewModel.categoriesRequesting = false
         case .playlistCreate(let name, let privacy):
             appCommand = PlaylistCreateCommand(name: name, privacy: privacy)
         case .playlistCreateDone(let result):
@@ -494,7 +498,6 @@ class Store: ObservableObject {
         case .userPlaylistDone(let uid, result: let result):
             switch result {
             case .success(let playlists):
-                appState.playlist.likedPlaylistId = playlists[0].id
                 appState.playlist.createdPlaylist = playlists.filter{$0.userId == uid}
                 appState.playlist.subscribePlaylists = playlists.filter{$0.userId != uid}
 //                appState.playlists.userPlaylists = playlists.map{PlaylistViewModel($0)}

@@ -404,6 +404,7 @@ struct InitAcionCommand: AppCommand {
             store.dispatch(.likelist(uid: user.uid))
             store.dispatch(.albumSublist())
             store.dispatch(.artistSublist())
+            store.dispatch(.playlistCategories)
         }
     }
 }
@@ -539,10 +540,10 @@ struct PlaylistCommand: AppCommand {
             if data!["code"] as! Int == 200 {
                 let playlistDicts = data!["playlists"]! as! [NeteaseCloudMusicApi.ResponseData]
                 let playlists = playlistDicts.map{$0.toData!.toModel(Playlist.self)!}.map{PlaylistViewModel($0)}
-//                let more = data!["cat"]! as! String
+                let category = data!["cat"]! as! String
                 let more = data!["more"]! as! Bool
                 let total = data!["total"] as! Int
-                let result = (playlists: playlists, total: total , more: more)
+                let result = (playlists: playlists, category: category, total: total , more: more)
                 store.dispatch(.playlistDone(result: .success(result)))
             }else {
                 let code = data?["code"] as? Int ?? -1
@@ -608,10 +609,10 @@ struct PlaylistCategoriesCommand: AppCommand {
 }
 
 struct PlaylistCategoriesDoneCommand: AppCommand {
+    let category: String
+    
     func execute(in store: Store) {
-        if let cat = store.appState.playlist.categories.last?.name {
-            store.dispatch(.playlist(cat: cat))
-        }
+            store.dispatch(.playlist(category: category))
     }
 }
 

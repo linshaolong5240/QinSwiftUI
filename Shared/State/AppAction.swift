@@ -46,8 +46,8 @@ enum AppAction {
     case logout
     case lyric(id: Int)
     case lyricDone(result: Result<String, AppError>)
-    case playlist(cat: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
-    case playlistDone(result: Result<(playlists: [PlaylistViewModel], total: Int , more: Bool), AppError>)
+    case playlist(category: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
+    case playlistDone(result: Result<(playlists: [PlaylistViewModel], category: String, total: Int , more: Bool), AppError>)
     case playlistCategories
     case playlistCategoriesDone(result: Result<[PlaylistCategoryViewModel], AppError>)
     case playlistCreate(name: String, privacy: Int = 0)

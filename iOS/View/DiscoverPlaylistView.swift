@@ -9,9 +9,9 @@ import SwiftUI
 
 struct DiscoverPlaylistView: View {
     @EnvironmentObject private var store: Store
-    private var playlist: AppState.Playlist {store.appState.playlist}
-    
-    @State private var categories: Int = 0
+    private var viewModel: DiscoverPlaylistViewModel {store.appState.playlist.discoverPlaylistViewModel}
+    private var viewModeBindingl: Binding<DiscoverPlaylistViewModel> {$store.appState.playlist.discoverPlaylistViewModel}
+
     @State private var showCategories: Bool = true
     
     var body: some View {
@@ -33,37 +33,29 @@ struct DiscoverPlaylistView: View {
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 .padding(.horizontal)
-                .onAppear(perform: {
-                    Store.shared.dispatch(.playlistCategories)
-                })
-                if playlist.categoriesRequesting == true {
-                    Text("Loading")
-                    Spacer()
+                .onAppear {
+                    Store.shared.dispatch(.playlist(category: viewModel.subcategory))
                 }
-                else {
                     if showCategories {
-                        Picker(selection: $categories, label: Text("")) /*@START_MENU_TOKEN@*/{
-                            ForEach(playlist.categories) { item in
+                        Picker(selection: viewModeBindingl.category, label: Text("")) /*@START_MENU_TOKEN@*/{
+                            ForEach(viewModel.categories) { item in
                                 Text("\(item.name)").tag(item.id)
                             }
                         }/*@END_MENU_TOKEN@*/
                         .pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
-                        .onChange(of: categories, perform: { [playlist] value in
-                            if value == playlist.categories.last?.id {
-                                Store.shared.dispatch(.playlist(cat: playlist.categories.last!.name))
+                        .onChange(of: viewModel.category, perform: { [viewModel] value in
+                            if value == viewModel.categories.last?.id {
+                                Store.shared.dispatch(.playlist(category: viewModel.categories.last!.name))
                             }
                         })
-                        .onAppear(perform: {
-                            categories = playlist.categories.last?.id ?? 0
-                        })
-                        if categories != playlist.categories.last?.id && playlist.categories.count > 0 {
-                            MultilineHStack(playlist.categories[categories].subCategories) { item in
+                        if viewModel.category != viewModel.categories.last?.id && viewModel.categories.count > 0 {
+                            MultilineHStack(viewModel.categories[viewModel.category].subCategories) { item in
                                 Button(action: {
-                                    Store.shared.dispatch(.playlist(cat: item))
+                                    Store.shared.dispatch(.playlist(category: item))
                                 }, label: {
                                     Text(item)
-                                        .foregroundColor(.black)
+                                        .foregroundColor(item == viewModel.subcategory ? Color.white : Color.black)
                                         .padding(.horizontal)
                                         .background(Color.orange)
                                         .clipShape(RoundedRectangle(cornerRadius: 5))
@@ -73,13 +65,12 @@ struct DiscoverPlaylistView: View {
                         }
                     }
 
-                    if playlist.playlistRequesting {
+                    if viewModel.playlistRequesting {
                         Text("Loading")
                         Spacer()
                     }else {
-                        DiscoverPlaylistsView(data: playlist.playlists)
+                        DiscoverPlaylistsView(data: viewModel.playlists)
                     }
-                }
             }
         }
         .navigationBarHidden(true)
