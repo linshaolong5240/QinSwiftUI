@@ -499,20 +499,49 @@ struct LoginCommand: AppCommand {
                     user.profile = profile.toData!.toModel(Profile.self)!
                     user.uid = profile["userId"] as! Int
                 }
-                DataManager.shared.userLogin(user)
                 store.dispatch(.loginDone(result: .success(user)))
-                store.dispatch(.showLoginView(show: false))
             }else {
                 store.dispatch(.loginDone(result: .failure(.loginError(code: data!["code"] as! Int, message: data!["message"] as! String))))
             }
-            
         }
     }
 }
 
 struct LoginDoneCommand: AppCommand {
+    let user: User
+    
     func execute(in store: Store) {
+        DataManager.shared.userLogin(user)
         store.dispatch(.initAction)
+    }
+}
+
+struct LoginRefreshCommand: AppCommand {
+
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.loginRefresh{ (data, error) in
+            guard error == nil else {
+                store.dispatch(.loginRefreshDone(result: .failure(error!)))
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                store.dispatch(.loginRefreshDone(result: .success(true)))
+            }else {
+                store.dispatch(.loginRefreshDone(result: .success(false)))
+            }
+        }
+    }
+}
+
+struct LoginRefreshDoneCommand: AppCommand {
+    let success: Bool
+    
+    func execute(in store: Store) {
+        if success {
+            store.dispatch(.initAction)
+        }else {
+            store.dispatch(.logout)
+        }
     }
 }
 
@@ -522,6 +551,15 @@ struct LogoutCommand: AppCommand {
         NeteaseCloudMusicApi.shared.logout { (data, error) in
             
         }
+        DataManager.shared.userLogout()
+        
+//        if let cookies = HTTPCookieStorage.shared.cookies {
+//            for cookie in cookies {
+//                if cookie.name != "os" {
+//                    HTTPCookieStorage.shared.deleteCookie(cookie)
+//                }
+//            }
+//        }
     }
 }
 

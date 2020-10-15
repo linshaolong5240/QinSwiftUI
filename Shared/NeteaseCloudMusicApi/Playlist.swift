@@ -8,23 +8,6 @@
 
 import Foundation
 
-extension NeteaseCloudMusicApi {
-    //获取分类歌单
-    func playlist(cat: String, hot: Bool, limit: Int, offset: Int, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/playlist/list"
-        let order = hot ? "hot" : "new"
-        
-        let data = [
-            "cat": cat,
-            "order": order,
-            "limit": limit,
-            "offset": limit * offset,
-            "total": true,
-          ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
-    }
-}
-
 struct Playlist: Codable, Identifiable {
     struct TrackId: Codable, Identifiable {
 //        var alg: Any?

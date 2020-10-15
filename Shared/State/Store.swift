@@ -18,7 +18,7 @@ class Store: ObservableObject {
         #if os(macOS)
         dispatch(.initAction)
         #else
-        dispatch(.initAction)
+        dispatch(.loginRefresh)
         #endif
     }
     
@@ -235,16 +235,21 @@ class Store: ObservableObject {
             switch result {
             case .success(let user):
                 appState.settings.loginUser = user
-                appState.settings.userId = user.uid
-                appCommand = LoginDoneCommand()
+                appCommand = LoginDoneCommand(user: user)
             case .failure(let error):
                 appState.settings.loginError = error
             }
-        case .showLoginView(let show):
-            appState.settings.showLoginView = show
+        case .loginRefresh:
+            appCommand = LoginRefreshCommand()
+        case .loginRefreshDone(let result):
+            switch result {
+            case .success(let result):
+                appCommand = LoginRefreshDoneCommand(success: result)
+            case .failure(let error):
+                appState.error = error
+            }
         case .logout:
             appState.settings.loginUser = nil
-            appState.settings.userId = 0
             appCommand = LogoutCommand()
         case .pause:
             Player.shared.pause()

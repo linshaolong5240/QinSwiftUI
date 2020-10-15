@@ -23,6 +23,8 @@ enum AppError: Error, Identifiable {
     case commentMusic
     case like
     case likelist
+    case loginError(code: Int, message: String)
+    case loginRefresh(code: Int, message: String)
     case lyricError
     case playlist(code: Int, message: String)
     case playlistCategories(code: Int, message: String)
@@ -39,7 +41,6 @@ enum AppError: Error, Identifiable {
     case songsURLError
     case userPlaylistError
     case httpRequestError(error: URLError)
-    case loginError(code: Int, message: String)
     case playingError(message: String)
 }
 
@@ -72,6 +73,10 @@ extension AppError {
             return "喜欢或取消喜欢歌曲错误"
         case .likelist:
             return "获取喜欢的音乐列表错误"
+        case .loginError(let code, let message):
+            return errorFormat(error: "账号或密码错误", code: code, message: message)
+        case .loginRefresh(let code, let message):
+            return errorFormat(error: "刷新登录状态错误", code: code, message: message)
         case .lyricError:
             return "获取歌词错误"
         case .playlist(let code, let message):
@@ -104,8 +109,6 @@ extension AppError {
             return "获取用户歌单错误"
         case .httpRequestError(let error):
             return error.localizedDescription
-        case .loginError(let code, let message):
-            return errorFormat(error: "账号或密码错误", code: code, message: message)
         case .playingError(let message):
             return "播放错误： \(message)"
         }

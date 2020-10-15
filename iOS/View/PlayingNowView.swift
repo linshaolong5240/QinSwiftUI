@@ -323,7 +323,7 @@ struct CommentListView: View {
 
 struct CommentRowView: View {
     @EnvironmentObject var store: Store
-    private var userId: Int {store.appState.settings.userId}
+    private var user: User? {store.appState.settings.loginUser}
 
     @StateObject var viewModel: CommentViewModel
     let id: Int
@@ -361,7 +361,7 @@ struct CommentRowView: View {
                         })
                     }
                     Spacer()
-                    if viewModel.userId == userId {
+                    if viewModel.userId == user?.uid {
                         Button(action: {
                             Store.shared.dispatch(.comment(id: id, cid: viewModel.commentId, type: type, action: .delete))
                         }, label: {

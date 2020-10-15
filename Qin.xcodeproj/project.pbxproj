@@ -297,11 +297,11 @@
 			isa = PBXGroup;
 			children = (
 				2BCCB25024DC5671004CAD67 /* Assets.xcassets */,
+				2BCCB24E24DC566F004CAD67 /* QinApp.swift */,
 				2BCCB24F24DC566F004CAD67 /* ContentView.swift */,
 				2BCCB2D024DC79AB004CAD67 /* Extension */,
 				2BCCB2DD24DC79EB004CAD67 /* Model */,
 				2BCCB31424DC7B7D004CAD67 /* NeteaseCloudMusicApi */,
-				2BCCB24E24DC566F004CAD67 /* QinApp.swift */,
 				2BCCB31824DC7BCC004CAD67 /* State */,
 				2B09CF3424F0FC0000E03A12 /* View */,
 			);

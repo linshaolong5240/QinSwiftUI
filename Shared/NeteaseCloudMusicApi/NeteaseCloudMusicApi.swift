@@ -184,18 +184,17 @@ extension NeteaseCloudMusicApi {
         ]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
+    func loginRefresh(complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/login/token/refresh"
+        
+        let data = [String: Any]()
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
     func logout(_ complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/logout"
         
         let data = ResponseData()
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
-        
-        if let cookies = HTTPCookieStorage.shared.cookies {
-            for cookie in cookies {
-                HTTPCookieStorage.shared.deleteCookie(cookie)
-            }
-        }
-        DataManager.shared.userLogout()
     }
     func lyric(id: Int ,complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/song/lyric"
@@ -205,6 +204,20 @@ extension NeteaseCloudMusicApi {
                     "kv": -1,
                     "tv": -1,
         ]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    //获取分类歌单
+    func playlist(cat: String, hot: Bool, limit: Int, offset: Int, complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/playlist/list"
+        let order = hot ? "hot" : "new"
+        
+        let data = [
+            "cat": cat,
+            "order": order,
+            "limit": limit,
+            "offset": limit * offset,
+            "total": true,
+          ] as [String : Any]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //新建歌单
@@ -409,7 +422,7 @@ extension NeteaseCloudMusicApi {
         case GET = "GET"
         case POST = "POST"
     }
-    func httpRequest(method: HttpMethod, url: String, data: String, complete: @escaping CompletionBlock) -> AnyCancellable {
+    func httpRequest(method: HttpMethod, url: String, data: String?, complete: @escaping CompletionBlock) -> AnyCancellable {
         
         let httpHeader = [ //"Accept": "*/*",
             //"Accept-Encoding": "gzip,deflate,sdch",
@@ -424,7 +437,9 @@ extension NeteaseCloudMusicApi {
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = httpHeader
         request.timeoutInterval = 10
-        request.httpBody = data.plusSymbolToPercent().data(using: .utf8)
+        if method == .POST {
+            request.httpBody = data?.plusSymbolToPercent().data(using: .utf8)
+        }
         
         let cancel = URLSession.shared
             .dataTaskPublisher(for: request)
@@ -435,13 +450,24 @@ extension NeteaseCloudMusicApi {
                     complete(nil, .httpRequestError(error: error))
                 }
             }) { (data, response) in
+                #if DEBUG
                 let cookies = HTTPCookieStorage.shared.cookies
                 for cookie in cookies! {
                     print("name: \(cookie.name) value: \(cookie.value)")
                 }
-                if let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) {
-                    let jsonDict = json as! ResponseData
-                    complete(jsonDict, nil)
+                #endif
+                if let httpURLResponse = response as? HTTPURLResponse {
+                    #if DEBUG
+                    print("statusCode: \(httpURLResponse.statusCode)")
+                    #endif
+                    if httpURLResponse.statusCode == 200 {
+                        if let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) {
+                            let jsonDict = json as! ResponseData
+                            complete(jsonDict, nil)
+                        }
+                    }else {
+                        complete(nil, nil)
+                    }
                 }
         }
         return cancel
@@ -480,131 +506,4 @@ extension NeteaseCloudMusicApi {
         case delete = "delete"
         case reply = "reply"
     }
-}
-extension NeteaseCloudMusicApi {
-    //        func test() {
-    //            album(id: 36693523) { (data, error) in
-    //                print(data)
-    //                if let albumDict = data?["album"] as? ResponseData{
-    //                    let album = albumDict.toData?.toModel(Album.self)
-    //                    print(album)
-    //                }
-    //            }
-    //        }
-    //    func test() {
-    ////        12787752
-    //        artist(id: 6452) { (data, error) in
-    //            print(data)
-    //            if let artistDict = data?["artist"] as? ResponseData{
-    //                let artist = artistDict.toData?.toModel(Artist.self)
-    //                print(artist)
-    //            }
-    ////            print(data!["artist"])
-    //        }
-    //    }
-    //        func test() {
-    ////            3191634
-    //            let uid = DataManager.shared.getUser()?.uid
-    //            getUserPlayList(uid!) { (data, error) in
-    //                var playLists = [Playlist]()
-    //                if let lists = data?["playlist"] as? [NeteaseCloudMusicApi.ResponseData] {
-    //                    for list in lists {
-    //    //                    print(list)
-    //                        playLists.append((list.toData?.toModel(Playlist.self))!)
-    //                    }
-    //                }
-    //                print(playLists)
-    //            }
-    //        }
-    //    func test() {
-    //        getPlaylistDetail(2722750905){jsonDict, error in
-    //            print(jsonDict)
-    //            print("###")
-    //            if let playlistDict = jsonDict?["playlist"] as? ResponseData {
-    //                let playlist = playlistDict.toData?.toModel(Playlist.self)
-    //                print(playlist)
-    //            }
-    //        }
-    //    }
-    //        func test() {
-    //            getSongsDetail([1351615757]){jsonDict, error in
-    //               print(jsonDict)
-    //                if let songs = jsonDict?["songs"] as? [ResponseData] {
-    //                    if songs.count > 0 {
-    //                        let song = songs[0].toData?.toModel(SongDetail.self)
-    //                        print(song)
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        func test() {
-    //            getSongsURL([1357425300,1352199795]){ jsonDict, error in
-    //                if let songurls = jsonDict?["data"] as? [ResponseData] {
-    //                    if songurls.count > 0 {
-    //                        let songurl = songurls[0].toData?.toModel(SongURL.self)
-    //                    }
-    //                }
-    //            }
-    //        }
-    func test() {
-        //        commentMusic(id: 1464156421) { (data, error) in
-        //            print(data as? ResponseData)
-        //        }
-        //        PlaylistSubscribe(id: 2216284341, subscribe: true) { (data, error) in
-        //            for i in HTTPCookieStorage.shared.cookies! {
-        //                print(i.name, i.value)
-        //            }
-        //                    print(data)
-        //                }
-        //        recommendResource() { (data, error) in
-        //            print(data)
-        //        }
-        //        like(id: 1407551413, like: true) { (data, error) in
-        //                                print(data)
-        //        }
-    }
-    //        func test() {
-    //            login(email: "linshaolong5240@163.com", password: "LOST74123") { (data, error) in
-    //                guard error == nil else {
-    ////                    store.dispatch(.loginDone(result: .failure(error!)))
-    //                    return
-    //                }
-    //                print(data)
-    //                if data!["code"] as! Int == 200 {
-    //                    print("###1")
-    //                    var user = User()
-    //                    if let accountDict = data!["account"] as? NeteaseCloudMusicApi.ResponseData {
-    //                        user.account = accountDict.toData!.toModel(Account.self)!
-    //                    }
-    //                    user.csrf = NeteaseCloudMusicApi.shared.getCSRFToken()
-    //                    user.loginType = data!["loginType"] as! Int
-    //                    if let profile = data!["profile"] as? NeteaseCloudMusicApi.ResponseData {
-    //                        user.profile = profile.toData!.toModel(Profile.self)!
-    //                    }
-    //                    DataManager.shared.userLogin(user)
-    ////                    store.dispatch(.loginDone(result: .success(user)))
-    //                }else {
-    //                    print("###2")
-    ////                    store.dispatch(.loginDone(result: .failure(.loginError(code: data!["code"] as! Int, message: data!["message"] as! String))))
-    //                }
-    //
-    //            }
-    //        }
-    //    func test() {
-    //        let user = DataManager.shared.getUser()
-    //        print(user)
-    //    }
-    //    func test() {
-    //        logout { (data, error) in
-    //            print(data)
-    //        }
-    //        print(getCSRFToken())
-    //    }
-    //    func test() -> Void {
-    //        if let cookies = HTTPCookieStorage.shared.cookies{
-    //            for cookie in cookies {
-    //                print(cookie.name,cookie.value)
-    //            }
-    //        }
-    //    }
 }

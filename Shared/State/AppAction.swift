@@ -43,6 +43,8 @@ enum AppAction {
     case likeDone(result: Result<Bool, AppError>)
     case login(email: String, password: String)
     case loginDone(result: Result<User, AppError>)
+    case loginRefresh
+    case loginRefreshDone(result: Result<Bool, AppError>)
     case logout
     case lyric(id: Int)
     case lyricDone(result: Result<String, AppError>)
@@ -79,7 +81,6 @@ enum AppAction {
     case songsURLDone(result: Result<[SongURL], AppError>)
     case userPlaylist(uid: Int? = nil)
     case userPlaylistDone(uid: Int, result: Result<[PlaylistViewModel], AppError>)
-    case showLoginView(show: Bool)
     case pause
     case play
     case playRequest(id: Int)
