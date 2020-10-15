@@ -461,6 +461,7 @@ struct LyricCommand: AppCommand {
     let id: Int
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.lyric(id: id) { (data, error) in
+            print(data)
             guard error == nil else {
                 store.dispatch(.lyricDone(result: .failure(error!)))
                 return
@@ -469,6 +470,8 @@ struct LyricCommand: AppCommand {
                 if let lrc = data?["lrc"] as? NeteaseCloudMusicApi.ResponseData {
                     let lyric = lrc["lyric"] as! String
                     store.dispatch(.lyricDone(result: .success(lyric)))
+                }else {
+                    store.dispatch(.lyricDone(result: .success(nil)))
                 }
             }else {
                 store.dispatch(.lyricDone(result: .failure(.lyricError)))

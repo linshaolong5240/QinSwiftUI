@@ -137,7 +137,7 @@ extension AppState {
     struct Lyric {
         var getLyricRequesting = false
         var getlyricError: AppError?
-        var lyric = LyricViewModel(lyric: "")
+        var lyric: LyricViewModel?
     }
     
     struct Search {

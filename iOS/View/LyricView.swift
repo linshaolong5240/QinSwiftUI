@@ -10,15 +10,20 @@ import SwiftUI
 struct LyricView: View {
     @EnvironmentObject private var store: Store
     
-    private var viewModel: LyricViewModel { store.appState.lyric.lyric }
-    let isOneLine: Bool
+    private var viewModel: LyricViewModel
+    private let onelineMode: Bool
 
+    init(_ viewModel: LyricViewModel, onelineMode: Bool = false) {
+        self.viewModel = viewModel
+        self.onelineMode = onelineMode
+    }
+    
     var body: some View {
         VStack {
-            if isOneLine {
+            if onelineMode {
                 Text(viewModel.lyric)
                     .fontWeight(.bold)
-                    .foregroundColor(.secondTextColor)
+                    .foregroundColor(.orange)
                     .lineLimit(1)
             }else {
                 ScrollViewReader { proxy in
@@ -41,11 +46,3 @@ struct LyricView: View {
         }
     }
 }
-
-#if DEBUG
-struct LyricView_Previews: PreviewProvider {
-    static var previews: some View {
-        LyricView(isOneLine: false)
-    }
-}
-#endif

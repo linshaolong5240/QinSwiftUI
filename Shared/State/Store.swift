@@ -221,8 +221,12 @@ class Store: ObservableObject {
         case .lyricDone(result: let result):
             switch result {
             case .success(let lyric):
-                appState.lyric.lyric = LyricViewModel(lyric: lyric)
-                appState.lyric.lyric.setTimer(every: 0.1, offset: -1)
+                if lyric != nil {
+                    appState.lyric.lyric = LyricViewModel(lyric: lyric!)
+                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
+                }else {
+                    appState.lyric.lyric = nil
+                }
             case .failure(let error):
                 appState.lyric.getlyricError = error
             }
@@ -253,10 +257,10 @@ class Store: ObservableObject {
             appCommand = LogoutCommand()
         case .pause:
             Player.shared.pause()
-            appState.lyric.lyric.stopTimer()
+            appState.lyric.lyric?.stopTimer()
         case .play:
             Player.shared.play()
-            appState.lyric.lyric.setTimer(every: 0.1, offset: -1)
+            appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
         case .playBackward:
             appCommand = PlayBackwardCommand()
         case .playForward:

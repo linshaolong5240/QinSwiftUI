@@ -13,7 +13,8 @@ struct BottomBarView: View {
     @EnvironmentObject var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-    
+    private var lyric: AppState.Lyric { store.appState.lyric }
+
     var body: some View {
         ZStack {
             HStack {
@@ -36,14 +37,17 @@ struct BottomBarView: View {
                             .lineLimit(1)
                             .foregroundColor(Color.mainTextColor)
                         HStack {
-                            ForEach(playing.songDetail.artists) { item in
-                                Text(item.name)
-                                    .fontWeight(.bold)
-                                    .lineLimit(1)
-                                    .foregroundColor(Color.secondTextColor)
+                            if lyric.lyric != nil {
+                                LyricView(lyric.lyric!, onelineMode: true)
+                            }else {
+                                ForEach(playing.songDetail.artists) { item in
+                                    Text(item.name)
+                                        .fontWeight(.bold)
+                                        .lineLimit(1)
+                                        .foregroundColor(Color.secondTextColor)
+                                }
+                                Spacer()
                             }
-                            LyricView(isOneLine: true)
-                            Spacer()
                         }
                     }
                 }

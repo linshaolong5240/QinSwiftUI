@@ -182,6 +182,8 @@ struct PlayingNowStatusView: View {
     
     private var playing: AppState.Playing { store.appState.playing }
     private var playingBinding: Binding<AppState.Playing> { $store.appState.playing }
+    private var lyric: AppState.Lyric { store.appState.lyric }
+
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
     @Binding var artistId: Int
@@ -207,13 +209,15 @@ struct PlayingNowStatusView: View {
             }
             .padding()
             Spacer()
-            LyricView(isOneLine: false)
-                .padding(.horizontal)
-                .onTapGesture(perform: {
-                    withAnimation(.default) {
-                        showMore.toggle()
-                    }
-                })
+            if lyric.lyric != nil {
+                LyricView(lyric.lyric!)
+                    .padding(.horizontal)
+                    .onTapGesture(perform: {
+                        withAnimation(.default) {
+                            showMore.toggle()
+                        }
+                    })
+            }
             Spacer()
             HStack {
                 Text(String(format: "%02d:%02d", Int(playing.loadTime/60),Int(playing.loadTime)%60))
