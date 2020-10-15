@@ -20,10 +20,7 @@ struct AlbumDetailView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    Text("专辑详情")
-//                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.mainTextColor)
+                    NEUNavigationBarTitleView("专辑详情")
                     Spacer()
                     Button(action: {
                         album.albumViewModel.isSub.toggle()

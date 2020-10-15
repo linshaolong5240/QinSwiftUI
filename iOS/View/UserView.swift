@@ -9,12 +9,8 @@
 import SwiftUI
 
 struct UserView: View {
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var store: Store
-
-    @State  var email: String = ""
-    @State  var password: String = ""
-    private var settings: AppState.Settings { store.appState.settings }
+    private var user: User? { store.appState.settings.loginUser }
     
     var body: some View {
         ZStack {
@@ -23,7 +19,7 @@ struct UserView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    Text("用户")
+                    NEUNavigationBarTitleView("用户")
                     Spacer()
                     Button(action: {
                     }) {
@@ -33,38 +29,16 @@ struct UserView: View {
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
-                if store.appState.settings.loginUser == nil {
-                    TextField("email", text: $email)
-                        .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "envelope", size: .medium)))
-                        .autocapitalization(.none)
-                    SecureField("password", text: $password)
-                        .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "key", size: .medium)))
-                        .autocapitalization(.none)
-                    Button(action: {
-                        self.store.dispatch(.login(email: self.email, password: self.password))
-                    }) {
-                        Text("登录")
-                            .padding()
-                    }
-                    .buttonStyle(NEUButtonStyle(shape: Capsule()))
-                    if store.appState.settings.loginRequesting {
-                        Text("正在登录。。。。")
-                    }
-                    if (store.appState.settings.loginError != nil) {
-                        Text("\(store.appState.settings.loginError!.localizedDescription)")
-                    }
-                }else {
-                    NEUCoverView(url: settings.loginUser!.profile.avatarUrl, coverShape: .rectangle, size: .medium)
-                    Text("uid: \(String(settings.loginUser!.uid))")
-                    Text("csrf: \(settings.loginUser!.csrf)")
-                    Button(action: {
-                        Store.shared.dispatch(.logout)
-                    }) {
-                        Text("退出登录")
-                            .padding()
-                    }
-                    .buttonStyle(NEUButtonStyle(shape: Capsule()))
+                NEUCoverView(url: user?.profile.avatarUrl ?? "", coverShape: .rectangle, size: .medium)
+                Text("uid: \(String(user?.uid ?? 0))")
+                Text("csrf: \(user?.csrf ?? "")")
+                Button(action: {
+                    Store.shared.dispatch(.logout)
+                }) {
+                    Text("退出登录")
+                        .padding()
                 }
+                .buttonStyle(NEUButtonStyle(shape: Capsule()))
                 Spacer()
             }
             .padding(.horizontal)
@@ -74,7 +48,7 @@ struct UserView: View {
 }
 
 #if DEBUG
-struct LoginView_Previews: PreviewProvider {
+struct UserView_Previews: PreviewProvider {
     static var previews: some View {
         UserView()
             .environmentObject(Store.shared)

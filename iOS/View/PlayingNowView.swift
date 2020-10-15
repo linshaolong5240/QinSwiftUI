@@ -35,10 +35,7 @@ struct PlayingNowView: View {
                     HStack {
                         NEUBackwardButton()
                         Spacer()
-                        Text("PLAYING NOW")
-//                            .font(.title)
-                            .fontWeight(.bold)
-                            .foregroundColor(.mainTextColor)
+                        NEUNavigationBarTitleView("PLAYING NOW")
                         Spacer()
                         Button(action: {
                             withAnimation(.default){

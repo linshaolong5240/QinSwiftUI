@@ -25,10 +25,7 @@ struct ArtistDetailView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    Text("歌手详情")
-//                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.mainTextColor)
+                    NEUNavigationBarTitleView("歌手详情")
                     Spacer()
                     Button(action: {
                         artist.viewModel.followed.toggle()

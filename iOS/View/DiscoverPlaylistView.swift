@@ -21,9 +21,7 @@ struct DiscoverPlaylistView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    Text("发现歌单")
-                        .fontWeight(.bold)
-                        .foregroundColor(.mainTextColor)
+                    NEUNavigationBarTitleView("发现歌单")
                     Spacer()
                     Button(action: {
                         showCategories.toggle()

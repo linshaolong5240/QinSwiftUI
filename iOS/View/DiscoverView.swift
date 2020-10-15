@@ -21,10 +21,7 @@ struct DiscoverView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    Text("发现")
-//                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.mainTextColor)
+                    NEUNavigationBarTitleView("发现")
                     Spacer()
                     Button(action: {}, label: {
                         NEUSFView(systemName: "ellipsis")

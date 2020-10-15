@@ -59,7 +59,7 @@ struct HomeView: View {
                         BottomBarView()
                     }
                 }else {
-                    UserView()
+                    LoginView()
                 }
             }
             .navigationBarHidden(true)
