@@ -147,7 +147,7 @@ class Player: AVPlayer, ObservableObject {
         var info = [String : Any]()
         info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
         info[MPMediaItemPropertyTitle] = Store.shared.appState.playing.songDetail.name//歌名
-        info[MPMediaItemPropertyArtist] = Store.shared.appState.playing.songDetail.artists
+        info[MPMediaItemPropertyArtist] = Store.shared.appState.playing.songDetail.artists.map{$0.name}.joined(separator: " ")
         //         [info setObject:self.model.filename forKey:MPMediaItemPropertyAlbumTitle];//专辑名
         //         info[MPMediaItemPropertyAlbumArtist] = mainChannels.first?.value.soundMeta?.artist//专辑作者
         if let url = URL(string: Store.shared.appState.playing.songDetail.albumPicURL) {
