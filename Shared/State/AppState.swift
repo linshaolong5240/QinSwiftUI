@@ -108,7 +108,8 @@ extension AppState {
         //分类歌单
         var discoverPlaylistViewModel = DiscoverPlaylistViewModel()
         
-        var likeIds = [Int]()
+        var likedIds = [Int]()
+        var likedPlaylistId: Int = 0
         var playlistOrderUpdateRequesting: Bool = false
         var recommendPlaylistRequesting: Bool = false
         var songsDetailRequesting: Bool = false
@@ -118,7 +119,6 @@ extension AppState {
     
     struct Playing {
         var index: Int = 0
-        var like: Bool = false
         var isSeeking: Bool = false
         
         var playinglist = [SongViewModel]()//PlaylistViewModel()

@@ -196,13 +196,27 @@ class Store: ObservableObject {
             UserDefaults.standard.integer(forKey: "coverShape")
         case .initAction:
             appCommand = InitAcionCommand()
-        case .like(let id, let like):
-            appCommand = LikeCommand(id: id, like: like)
-        case .likeDone(let result):
+        case .like(let song):
+            appCommand = LikeCommand(song: song)
+        case .likeDone(let song, let result):
             switch result {
             case .success(let like):
-                appState.playing.like = like
-                appCommand = LikeDoneCommand()
+                song.liked = like
+                if like {
+                    appState.playlist.likedIds.append(song.id)
+                }else {
+                    let index = appState.playlist.likedIds.firstIndex(of: song.id)
+                    appState.playlist.likedIds.remove(at: index!)
+                }
+                if appState.playlistDetail.viewModel.id == appState.playlist.likedPlaylistId {
+                    if like {
+                        appState.playlistDetail.viewModel.songs.append(song)
+                    }else {
+                        let index = appState.playlistDetail.viewModel.songs.firstIndex(of: song)
+                        appState.playlistDetail.viewModel.songs.remove(at: index!)
+                    }
+                }
+//                appCommand = LikeDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
@@ -211,7 +225,7 @@ class Store: ObservableObject {
         case .likelistDone(let result):
             switch result {
             case .success(let ids):
-                appState.playlist.likeIds = ids
+                appState.playlist.likedIds = ids
             case .failure(let error):
                 appState.error = error
             }
@@ -268,7 +282,6 @@ class Store: ObservableObject {
         case .playByIndex(let index):
             let song = appState.playing.playinglist[index]
             appState.playing.index = index
-            appState.playing.like =  appState.playlist.likeIds.contains(song.id)
             appState.playing.songDetail = song
             appCommand = PlayRequestCommand(id: song.id)
         case .playMode:
@@ -454,11 +467,15 @@ class Store: ObservableObject {
         case .songsDetailDone(let result):
             switch result {
             case .success(let songs):
+                let songsViewModel = songs.map{SongViewModel($0)}
+                for song in songsViewModel {
+                    song.liked = appState.playlist.likedIds.contains(song.id) ? true : false
+                }
                 if appState.playlistDetail.requesting {
-                    appState.playlistDetail.viewModel.songs = songs.map{SongViewModel($0)}
+                    appState.playlistDetail.viewModel.songs = songsViewModel
                 }
                 if appState.search.searchRequesting {
-                    appState.search.songs = songs.map{SongViewModel($0)}
+                    appState.search.songs = songsViewModel
                 }
             //                appCommand = GetSongsDetailDone(songsDetail: songs)
             case .failure(let error):
@@ -511,7 +528,9 @@ class Store: ObservableObject {
             case .success(let playlists):
                 appState.playlist.createdPlaylist = playlists.filter{$0.userId == uid}
                 appState.playlist.subscribePlaylists = playlists.filter{$0.userId != uid}
-//                appState.playlists.userPlaylists = playlists.map{PlaylistViewModel($0)}
+                if let likedPlaylist = appState.playlist.createdPlaylist.first {
+                    appState.playlist.likedPlaylistId = likedPlaylist.id
+                }
             case .failure(let error):
                 appState.error = error
             }

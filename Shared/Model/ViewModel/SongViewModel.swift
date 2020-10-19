@@ -8,7 +8,11 @@
 
 import Foundation
 
-class SongViewModel: Identifiable {
+class SongViewModel: ObservableObject, Identifiable, Equatable {
+    static func == (lhs: SongViewModel, rhs: SongViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     struct Artist: Identifiable {
         var id: Int = 0
         var name: String = ""
@@ -17,6 +21,7 @@ class SongViewModel: Identifiable {
     var artists = [Artist]()
     var durationTime: Int = 0
     var id: Int = 0
+    @Published var liked: Bool = false
     var name: String = ""
     init() {
     }

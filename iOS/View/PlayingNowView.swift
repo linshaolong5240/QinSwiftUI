@@ -53,12 +53,12 @@ struct PlayingNowView: View {
                 ZStack {
                     HStack {
                         Button(action: {
-                            Store.shared.dispatch(.like(id: playing.songDetail.id, like: playing.like ? false : true))
+                            Store.shared.dispatch(.like(song: playing.songDetail))
                         }) {
-                            NEUSFView(systemName: playing.like ? "heart.fill" : "heart", size: .medium, active: playing.like)
+                            NEUSFView(systemName: playing.songDetail.liked ? "heart.fill" : "heart", size: .medium, active: playing.songDetail.liked)
 
                         }
-                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: playing.like, shape: Circle()))
+                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: playing.songDetail.liked, shape: Circle()))
                         .offset(x: showMore ? 0 : -screen.width/4)
                         .transition(.move(edge: .trailing))
                         Spacer()
