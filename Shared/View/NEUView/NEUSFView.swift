@@ -70,7 +70,7 @@ extension NEUSFView {
         var fontSize: CGFloat {
             switch self {
             case .small:
-                return 15
+                return 10
             case .medium:
                 return 15
             case .big:
@@ -87,13 +87,14 @@ struct NEUButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-//            VStack(spacing: 20.0) {
-//                NEUCircleButtonView(systemName: "arrow.left", size: .small, active: true)
-//                NEUCircleButtonView(systemName: "arrow.left", size: .medium, active: true)
-//                NEUCircleButtonView(systemName: "arrow.left", size: .big, active: true)
-//                NEUCircleButtonView(systemName: "arrow.left", size: .large, active: true)
-//            }
+            VStack(spacing: 20.0) {
+                Button(action: {}, label: {
+                    NEUSFView(systemName: "play.fill",size: .small)
+                })
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
+            }
         }
+        .preferredColorScheme(.dark)
     }
 }
 #endif

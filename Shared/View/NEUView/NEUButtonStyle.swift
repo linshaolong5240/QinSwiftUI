@@ -22,7 +22,7 @@ struct NEUButtonBackground<S: Shape>: View {
     }
 }
 
-struct NEUBigButtonBackground<S: Shape>: View {
+struct NEUButtonBackground2<S: Shape>: View {
     @Environment(\.colorScheme) var colorScheme
 
     var isHighlighted: Bool
@@ -32,7 +32,7 @@ struct NEUBigButtonBackground<S: Shape>: View {
         if colorScheme == .light {
             NEULightButtonBackground(isHighlighted: isHighlighted, shape: shape)
         }else {
-            NEUDarkBigButtonBackground(isHighlighted: isHighlighted, shape: shape)
+            NEUDarkButtonBackground2(isHighlighted: isHighlighted, shape: shape)
         }
     }
 }
@@ -104,7 +104,7 @@ struct NEUDarkButtonBackground<S: Shape>: View {
         }
     }
 }
-struct NEUDarkBigButtonBackground<S: Shape>: View {
+struct NEUDarkButtonBackground2<S: Shape>: View {
     private let darkStart = Color( red: 33 / 255, green: 37 / 255, blue: 42 / 255)
     private let darkEnd = Color( red: 22 / 255, green: 22 / 255, blue: 22 / 255)
     
@@ -112,35 +112,50 @@ struct NEUDarkBigButtonBackground<S: Shape>: View {
     
     let shape: S
     var body: some View {
-        ZStack {
-            if isHighlighted {
-                shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
-//                    .overlay(
-//                        shape.stroke(Color.black, lineWidth: 1)
-//                            .padding(3)
-//                            .blur(radius: 3)
-//                            .offset(x: 1, y: 1)
-//                    )
-                    .overlay(
-                        shape.stroke(LinearGradient(darkStart, darkEnd), lineWidth: 4)
-                    )
-                    .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
-                    .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
-            }else {
-                shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
-                    .overlay(
-                        shape.stroke(LinearGradient(Color.white.opacity(0.2), Color.darkBackgourdEnd), lineWidth: 1)
-                            .padding(3)
-                            .blur(radius: 3)
-                            .offset(x: 1, y: 1)
-                    )
-                    .overlay(
-                        shape.stroke(LinearGradient(darkStart, darkEnd), lineWidth: 4)
-                    )
-                    .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
-                    .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
+        GeometryReader { geometry in
+            return ZStack {
+                if isHighlighted {
+                    shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
+                        .overlay(
+                            shape.stroke(LinearGradient(darkStart, darkEnd),
+                                         lineWidth: makeLineWidthOuter(geometry: geometry))
+                        )
+                        .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
+                        .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
+                }else {
+                    shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
+                        .overlay(
+                            shape.stroke(Color.gray, lineWidth: makeLineWidthInner(geometry: geometry))
+                                .blur(radius: 1)
+                                .offset(x: 2, y: 2)
+                                .mask(shape)
+                        )
+                        .overlay(
+                            shape.stroke(Color.black, lineWidth: makeLineWidthInner(geometry: geometry))
+                                .blur(radius: 1)
+                                .offset(x: -2, y: -2)
+                                .mask(shape)
+                        )
+                        .overlay(
+                            shape.stroke(LinearGradient(darkStart, darkEnd),
+                                         lineWidth: makeLineWidthOuter(geometry: geometry))
+                        )
+                        .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
+                        .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
+                }
             }
         }
+    }
+    
+    private func makeLineWidthInner(geometry: GeometryProxy) -> CGFloat {
+        return geometry.size.width > geometry.size.height ? geometry.size.height / 40 : geometry.size.width / 40
+    }
+    private func makeLineWidthOuter(geometry: GeometryProxy) -> CGFloat {
+        return geometry.size.width > geometry.size.height ? geometry.size.height / 15 : geometry.size.width / 15
+    }
+
+    private func offsetOuter(geometry: GeometryProxy) -> CGFloat {
+        return geometry.size.width > geometry.size.height ? geometry.size.height / 15 : geometry.size.width / 15
     }
 }
 
@@ -172,6 +187,22 @@ struct NEUButtonToggleBackground<S: Shape>: View {
     }
 }
 
+struct NEUBorderButtonToggleBackground<S: Shape>: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    var isHighlighted: Bool
+    let shadow: Bool
+    let shape: S
+
+    var body: some View {
+        if colorScheme == .light {
+            NEULightToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+        }else {
+            NEUBorderDarkToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+        }
+    }
+}
+
 struct NEUButtonToggleStyle<S: Shape>: ButtonStyle {
     let isHighlighted: Bool
     let shadow: Bool
@@ -190,14 +221,32 @@ struct NEUButtonToggleStyle<S: Shape>: ButtonStyle {
     }
 }
 
-struct NEUBigButtonStyle<S: Shape>: ButtonStyle {
+struct NEUBorderButtonToggleStyle<S: Shape>: ButtonStyle {
+    let isHighlighted: Bool
+    let shadow: Bool
+    let shape: S
+    init(isHighlighted: Bool, shadow: Bool = true, shape: S) {
+        self.isHighlighted = isHighlighted
+        self.shadow = shadow
+        self.shape = shape
+    }
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .contentShape(shape)
+            .background(
+                NEUBorderButtonToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+            )
+    }
+}
+
+struct NEUButtonStyle2<S: Shape>: ButtonStyle {
     let shape: S
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .contentShape(shape)
             .background(
-                NEUBigButtonBackground(isHighlighted: configuration.isPressed, shape: shape)
+                NEUButtonBackground2(isHighlighted: configuration.isPressed, shape: shape)
             )
     }
 }
@@ -286,6 +335,63 @@ struct NEUDarkToggleBackground<S: Shape>: View {
         }
     }
 }
+
+struct NEUBorderDarkToggleBackground<S: Shape>: View {
+    private let borderDarkStart = Color( red: 33 / 255, green: 37 / 255, blue: 42 / 255)
+    private let borderDarkEnd = Color( red: 22 / 255, green: 22 / 255, blue: 22 / 255)
+    
+    var isHighlighted: Bool
+    let shadow: Bool
+    let shape: S
+    
+    init(isHighlighted: Bool, shadow: Bool = true, shape: S) {
+        self.isHighlighted = isHighlighted
+        self.shadow = shadow
+        self.shape = shape
+    }
+    var body: some View {
+        GeometryReader { geometry in
+            return ZStack {
+                if isHighlighted {
+                    shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
+                        .overlay(
+                            shape.stroke(LinearGradient(borderDarkStart, borderDarkEnd),
+                                         lineWidth: makeBorderLineWidth(geometry: geometry))
+                        )
+                        .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
+                        .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
+                }else {
+                    shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
+                        .overlay(
+                            shape.stroke(Color.gray, lineWidth: makeShadowLineWidth(geometry: geometry))
+                                .blur(radius: 1)
+                                .offset(x: 2, y: 2)
+                                .mask(shape)
+                        )
+                        .overlay(
+                            shape.stroke(Color.black, lineWidth: makeShadowLineWidth(geometry: geometry))
+                                .blur(radius: 1)
+                                .offset(x: -2, y: -2)
+                                .mask(shape)
+                        )
+                        .overlay(
+                            shape.stroke(LinearGradient(borderDarkStart, borderDarkEnd),
+                                         lineWidth: makeBorderLineWidth(geometry: geometry))
+                        )
+                        .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
+                        .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
+                }
+            }
+        }
+    }
+    private func makeShadowLineWidth(geometry: GeometryProxy) -> CGFloat {
+        return geometry.size.width > geometry.size.height ? geometry.size.height / 40 : geometry.size.width / 40
+    }
+    private func makeBorderLineWidth(geometry: GeometryProxy) -> CGFloat {
+        return geometry.size.width > geometry.size.height ? geometry.size.height / 15 : geometry.size.width / 15
+    }
+}
+
 struct NEUToggleBackground<S: Shape>: View {
     @Environment(\.colorScheme) var colorScheme
 
@@ -333,24 +439,41 @@ struct NEUButtonStyleDebugView: View {
                 Button(action: {
                     print("pressed")
                 }) {
-                    NEUSFView(systemName: "heart", size: .small)
+                    NEUSFView(systemName: "heart.fill", size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
                 Button(action: {
                     print("pressed")
                 }) {
-                    NEUSFView(systemName: "heart", size: .medium)
+                    NEUSFView(systemName: "heart.fill", size: .medium)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
                 Button(action: {
                     print("pressed")
                 }) {
-                    NEUSFView(systemName: "heart", size: .big)
+                    NEUSFView(systemName: "heart.fill", size: .small)
                 }
-                .buttonStyle(NEUBigButtonStyle(shape: Circle()))
-
+                .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                Button(action: {
+                    print("pressed")
+                }) {
+                    NEUSFView(systemName: "heart.fill", size: .medium)
+                }
+                .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                Button(action: {
+                    print("pressed")
+                }) {
+                    NEUSFView(systemName: "heart.fill", size: .big)
+                }
+                .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                Button(action: {
+                    print("pressed")
+                }) {
+                    NEUSFView(systemName: "heart.fill", size: .large)
+                }
+                .buttonStyle(NEUButtonStyle2(shape: Circle()))
                 Toggle(isOn: $vibrateOnRing, label: {
-                    NEUSFView(systemName: "heart", size: .big)
+                    NEUSFView(systemName: "heart.fill", size: .big)
                 }).toggleStyle(NEUToggleStyle(shape: Circle()))
             }
         }

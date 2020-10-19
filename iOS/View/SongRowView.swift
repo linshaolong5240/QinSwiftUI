@@ -25,27 +25,16 @@ struct SongRowView: View {
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .font(.system(size: 20))
-                    .fontWeight(.bold)
-                    .foregroundColor(.mainTextColor )
+                    .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
-//                    HStack {
-//                        Text(viewModel.artists)
-//                            .fontWeight(.bold)
-//                            .lineLimit(1)
-//                        Spacer()
-//                        Text(String(format: "%02d:%02d", Int(viewModel.durationTime/60),Int(viewModel.durationTime)%60))
-//                    }
-//                    .foregroundColor(Color.secondTextColor)
                 HStack {
                     ForEach(viewModel.artists) { item in
                         Text(item.name)
-                            .fontWeight(.bold)
                             .foregroundColor(Color.secondTextColor)
                             .lineLimit(1)
                     }
                 }
             }
-            .foregroundColor(player.isPlaying && viewModel.id == playing.songDetail.id ? .white : Color.secondTextColor)
             Spacer()
             Button(action: {
                 action()
@@ -53,10 +42,10 @@ struct SongRowView: View {
                 NEUSFView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill",
                               size: .small,
                               active: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false,
-                              activeColor: .white,
-                              inactiveColor: Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)))
+                              activeColor: viewModel.id == playing.songDetail.id ? Color.orange : Color.mainTextColor,
+                              inactiveColor: viewModel.id == playing.songDetail.id ? Color.orange : Color.mainTextColor)
             }
-            .buttonStyle((NEUButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false, shadow: true, shape: Circle())))
+            .buttonStyle((NEUBorderButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false, shadow: true, shape: Circle())))
         }
         .padding(10)
         .background(

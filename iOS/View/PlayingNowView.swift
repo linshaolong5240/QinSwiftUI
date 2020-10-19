@@ -239,7 +239,7 @@ struct PlayingNowStatusView: View {
                 }) {
                     NEUSFView(systemName: "backward.fill", size: .big)
                 }
-                .buttonStyle(NEUBigButtonStyle(shape: Circle()))
+                .buttonStyle(NEUButtonStyle2(shape: Circle()))
                 
                 NEUSFView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
                     .background(
@@ -254,7 +254,7 @@ struct PlayingNowStatusView: View {
                 }) {
                     NEUSFView(systemName: "forward.fill", size: .big)
                 }
-                .buttonStyle(NEUBigButtonStyle(shape: Circle()))
+                .buttonStyle(NEUButtonStyle2(shape: Circle()))
             }
             .padding(.vertical)
         }
