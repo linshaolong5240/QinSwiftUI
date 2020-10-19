@@ -20,7 +20,7 @@ struct SongListView: View {
                 ForEach(0..<songs.count, id: \.self) { index in
                     SongRowView(viewModel: songs[index], action: {
                         if  playing.songDetail.id == songs[index].id {
-                            store.dispatch(.PlayerPlayOrPause)
+                            store.dispatch(.PlayOrPause)
                         }else {
                             Store.shared.dispatch(.setPlayinglist(playinglist: songs, index: index))
                             Store.shared.dispatch(.playByIndex(index: index))

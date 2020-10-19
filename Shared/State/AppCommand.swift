@@ -1089,6 +1089,7 @@ struct TooglePlayCommand: AppCommand {
 
     func execute(in store: Store) {
         guard store.appState.playing.songUrl != nil else {
+            store.dispatch(.playByIndex(index: store.appState.playing.index))
             return
         }
         if Player.shared.isPlaying {

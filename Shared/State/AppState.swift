@@ -118,13 +118,67 @@ extension AppState {
     }
     
     struct Playing {
-        var index: Int = 0
+        var index: Int {
+            get {
+                UserDefaults.standard.integer(forKey: "playingIndex")
+            }
+            set {
+                UserDefaults.standard.set(newValue, forKey: "playingIndex")
+            }
+        }
         var isSeeking: Bool = false
         
-        var playinglist = [SongViewModel]()//PlaylistViewModel()
+        //var playinglist = [SongViewModel]()
+        var playinglist: [SongViewModel] {
+            get {
+                let data = UserDefaults.standard.array(forKey: "playinglist") as? [Data]
+                if let songs = data?.map({$0.toModel(SongViewModel.self) ?? SongViewModel()}) {
+                    return songs
+                }else {
+                    return [SongViewModel()]
+                }
+            }
+            set {
+                let data: [Data] =  newValue.map{
+                    var data = Data()
+                    do {
+                        data =  try JSONEncoder().encode($0)
+        //                newValue.map{$0.}
+                    }
+                    catch let error{
+                        print(error)
+                    }
+                    return data
+                }
+                UserDefaults.standard.set(data, forKey: "playinglist")
+            }
+        }
+
         var playingError: AppError?
-        var songDetail = SongViewModel()
+        var songDetail: SongViewModel {
+            get {
+                return UserDefaults.standard.data(forKey: "playingSongDetail")?.toModel(SongViewModel.self) ?? SongViewModel()
+            }
+            set {
+                do {
+                    UserDefaults.standard.set(try JSONEncoder().encode(newValue), forKey: "playingSongDetail")
+
+                } catch let error {
+                    print(error)
+                }
+            }
+        }
+        
         var songUrl: String?
+
+//        var songUrl: String? {
+//            get {
+//                UserDefaults.standard.string(forKey: "playingSongUrl")
+//            }
+//            set {
+//                UserDefaults.standard.set(newValue, forKey: "playingSongUrl")
+//            }
+//        }
         
         var loadTime: Double = 0
         var seekTime: Double = 0

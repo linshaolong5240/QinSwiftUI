@@ -8,12 +8,12 @@
 
 import Foundation
 
-class SongViewModel: ObservableObject, Identifiable, Equatable {
+class SongViewModel: ObservableObject, Identifiable, Equatable, Codable {
     static func == (lhs: SongViewModel, rhs: SongViewModel) -> Bool {
         lhs.id == rhs.id
     }
     
-    struct Artist: Identifiable {
+    struct Artist: Identifiable, Codable {
         var id: Int = 0
         var name: String = ""
     }

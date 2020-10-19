@@ -64,6 +64,7 @@ enum AppAction {
     case playlistSubscibeDone(result: Result<Bool, AppError>)
     case playlistTracks(pid: Int, op: Bool, ids: [Int])
     case playlistTracksDone(result: Result<Bool, AppError>)
+    case PlayOrPause
     case recommendPlaylist
     case recommendPlaylistDone(result: Result<[RecommendPlaylist], AppError>)
     case recommendSongs
@@ -92,5 +93,4 @@ enum AppAction {
     case playToendAction
     case replay
     case seek(isSeeking: Bool)
-    case PlayerPlayOrPause
 }

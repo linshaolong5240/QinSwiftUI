@@ -153,7 +153,7 @@ struct PlayinglistView: View {
                             if self.playing.index != index {
                                 Store.shared.dispatch(.playByIndex(index: index))
                             }else {
-                                Store.shared.dispatch(.PlayerPlayOrPause)
+                                Store.shared.dispatch(.PlayOrPause)
                             }
                         })
                         .contentShape(Rectangle())
@@ -246,7 +246,7 @@ struct PlayingNowStatusView: View {
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
                     )
                     .onTapGesture {
-                        Store.shared.dispatch(.PlayerPlayOrPause)
+                        Store.shared.dispatch(.PlayOrPause)
                     }
                 
                 Button(action: {

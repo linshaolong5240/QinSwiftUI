@@ -407,6 +407,8 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
+        case .PlayOrPause:
+            appCommand = TooglePlayCommand()
         case .recommendPlaylist:
             appState.playlist.recommendPlaylistRequesting = true
             appCommand = RecommendPlaylistCommand()
@@ -506,8 +508,6 @@ class Store: ObservableObject {
         case .setPlayinglist(let playlist, let index):
             appState.playing.playinglist = playlist
             appState.playing.index = index
-        case .PlayerPlayOrPause:
-            appCommand = TooglePlayCommand()
         case .userPlaylist(let uid):
             appState.playlist.userPlaylistRequesting = true
             if let userId = uid {
