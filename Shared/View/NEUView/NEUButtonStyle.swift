@@ -352,43 +352,39 @@ struct NEUBorderDarkToggleBackground<S: Shape>: View {
     var body: some View {
         GeometryReader { geometry in
             return ZStack {
+                let lineWidth = geometry.size.width > geometry.size.height ? geometry.size.height / 40 : geometry.size.width / 40
+                let boardLineWidth = geometry.size.width > geometry.size.height ? geometry.size.height / 15 : geometry.size.width / 15
                 if isHighlighted {
                     shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
                         .overlay(
                             shape.stroke(LinearGradient(borderDarkStart, borderDarkEnd),
-                                         lineWidth: makeBorderLineWidth(geometry: geometry))
+                                         lineWidth: boardLineWidth)
                         )
                         .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
                         .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
                 }else {
                     shape.fill(LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdEnd))
                         .overlay(
-                            shape.stroke(Color.gray, lineWidth: makeShadowLineWidth(geometry: geometry))
+                            shape.stroke(Color.gray, lineWidth: lineWidth)
                                 .blur(radius: 1)
-                                .offset(x: 2, y: 2)
+                                .offset(x: lineWidth, y: lineWidth)
                                 .mask(shape)
                         )
                         .overlay(
-                            shape.stroke(Color.black, lineWidth: makeShadowLineWidth(geometry: geometry))
+                            shape.stroke(Color.black, lineWidth: lineWidth)
                                 .blur(radius: 1)
-                                .offset(x: -2, y: -2)
+                                .offset(x: -lineWidth, y: -lineWidth)
                                 .mask(shape)
                         )
                         .overlay(
                             shape.stroke(LinearGradient(borderDarkStart, borderDarkEnd),
-                                         lineWidth: makeBorderLineWidth(geometry: geometry))
+                                         lineWidth: boardLineWidth)
                         )
                         .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
                         .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
                 }
             }
         }
-    }
-    private func makeShadowLineWidth(geometry: GeometryProxy) -> CGFloat {
-        return geometry.size.width > geometry.size.height ? geometry.size.height / 40 : geometry.size.width / 40
-    }
-    private func makeBorderLineWidth(geometry: GeometryProxy) -> CGFloat {
-        return geometry.size.width > geometry.size.height ? geometry.size.height / 15 : geometry.size.width / 15
     }
 }
 
