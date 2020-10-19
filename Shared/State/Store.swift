@@ -208,14 +208,6 @@ class Store: ObservableObject {
                     let index = appState.playlist.likedIds.firstIndex(of: song.id)
                     appState.playlist.likedIds.remove(at: index!)
                 }
-                if appState.playlistDetail.viewModel.id == appState.playlist.likedPlaylistId {
-                    if like {
-                        appState.playlistDetail.viewModel.songs.append(song)
-                    }else {
-                        let index = appState.playlistDetail.viewModel.songs.firstIndex(of: song)
-                        appState.playlistDetail.viewModel.songs.remove(at: index!)
-                    }
-                }
 //                appCommand = LikeDoneCommand()
             case .failure(let error):
                 appState.error = error
