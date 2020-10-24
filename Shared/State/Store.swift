@@ -193,7 +193,6 @@ class Store: ObservableObject {
             appCommand = CommentMusicCommand(id: id, offset: offset)
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
-            UserDefaults.standard.integer(forKey: "coverShape")
         case .initAction:
             appCommand = InitAcionCommand()
         case .like(let song):
