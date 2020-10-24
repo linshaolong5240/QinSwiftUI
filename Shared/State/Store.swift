@@ -202,13 +202,7 @@ class Store: ObservableObject {
             switch result {
             case .success(let like):
                 song.liked = like
-                if like {
-                    appState.playlist.likedIds.append(song.id)
-                }else {
-                    let index = appState.playlist.likedIds.firstIndex(of: song.id)
-                    appState.playlist.likedIds.remove(at: index!)
-                }
-//                appCommand = LikeDoneCommand()
+                appCommand = LikeDoneCommand()
             case .failure(let error):
                 appState.error = error
             }

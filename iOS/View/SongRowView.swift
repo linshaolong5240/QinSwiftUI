@@ -22,6 +22,11 @@ struct SongRowView: View {
     }
     var body: some View {
         HStack {
+            Button(action: {
+                Store.shared.dispatch(.like(song: viewModel))
+            }, label: {
+                NEUSFView(systemName: viewModel.liked ? "heart.fill" : "heart", size: .medium)
+            })
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .font(.system(size: 20))
@@ -58,6 +63,8 @@ struct SongRowView: View {
 struct SongsListRowView_Previews: PreviewProvider {
     static var previews: some View {
         SongRowView(viewModel: SongViewModel())
+            .environmentObject(Store.shared)
+            .environmentObject(Player.shared)
     }
 }
 #endif
