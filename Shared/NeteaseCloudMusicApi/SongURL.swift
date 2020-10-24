@@ -9,10 +9,20 @@ import Foundation
 
 struct SongURL: Codable {
     var br: Int
+    var canExtend: Bool
+    var code: Int
+    var encodeType: String?
+    var expi: Int
+    var fee: Int
+    var flag: Int
+//    var freeTrialInfo: Any?
+    var gain: Int
     var id: Int
-    var level: String?
-    var payed: Int
+    var level: String?//standard, exhigh
+    var md5: String?
+    var payed: Int// 0 未购买 ， 3 已购买
     var size: Int
     var type: String?
+//    var uf: Any?
     var url: String?
 }
