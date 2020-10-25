@@ -23,6 +23,7 @@ class SongViewModel: ObservableObject, Identifiable, Equatable, Codable {
     var id: Int = 0
     @Published var liked: Bool = false
     var name: String = ""
+    var url: String? = nil
     init() {
     }
     init(id: Int , name: String, artists: [Artist], albumPicURL: String = "") {

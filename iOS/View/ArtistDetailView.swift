@@ -28,37 +28,37 @@ struct ArtistDetailView: View {
                     NEUNavigationBarTitleView("歌手详情")
                     Spacer()
                     Button(action: {
-                        artist.viewModel.followed.toggle()
-                        Store.shared.dispatch(.artistSub(id: artist.viewModel.id, sub: artist.viewModel.followed))
+                        artist.detail.followed.toggle()
+                        Store.shared.dispatch(.artistSub(id: artist.detail.id, sub: artist.detail.followed))
                     }, label: {
                         NEUSFView(systemName: "heart.fill",
-                                  active: artist.viewModel.followed)
+                                  active: artist.detail.followed)
                     })
-                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: artist.viewModel.followed, shape: Circle()))
+                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: artist.detail.followed, shape: Circle()))
                 }
                 .padding(.horizontal)
                 .onAppear {
-                    Store.shared.dispatch(.artists(id: id))
+                    Store.shared.dispatch(.artist(id: id))
                 }
                 if artist.artistRequesting == true {
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: artist.viewModel)
+                    DescriptionView(viewModel: artist.detail)
                     Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
                         Text("热门歌曲").tag(Selection.hotSong)
                         Text("专辑").tag(Selection.album)
                         Text("MV").tag(Selection.mv)
                     }/*@END_MENU_TOKEN@*/
                     .pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal)
+                    .padding()
                     switch selection {
                     case .album:
-                        ArtistAlbumView(albums: artist.viewModel.albums)
+                        ArtistAlbumView(albums: artist.detail.albums)
                     case .hotSong:
-                        SongListView(songs: artist.viewModel.hotSongs)
+                        SongListView(songs: artist.detail.hotSongs)
                     case .mv:
-                        ArtistMVView(mvs: artist.viewModel.mvs)
+                        ArtistMVView(mvs: artist.detail.mvs)
                     }
                 }
             }
@@ -70,7 +70,11 @@ struct ArtistDetailView: View {
 #if DEBUG
 struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
-        ArtistDetailView(id: 0)
+        ZStack {
+            NEUBackgroundView()
+            ArtistDetailView(id: 12787752)
+                .environmentObject(Store.shared)
+        }
     }
 }
 #endif

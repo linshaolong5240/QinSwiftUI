@@ -49,7 +49,7 @@ struct NEULightListRowBackgroundView: View {
 //            }
 //            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
             LinearGradient(gradient: Gradient(colors: [Color.lightBackgourdEnd, Color.lightBackgourdStart]), startPoint: .top, endPoint: .bottom)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 .shadow(color: .lightBackgourdStart, radius: 1, y: -2)
                 .shadow(color: .lightBackgourdEnd, radius: 1, y: 2)
 
@@ -77,7 +77,7 @@ struct NEUDarkListRowBackgroundView: View {
 //                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
 //            }
             LinearGradient(gradient: Gradient(colors: [darkEnd, darkStart]), startPoint: .top, endPoint: .bottom)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                .mask(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 .shadow(color: .darkBackgourdStart, radius: 1, y: -2)
                 .shadow(color: .black, radius: 1, y: 2)
         }else {

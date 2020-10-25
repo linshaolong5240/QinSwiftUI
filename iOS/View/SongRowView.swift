@@ -15,21 +15,24 @@ struct SongRowView: View {
     }
     
     let viewModel: SongViewModel
+    let index: Int
     let action: () -> Void
-    init(viewModel: SongViewModel, action: @escaping () -> Void = {}) {
+    init(viewModel: SongViewModel, index: Int, action: @escaping () -> Void = {}) {
         self.viewModel = viewModel
+        self.index = index
         self.action = action
     }
     var body: some View {
         HStack {
-            Button(action: {
-                Store.shared.dispatch(.like(song: viewModel))
-            }, label: {
-                NEUSFView(systemName: viewModel.liked ? "heart.fill" : "heart", size: .medium)
-            })
+            Text("\(String(index))")
+                .fontWeight(.bold)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .frame(width: 20 , height: 20)
+                .foregroundColor(Color.mainTextColor)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
-                    .font(.system(size: 20))
+                    .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                 HStack {
@@ -41,14 +44,28 @@ struct SongRowView: View {
                 }
             }
             Spacer()
+            if viewModel.url == nil {
+//                NEUSFView(systemName: "icloud.slash", size: .medium)
+                Image(systemName: "icloud.slash")
+                    .foregroundColor(Color.mainTextColor)
+                    .frame(width: 30, height: 30, alignment: .center)
+            }
+            Button(action: {
+                Store.shared.dispatch(.like(song: viewModel))
+            }, label: {
+                Image(systemName: viewModel.liked ? "heart.fill" : "heart")
+                    .foregroundColor(Color.mainTextColor)
+                    .frame(width: 30, height: 30, alignment: .center)
+//                NEUSFView(systemName: viewModel.liked ? "heart.fill" : "heart", size: .medium)
+            })
             Button(action: {
                 action()
             }) {
                 NEUSFView(systemName: player.isPlaying && viewModel.id == playing.songDetail.id ? "pause.fill" : "play.fill",
-                              size: .small,
-                              active: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false,
-                              activeColor: viewModel.id == playing.songDetail.id ? Color.orange : Color.mainTextColor,
-                              inactiveColor: viewModel.id == playing.songDetail.id ? Color.orange : Color.mainTextColor)
+                          size: .small,
+                          active: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false,
+                          activeColor: viewModel.id == playing.songDetail.id ? Color.orange : Color.mainTextColor,
+                          inactiveColor: viewModel.id == playing.songDetail.id ? Color.orange : Color.mainTextColor)
             }
             .buttonStyle((NEUBorderButtonToggleStyle(isHighlighted: viewModel.id == playing.songDetail.id && player.isPlaying ?  true : false, shadow: true, shape: Circle())))
         }
@@ -60,11 +77,18 @@ struct SongRowView: View {
 }
 
 #if DEBUG
-struct SongsListRowView_Previews: PreviewProvider {
+    
+struct SongRowView_Previews: PreviewProvider {
     static var previews: some View {
-        SongRowView(viewModel: SongViewModel())
-            .environmentObject(Store.shared)
-            .environmentObject(Player.shared)
+        ZStack {
+            NEUBackgroundView()
+            SongRowView(viewModel: SongViewModel(id: 0, name: "tewst", artists: [SongViewModel.Artist(id: 0, name: "test")]),
+                        index: 999)
+                .padding(.horizontal)
+                .preferredColorScheme(.dark)
+                .environmentObject(Store.shared)
+                .environmentObject(Player.shared)
+        }
     }
 }
 #endif

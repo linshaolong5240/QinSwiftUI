@@ -147,13 +147,15 @@ struct PlayinglistView: View {
             }
             .padding(.horizontal)
             ScrollView {
+                Spacer()
+                    .frame(height: 10)
                 LazyVStack {
                     ForEach(0 ..< playing.playinglist.count, id: \.self) { index in
-                        SongRowView(viewModel: playing.playinglist[index], action: {
+                        SongRowView(viewModel: playing.playinglist[index],index: index, action: {
                             if self.playing.index != index {
                                 Store.shared.dispatch(.playByIndex(index: index))
                             }else {
-                                Store.shared.dispatch(.PlayOrPause)
+                                Store.shared.dispatch(.playOrPause)
                             }
                         })
                         .contentShape(Rectangle())
@@ -246,7 +248,7 @@ struct PlayingNowStatusView: View {
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
                     )
                     .onTapGesture {
-                        Store.shared.dispatch(.PlayOrPause)
+                        Store.shared.dispatch(.playOrPause)
                     }
                 
                 Button(action: {

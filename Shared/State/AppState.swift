@@ -18,7 +18,6 @@ struct AppState {
     var lyric = Lyric()
     var playing = Playing()
     var playlist = Playlist()
-    var playlistDetail = PlaylistDetail()
     var search = Search()
     var settings = Settings()
     var error: AppError?
@@ -79,7 +78,7 @@ extension AppState {
         var artistMVRequesting: Bool = false
         var artistSublistRequesting: Bool = false
 
-        var viewModel = ArtistViewModel()
+        var detail = ArtistViewModel()
         var artistSublist = [ArtistViewModel]()
         var error: AppError?
     }
@@ -93,28 +92,33 @@ extension AppState {
         var offset: Int = 0
         var total: Int = 0
     }
-    struct PlaylistDetail {
-        var viewModel = PlaylistViewModel()
-        var requesting: Bool = false
+    
+    struct Lyric {
+        var getLyricRequesting = false
+        var getlyricError: AppError?
+        var lyric: LyricViewModel?
     }
     
     struct Playlist {
         //用户相关歌单
-        var createdPlaylist = [PlaylistViewModel]()
-        var recommendPlaylists = [PlaylistViewModel]()
-        var recommendSongsPlaylist = PlaylistViewModel()
-        var subscribePlaylists = [PlaylistViewModel]()
-        
-        //分类歌单
-        var discoverPlaylistViewModel = DiscoverPlaylistViewModel()
-        
-        var likedIds = [Int]()
-        var likedPlaylistId: Int = 0
-        var playlistOrderUpdateRequesting: Bool = false
+        var createdPlaylist = [PlaylistViewModel]()//创建的歌单
+        var recommendPlaylist = [PlaylistViewModel]()//推荐的歌单
         var recommendPlaylistRequesting: Bool = false
-        var songsDetailRequesting: Bool = false
-        var songsURLRequesting: Bool = false
+        var recommendSongsPlaylist = PlaylistViewModel()//每日推荐歌曲
+        var subscribePlaylists = [PlaylistViewModel]()//订阅的歌单
         var userPlaylistRequesting: Bool = false
+
+        //发现歌单
+        var discoverPlaylist = DiscoverPlaylistViewModel()
+        
+        //歌单详情
+        var detail = PlaylistViewModel()
+        var playlistDetailRequesting: Bool = false
+        
+        //喜欢的音乐ID
+        var likedIds = [Int]()
+        //喜欢的音乐歌单ID
+        var likedPlaylistId: Int = 0
     }
     
     struct Playing {
@@ -128,46 +132,47 @@ extension AppState {
         }
         var isSeeking: Bool = false
         
-        //var playinglist = [SongViewModel]()
-        var playinglist: [SongViewModel] {
-            get {
-                let data = UserDefaults.standard.array(forKey: "playinglist") as? [Data]
-                if let songs = data?.map({$0.toModel(SongViewModel.self) ?? SongViewModel()}) {
-                    return songs
-                }else {
-                    return [SongViewModel()]
-                }
-            }
-            set {
-                let data: [Data] =  newValue.map{
-                    var data = Data()
-                    do {
-                        data =  try JSONEncoder().encode($0)
-        //                newValue.map{$0.}
-                    }
-                    catch let error{
-                        print(error)
-                    }
-                    return data
-                }
-                UserDefaults.standard.set(data, forKey: "playinglist")
-            }
-        }
+        var playinglist = [SongViewModel]()
+//        var playinglist: [SongViewModel] {
+//            get {
+//                let data = UserDefaults.standard.array(forKey: "playinglist") as? [Data]
+//                if let songs = data?.map({$0.toModel(SongViewModel.self) ?? SongViewModel()}) {
+//                    return songs
+//                }else {
+//                    return [SongViewModel()]
+//                }
+//            }
+//            set {
+//                let data: [Data] =  newValue.map{
+//                    var data = Data()
+//                    do {
+//                        data =  try JSONEncoder().encode($0)
+//        //                newValue.map{$0.}
+//                    }
+//                    catch let error{
+//                        print(error)
+//                    }
+//                    return data
+//                }
+//                UserDefaults.standard.set(data, forKey: "playinglist")
+//            }
+//        }
 
         var playingError: AppError?
-        var songDetail: SongViewModel {
-            get {
-                return UserDefaults.standard.data(forKey: "playingSongDetail")?.toModel(SongViewModel.self) ?? SongViewModel()
-            }
-            set {
-                do {
-                    UserDefaults.standard.set(try JSONEncoder().encode(newValue), forKey: "playingSongDetail")
-
-                } catch let error {
-                    print(error)
-                }
-            }
-        }
+        var songDetail = SongViewModel()
+//        var songDetail: SongViewModel {
+//            get {
+//                return UserDefaults.standard.data(forKey: "playingSongDetail")?.toModel(SongViewModel.self) ?? SongViewModel()
+//            }
+//            set {
+//                do {
+//                    UserDefaults.standard.set(try JSONEncoder().encode(newValue), forKey: "playingSongDetail")
+//
+//                } catch let error {
+//                    print(error)
+//                }
+//            }
+//        }
         
         var songUrl: String?
 
@@ -186,12 +191,6 @@ extension AppState {
         var loadPercent: Double = 0
         var loadTimelabel: String = "00:00"
         var totalTimeLabel: String = "00:00"
-    }
-    
-    struct Lyric {
-        var getLyricRequesting = false
-        var getlyricError: AppError?
-        var lyric: LyricViewModel?
     }
     
     struct Search {

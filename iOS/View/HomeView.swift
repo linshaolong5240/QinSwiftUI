@@ -45,7 +45,7 @@ struct HomeView: View {
                         Divider()
                         ScrollView {
                             PlaylistsView(title: "推荐的歌单",
-                                          data: playlists.recommendPlaylists,
+                                          data: playlists.recommendPlaylist,
                                           type: .subable)
                             PlaylistsView(title: "创建的歌单",
                                           data: playlists.createdPlaylist,

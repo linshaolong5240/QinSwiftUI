@@ -24,7 +24,7 @@ struct BottomBarView: View {
                         .padding()
                         .frame(width: 90, height: 90)
                     Button(action: {
-                        Store.shared.dispatch(.PlayOrPause)
+                        Store.shared.dispatch(.playOrPause)
                     }) {
                         NEUSFView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
                     }.buttonStyle(NEUButtonToggleStyle(isHighlighted: true, shadow: false, shape: Circle()))

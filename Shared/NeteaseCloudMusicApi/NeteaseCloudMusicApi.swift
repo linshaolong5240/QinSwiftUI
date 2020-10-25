@@ -308,15 +308,6 @@ extension NeteaseCloudMusicApi {
             ] as [String : Any]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
-    //歌曲链接
-    func songsURL(_ ids: [Int], complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/song/enhance/player/url"
-        let data = [
-            "ids": "[" + ids.map(String.init).joined(separator: ",") + "]",
-            "br": 999000
-            ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
-    }
     //歌曲详情
     func songsDetail(_ ids: [Int], complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v3/song/detail"
@@ -325,6 +316,15 @@ extension NeteaseCloudMusicApi {
             "c": "[" + c + "]",
             "ids": "[" + ids.map(String.init).joined(separator: ",") + "]"
         ]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    //歌曲链接
+    func songsURL(_ ids: [Int], complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/song/enhance/player/url"
+        let data = [
+            "ids": "[" + ids.map(String.init).joined(separator: ",") + "]",
+            "br": 999000
+            ] as [String : Any]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //用户歌单

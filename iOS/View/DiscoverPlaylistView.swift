@@ -9,8 +9,8 @@ import SwiftUI
 
 struct DiscoverPlaylistView: View {
     @EnvironmentObject private var store: Store
-    private var viewModel: DiscoverPlaylistViewModel {store.appState.playlist.discoverPlaylistViewModel}
-    private var viewModeBindingl: Binding<DiscoverPlaylistViewModel> {$store.appState.playlist.discoverPlaylistViewModel}
+    private var viewModel: DiscoverPlaylistViewModel {store.appState.playlist.discoverPlaylist}
+    private var viewModeBindingl: Binding<DiscoverPlaylistViewModel> {$store.appState.playlist.discoverPlaylist}
 
     @State private var showCategories: Bool = true
     

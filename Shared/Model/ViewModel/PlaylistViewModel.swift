@@ -21,8 +21,8 @@ class PlaylistViewModel: ObservableObject, Identifiable {
     var name: String = ""
     var playCount: Int = 0
     @Published var subscribed: Bool = false
-    var songIds = [Int]()
     var songs = [SongViewModel]()
+    var songsId = [Int]()
     var userId: Int = 0
     init() {
         
@@ -36,8 +36,8 @@ class PlaylistViewModel: ObservableObject, Identifiable {
         self.name = playList.name
         self.playCount = playList.playCount
         self.subscribed = playList.subscribed
-        self.songIds = playList.trackIds?.map({$0.id}) ?? [Int]()
         self.songs = playList.tracks?.map{ SongViewModel($0) } ?? [SongViewModel]()
+        self.songsId = playList.trackIds?.map({$0.id}) ?? [Int]()
         self.userId = playList.userId
     }
     init(_ recommendPlaylist: RecommendPlaylist) {
@@ -56,6 +56,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
         self.description = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
         self.name = "每日歌曲推荐"
         self.songs = recommendSongs.dailySongs.map{SongViewModel($0)}
+        self.songsId = self.songs.map{$0.id}
     }
     init(_ searchPlaylist: SearchPlaylist) {
         self.count = searchPlaylist.trackCount

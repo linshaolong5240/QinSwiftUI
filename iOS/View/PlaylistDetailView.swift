@@ -14,8 +14,8 @@ struct PlaylistDetailView: View {
     @EnvironmentObject var player: Player
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
-    private var playlistDetail: AppState.PlaylistDetail { store.appState.playlistDetail }
-    private var viewModel: PlaylistViewModel { store.appState.playlistDetail.viewModel }
+    private var playlistDetail: AppState.Playlist { store.appState.playlist }
+    private var viewModel: PlaylistViewModel { store.appState.playlist.detail }
     @State var isMoved: Bool = false
     
     let id: Int
@@ -52,26 +52,26 @@ struct PlaylistDetailView: View {
                 .onAppear(perform: {
                     Store.shared.dispatch(.playlistDetail(id: self.id))
                 })
-                if playlistDetail.requesting {
+                if playlistDetail.playlistDetailRequesting {
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
                     Spacer()
                 }else {
                     DescriptionView(viewModel: viewModel)
-                    HStack {
-                        Text("歌曲列表(\(String(viewModel.count)))")
-                            .fontWeight(.bold)
-                            .foregroundColor(.secondTextColor)
-                        Spacer()
-                        if type == .created {
-                            NEUEditButton(action: {
-                                if isMoved {
-                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
-                                }
-                            })
-                        }
-                    }
-                    .padding(.horizontal)
+//                    HStack {
+//                        Text("歌曲列表(\(String(viewModel.count)))")
+//                            .fontWeight(.bold)
+//                            .foregroundColor(.secondTextColor)
+//                        Spacer()
+//                        if type == .created {
+//                            NEUEditButton(action: {
+//                                if isMoved {
+//                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
+//                                }
+//                            })
+//                        }
+//                    }
+//                    .padding(.horizontal)
                     if editModeBinding?.wrappedValue.isEditing ?? false {
                         PlaylistDetailEditSongsView(isMoved: $isMoved)
                     }else {
@@ -110,7 +110,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 struct PlaylistDetailEditSongsView: View {
     @EnvironmentObject var store: Store
     private var viewModel: PlaylistViewModel {
-        store.appState.playlistDetail.viewModel
+        store.appState.playlist.detail
     }
     @Binding var isMoved: Bool
     
@@ -143,12 +143,12 @@ struct PlaylistDetailEditSongsView: View {
     func deleteAction(from source: IndexSet) {
         if let index = source.first {
             viewModel.songs.remove(at: index)
-            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.songIds[index]]))
+            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.songsId[index]]))
         }
     }
     func moveAction(from source: IndexSet, to destination: Int) {
         isMoved = true
-        viewModel.songIds.move(fromOffsets: source, toOffset: destination)
+        viewModel.songsId.move(fromOffsets: source, toOffset: destination)
         viewModel.songs.move(fromOffsets: source, toOffset: destination)
     }
 }
