@@ -332,11 +332,12 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistDetail(let id):
-            appState.playlist.playlistDetailRequesting = true
             if id == 0 {
+                appState.playlist.detailRequesting = true
                 appState.playlist.detail = appState.playlist.recommendSongsPlaylist
                 appCommand = PlaylistDetailDoneCommand(playlist: appState.playlist.detail)
             }else if id != appState.playlist.detail.id {
+                appState.playlist.detailRequesting = true
                 appState.playlist.detail = PlaylistViewModel()
                 appCommand = PlaylistDetailCommand(id: id)
             }
@@ -447,7 +448,7 @@ class Store: ObservableObject {
                 if appState.artist.artistRequesting {
                     appState.artist.detail.hotSongs = songs
                 }
-                if appState.playlist.playlistDetailRequesting {
+                if appState.playlist.detailRequesting {
                     appState.playlist.detail.songs = songs
                 }
                 if appState.search.searchRequesting {
@@ -458,7 +459,7 @@ class Store: ObservableObject {
                 appState.error = error
                 appState.album.albumRequesting = false
                 appState.artist.artistRequesting = false
-                appState.playlist.playlistDetailRequesting = false
+                appState.playlist.detailRequesting = false
                 appState.search.searchRequesting = false
             }
         case .songsOrderUpdate(let pid, let ids):
@@ -486,7 +487,7 @@ class Store: ObservableObject {
                         appState.artist.detail.hotSongs.first{$0.id == url.id}?.url = url.url
                     }
                 }
-                if appState.playlist.playlistDetailRequesting {
+                if appState.playlist.detailRequesting {
                     for url in  songsURL {
                         appState.playlist.detail.songs.first{$0.id == url.id}?.url = url.url
                     }
@@ -501,7 +502,7 @@ class Store: ObservableObject {
             }
             appState.album.albumRequesting = false
             appState.artist.artistRequesting = false
-            appState.playlist.playlistDetailRequesting = false
+            appState.playlist.detailRequesting = false
             appState.search.searchRequesting = false
         case .seek(let isSeeking):
             appState.playing.isSeeking = isSeeking

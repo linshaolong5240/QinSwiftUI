@@ -113,7 +113,7 @@ extension AppState {
         
         //歌单详情
         var detail = PlaylistViewModel()
-        var playlistDetailRequesting: Bool = false
+        var detailRequesting: Bool = false
         
         //喜欢的音乐ID
         var likedIds = [Int]()

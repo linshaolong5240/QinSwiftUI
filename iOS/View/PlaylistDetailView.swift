@@ -52,7 +52,7 @@ struct PlaylistDetailView: View {
                 .onAppear(perform: {
                     Store.shared.dispatch(.playlistDetail(id: self.id))
                 })
-                if playlistDetail.playlistDetailRequesting {
+                if playlistDetail.detailRequesting {
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
                     Spacer()

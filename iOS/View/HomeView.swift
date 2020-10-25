@@ -44,6 +44,8 @@ struct HomeView: View {
                         .padding([.leading, .bottom, .trailing])
                         Divider()
                         ScrollView {
+                            Spacer()
+                                .frame(height: 10)
                             PlaylistsView(title: "推荐的歌单",
                                           data: playlists.recommendPlaylist,
                                           type: .subable)
