@@ -10,15 +10,15 @@ import Foundation
 
 enum AppAction {
     case album(id: Int)
-    case albumDone(result: Result<AlbumDetailViewModel, AppError>)
+    case albumDone(result: Result<AlbumViewModel, AppError>)
     case albumSub(id: Int, sub: Bool)
     case albumSubDone(result: Result<Bool, AppError>)
     case albumSublist(limit: Int = 100, offset: Int = 0)
-    case albumSublistDone(result: Result<[AlbumSub], AppError>)
+    case albumSublistDone(result: Result<[AlbumViewModel], AppError>)
     case artist(id: Int)
     case artistDone(result: Result<ArtistViewModel, AppError>)
     case artistAlbum(id: Int,limit: Int = 30, offset: Int = 0)
-    case artistAlbumDone(result: Result<[AlbumDetailViewModel], AppError>)
+    case artistAlbumDone(result: Result<[AlbumViewModel], AppError>)
     case artistIntroduction(id: Int)
     case artistIntroductionDone(result: Result<String, AppError>)
     case artistMV(id: Int,limit: Int = 30, offset: Int = 0)

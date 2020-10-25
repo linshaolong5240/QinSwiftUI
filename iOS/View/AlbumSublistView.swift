@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct AlbumSublistView: View {
-    let albumSublist: [AlbumSub]
+    let albumSublist: [AlbumViewModel]
     
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
     
-    @State private var albumDetailId: Int = 0
+    @State private var album = AlbumViewModel()
     @State private var showAlbumDetail: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
-                destination: AlbumDetailView(id: albumDetailId),
+                destination: AlbumDetailView(album),
                 isActive: $showAlbumDetail,
                 label: {EmptyView()})
             HStack {
@@ -35,10 +35,10 @@ struct AlbumSublistView: View {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(albumSublist) { item in
                         Button(action: {
-                            albumDetailId = item.id
+                            album = item
                             showAlbumDetail.toggle()
                         }, label: {
-                            AlbumSubView(album: item)
+                            AlbumSubView(item)
                                 .padding(.vertical)
                         })
                     }
@@ -51,20 +51,23 @@ struct AlbumSublistView: View {
 #if DEBUG
 struct AlbumSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumSublistView(albumSublist: [AlbumSub]())
+        AlbumSublistView(albumSublist: [AlbumViewModel]())
     }
 }
 #endif
 
 struct AlbumSubView: View {
-    let album: AlbumSub
+    let viewModel: AlbumViewModel
     
+    init(_ viewModel: AlbumViewModel) {
+        self.viewModel = viewModel
+    }
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: album.picUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: viewModel.coverUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
-                Text(album.name)
+                Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                     .frame(width: 110, alignment: .leading)

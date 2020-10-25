@@ -68,8 +68,8 @@ extension AppState {
     struct Album {
         var albumRequesting: Bool = false
         var albumSublistRequesting: Bool = false
-        var albumViewModel =  AlbumDetailViewModel()
-        var albumSublist = [AlbumSub]()
+        var albumViewModel =  AlbumViewModel()
+        var albumSublist = [AlbumViewModel]()
     }
     
     struct Artist {

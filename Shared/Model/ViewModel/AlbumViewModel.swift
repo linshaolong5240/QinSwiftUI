@@ -7,7 +7,11 @@
 
 import Foundation
 
-class AlbumDetailViewModel: ObservableObject, Identifiable {
+class AlbumViewModel: ObservableObject, Identifiable, Equatable {
+    static func == (lhs: AlbumViewModel, rhs: AlbumViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     var coverUrl: String = ""
     var description: String = ""
     var id: Int = 0
@@ -26,5 +30,11 @@ class AlbumDetailViewModel: ObservableObject, Identifiable {
         self.isSub = album.isSub ?? false
         self.name = album.name
         self.songs = album.songs.map{SongViewModel($0)}
+    }
+    init(_ album: AlbumSub) {
+        self.coverUrl = album.picUrl
+        self.description = ""
+        self.id = album.id
+        self.name = album.name
     }
 }

@@ -16,7 +16,7 @@ class ArtistViewModel: ObservableObject, Identifiable {
     var id: Int = 0
     var name: String = ""
     
-    var albums = [AlbumDetailViewModel]()
+    var albums = [AlbumViewModel]()
     var hotSongs = [SongViewModel]()
     var mvs = [MV]()
     

@@ -9,9 +9,13 @@ import SwiftUI
 
 struct AlbumDetailView: View {
     @EnvironmentObject var store: Store
-    private var album: AppState.Album {store.appState.album}
+    private var viewModel: AlbumViewModel {store.appState.album.albumViewModel}
 
-    let id: Int
+    let album: AlbumViewModel
+    
+    init(_ album: AlbumViewModel) {
+        self.album = album
+    }
     
     var body: some View {
         ZStack {
@@ -23,24 +27,25 @@ struct AlbumDetailView: View {
                     NEUNavigationBarTitleView("专辑详情")
                     Spacer()
                     Button(action: {
-                        album.albumViewModel.isSub.toggle()
-                        Store.shared.dispatch(.albumSub(id: album.albumViewModel.id, sub: album.albumViewModel.isSub))
+                        viewModel.isSub.toggle()
+                        Store.shared.dispatch(.albumSub(id: viewModel.id, sub: viewModel.isSub))
                     }, label: {
                         NEUSFView(systemName: "heart.fill",
-                                    active: album.albumViewModel.isSub)
+                                    active: viewModel.isSub)
                     })
-                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: album.albumViewModel.isSub, shape: Circle()))
+                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
                 }
                 .padding(.horizontal)
                 .onAppear(perform: {
-                    Store.shared.dispatch(.album(id: id))
+                    Store.shared.dispatch(.album(id: album.id))
                 })
-                if album.albumRequesting {
+                if store.appState.album.albumRequesting {
+                    DescriptionView(viewModel: album)
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: album.albumViewModel)
-                    SongListView(songs: album.albumViewModel.songs)
+                    DescriptionView(viewModel: viewModel)
+                    SongListView(songs: viewModel.songs)
                 }
             }
         }
@@ -51,7 +56,7 @@ struct AlbumDetailView: View {
 #if DEBUG
 struct AlbumDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumDetailView(id: 0)
+        AlbumDetailView(AlbumViewModel())
     }
 }
 #endif

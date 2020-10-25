@@ -80,14 +80,14 @@ struct ArtistView_Previews: PreviewProvider {
 #endif
 
 struct ArtistAlbumView: View {
-    let albums: [AlbumDetailViewModel]
+    let albums: [AlbumViewModel]
     
     private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
                 ForEach(albums) { item in
-                    NavigationLink(destination: AlbumDetailView(id: item.id)) {
+                    NavigationLink(destination: AlbumDetailView(item)) {
                         AlbumView(viewModel: item)
                     }
                 }
@@ -97,7 +97,7 @@ struct ArtistAlbumView: View {
 }
 
 struct AlbumView: View {
-    let viewModel: AlbumDetailViewModel
+    let viewModel: AlbumViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
