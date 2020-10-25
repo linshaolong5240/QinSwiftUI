@@ -435,6 +435,11 @@ class Store: ObservableObject {
         case .songsDetail(let ids):
             if ids.count > 0 {
                 appCommand = SongsDetailCommand(ids: ids)
+            }else{
+                appState.album.albumRequesting = false
+                appState.artist.artistRequesting = false
+                appState.playlist.detailRequesting = false
+                appState.search.searchRequesting = false
             }
         case .songsDetailDone(let result):
             switch result {

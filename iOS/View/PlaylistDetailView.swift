@@ -18,6 +18,7 @@ struct PlaylistDetailView: View {
     private var viewModel: PlaylistViewModel { store.appState.playlist.detail }
     @State var isMoved: Bool = false
     
+    let playlist: PlaylistViewModel
     let id: Int
     let type: PlaylistType
     
@@ -53,6 +54,7 @@ struct PlaylistDetailView: View {
                     Store.shared.dispatch(.playlistDetail(id: self.id))
                 })
                 if playlistDetail.detailRequesting {
+                    DescriptionView(viewModel: playlist)
                     Text("正在加载...")
                         .foregroundColor(.secondTextColor)
                     Spacer()
@@ -90,7 +92,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
         ZStack {
             NEUBackgroundView()
             VStack {
-                PlaylistDetailView(id: 1, type: .subable)
+                PlaylistDetailView(playlist: PlaylistViewModel(), id: 1, type: .subable)
                 //                List {
                 //                    SongRowView(viewModel: SongViewModel(id: 0, name: "test", artists: "test"), active: false)
                 //                        .environment(\.colorScheme, .light)

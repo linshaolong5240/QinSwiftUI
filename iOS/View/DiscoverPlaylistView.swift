@@ -92,7 +92,7 @@ struct DiscoverPlaylistsView: View {
         ScrollView {
             LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
                 ForEach(data) { item in
-                    NavigationLink(destination: PlaylistDetailView(id: item.id, type: .subable)) {
+                    NavigationLink(destination: PlaylistDetailView(playlist: item, id: item.id, type: .subable)) {
                         PlaylistColumnView(item)
                     }
                 }

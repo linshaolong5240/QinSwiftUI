@@ -12,21 +12,23 @@ import KingfisherSwiftUI
 struct PlaylistsView: View {
     enum SheetType {
         case create, manage
-    }    
+    }
+    
     let title: String
     let data: [PlaylistViewModel]
     let type: PlaylistType
+    
+    @State private var playlist = PlaylistViewModel()
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var isManaging: Bool = false
     @State private var isCreating: Bool = false
     @State private var showSheet: Bool = false
     @State private var sheetType: SheetType = .manage
-    
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
-                destination: PlaylistDetailView(id: playlistDetailId, type: type),
+                destination: PlaylistDetailView(playlist: playlist, id: playlistDetailId, type: type),
                 isActive: $showPlaylistDetail,
                 label: {EmptyView()})
             HStack {
@@ -87,6 +89,7 @@ struct PlaylistsView: View {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(data) { item in
                         Button(action: {
+                            playlist = item
                             playlistDetailId = item.id
                             showPlaylistDetail.toggle()
                         }, label: {

@@ -44,7 +44,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
         self.count = recommendPlaylist.trackCount
         self.coverImgUrl = recommendPlaylist.picUrl
         self.creator = recommendPlaylist.creator.nickname
-        self.description = ""
+        self.description = recommendPlaylist.copywriter
         self.id = recommendPlaylist.id
         self.name = recommendPlaylist.name
         self.playCount = recommendPlaylist.playcount
