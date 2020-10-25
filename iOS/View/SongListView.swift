@@ -23,11 +23,11 @@ struct SongListView: View {
                 EmptyView()
             }
             HStack {
-                Text("\(String(showFavorite ? songs.filter{$0.liked}.count : songs.count)) songs")
+                Text("\(String(showFavorite ? songs.filter{$0.liked}.count : songs.count)) 首")
                     .fontWeight(.bold)
                     .foregroundColor(.secondTextColor)
                 Spacer()
-                Text("显示喜欢")
+                Text(showFavorite ? "喜欢" : "全部")
                     .fontWeight(.bold)
                     .foregroundColor(.secondTextColor)
                 Toggle("", isOn: $showFavorite)
