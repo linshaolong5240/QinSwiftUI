@@ -78,17 +78,17 @@ struct SongRowView: View {
 
 #if DEBUG
     
-struct SongRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            NEUBackgroundView()
-            SongRowView(viewModel: SongViewModel(id: 0, name: "tewst", artists: [SongViewModel.Artist(id: 0, name: "test")]),
-                        index: 999)
-                .padding(.horizontal)
-                .preferredColorScheme(.dark)
-                .environmentObject(Store.shared)
-                .environmentObject(Player.shared)
-        }
-    }
-}
+//struct SongRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack {
+//            NEUBackgroundView()
+//            SongRowView(viewModel: SongViewModel(id: 0, name: "tewst", artists: [SongViewModel.Artist(id: 0, name: "test")]),
+//                        index: 999)
+//                .padding(.horizontal)
+//                .preferredColorScheme(.dark)
+//                .environmentObject(Store.shared)
+//                .environmentObject(Player.shared)
+//        }
+//    }
+//}
 #endif

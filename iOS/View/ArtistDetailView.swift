@@ -12,11 +12,15 @@ struct ArtistDetailView: View {
         case album, hotSong, mv
     }
     @EnvironmentObject var store: Store
-    private var artist: AppState.Artist {store.appState.artist}
+    private var viewModel: ArtistViewModel {store.appState.artist.detail}
     @State private var selection: Selection = .hotSong
     @State private var showDesc: Bool = false
     
-    let id: Int
+    private let artist: ArtistViewModel
+    
+    init(_ artist: ArtistViewModel) {
+        self.artist = artist
+    }
     
     var body: some View {
         ZStack {
@@ -28,23 +32,24 @@ struct ArtistDetailView: View {
                     NEUNavigationBarTitleView("歌手详情")
                     Spacer()
                     Button(action: {
-                        artist.detail.followed.toggle()
-                        Store.shared.dispatch(.artistSub(id: artist.detail.id, sub: artist.detail.followed))
+                        viewModel.followed.toggle()
+                        Store.shared.dispatch(.artistSub(id: viewModel.id, sub: viewModel.followed))
                     }, label: {
                         NEUSFView(systemName: "heart.fill",
-                                  active: artist.detail.followed)
+                                  active: viewModel.followed)
                     })
-                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: artist.detail.followed, shape: Circle()))
+                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.followed, shape: Circle()))
                 }
                 .padding(.horizontal)
                 .onAppear {
-                    Store.shared.dispatch(.artist(id: id))
+                    Store.shared.dispatch(.artist(id: artist.id))
                 }
-                if artist.artistRequesting == true {
+                if store.appState.artist.artistRequesting == true {
+                    DescriptionView(viewModel: artist)
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: artist.detail)
+                    DescriptionView(viewModel: viewModel)
                     Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
                         Text("热门歌曲").tag(Selection.hotSong)
                         Text("专辑").tag(Selection.album)
@@ -54,11 +59,11 @@ struct ArtistDetailView: View {
                     .padding()
                     switch selection {
                     case .album:
-                        ArtistAlbumView(albums: artist.detail.albums)
+                        ArtistAlbumView(albums: viewModel.albums)
                     case .hotSong:
-                        SongListView(songs: artist.detail.hotSongs)
+                        SongListView(songs: viewModel.hotSongs)
                     case .mv:
-                        ArtistMVView(mvs: artist.detail.mvs)
+                        ArtistMVView(mvs: viewModel.mvs)
                     }
                 }
             }
@@ -72,7 +77,7 @@ struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-            ArtistDetailView(id: 12787752)
+            ArtistDetailView(ArtistViewModel())
                 .environmentObject(Store.shared)
         }
     }

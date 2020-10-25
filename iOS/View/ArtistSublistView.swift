@@ -10,14 +10,14 @@ import SwiftUI
 struct ArtistSublistView: View {
     let artistSublist: [ArtistViewModel]
     
-    @State private var artistDetailId: Int = 0
+    @State private var artist = ArtistViewModel()
     @State private var showArtistDetail: Bool = false
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
     
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
-                destination: ArtistDetailView(id: artistDetailId),
+                destination: ArtistDetailView(artist),
                 isActive: $showArtistDetail,
                 label: {EmptyView()})
             HStack {
@@ -34,7 +34,7 @@ struct ArtistSublistView: View {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(artistSublist) { item in
                         Button(action: {
-                            artistDetailId = item.id
+                            artist = item
                             showArtistDetail.toggle()
                         }, label: {
                             ArtistView(item)

@@ -113,8 +113,9 @@ struct ArtistCommand: AppCommand {
                 let hotSongs = hotSongsDictArray
                                 .map{$0.toData!.toModel(Song.self)!}
                                 .map{SongViewModel($0)}
-                let artistviewModel = ArtistViewModel(artist: artist, hotSongs: hotSongs)
-                store.dispatch(.artistDone(result: .success(artistviewModel)))
+                let artistViewModel = ArtistViewModel(artist)
+                artistViewModel.hotSongs = hotSongs
+                store.dispatch(.artistDone(result: .success(artistViewModel)))
             }else {
                 if let code = data?["code"] as? Int ?? 0 {
                     if let message = data?["message"] as? String ?? "" {

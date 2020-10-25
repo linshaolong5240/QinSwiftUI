@@ -71,16 +71,16 @@ struct SongListView: View {
 }
 
 #if DEBUG
-struct SongListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            NEUBackgroundView()
-            SongListView(songs: [SongViewModel(id: 0, name: "tewst", artists: [SongViewModel.Artist(id: 0, name: "test")]),
-                                 SongViewModel(id: 0, name: "tewst", artists: [SongViewModel.Artist(id: 0, name: "test")])])
-                .preferredColorScheme(.dark)
-                .environmentObject(Store.shared)
-                .environmentObject(Player.shared)
-        }
-    }
-}
+//struct SongListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ZStack {
+//            NEUBackgroundView()
+//            SongListView(songs: [SongViewModel(id: 0, name: "tewst", artists: [SongViewModel.Artist(id: 0, name: "test")]),
+//                                 SongViewModel(id: 0, name: "tewst", artists: [SongViewModel.Artist(id: 0, name: "test")])])
+//                .preferredColorScheme(.dark)
+//                .environmentObject(Store.shared)
+//                .environmentObject(Player.shared)
+//        }
+//    }
+//}
 #endif

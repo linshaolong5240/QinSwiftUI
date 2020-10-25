@@ -25,7 +25,7 @@ struct PlayingNowView: View {
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
     @State private var showArtist: Bool = false
-    @State private var artistId: Int = 0
+    @State private var artist = ArtistViewModel()
 
     var body: some View {
         ZStack {
@@ -95,7 +95,7 @@ struct PlayingNowView: View {
                     }
                 }
                 ZStack {
-                    PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
+                    PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artist: $artist)
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     PlayinglistView(showList: $showMore, bottomType: $bottomType)
@@ -109,7 +109,7 @@ struct PlayingNowView: View {
                         .transition(.move(edge: .bottom))
                 }
             }
-            NavigationLink(destination: ArtistDetailView(id: artistId), isActive: $showArtist) {
+            NavigationLink(destination: ArtistDetailView(artist), isActive: $showArtist) {
                 EmptyView()
             }
         }
@@ -188,7 +188,7 @@ struct PlayingNowStatusView: View {
 
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
-    @Binding var artistId: Int
+    @Binding var artist: ArtistViewModel
 
     var body: some View {
         VStack {
@@ -201,7 +201,7 @@ struct PlayingNowStatusView: View {
                 HStack {
                     ForEach(playing.songDetail.artists) { item in
                         Button(action: {
-                            artistId = item.id
+                            artist = item
                             showArtist.toggle()
                         }, label: {
                             Text("\(item.name)")

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ArtistViewModel: ObservableObject, Identifiable {
+class ArtistViewModel: ObservableObject, Identifiable, Codable {
     var albumSize: Int = 0
     var alias = [String]()
     var coverUrl: String = ""
@@ -22,8 +22,7 @@ class ArtistViewModel: ObservableObject, Identifiable {
     
     init() {
     }
-    
-    init(artist: Artist, hotSongs: [SongViewModel]) {
+    init(_ artist: Artist) {
         self.albumSize = artist.albumSize
         self.alias = artist.alias
         self.coverUrl = artist.img1v1Url
@@ -31,12 +30,15 @@ class ArtistViewModel: ObservableObject, Identifiable {
         self.followed = artist.followed ?? false
         self.id = artist.id
         self.name = artist.name
-        
-        self.hotSongs = hotSongs
     }
-    init(_ artistSublist: ArtistSub) {
-        self.coverUrl = artistSublist.img1v1Url ?? ""
-        self.id = artistSublist.id
-        self.name = artistSublist.name
+    
+    init(_ artist: ArtistSub) {
+        self.coverUrl = artist.img1v1Url ?? ""
+        self.id = artist.id
+        self.name = artist.name
+    }
+    init(_ artist: SongDetail.Artist) {
+        self.id = artist.id
+        self.name = artist.name ?? ""
     }
 }
