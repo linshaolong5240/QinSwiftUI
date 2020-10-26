@@ -11,7 +11,7 @@ import CoreData
 
 class DataManager {
     static let shared = DataManager()
-    lazy private var persistentContainer: NSPersistentContainer = {
+    lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "DataModel")
         container.loadPersistentStores { description, error in
             if let error = error {

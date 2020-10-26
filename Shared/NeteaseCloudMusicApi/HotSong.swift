@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Song: Codable, Identifiable {
+struct HotSong: Codable, Identifiable {
     struct NoCopyrightRcmd: Codable {
         var songId: String?
         var type: Int

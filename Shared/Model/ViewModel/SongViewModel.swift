@@ -21,7 +21,7 @@ class SongViewModel: ObservableObject, Identifiable, Equatable, Codable {
     var url: String? = nil
     init() {
     }
-    init(_ song: Song) {
+    init(_ song: HotSong) {
         self.albumPicURL = song.album.picUrl
         self.artists = song.artists.map(ArtistViewModel.init)
         self.durationTime = song.duration

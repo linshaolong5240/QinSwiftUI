@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol AppCommand {
     func execute(in store: Store)
@@ -29,6 +30,28 @@ struct AlbumCommand: AppCommand {
                 album.songs = songs
                 let albumViewModel = AlbumViewModel(album)
                 store.dispatch(.albumDone(result: .success(albumViewModel)))
+                
+
+                do {
+//                    let songsJS = songDicts.map{$0.toData!.toModel(Song.self)!}
+
+//                    let data = try JSONSerialization.data(withJSONObject: songDicts, options: []);
+//                    let jsonObjects = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                    
+                    let jsonObjects = songDicts.map{
+                        return ["id": $0["id"]!,
+                                "name": $0["name"]!,
+//                                "alias": $0["alia"]!
+                    ]} as [[String: Any]]
+                    let context = DataManager.shared.persistentContainer.viewContext
+                    let batchInsert = NSBatchInsertRequest(entityName: "Song", objects: jsonObjects)
+
+                    var insertResult : NSBatchInsertResult
+                    insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
+                    print("core data",insertResult)
+                } catch let error{
+                    print("core data",error)
+                }
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -111,7 +134,7 @@ struct ArtistCommand: AppCommand {
                 let artist = artistDict.toData!.toModel(Artist.self)!
                 let hotSongsDictArray = data!["hotSongs"] as! [NeteaseCloudMusicApi.ResponseData]
                 let hotSongs = hotSongsDictArray
-                                .map{$0.toData!.toModel(Song.self)!}
+                                .map{$0.toData!.toModel(HotSong.self)!}
                                 .map{SongViewModel($0)}
                 let artistViewModel = ArtistViewModel(artist)
                 artistViewModel.hotSongs = hotSongs

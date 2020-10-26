@@ -11,11 +11,14 @@ import SwiftUI
 struct QinApp: App {
     @StateObject var store = Store.shared
     @StateObject var player = Player.shared
+    let context = DataManager.shared.persistentContainer.viewContext
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(store)
                 .environmentObject(player)
+                .environment(\.managedObjectContext, context)
         }
     }
 }
