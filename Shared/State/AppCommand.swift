@@ -24,34 +24,12 @@ struct AlbumCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 let albumDict = data!["album"] as! NeteaseCloudMusicApi.ResponseData
-                var album = albumDict.toData!.toModel(Album.self)!
+                var album = albumDict.toData!.toModel(AlbumJSONModel.self)!
                 let songDicts = data!["songs"] as! [NeteaseCloudMusicApi.ResponseData]
                 let songs = songDicts.map{$0.toData!.toModel(SongDetail.self)!}
                 album.songs = songs
                 let albumViewModel = AlbumViewModel(album)
                 store.dispatch(.albumDone(result: .success(albumViewModel)))
-                
-
-                do {
-//                    let songsJS = songDicts.map{$0.toData!.toModel(Song.self)!}
-
-//                    let data = try JSONSerialization.data(withJSONObject: songDicts, options: []);
-//                    let jsonObjects = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                    
-                    let jsonObjects = songDicts.map{
-                        return ["id": $0["id"]!,
-                                "name": $0["name"]!,
-//                                "alias": $0["alia"]!
-                    ]} as [[String: Any]]
-                    let context = DataManager.shared.persistentContainer.viewContext
-                    let batchInsert = NSBatchInsertRequest(entityName: "Song", objects: jsonObjects)
-
-                    var insertResult : NSBatchInsertResult
-                    insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
-                    print("core data",insertResult)
-                } catch let error{
-                    print("core data",error)
-                }
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -203,7 +181,7 @@ struct ArtistAlbumCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 let albumsDict = data!["hotAlbums"] as! [NeteaseCloudMusicApi.ResponseData]
-                let albums = albumsDict.map{$0.toData!.toModel(Album.self)!}
+                let albums = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
                 let albumsViewModel = albums.map{ AlbumViewModel($0) }
                 store.dispatch(.artistAlbumDone(result: .success(albumsViewModel)))
             }else {
@@ -1024,6 +1002,16 @@ struct SongsDetailCommand: AppCommand {
             if let songsDict = data?["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
                 let songs = songsDict.map{$0.toData!.toModel(SongDetail.self)!}.map(SongViewModel.init)
                 if songs.count > 0 {
+                    let jsonObjects: [[String: Any]] = songsDict.map {
+                        let dict: [String: Any] = [
+                            "id": $0["id"]!,
+                            "name": $0["name"]!,
+                        ]
+                        return dict
+                    }
+                    DataManager.shared.batchDelete(entityName: "Song")
+                    DataManager.shared.batchInsert(entityName: "Song", objects: jsonObjects)
+                    DataManager.shared.batchUpdateLike(ids: store.appState.playlist.likedIds)
                     store.dispatch(.songsDetailDone(result: .success(songs)))
                 }
             }else {

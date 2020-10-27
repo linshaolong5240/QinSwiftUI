@@ -23,7 +23,7 @@ class AlbumViewModel: ObservableObject, Identifiable, Equatable, Codable {
         
     }
     
-    init(_ album: Album) {
+    init(_ album: AlbumJSONModel) {
         self.coverUrl = album.picUrl
         self.description = album.description ?? ""
         self.id = album.id

@@ -24,7 +24,7 @@ struct HotSong: Codable, Identifiable {
         var sr: Int//采样率
         var volumeDelta: Double
     }
-    var album: Album
+    var album: AlbumJSONModel
     var alias: [String]
     var artists: [Artist]
 //    var audition: Any?

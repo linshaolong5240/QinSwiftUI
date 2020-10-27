@@ -9,8 +9,6 @@ import SwiftUI
 
 struct AlbumDetailView: View {
     @EnvironmentObject var store: Store
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @FetchRequest(entity: Song.entity(), sortDescriptors: []) var songs: FetchedResults<Song>
     private var viewModel: AlbumViewModel {store.appState.album.albumViewModel}
 
     let album: AlbumViewModel
@@ -41,22 +39,14 @@ struct AlbumDetailView: View {
                 .onAppear(perform: {
                     Store.shared.dispatch(.album(id: album.id))
                 })
-                ScrollView {
-                    ForEach(songs, id:\.id) { item in
-                        Button(item.name) {
-                            item.name = "test"
-                        }
-                    }
+                if store.appState.album.albumRequesting {
+                    DescriptionView(viewModel: album)
+                    Text("正在加载")
+                    Spacer()
+                }else {
+                    DescriptionView(viewModel: viewModel)
+                    SongListView(songs: viewModel.songs)
                 }
-
-//                if store.appState.album.albumRequesting {
-//                    DescriptionView(viewModel: album)
-//                    Text("正在加载")
-//                    Spacer()
-//                }else {
-//                    DescriptionView(viewModel: viewModel)
-//                    SongListView(songs: viewModel.songs)
-//                }
             }
         }
         .navigationBarHidden(true)

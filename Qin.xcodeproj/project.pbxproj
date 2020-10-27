@@ -141,8 +141,8 @@
 		2BCCB33524DC98A7004CAD67 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB33224DC98A6004CAD67 /* DataModel.xcdatamodeld */; };
 		2BD285B9252B1108000E4B9F /* HotSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285B8252B1108000E4B9F /* HotSong.swift */; };
 		2BD285BA252B1108000E4B9F /* HotSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285B8252B1108000E4B9F /* HotSong.swift */; };
-		2BD285BE252B119B000E4B9F /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285BD252B119B000E4B9F /* Album.swift */; };
-		2BD285BF252B119B000E4B9F /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285BD252B119B000E4B9F /* Album.swift */; };
+		2BD285BE252B119B000E4B9F /* AlbumJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */; };
+		2BD285BF252B119B000E4B9F /* AlbumJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */; };
 		2BD4D9CB251BC460006798ED /* LyricViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD4D9CA251BC460006798ED /* LyricViewModel.swift */; };
 		2BD4D9CC251BC460006798ED /* LyricViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD4D9CA251BC460006798ED /* LyricViewModel.swift */; };
 		2BE2607124F6C2860039A39E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE2607024F6C2860039A39E /* Search.swift */; };
@@ -234,7 +234,7 @@
 		2BCCB32B24DC7EF8004CAD67 /* SongViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongViewModel.swift; sourceTree = "<group>"; };
 		2BCCB33324DC98A6004CAD67 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		2BD285B8252B1108000E4B9F /* HotSong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotSong.swift; sourceTree = "<group>"; };
-		2BD285BD252B119B000E4B9F /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
+		2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumJSONModel.swift; sourceTree = "<group>"; };
 		2BD4D9CA251BC460006798ED /* LyricViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricViewModel.swift; sourceTree = "<group>"; };
 		2BE2607024F6C2860039A39E /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		2BE89B14250F7F5100E0F278 /* NEUButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUButton.swift; sourceTree = "<group>"; };
@@ -421,7 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				2BCCB2EB24DC7A61004CAD67 /* Account.swift */,
-				2BD285BD252B119B000E4B9F /* Album.swift */,
+				2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */,
 				2B0668EA253057660007053C /* AlbumSub.swift */,
 				2B20BBF62525D86A00679D0D /* Artist.swift */,
 				2B0668F32530586F0007053C /* ArtistSub.swift */,
@@ -639,7 +639,7 @@
 				2BCCB2A324DC5A2C004CAD67 /* SettingsView.swift in Sources */,
 				2B549B4B2509483900EA37B5 /* NEUTextFieldStyle.swift in Sources */,
 				2BCCB32624DC7BCD004CAD67 /* Store.swift in Sources */,
-				2BD285BE252B119B000E4B9F /* Album.swift in Sources */,
+				2BD285BE252B119B000E4B9F /* AlbumJSONModel.swift in Sources */,
 				2B69172C252EFB7200F05DB9 /* ArtistSublistView.swift in Sources */,
 				2B691725252D84D300F05DB9 /* MV.swift in Sources */,
 				2B1ABED325387E8800B9A15C /* LoginView.swift in Sources */,
@@ -699,7 +699,7 @@
 				2BCCB2F324DC7A62004CAD67 /* Comment.swift in Sources */,
 				2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
 				2B691739252F556E00F05DB9 /* Creator.swift in Sources */,
-				2BD285BF252B119B000E4B9F /* Album.swift in Sources */,
+				2BD285BF252B119B000E4B9F /* AlbumJSONModel.swift in Sources */,
 				2BCCB32F24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,
 				2BCCB32D24DC7EF9004CAD67 /* CommentViewModel.swift in Sources */,
 				2BCCB32124DC7BCC004CAD67 /* AppCommand.swift in Sources */,

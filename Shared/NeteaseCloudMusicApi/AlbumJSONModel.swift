@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Album: Codable, Identifiable {
+struct AlbumJSONModel: Codable, Identifiable {
     struct CommentThread: Codable {
         var commentCount: Int
         var hotCount: Int

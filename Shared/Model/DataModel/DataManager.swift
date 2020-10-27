@@ -21,7 +21,48 @@ class DataManager {
         return container
     }()
     typealias ResponseData = Dictionary<String, Any>
-    func userLogin(_ user: User) {
+    init() {
+        self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+    }
+    public func batchDelete(entityName: String) {
+        do {
+            let context = persistentContainer.viewContext
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+            let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
+            let deleteResult = try context.execute(batchDelete)
+            print("delete", deleteResult)
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+    }
+    public func batchInsert(entityName: String, objects: [[String: Any]]) {
+        do {
+            let context = persistentContainer.viewContext
+            let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
+            var insertResult : NSBatchInsertResult
+            insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
+            print("insertResult",insertResult)
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+    }
+    public func batchUpdate(entityName: String, propertiesToUpdate: [AnyHashable : Any], predicate: NSPredicate? = nil) {
+        do {
+            let context = persistentContainer.viewContext
+            let updateRequest = NSBatchUpdateRequest(entityName: entityName)
+            updateRequest.propertiesToUpdate = propertiesToUpdate
+            updateRequest.predicate = predicate
+            
+            let updateResult = try context.execute(updateRequest) as! NSBatchUpdateResult
+            print("updateResult",updateResult)
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+    }
+    public func batchUpdateLike(ids: [Int]) {
+        self.batchUpdate(entityName: "Song", propertiesToUpdate: ["like" : true], predicate: NSPredicate(format: "id IN %@", ids))
+    }
+    public func userLogin(_ user: User) {
         userLogout()
         let accountData = NSEntityDescription.insertNewObject(forEntityName: "AccountData", into: persistentContainer.viewContext) as! AccountData
         do {
@@ -31,7 +72,7 @@ class DataManager {
         }
         save()
     }
-    func userLogout() {
+    public func userLogout() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AccountData")
         do {
             let accountDatas = try persistentContainer.viewContext.fetch(request)
@@ -43,7 +84,7 @@ class DataManager {
             print("DataManager userLogout \(error)")
         }
     }
-    func getUser() -> User? {
+    public func getUser() -> User? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AccountData")
         do {
             let accountDatas = try persistentContainer.viewContext.fetch(request)
@@ -55,7 +96,7 @@ class DataManager {
         }
         return nil
     }
-    func save() {
+    public func save() {
         do {
             try persistentContainer.viewContext.save()
         }catch let error {

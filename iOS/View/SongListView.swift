@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct SongListView: View {
-    @EnvironmentObject var store: Store
+    @EnvironmentObject private var store: Store
+    @Environment(\.managedObjectContext) private var moc
     private var playing: AppState.Playing { store.appState.playing }
+    @FetchRequest(entity: Song.entity(), sortDescriptors: [], predicate: nil) var songss: FetchedResults<Song>
+
     @State private var showFavorite: Bool = false
     @State private var showPlayingNow: Bool = false
     @State private var showAlert: Bool = false
     
     let songs: [SongViewModel]
-
+    
     
     var body: some View {
         VStack {
@@ -34,38 +37,52 @@ struct SongListView: View {
                     .fixedSize()
             }
             .padding(.horizontal)
+            .onAppear(perform: {
+                print("onAppear")
+            })
+            .onDisappear(perform: {
+                print("onDisappear")
+            })
             ScrollView {
-                Spacer()
-                    .frame(height: 10)
-                LazyVStack {
-                    let data = showFavorite ? songs.filter{$0.liked} : songs
-                    let filterData = data.filter{$0.url != nil}
-                    ForEach(0..<data.count, id: \.self) { index in
-                        if !showFavorite || data[index].liked {
-                            Button(action: {
-                                if  playing.songDetail.id == data[index].id {
-                                    showPlayingNow.toggle()
-                                }else if data[index].url != nil {
-                                    let i = filterData.firstIndex(of: data[index]) ?? 0
-                                    Store.shared.dispatch(.setPlayinglist(playinglist: filterData, index: i))
-                                    Store.shared.dispatch(.playByIndex(index: i))
-                                }
-                            }, label: {
-                                SongRowView(viewModel: data[index],index: index + 1, action: {
-                                    if  playing.songDetail.id == data[index].id {
-                                        store.dispatch(.playOrPause)
-                                    }else if data[index].url != nil {
-                                        let i = filterData.firstIndex(of: data[index]) ?? 0
-                                        Store.shared.dispatch(.setPlayinglist(playinglist: filterData, index: i))
-                                        Store.shared.dispatch(.playByIndex(index: i))
-                                    }
-                                })
-                            })
-                            .padding(.horizontal)
-                        }
-                    }
+                ForEach(songss, id:\.id) { item in
+                    Button(action: {
+                    }, label: {
+                        songrowtest(song: item)
+                    })
                 }
             }
+//            ScrollView {
+//                Spacer()
+//                    .frame(height: 10)
+//                LazyVStack {
+//                    let data = showFavorite ? songs.filter{$0.liked} : songs
+//                    let filterData = data.filter{$0.url != nil}
+//                    ForEach(0..<data.count, id: \.self) { index in
+//                        if !showFavorite || data[index].liked {
+//                            Button(action: {
+//                                if  playing.songDetail.id == data[index].id {
+//                                    showPlayingNow.toggle()
+//                                }else if data[index].url != nil {
+//                                    let i = filterData.firstIndex(of: data[index]) ?? 0
+//                                    Store.shared.dispatch(.setPlayinglist(playinglist: filterData, index: i))
+//                                    Store.shared.dispatch(.playByIndex(index: i))
+//                                }
+//                            }, label: {
+//                                SongRowView(viewModel: data[index],index: index + 1, action: {
+//                                    if  playing.songDetail.id == data[index].id {
+//                                        store.dispatch(.playOrPause)
+//                                    }else if data[index].url != nil {
+//                                        let i = filterData.firstIndex(of: data[index]) ?? 0
+//                                        Store.shared.dispatch(.setPlayinglist(playinglist: filterData, index: i))
+//                                        Store.shared.dispatch(.playByIndex(index: i))
+//                                    }
+//                                })
+//                            })
+//                            .padding(.horizontal)
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 }
@@ -84,3 +101,14 @@ struct SongListView: View {
 //    }
 //}
 #endif
+
+struct songrowtest: View {
+    var song: Song
+    
+    var body: some View {
+        HStack {
+            Text(song.name)
+            Image(systemName: song.like ? "heart.fill" : "heart")
+        }
+    }
+}
