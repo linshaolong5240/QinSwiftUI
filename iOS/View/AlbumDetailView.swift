@@ -11,9 +11,9 @@ struct AlbumDetailView: View {
     @EnvironmentObject var store: Store
     private var viewModel: AlbumViewModel {store.appState.album.albumViewModel}
 
-    let album: AlbumViewModel
+    let album: Album
     
-    init(_ album: AlbumViewModel) {
+    init(_ album: Album) {
         self.album = album
     }
     
@@ -26,26 +26,25 @@ struct AlbumDetailView: View {
                     Spacer()
                     NEUNavigationBarTitleView("专辑详情")
                     Spacer()
-                    Button(action: {
-                        viewModel.isSub.toggle()
-                        Store.shared.dispatch(.albumSub(id: viewModel.id, sub: viewModel.isSub))
-                    }, label: {
-                        NEUSFView(systemName: "heart.fill",
-                                    active: viewModel.isSub)
-                    })
-                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
+//                    Button(action: {
+////                        viewModel.isSub.toggle()
+////                        Store.shared.dispatch(.albumSub(id: viewModel.id, sub: viewModel.isSub))
+//                    }, label: {
+//                        NEUSFView(systemName: "heart.fill")
+//                    })
+//                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
                 }
                 .padding(.horizontal)
                 .onAppear(perform: {
-                    Store.shared.dispatch(.album(id: album.id))
+                    Store.shared.dispatch(.album(id: Int(album.id)))
                 })
                 if store.appState.album.albumRequesting {
                     DescriptionView(viewModel: album)
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: viewModel)
-                    SongListView(songs: viewModel.songs)
+                    DescriptionView(viewModel: album)
+                    SongListView(songs: [SongViewModel]())
                 }
             }
         }
@@ -56,7 +55,7 @@ struct AlbumDetailView: View {
 #if DEBUG
 struct AlbumDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumDetailView(AlbumViewModel())
+        AlbumDetailView(Album())
     }
 }
 #endif

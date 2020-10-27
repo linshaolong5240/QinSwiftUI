@@ -90,13 +90,13 @@ struct ArtistAlbumView: View {
     private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-                ForEach(albums) { item in
-                    NavigationLink(destination: AlbumDetailView(item)) {
-                        AlbumView(viewModel: item)
-                    }
-                }
-            }/*@END_MENU_TOKEN@*/
+//            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
+//                ForEach(albums) { item in
+//                    NavigationLink(destination: AlbumDetailView(item)) {
+//                        AlbumView(viewModel: item)
+//                    }
+//                }
+//            }/*@END_MENU_TOKEN@*/
         }
     }
 }

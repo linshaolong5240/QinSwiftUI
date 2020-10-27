@@ -8,7 +8,7 @@
 import Foundation
 
 struct MV: Codable, Identifiable {
-    var artist: Artist
+    var artist: ArtistJSONModel
     var artistName: String
     var duration: Int
     var id: Int

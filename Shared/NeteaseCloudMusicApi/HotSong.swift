@@ -26,7 +26,7 @@ struct HotSong: Codable, Identifiable {
     }
     var album: AlbumJSONModel
     var alias: [String]
-    var artists: [Artist]
+    var artists: [ArtistJSONModel]
 //    var audition: Any?
     var bMusic: Quality?
     var commentThreadId: String?// album

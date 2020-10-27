@@ -44,8 +44,8 @@ struct AlbumJSONModel: Codable, Identifiable {
         var threadId: String
     }
     var alias: [String]
-    var artist: Artist
-    var artists: [Artist]
+    var artist: ArtistJSONModel
+    var artists: [ArtistJSONModel]
     var blurPicUrl: String? //optional for Artist
     var briefDesc: String?
     var commentThreadId: String

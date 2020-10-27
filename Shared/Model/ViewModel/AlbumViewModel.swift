@@ -31,7 +31,7 @@ class AlbumViewModel: ObservableObject, Identifiable, Equatable, Codable {
         self.name = album.name
         self.songs = album.songs.map{SongViewModel($0)}
     }
-    init(_ album: AlbumSub) {
+    init(_ album: AlbumSubJSONModel) {
         self.coverUrl = album.picUrl
         self.description = ""
         self.id = album.id

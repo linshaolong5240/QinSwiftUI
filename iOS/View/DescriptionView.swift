@@ -14,7 +14,7 @@ struct DescriptionView: View {
         self.configuration = configuration
     }
     
-    init(viewModel: AlbumViewModel) {
+    init(viewModel: Album) {
         self.configuration = DescriptionConfiguration(viewModel: viewModel)
     }
     
@@ -66,11 +66,11 @@ struct DescriptionConfiguration {
         self.id = id
     }
 
-    init(viewModel: AlbumViewModel) {
-        self.coverUrl = viewModel.coverUrl
-        self.name = viewModel.name
-        self.description = viewModel.description
-        self.id = viewModel.id
+    init(viewModel: Album) {
+        self.coverUrl = viewModel.picUrl ?? ""
+        self.name = viewModel.name ?? ""
+        self.description = viewModel.introduction ?? ""
+        self.id = Int(viewModel.id)
     }
     
     init(viewModel: ArtistViewModel) {

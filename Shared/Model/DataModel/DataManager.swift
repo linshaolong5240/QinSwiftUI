@@ -20,10 +20,7 @@ class DataManager {
         }
         return container
     }()
-    typealias ResponseData = Dictionary<String, Any>
-    init() {
-        self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
-    }
+    
     public func batchDelete(entityName: String) {
         do {
             let context = persistentContainer.viewContext

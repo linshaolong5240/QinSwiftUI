@@ -17,7 +17,7 @@ struct SearchSongDetail: Codable, Identifiable {
 ////        var trans: Any?
 //    }
     struct Album: Codable, Identifiable {
-        var artist: Artist
+        var artist: ArtistJSONModel
         var copyrightId: Int
         var id: Int
         var mark: Int
@@ -29,7 +29,7 @@ struct SearchSongDetail: Codable, Identifiable {
     }
     var album: Album
     var alias: [String]
-    var artists: [Artist]
+    var artists: [ArtistJSONModel]
     var copyrightId: Int
     var duration: Int
     var fee: Int

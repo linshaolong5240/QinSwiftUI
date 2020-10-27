@@ -107,7 +107,7 @@ struct songrowtest: View {
     
     var body: some View {
         HStack {
-            Text(song.name)
+            Text(song.name ?? "None")
             Image(systemName: song.like ? "heart.fill" : "heart")
         }
     }

@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct AlbumSub: Codable, Identifiable {
+struct AlbumSubJSONModel: Codable, Identifiable {
     var alias: [String]
-    var artists: [Artist]
+    var artists: [ArtistJSONModel]
     var id: Int
 //    var msg: [any]
     var name: String

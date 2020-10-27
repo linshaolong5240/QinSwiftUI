@@ -86,8 +86,13 @@ struct AlbumSublistCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                let sublistDict = data!["data"] as! [NeteaseCloudMusicApi.ResponseData]
-                let sublist = sublistDict.map{$0.toData!.toModel(AlbumSub.self)!}.map(AlbumViewModel.init)
+                let sublistDict = data!["data"] as! [[String: Any]]
+                let sublist = sublistDict.map{$0.toData!.toModel(AlbumSubJSONModel.self)!}.map(AlbumViewModel.init)
+                let objects = sublistDict
+                    .map{$0.toData!.toModel(AlbumModel.self)!}
+                    .map{try! JSONEncoder().encode($0)}
+                    .map{try! JSONSerialization.jsonObject(with: $0, options: .allowFragments) as! [String: Any]}
+                DataManager.shared.batchInsert(entityName: "Album", objects: objects)
                 store.dispatch(.albumSublistDone(result: .success(sublist)))
             }else {
                 let code = data?["code"] as? Int ?? -1
@@ -109,7 +114,7 @@ struct ArtistCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 let artistDict = data!["artist"] as! NeteaseCloudMusicApi.ResponseData
-                let artist = artistDict.toData!.toModel(Artist.self)!
+                let artist = artistDict.toData!.toModel(ArtistJSONModel.self)!
                 let hotSongsDictArray = data!["hotSongs"] as! [NeteaseCloudMusicApi.ResponseData]
                 let hotSongs = hotSongsDictArray
                                 .map{$0.toData!.toModel(HotSong.self)!}

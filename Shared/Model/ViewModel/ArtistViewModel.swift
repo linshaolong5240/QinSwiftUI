@@ -22,7 +22,7 @@ class ArtistViewModel: ObservableObject, Identifiable, Codable {
     
     init() {
     }
-    init(_ artist: Artist) {
+    init(_ artist: ArtistJSONModel) {
         self.albumSize = artist.albumSize
         self.alias = artist.alias
         self.coverUrl = artist.img1v1Url

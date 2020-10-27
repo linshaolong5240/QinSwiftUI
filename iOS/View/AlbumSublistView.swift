@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct AlbumSublistView: View {
+    @FetchRequest(entity: Album.entity(), sortDescriptors: [], predicate: nil) var albums: FetchedResults<Album>
+
     let albumSublist: [AlbumViewModel]
     
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
     
-    @State private var album = AlbumViewModel()
+    @State private var albumDetail = Album()
     @State private var showAlbumDetail: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
-                destination: AlbumDetailView(album),
+                destination: AlbumDetailView(albumDetail),
                 isActive: $showAlbumDetail,
                 label: {EmptyView()})
             HStack {
@@ -27,19 +29,18 @@ struct AlbumSublistView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                 Spacer()
-                Text("\(albumSublist.count)收藏的专辑")
+                Text("\(albums.count)收藏的专辑")
                     .foregroundColor(Color.secondTextColor)
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal) {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                    ForEach(albumSublist) { item in
+                    ForEach(albums) { item in
                         Button(action: {
-                            album = item
+                            albumDetail = item
                             showAlbumDetail.toggle()
                         }, label: {
                             AlbumSubView(item)
-                                .padding(.vertical)
                         })
                     }
                 }/*@END_MENU_TOKEN@*/
@@ -57,17 +58,17 @@ struct AlbumSublistView_Previews: PreviewProvider {
 #endif
 
 struct AlbumSubView: View {
-    let viewModel: AlbumViewModel
+    let album: Album
     
-    init(_ viewModel: AlbumViewModel) {
-        self.viewModel = viewModel
+    init(_ album: Album) {
+        self.album = album
     }
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.coverUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: album.picUrl ?? "", coverShape: .rectangle, size: .small)
                 .padding()
             Group {
-                Text(viewModel.name)
+                Text(album.name ?? "")
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                     .frame(width: 110, alignment: .leading)
