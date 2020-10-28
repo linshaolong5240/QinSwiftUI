@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Playlist: Codable, Identifiable {
+struct PlaylistJSONModel: Codable, Identifiable {
     struct TrackId: Codable, Identifiable {
 //        var alg: Any?
         var at: Int

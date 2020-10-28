@@ -576,7 +576,7 @@ struct PlaylistCommand: AppCommand {
             }
             if data!["code"] as! Int == 200 {
                 let playlistDicts = data!["playlists"]! as! [NeteaseCloudMusicApi.ResponseData]
-                let playlists = playlistDicts.map{$0.toData!.toModel(Playlist.self)!}.map{PlaylistViewModel($0)}
+                let playlists = playlistDicts.map{$0.toData!.toModel(PlaylistJSONModel.self)!}.map{PlaylistViewModel($0)}
                 let category = data!["cat"]! as! String
                 let more = data!["more"]! as! Bool
                 let total = data!["total"] as! Int
@@ -719,7 +719,7 @@ struct PlaylistDetailCommand: AppCommand {
             }
             if data!["code"] as! Int == 200 {
                 if let playlistDict = data?["playlist"] as? NeteaseCloudMusicApi.ResponseData {
-                    let playlist = playlistDict.toData!.toModel(Playlist.self)!
+                    let playlist = playlistDict.toData!.toModel(PlaylistJSONModel.self)!
                     store.dispatch(.playlistDetailDone(result: .success(PlaylistViewModel(playlist))))
                 }
             }else {
@@ -1143,8 +1143,17 @@ struct UserPlayListCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                if let lists = data?["playlist"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    let playlists = lists.map{PlaylistViewModel($0.toData!.toModel(Playlist.self)!)}
+                if let playlistDicts = data?["playlist"] as? [NeteaseCloudMusicApi.ResponseData] {
+                    let playlistModels = playlistDicts.map{$0.toData!.toModel(PlaylistModel.self)!}
+                    do {
+                        let data = try JSONEncoder().encode(playlistModels)
+                        let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
+                         DataManager.shared.batchInsert(entityName: "Playlist", objects: objects)
+                    }catch let error {
+                        print("\(#function) \(error)")
+                    }
+                    
+                    let playlists = playlistDicts.map{PlaylistViewModel($0.toData!.toModel(PlaylistJSONModel.self)!)}
                     store.dispatch(.userPlaylistDone(uid: uid, result: .success(playlists)))
                 }
             }else {

@@ -27,7 +27,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
     init() {
         
     }
-    init(_ playList: Playlist) {
+    init(_ playList: PlaylistJSONModel) {
         self.count = playList.trackCount
         self.coverImgUrl = playList.coverImgUrl
         self.creator = playList.creator.nickname

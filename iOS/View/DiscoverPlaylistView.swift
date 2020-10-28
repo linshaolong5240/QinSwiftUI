@@ -90,13 +90,13 @@ struct DiscoverPlaylistsView: View {
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-                ForEach(data) { item in
-                    NavigationLink(destination: PlaylistDetailView(playlist: item, id: item.id, type: .subable)) {
-                        PlaylistColumnView(item)
-                    }
-                }
-            }/*@END_MENU_TOKEN@*/
+//            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
+//                ForEach(data) { item in
+//                    NavigationLink(destination: PlaylistDetailView(playlist: item, id: item.id, type: .subable)) {
+//                        PlaylistColumnView(item)
+//                    }
+//                }
+//            }/*@END_MENU_TOKEN@*/
         }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 #if DEBUG
 struct SwiftUI_Extension: View {
@@ -144,5 +145,19 @@ struct MultilineHStackScrollable<Data: RandomAccessCollection,  Content: View>: 
                     })
             }
         }
+    }
+}
+
+struct FetchedResultsView<T: NSManagedObject, Content: View>: View {
+    var fetchRequest: FetchRequest<T>
+    let content: (FetchedResults<T>) -> Content
+
+    var body: some View {
+        content(fetchRequest.wrappedValue)
+    }
+
+    init(entity: NSEntityDescription, sortDescriptors: [NSSortDescriptor] = [], predicate: NSPredicate? = nil, @ViewBuilder content: @escaping (FetchedResults<T>) -> Content) {
+        self.fetchRequest = FetchRequest<T>(entity: entity, sortDescriptors: sortDescriptors, predicate: predicate)
+        self.content = content
     }
 }

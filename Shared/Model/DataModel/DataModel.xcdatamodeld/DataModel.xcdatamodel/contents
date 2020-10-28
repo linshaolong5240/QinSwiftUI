@@ -7,7 +7,7 @@
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="introduction" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="picUrl" attributeType="String"/>
+        <attribute name="picUrl" optional="YES" attributeType="String"/>
         <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="al" inverseEntity="Song"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -26,10 +26,18 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="Playlist" representedClassName="Playlist" syncable="YES" codeGenerationType="class">
+        <attribute name="coverImgUrl" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="subscribed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="trackIds" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
+        <attribute name="userId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="Song" representedClassName=".Song" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="like" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="al" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="songs" inverseEntity="Album">
             <userInfo>
                 <entry key="key" value="value"/>
@@ -47,5 +55,6 @@
         <element name="Album" positionX="-700.734375" positionY="-415.390625" width="128" height="118"/>
         <element name="Artist" positionX="-606.5703125" positionY="-193.53515625" width="128" height="103"/>
         <element name="Song" positionX="-933.45703125" positionY="-254.17578125" width="128" height="118"/>
+        <element name="Playlist" positionX="-630" positionY="-270" width="128" height="133"/>
     </elements>
 </model>

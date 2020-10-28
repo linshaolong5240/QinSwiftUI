@@ -18,6 +18,7 @@ struct PlaylistsView: View {
     let data: [PlaylistViewModel]
     let type: PlaylistType
     
+    @FetchRequest(entity: Playlist.entity(), sortDescriptors: [], predicate: nil) var playlists: FetchedResults<Playlist>
     @State private var playlist = PlaylistViewModel()
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
@@ -25,6 +26,7 @@ struct PlaylistsView: View {
     @State private var isCreating: Bool = false
     @State private var showSheet: Bool = false
     @State private var sheetType: SheetType = .manage
+    
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
@@ -84,21 +86,39 @@ struct PlaylistsView: View {
                 }
             }
             .padding(.horizontal)
-            ScrollView(Axis.Set.horizontal, showsIndicators: true) {
-                let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
-                LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                    ForEach(data) { item in
-                        Button(action: {
-                            playlist = item
-                            playlistDetailId = item.id
-                            showPlaylistDetail.toggle()
-                        }, label: {
-                            PlaylistColumnView(item)
-                                .padding(.vertical)
-                        })
-                    }
-                }/*@END_MENU_TOKEN@*/
+            FetchedResultsView(entity: Playlist.entity()) { (results: FetchedResults<Playlist>) in
+                ScrollView(Axis.Set.horizontal, showsIndicators: true) {
+                    let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+                    LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
+                        ForEach(results) { (item) in
+                            Button(action: {
+                                //                            playlist = item
+                                //                            playlistDetailId = item.id
+                                showPlaylistDetail.toggle()
+                            }, label: {
+                                PlaylistColumnView(item )
+                                    .padding(.vertical)
+                            })
+                        }
+                    }/*@END_MENU_TOKEN@*/
+                }
             }
+
+//            ScrollView(Axis.Set.horizontal, showsIndicators: true) {
+//                let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+//                LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
+//                    ForEach(data) { item in
+//                        Button(action: {
+//                            playlist = item
+//                            playlistDetailId = item.id
+//                            showPlaylistDetail.toggle()
+//                        }, label: {
+//                            PlaylistColumnView(item)
+//                                .padding(.vertical)
+//                        })
+//                    }
+//                }/*@END_MENU_TOKEN@*/
+//            }
         }
         .sheet(isPresented: $showSheet) {
             if sheetType == .create {
@@ -112,25 +132,25 @@ struct PlaylistsView: View {
     }
 }
 
-#if DEBUG
-let playlistsData = (1...10).map{_ in
-   PlaylistViewModel()
-}
-struct PlaylistsView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        ZStack {
-            NEUBackgroundView()
-            VStack {
-                PlaylistsView(title: "test", data: playlistsData, type: .subable)
-                    .environmentObject(Store.shared)
-//                PlaylistView(viewModel: PlaylistViewModel())
-//                Spacer()
-            }
-        }
-    }
-}
-#endif
+//#if DEBUG
+//let playlistsData = (1...10).map{_ in
+//   PlaylistViewModel()
+//}
+//struct PlaylistsView_Previews: PreviewProvider {
+//
+//    static var previews: some View {
+////        ZStack {
+////            NEUBackgroundView()
+////            VStack {
+////                PlaylistsView(title: "test", data: playlistsData, type: .subable)
+////                    .environmentObject(Store.shared)
+//////                PlaylistView(viewModel: PlaylistViewModel())
+//////                Spacer()
+////            }
+////        }
+//    }
+//}
+//#endif
 
 struct PlaylistRowView: View {
     let viewModel: PlaylistViewModel
@@ -151,17 +171,17 @@ struct PlaylistRowView: View {
 }
 
 struct PlaylistColumnView: View {
-    let viewModel: PlaylistViewModel
+    let viewModel: Playlist
     
-    init(_ viewModel: PlaylistViewModel) {
+    init(_ viewModel: Playlist) {
         self.viewModel = viewModel
     }
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .small)
+            NEUCoverView(url: viewModel.coverImgUrl ?? "", coverShape: .rectangle, size: .small)
                 .padding()
             Group {
-                Text(viewModel.name)
+                Text(viewModel.name ?? "")
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                     .frame(width: 110, alignment: .leading)

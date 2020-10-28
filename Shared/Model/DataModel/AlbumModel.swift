@@ -18,9 +18,9 @@ struct AlbumModel: Codable {
 //    var size: Int
 //    var subTime: Int
 //    var transNames:[Any]
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case name = "name"
-        case picUrl = "picUrl"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case id = "id"
+//        case name = "name"
+//        case picUrl = "picUrl"
+//    }
 }
