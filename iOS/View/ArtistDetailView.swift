@@ -16,9 +16,9 @@ struct ArtistDetailView: View {
     @State private var selection: Selection = .hotSong
     @State private var showDesc: Bool = false
     
-    private let artist: ArtistViewModel
+    private let artist: Artist
     
-    init(_ artist: ArtistViewModel) {
+    init(_ artist: Artist) {
         self.artist = artist
     }
     
@@ -31,25 +31,25 @@ struct ArtistDetailView: View {
                     Spacer()
                     NEUNavigationBarTitleView("歌手详情")
                     Spacer()
-                    Button(action: {
-                        viewModel.followed.toggle()
-                        Store.shared.dispatch(.artistSub(id: viewModel.id, sub: viewModel.followed))
-                    }, label: {
-                        NEUSFView(systemName: "heart.fill",
-                                  active: viewModel.followed)
-                    })
-                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.followed, shape: Circle()))
+//                    Button(action: {
+//                        viewModel.followed.toggle()
+//                        Store.shared.dispatch(.artistSub(id: viewModel.id, sub: viewModel.followed))
+//                    }, label: {
+//                        NEUSFView(systemName: "heart.fill",
+//                                  active: viewModel.followed)
+//                    })
+//                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.followed, shape: Circle()))
                 }
                 .padding(.horizontal)
                 .onAppear {
-                    Store.shared.dispatch(.artist(id: artist.id))
+                    Store.shared.dispatch(.artist(id: Int(artist.id)))
                 }
                 if store.appState.artist.artistRequesting == true {
                     DescriptionView(viewModel: artist)
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: viewModel)
+                    DescriptionView(viewModel: artist)
                     Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
                         Text("热门歌曲").tag(Selection.hotSong)
                         Text("专辑").tag(Selection.album)
@@ -57,14 +57,16 @@ struct ArtistDetailView: View {
                     }/*@END_MENU_TOKEN@*/
                     .pickerStyle(SegmentedPickerStyle())
                     .padding()
-                    switch selection {
-                    case .album:
-                        ArtistAlbumView(albums: viewModel.albums)
-                    case .hotSong:
-                        SongListView(songs: viewModel.hotSongs)
-                    case .mv:
-                        ArtistMVView(mvs: viewModel.mvs)
-                    }
+                    SongListView(songs: [SongViewModel]())
+
+//                    switch selection {
+//                    case .album:
+//                        ArtistAlbumView(albums: viewModel.albums)
+//                    case .hotSong:
+//                        SongListView(songs: viewModel.hotSongs)
+//                    case .mv:
+//                        ArtistMVView(mvs: viewModel.mvs)
+//                    }
                 }
             }
         }
@@ -77,7 +79,7 @@ struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-            ArtistDetailView(ArtistViewModel())
+            ArtistDetailView(Artist())
                 .environmentObject(Store.shared)
         }
     }

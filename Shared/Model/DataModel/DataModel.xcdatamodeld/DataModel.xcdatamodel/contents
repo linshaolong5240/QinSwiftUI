@@ -6,9 +6,20 @@
     <entity name="Album" representedClassName=".Album" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="introduction" optional="YES" attributeType="String"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="picUrl" attributeType="String"/>
-        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song"/>
+        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="al" inverseEntity="Song"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Artist" representedClassName="Artist" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="picUrl" optional="YES" attributeType="String"/>
+        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="ar" inverseEntity="Song"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -19,7 +30,12 @@
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="like" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album"/>
+        <relationship name="al" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="songs" inverseEntity="Album">
+            <userInfo>
+                <entry key="key" value="value"/>
+            </userInfo>
+        </relationship>
+        <relationship name="ar" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" inverseName="songs" inverseEntity="Artist"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -28,7 +44,8 @@
     </entity>
     <elements>
         <element name="AccountData" positionX="-276.109375" positionY="-163.0625" width="128" height="58"/>
-        <element name="Album" positionX="-527.08984375" positionY="99.94921875" width="128" height="118"/>
-        <element name="Song" positionX="-761.03125" positionY="-13.51171875" width="128" height="103"/>
+        <element name="Album" positionX="-700.734375" positionY="-415.390625" width="128" height="118"/>
+        <element name="Artist" positionX="-606.5703125" positionY="-193.53515625" width="128" height="103"/>
+        <element name="Song" positionX="-933.45703125" positionY="-254.17578125" width="128" height="118"/>
     </elements>
 </model>

@@ -57,7 +57,7 @@ struct AlbumJSONModel: Codable, Identifiable {
     var Info: Info?
     var isSub: Bool?
     var mark: Int
-    var name: String
+    var name: String?
     var onSale: Bool
     var paid: Bool
     var pic: Int

@@ -459,14 +459,14 @@ class Store: ObservableObject {
                 if appState.search.searchRequesting {
                     appState.search.songs = songs
                 }
-                appCommand = SongsDetailDoneCommand(songs: songs)
+//                appCommand = SongsDetailDoneCommand(songs: songs)
             case .failure(let error):
                 appState.error = error
-                appState.album.albumRequesting = false
-                appState.artist.artistRequesting = false
-                appState.playlist.detailRequesting = false
-                appState.search.searchRequesting = false
             }
+            appState.album.albumRequesting = false
+            appState.artist.artistRequesting = false
+            appState.playlist.detailRequesting = false
+            appState.search.searchRequesting = false
         case .songsOrderUpdate(let pid, let ids):
             appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
         case .songsOrderUpdateDone(let result):

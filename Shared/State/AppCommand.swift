@@ -272,6 +272,11 @@ struct ArtistSublistCommand: AppCommand {
             if data?["code"] as? Int == 200 {
                 let artistSublistDict = data!["data"] as! [NeteaseCloudMusicApi.ResponseData]
                 let artistSublist = artistSublistDict.map{$0.toData!.toModel(ArtistSub.self)!}.map{ArtistViewModel($0)}
+                let objects = artistSublistDict
+                    .map{$0.toData!.toModel(ArtistModel.self)!}
+                    .map{try! JSONEncoder().encode($0)}
+                    .map{try! JSONSerialization.jsonObject(with: $0, options: .allowFragments) as! [String: Any]}
+                DataManager.shared.batchInsert(entityName: "Artist", objects: objects)
                 store.dispatch(.artistSublistDone(result: .success(artistSublist)))
             }else {
                 let code = data?["code"] as? Int ?? -1
@@ -1007,16 +1012,33 @@ struct SongsDetailCommand: AppCommand {
             if let songsDict = data?["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
                 let songs = songsDict.map{$0.toData!.toModel(SongDetail.self)!}.map(SongViewModel.init)
                 if songs.count > 0 {
-                    let jsonObjects: [[String: Any]] = songsDict.map {
-                        let dict: [String: Any] = [
-                            "id": $0["id"]!,
-                            "name": $0["name"]!,
-                        ]
-                        return dict
-                    }
                     DataManager.shared.batchDelete(entityName: "Song")
-                    DataManager.shared.batchInsert(entityName: "Song", objects: jsonObjects)
-                    DataManager.shared.batchUpdateLike(ids: store.appState.playlist.likedIds)
+
+                    let context = DataManager.shared.persistentContainer.newBackgroundContext()
+                    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy//合并插入
+                    _ = songsDict.map{$0.toData!.toModel(SongModel.self)!}.map{$0.insetObject(context: context)}
+                    do {
+                        try context.save()
+                    }catch let error {
+                        print("\(#function) \(error)")
+                    }
+//                    DataManager.shared.batchInsert(entityName: "Song", objects: objects)
+//                    let objects = songsDict
+//                        .map{$0.toData!.toModel(SongModel.self)!}
+//                        .map{try! JSONEncoder().encode($0)}
+//                        .map{try! JSONSerialization.jsonObject(with: $0, options: .allowFragments) as! [String: Any]}
+//                    DataManager.shared.batchInsert(entityName: "Song", objects: objects)
+
+//                    let jsonObjects: [[String: Any]] = songsDict.map {
+//                        let dict: [String: Any] = [
+//                            "id": $0["id"]!,
+//                            "name": $0["name"]!,
+//                        ]
+//                        return dict
+//                    }
+//                    DataManager.shared.batchDelete(entityName: "Song")
+//                    DataManager.shared.batchInsert(entityName: "Song", objects: jsonObjects)
+//                    DataManager.shared.batchUpdateLike(ids: store.appState.playlist.likedIds)
                     store.dispatch(.songsDetailDone(result: .success(songs)))
                 }
             }else {

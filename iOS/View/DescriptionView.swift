@@ -18,7 +18,7 @@ struct DescriptionView: View {
         self.configuration = DescriptionConfiguration(viewModel: viewModel)
     }
     
-    init(viewModel: ArtistViewModel) {
+    init(viewModel: Artist) {
         self.configuration = DescriptionConfiguration(viewModel: viewModel)
     }
     
@@ -31,7 +31,7 @@ struct DescriptionView: View {
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                NEUCoverView(url: configuration.coverUrl, coverShape: .rectangle, size: .medium)
+                NEUCoverView(url: configuration.picUrl, coverShape: .rectangle, size: .medium)
                 Text("Id:\(String(configuration.id))")
                     .foregroundColor(.secondTextColor)
             }
@@ -54,34 +54,34 @@ struct DescriptionView: View {
 }
 
 struct DescriptionConfiguration {
-    var coverUrl: String
-    var name: String
     var description: String
     var id: Int
-    
-    init(coverUrl: String, name: String, description: String, id: Int) {
-        self.coverUrl = coverUrl
+    var name: String
+    var picUrl: String
+
+    init(picUrl: String, name: String, description: String, id: Int) {
+        self.id = id
         self.name = name
         self.description = description
-        self.id = id
+        self.picUrl = picUrl
     }
 
     init(viewModel: Album) {
-        self.coverUrl = viewModel.picUrl ?? ""
+        self.picUrl = viewModel.picUrl ?? ""
         self.name = viewModel.name ?? ""
         self.description = viewModel.introduction ?? ""
         self.id = Int(viewModel.id)
     }
     
-    init(viewModel: ArtistViewModel) {
-        self.coverUrl = viewModel.coverUrl
-        self.name = viewModel.name
-        self.description = viewModel.description
-        self.id = viewModel.id
+    init(viewModel: Artist) {
+        self.picUrl = viewModel.picUrl ?? ""
+        self.name = viewModel.name ?? ""
+        self.description = ""//viewModel.description
+        self.id = Int(viewModel.id)
     }
     
     init(viewModel: PlaylistViewModel) {
-        self.coverUrl = viewModel.coverImgUrl
+        self.picUrl = viewModel.coverImgUrl
         self.name = viewModel.name
         self.description = viewModel.description
         self.id = viewModel.id
@@ -91,7 +91,7 @@ struct DescriptionConfiguration {
 #if DEBUG
 struct DescriptionView_Previews: PreviewProvider {
     static var previews: some View {
-        DescriptionView(configuration: DescriptionConfiguration(coverUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602189927688&di=3f64d8e667c95aef44b1ab729dfb39f6&imgtype=0&src=http%3A%2F%2Fimge.kugou.com%2Fstdmusic%2F20150720%2F20150720162823338587.jpg",
+        DescriptionView(configuration: DescriptionConfiguration(picUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602189927688&di=3f64d8e667c95aef44b1ab729dfb39f6&imgtype=0&src=http%3A%2F%2Fimge.kugou.com%2Fstdmusic%2F20150720%2F20150720162823338587.jpg",
                                                                 name: "aliez",
                                                                 description: "description",
                                                                 id: 0))

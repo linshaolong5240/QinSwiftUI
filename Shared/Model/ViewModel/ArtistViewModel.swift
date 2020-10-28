@@ -29,7 +29,7 @@ class ArtistViewModel: ObservableObject, Identifiable, Codable {
         self.description = artist.briefDesc
         self.followed = artist.followed ?? false
         self.id = artist.id
-        self.name = artist.name
+        self.name = artist.name ?? ""
     }
     
     init(_ artist: ArtistSub) {

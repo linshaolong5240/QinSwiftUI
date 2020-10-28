@@ -107,7 +107,13 @@ struct songrowtest: View {
     
     var body: some View {
         HStack {
-            Text(song.name ?? "None")
+            VStack {
+                Text(song.name ?? "None")
+                Text(song.al?.name ?? "None")
+                ForEach(Array(song.ar as! Set<Artist>), id:\.id) { item in
+                    Text(item.name ?? "None")
+                }
+            }
             Image(systemName: song.like ? "heart.fill" : "heart")
         }
     }

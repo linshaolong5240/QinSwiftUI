@@ -109,9 +109,9 @@ struct PlayingNowView: View {
                         .transition(.move(edge: .bottom))
                 }
             }
-            NavigationLink(destination: ArtistDetailView(artist), isActive: $showArtist) {
-                EmptyView()
-            }
+//            NavigationLink(destination: ArtistDetailView(artist), isActive: $showArtist) {
+//                EmptyView()
+//            }
         }
         .navigationBarHidden(true)
         .alert(item: $store.appState.error) { error in

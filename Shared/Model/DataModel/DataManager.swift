@@ -18,16 +18,17 @@ class DataManager {
                 fatalError("Unable to load persistent stores: \(error)")
             }
         }
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return container
     }()
     
     public func batchDelete(entityName: String) {
         do {
             let context = persistentContainer.viewContext
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
             let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
             let deleteResult = try context.execute(batchDelete)
-            print("delete", deleteResult)
+            print("\(#function)", deleteResult)
         }catch let error {
             print("\(#function):\(error)")
         }
@@ -51,7 +52,7 @@ class DataManager {
             updateRequest.predicate = predicate
             
             let updateResult = try context.execute(updateRequest) as! NSBatchUpdateResult
-            print("updateResult",updateResult)
+            print("\(#function)",updateResult)
         }catch let error {
             print("\(#function):\(error)")
         }

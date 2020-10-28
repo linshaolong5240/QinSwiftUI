@@ -19,7 +19,7 @@ struct ArtistJSONModel: Codable, Identifiable {
     var img1v1Url: String
     var musicSize: Int
     var mvSize: Int?// optional for Album
-    var name: String
+    var name: String?
     var picId: Int
     var picId_str: String?// optional for Album
     var picUrl: String
