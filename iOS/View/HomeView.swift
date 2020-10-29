@@ -46,15 +46,9 @@ struct HomeView: View {
                         ScrollView {
                             Spacer()
                                 .frame(height: 10)
-                            PlaylistsView(title: "推荐的歌单",
-                                          data: playlists.recommendPlaylist,
-                                          type: .subable)
-                            PlaylistsView(title: "创建的歌单",
-                                          data: playlists.createdPlaylist,
-                                          type: .created)
-                            PlaylistsView(title: "收藏的歌单",
-                                          data: playlists.subscribePlaylists,
-                                          type: .subable)
+                            PlaylistsView(title: "推荐的歌单", type: .recommendPlaylist)
+                            PlaylistsView(title: "创建的歌单", type: .created)
+                            PlaylistsView(title: "收藏的歌单", type: .subscribed)
                             AlbumSublistView(albumSublist: album.albumSublist)
                             ArtistSublistView(artistSublist: artist.artistSublist)
                         }

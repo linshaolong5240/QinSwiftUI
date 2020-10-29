@@ -39,7 +39,7 @@ struct PlaylistDetailView: View {
                         })
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
-                    if type == .subable && viewModel.id != 0 {
+                    if type == .subscribed && viewModel.id != 0 {
                         Button(action: {
                             Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed ? false : true))
                         }, label: {
@@ -92,7 +92,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
         ZStack {
             NEUBackgroundView()
             VStack {
-                PlaylistDetailView(playlist: PlaylistViewModel(), id: 1, type: .subable)
+                PlaylistDetailView(playlist: PlaylistViewModel(), id: 1, type: .subscribed)
                 //                List {
                 //                    SongRowView(viewModel: SongViewModel(id: 0, name: "test", artists: "test"), active: false)
                 //                        .environment(\.colorScheme, .light)

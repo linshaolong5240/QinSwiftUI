@@ -61,7 +61,7 @@ struct PlaylistJSONModel: Codable, Identifiable {
     var userId: Int
 }
 
-struct RecommendPlaylist: Codable, Identifiable {
+struct RecommendPlaylistJSONModel: Codable, Identifiable {
     var alg: String
     var copywriter: String
     var createTime: Int
@@ -75,7 +75,7 @@ struct RecommendPlaylist: Codable, Identifiable {
     var userId: Int
 }
 
-struct RecommendSongsPlaylist: Codable {
+struct RecommendSongsJSONModel: Codable {
     struct RecommendReasons: Codable {
         var reason: String
         var songId: Int

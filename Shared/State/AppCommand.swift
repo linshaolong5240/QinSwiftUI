@@ -397,8 +397,9 @@ struct CommentMusicCommand: AppCommand {
 struct InitAcionCommand: AppCommand {
     func execute(in store: Store) {
         if let user = store.appState.settings.loginUser {
-            store.dispatch(.userPlaylist(uid: user.uid))
+            store.dispatch(.recommendSongs)
             store.dispatch(.recommendPlaylist)
+            store.dispatch(.userPlaylist())
             store.dispatch(.likelist(uid: user.uid))
             store.dispatch(.albumSublist())
             store.dispatch(.artistSublist())
@@ -675,9 +676,7 @@ struct PlaylistCreateCommand: AppCommand {
 struct PlaylistCreateDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        if let uid = store.appState.settings.loginUser?.uid {
-            store.dispatch(.userPlaylist(uid: uid))
-        }
+        store.dispatch(.userPlaylist())
     }
 }
 
@@ -702,9 +701,7 @@ struct PlaylistDeleteCommand: AppCommand {
 struct PlaylistDeleteDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        if let uid = store.appState.settings.loginUser?.uid {
-            store.dispatch(.userPlaylist(uid: uid))
-        }
+        store.dispatch(.userPlaylist())
     }
 }
 
@@ -757,9 +754,7 @@ struct PlaylistOrderUpdateCommand: AppCommand {
 
 struct PlaylistOrderUpdateDoneCommand: AppCommand {
     func execute(in store: Store) {
-        if let uid = store.appState.settings.loginUser?.uid {
-            store.dispatch(.userPlaylist(uid: uid))
-        }
+        store.dispatch(.userPlaylist())
     }
 }
 
@@ -785,9 +780,7 @@ struct PlaylisSubscribeCommand: AppCommand {
 struct PlaylisSubscribeDoneCommand: AppCommand {
 
     func execute(in store: Store) {
-        if let uid = store.appState.settings.loginUser?.uid {
-            store.dispatch(.userPlaylist(uid: uid))
-        }
+        store.dispatch(.userPlaylist())
     }
 }
 
@@ -814,9 +807,7 @@ struct PlaylistTracksCommand: AppCommand {
 struct PlaylistTracksDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        if let uid = store.appState.settings.loginUser?.uid {
-            store.dispatch(.userPlaylist(uid: uid))
-        }
+        store.dispatch(.userPlaylist())
     }
 }
 
@@ -917,10 +908,17 @@ struct RecommendPlaylistCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                if let recommendPlaylists = data?["recommend"] as? [NeteaseCloudMusicApi.ResponseData] {
+                if let playlistDicts = data?["recommend"] as? [NeteaseCloudMusicApi.ResponseData] {
 
-//                    let playlist = playlistDict.toData?.toModel(Playlist.self)
-                    store.dispatch(.recommendPlaylistDone(result: .success(recommendPlaylists.map { $0.toData!.toModel(RecommendPlaylist.self)!})))
+                    let playlistModels = playlistDicts.map{$0.toData!.toModel(RecommendPlaylistModel.self)!}
+                    do {
+                        let data = try JSONEncoder().encode(playlistModels)
+                        let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
+                        DataManager.shared.batchInsertAfterDeleteAll(entityName: "RecommendPlaylist", objects: objects)
+                    }catch let error {
+                        print("\(#function) \(error)")
+                    }
+                    store.dispatch(.recommendPlaylistDone(result: .success(playlistModels.map{$0.id})))
                 }
             }else {
                 store.dispatch(.recommendPlaylistDone(result: .failure(.playlistDetailError)))
@@ -931,7 +929,6 @@ struct RecommendPlaylistCommand: AppCommand {
 
 struct RecommendPlaylistDoneCommand: AppCommand {
     func execute(in store: Store) {
-        store.dispatch(.recommendSongs)
     }
 }
 
@@ -943,9 +940,9 @@ struct RecommendSongsCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                if let recommendSongsPlaylist = data?["data"] as? NeteaseCloudMusicApi.ResponseData {
-                    let playlist = recommendSongsPlaylist.toData!.toModel(RecommendSongsPlaylist.self)!
-                    store.dispatch(.recommendSongsDone(result: .success(PlaylistViewModel(playlist))))
+                if let recommendSongDicts = data?["data"] as? NeteaseCloudMusicApi.ResponseData {
+                    let recommendSongsModel = recommendSongDicts.toData!.toModel(RecommendSongsModel.self)!
+                    store.dispatch(.recommendSongsDone(result: .success(PlaylistModel(recommendSongsModel))))
                 }
             }else {
                 store.dispatch(.recommendSongsDone(result: .failure(.playlistDetailError)))
@@ -1139,7 +1136,7 @@ struct UserPlayListCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.userPlayList(uid) { (data, error) in
             guard error == nil else {
-                store.dispatch(.userPlaylistDone(uid: uid, result: .failure(error!)))
+                store.dispatch(.userPlaylistDone(result: .failure(error!)))
                 return
             }
             if data!["code"] as! Int == 200 {
@@ -1148,16 +1145,14 @@ struct UserPlayListCommand: AppCommand {
                     do {
                         let data = try JSONEncoder().encode(playlistModels)
                         let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
-                         DataManager.shared.batchInsert(entityName: "Playlist", objects: objects)
+                        DataManager.shared.batchInsert(entityName: "Playlist", objects: objects)
                     }catch let error {
                         print("\(#function) \(error)")
                     }
-                    
-                    let playlists = playlistDicts.map{PlaylistViewModel($0.toData!.toModel(PlaylistJSONModel.self)!)}
-                    store.dispatch(.userPlaylistDone(uid: uid, result: .success(playlists)))
+                    store.dispatch(.userPlaylistDone(result: .success(uid)))
                 }
             }else {
-                store.dispatch(.userPlaylistDone(uid: uid, result: .failure(.userPlaylistError)))
+                store.dispatch(.userPlaylistDone(result: .failure(.userPlaylistError)))
             }
         }
     }

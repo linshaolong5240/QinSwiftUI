@@ -104,9 +104,9 @@ struct PlayingNowView: View {
                     CommentListView(id: playing.songDetail.id)
                         .offset(y: bottomType == .commentlist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                    CreatedPlaylistView(playlists: playlists.createdPlaylist, songId: playing.songDetail.id, showList: $showMore, bottomType: $bottomType)
-                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
+//                    CreatedPlaylistView(playlists: playlists.createdPlaylist, songId: playing.songDetail.id, showList: $showMore, bottomType: $bottomType)
+//                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
+//                        .transition(.move(edge: .bottom))
                 }
             }
 //            NavigationLink(destination: ArtistDetailView(artist), isActive: $showArtist) {

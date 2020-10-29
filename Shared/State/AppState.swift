@@ -101,11 +101,8 @@ extension AppState {
     
     struct Playlist {
         //用户相关歌单
-        var createdPlaylist = [PlaylistViewModel]()//创建的歌单
-        var recommendPlaylist = [PlaylistViewModel]()//推荐的歌单
         var recommendPlaylistRequesting: Bool = false
-        var recommendSongsPlaylist = PlaylistViewModel()//每日推荐歌曲
-        var subscribePlaylists = [PlaylistViewModel]()//订阅的歌单
+        var recommendSongsPlaylist = PlaylistModel(RecommendSongsModel())//每日推荐歌曲
         var userPlaylistRequesting: Bool = false
 
         //发现歌单

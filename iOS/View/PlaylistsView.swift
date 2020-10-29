@@ -7,18 +7,21 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
+import CoreData
+
+enum PlaylistType: Int, Codable {
+    case created, recommendPlaylist, subscribed
+}
 
 struct PlaylistsView: View {
     enum SheetType {
         case create, manage
     }
     
-    let title: String
-    let data: [PlaylistViewModel]
-    let type: PlaylistType
-    
-    @FetchRequest(entity: Playlist.entity(), sortDescriptors: [], predicate: nil) var playlists: FetchedResults<Playlist>
+    private let title: String
+    private let type: PlaylistType
+    private var sortDescriptors: [NSSortDescriptor] = []
+    private var predicate: NSPredicate? = nil
     @State private var playlist = PlaylistViewModel()
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
@@ -27,106 +30,88 @@ struct PlaylistsView: View {
     @State private var showSheet: Bool = false
     @State private var sheetType: SheetType = .manage
     
-    var body: some View {
-        VStack(spacing: 0) {
-            NavigationLink(
-                destination: PlaylistDetailView(playlist: playlist, id: playlistDetailId, type: type),
-                isActive: $showPlaylistDetail,
-                label: {EmptyView()})
-            HStack {
-                Text(title)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
-                Spacer()
-                Text("\(data.count) \(title)")
-                    .foregroundColor(Color.secondTextColor)
-                if type == .created {
-                    Menu {
-                        Button(action: {
-                            sheetType = .manage
-                            showSheet.toggle()
-                        }){
-                            HStack {
-                                Image(systemName: "rectangle.stack.badge.person.crop")
-                                Text("管理歌单")
-                                Spacer()
-                            }
-                        }
-                        Button(action: {
-                                sheetType = .create
-                                showSheet.toggle()
-                               }){
-                            HStack {
-                                Image(systemName: "rectangle.stack.badge.plus")
-                                Text("创建歌单")
-                                Spacer()
-                            }
-                        }
-                    } label: {
-                        NEUSFView(systemName: "ellipsis", size: .small)
-                    }
-                    .menuStyle(NEUMenuStyle(shape: Circle()))
-                }
-                if type == .subable {
-                    Menu {
-                        Button(action: {
-                            sheetType = .manage
-                            showSheet.toggle()
-                        }){
-                            HStack {
-                                Image(systemName: "heart")
-                                Text("管理歌单")
-                            }
-                        }
-                    } label: {
-                        NEUSFView(systemName: "ellipsis", size: .small)
-                    }
-                    .menuStyle(NEUMenuStyle(shape: Circle()))
-                }
-            }
-            .padding(.horizontal)
-            FetchedResultsView(entity: Playlist.entity()) { (results: FetchedResults<Playlist>) in
-                ScrollView(Axis.Set.horizontal, showsIndicators: true) {
-                    let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
-                    LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                        ForEach(results) { (item) in
-                            Button(action: {
-                                //                            playlist = item
-                                //                            playlistDetailId = item.id
-                                showPlaylistDetail.toggle()
-                            }, label: {
-                                PlaylistColumnView(item )
-                                    .padding(.vertical)
-                            })
-                        }
-                    }/*@END_MENU_TOKEN@*/
-                }
-            }
-
-//            ScrollView(Axis.Set.horizontal, showsIndicators: true) {
-//                let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
-//                LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-//                    ForEach(data) { item in
-//                        Button(action: {
-//                            playlist = item
-//                            playlistDetailId = item.id
-//                            showPlaylistDetail.toggle()
-//                        }, label: {
-//                            PlaylistColumnView(item)
-//                                .padding(.vertical)
-//                        })
-//                    }
-//                }/*@END_MENU_TOKEN@*/
-//            }
+    init(title: String, type: PlaylistType) {
+        self.title = title
+        self.type = type
+        switch self.type {
+        case .created:
+            let userId = Store.shared.appState.settings.loginUser?.uid ?? 0
+            self.predicate = NSPredicate(format: "%K == \(userId)", "userId")
+        case .recommendPlaylist:
+            break
+        case .subscribed:
+            self.predicate = NSPredicate(format: "%K == \(true)", "subscribed")
         }
-        .sheet(isPresented: $showSheet) {
-            if sheetType == .create {
-                PlaylistCreateView(showSheet: $showSheet)
+    }
+    
+    var body: some View {
+        if type == .recommendPlaylist {
+            FetchedResultsView(entity: RecommendPlaylist.entity(), sortDescriptors: sortDescriptors, predicate: predicate) { (results: FetchedResults<RecommendPlaylist>) in
+                VStack(spacing: 0) {
+                    NavigationLink(
+                        destination: PlaylistDetailView(playlist: playlist, id: playlistDetailId, type: type),
+                        isActive: $showPlaylistDetail,
+                        label: {EmptyView()})
+                    HStack {
+                        Text(title)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.mainTextColor)
+                        Spacer()
+                        Text("\(results.count) \(title)")
+                            .foregroundColor(Color.secondTextColor)
+                    }
+                    .padding(.horizontal)
+                    ScrollView(Axis.Set.horizontal, showsIndicators: true) {
+                        let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+                        LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
+                            ForEach(results) { (item) in
+                                Button(action: {
+                                    //                            playlist = item
+                                    //                            playlistDetailId = item.id
+                                    showPlaylistDetail.toggle()
+                                }, label: {
+                                    GridItemView(item )
+                                        .padding(.vertical)
+                                })
+                            }
+                        }/*@END_MENU_TOKEN@*/
+                    }
+                }
             }
-            if sheetType == .manage {
-                PlaylistManageView(showSheet: $showSheet, playlists: data, type: type)
-                    .environment(\.editMode, Binding.constant(EditMode.active))
+        }else {
+            FetchedResultsView(entity: Playlist.entity(), sortDescriptors: sortDescriptors, predicate: predicate) { (results: FetchedResults<Playlist>) in
+                VStack(spacing: 0) {
+                    NavigationLink(
+                        destination: PlaylistDetailView(playlist: playlist, id: playlistDetailId, type: type),
+                        isActive: $showPlaylistDetail,
+                        label: {EmptyView()})
+                    HStack {
+                        Text(title)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.mainTextColor)
+                        Spacer()
+                        Text("\(results.count) \(title)")
+                            .foregroundColor(Color.secondTextColor)
+                    }
+                    .padding(.horizontal)
+                    ScrollView(Axis.Set.horizontal, showsIndicators: true) {
+                        let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+                        LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
+                            ForEach(results) { (item) in
+                                Button(action: {
+                                    //                            playlist = item
+                                    //                            playlistDetailId = item.id
+                                    showPlaylistDetail.toggle()
+                                }, label: {
+                                    GridItemView(item )
+                                        .padding(.vertical)
+                                })
+                            }
+                        }/*@END_MENU_TOKEN@*/
+                    }
+                }
             }
         }
     }
@@ -169,19 +154,41 @@ struct PlaylistRowView: View {
         }
     }
 }
-
-struct PlaylistColumnView: View {
-    let viewModel: Playlist
     
-    init(_ viewModel: Playlist) {
-        self.viewModel = viewModel
+struct GridItemViewConfiguration {
+    var id: Int64
+    var name: String?
+    var picUrl: String?
+    var subscribed: Bool?
+    init(_ item: Playlist) {
+        self.id = item.id
+        self.name = item.name
+        self.picUrl = item.coverImgUrl
+        self.subscribed = item.subscribed
+    }
+    init(_ item: RecommendPlaylist) {
+        self.id = item.id
+        self.name = item.name
+        self.picUrl = item.picUrl
+        self.subscribed = nil
+    }
+}
+    
+struct GridItemView: View {
+    private let configuration: GridItemViewConfiguration
+    
+    init(_ item: Playlist) {
+        self.configuration = GridItemViewConfiguration(item)
+    }
+    init(_ item: RecommendPlaylist) {
+        self.configuration = GridItemViewConfiguration(item)
     }
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.coverImgUrl ?? "", coverShape: .rectangle, size: .small)
+            NEUCoverView(url: configuration.picUrl ?? "", coverShape: .rectangle, size: .small)
                 .padding()
             Group {
-                Text(viewModel.name ?? "")
+                Text(configuration.name ?? "")
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                     .frame(width: 110, alignment: .leading)
@@ -289,7 +296,7 @@ struct PlaylistManageView: View {
             if type == .created {
                 Store.shared.dispatch(.playlistDelete(pid: id))
             }
-            if type == .subable {
+            if type == .subscribed {
                 Store.shared.dispatch(.playlistSubscibe(id: id, sub: false))
             }
         }

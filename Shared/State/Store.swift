@@ -334,7 +334,6 @@ class Store: ObservableObject {
         case .playlistDetail(let id):
             if id == 0 {
                 appState.playlist.detailRequesting = true
-                appState.playlist.detail = appState.playlist.recommendSongsPlaylist
                 appCommand = PlaylistDetailDoneCommand(playlist: appState.playlist.detail)
             }else if id != appState.playlist.detail.id {
                 appState.playlist.detailRequesting = true
@@ -349,15 +348,16 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistOrderUpdate(let ids, let type):
-            var allIds = [Int]()
-            if type == .created {
-                allIds = ids + appState.playlist.subscribePlaylists.map{$0.id}
-            }
-            if type == .subable {
-                allIds = appState.playlist.subscribePlaylists.map{$0.id} + ids
-            }
-            appCommand = PlaylistOrderUpdateCommand(ids: allIds)
+        case .playlistOrderUpdate:
+            break
+//            let allIds = [Int]()
+//            if type == .created {
+//                allIds = ids + appState.playlist.subscribePlaylists.map{$0.id}
+//            }
+//            if type == .subscribed {
+//                allIds = appState.playlist.subscribePlaylists.map{$0.id} + ids
+//            }
+//            appCommand = PlaylistOrderUpdateCommand(ids: allIds)
         case .playlistOrderUpdateDone(let result):
             switch result {
             case .success:
@@ -391,24 +391,22 @@ class Store: ObservableObject {
             appCommand = RecommendPlaylistCommand()
         case .recommendPlaylistDone(let result):
             switch result {
-            case .success(let recommendPlaylists):
-                appState.playlist.recommendPlaylist = recommendPlaylists.map{PlaylistViewModel($0)}
-                appCommand = RecommendPlaylistDoneCommand()
+            case .success:
+                break
+//                appCommand = RecommendPlaylistDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
+            appState.playlist.recommendPlaylistRequesting = false
         case .recommendSongs:
             appCommand = RecommendSongsCommand()
         case .recommendSongsDone(let result):
             switch result {
             case .success(let playlsit):
-                appState.playlist.detail = playlsit
                 appState.playlist.recommendSongsPlaylist = playlsit
-                appState.playlist.recommendPlaylist = [playlsit] + appState.playlist.recommendPlaylist
             case .failure(let error):
                 appState.error = error
             }
-            appState.playlist.recommendPlaylistRequesting = false
         case .search(let keyword, let type, let limit, let offset):
             appState.search.searchRequesting = true
             appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)
@@ -525,14 +523,10 @@ class Store: ObservableObject {
             }else if let userId = appState.settings.loginUser?.uid {
                 appCommand = UserPlayListCommand(uid: userId)
             }
-        case .userPlaylistDone(let uid, result: let result):
+        case .userPlaylistDone(let result):
             switch result {
-            case .success(let playlists):
-                appState.playlist.createdPlaylist = playlists.filter{$0.userId == uid}
-                appState.playlist.subscribePlaylists = playlists.filter{$0.userId != uid}
-                if let likedPlaylist = appState.playlist.createdPlaylist.first {
-                    appState.playlist.likedPlaylistId = likedPlaylist.id
-                }
+            case .success:
+                break
             case .failure(let error):
                 appState.error = error
             }

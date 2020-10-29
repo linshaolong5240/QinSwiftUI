@@ -33,8 +33,24 @@
         <attribute name="subscribed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="trackIds" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
         <attribute name="userId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
-    <entity name="Song" representedClassName=".Song" syncable="YES" codeGenerationType="class">
+    <entity name="RecommendPlaylist" representedClassName="RecommendPlaylist" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="picUrl" optional="YES" attributeType="String"/>
+        <attribute name="userId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="like" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -56,5 +72,6 @@
         <element name="Artist" positionX="-606.5703125" positionY="-193.53515625" width="128" height="103"/>
         <element name="Song" positionX="-933.45703125" positionY="-254.17578125" width="128" height="118"/>
         <element name="Playlist" positionX="-630" positionY="-270" width="128" height="133"/>
+        <element name="RecommendPlaylist" positionX="-729" positionY="-261" width="128" height="103"/>
     </elements>
 </model>

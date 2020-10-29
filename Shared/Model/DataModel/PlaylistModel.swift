@@ -8,12 +8,20 @@
 import Foundation
 
 struct PlaylistModel: Codable {
-    var coverImgUrl: String
+    var coverImgUrl: String?
     var id: Int64
     var name: String
     var subscribed: Bool
     var trackIds: [Int64]?
     var userId: Int64
+    init(_ model: RecommendSongsModel) {
+        self.coverImgUrl = nil
+        self.id = 0
+        self.name = "每日推荐"
+        self.subscribed = false
+        self.trackIds = model.dailySongs.map{$0.id}
+        self.userId = 0
+    }
 //    private enum CodingKeys: String, CodingKey {
 //        case album = "al"
 //        case artists = "ar"

@@ -7,9 +7,6 @@
 //
 
 import Foundation
-enum PlaylistType: Int, Codable {
-    case created, recommendSongs, subable
-}
 
 class PlaylistViewModel: ObservableObject, Identifiable {
     var count: Int = 0
@@ -40,7 +37,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
         self.songsId = playList.trackIds?.map({$0.id}) ?? [Int]()
         self.userId = playList.userId
     }
-    init(_ recommendPlaylist: RecommendPlaylist) {
+    init(_ recommendPlaylist: RecommendPlaylistJSONModel) {
         self.count = recommendPlaylist.trackCount
         self.coverImgUrl = recommendPlaylist.picUrl
         self.creator = recommendPlaylist.creator.nickname
@@ -50,7 +47,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
         self.playCount = recommendPlaylist.playcount
         self.userId = recommendPlaylist.userId
     }
-    init(_ recommendSongs: RecommendSongsPlaylist) {
+    init(_ recommendSongs: RecommendSongsJSONModel) {
         self.count = recommendSongs.dailySongs.count
 //        self.description = recommendSongs.recommendReasons.map{$0.reason}.joined(separator: "\n")
         self.description = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"

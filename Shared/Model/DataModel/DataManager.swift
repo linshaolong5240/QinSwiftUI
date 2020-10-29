@@ -22,10 +22,11 @@ class DataManager {
         return container
     }()
     
-    public func batchDelete(entityName: String) {
+    public func batchDelete(entityName: String, predicate: NSPredicate? = nil) {
         do {
             let context = persistentContainer.viewContext
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+            request.predicate = predicate
             let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
             let deleteResult = try context.execute(batchDelete)
             print("\(#function)", deleteResult)
@@ -35,6 +36,18 @@ class DataManager {
     }
     public func batchInsert(entityName: String, objects: [[String: Any]]) {
         do {
+            let context = persistentContainer.viewContext
+            let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
+            var insertResult : NSBatchInsertResult
+            insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
+            print("insertResult",insertResult)
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+    }
+    public func batchInsertAfterDeleteAll(entityName: String, objects: [[String: Any]]) {
+        do {
+            self.batchDelete(entityName: entityName)
             let context = persistentContainer.viewContext
             let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
             var insertResult : NSBatchInsertResult
