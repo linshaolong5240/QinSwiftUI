@@ -74,7 +74,7 @@ struct DescriptionConfiguration {
     }
     
     init(viewModel: Artist) {
-        self.picUrl = viewModel.picUrl ?? ""
+        self.picUrl = viewModel.img1v1Url ?? ""
         self.name = viewModel.name ?? ""
         self.description = ""//viewModel.description
         self.id = Int(viewModel.id)

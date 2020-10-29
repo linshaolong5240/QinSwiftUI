@@ -30,7 +30,7 @@ class NeteaseCloudMusicApi {
 
 extension NeteaseCloudMusicApi {
     // 专辑内容
-    func album(id: Int, complete: @escaping CompletionBlock) {
+    func album(id: Int64, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/album/\(id)"
         let data = [String: Any]()
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
@@ -102,7 +102,7 @@ extension NeteaseCloudMusicApi {
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 歌手单曲
-    func artists(id: Int, complete: @escaping CompletionBlock) {
+    func artists(id: Int64, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/\(id)"
         let data = ResponseData()
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)

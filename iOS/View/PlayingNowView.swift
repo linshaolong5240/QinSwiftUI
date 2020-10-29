@@ -20,7 +20,7 @@ struct PlayingNowView: View {
     @EnvironmentObject var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-    private var playlists: AppState.Playlist {store.appState.playlist}
+    private var playlists: AppState.Playlists {store.appState.playlist}
     @State private var showMore: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false

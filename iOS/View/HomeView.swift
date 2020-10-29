@@ -14,7 +14,7 @@ struct HomeView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player
     
-    private var playlists: AppState.Playlist {store.appState.playlist}
+    private var playlists: AppState.Playlists {store.appState.playlist}
     private var album: AppState.Album {store.appState.album}
     private var artist: AppState.Artist {store.appState.artist}
 
@@ -49,8 +49,8 @@ struct HomeView: View {
                             PlaylistsView(title: "推荐的歌单", type: .recommendPlaylist)
                             PlaylistsView(title: "创建的歌单", type: .created)
                             PlaylistsView(title: "收藏的歌单", type: .subscribed)
-                            AlbumSublistView(albumSublist: album.albumSublist)
-                            ArtistSublistView(artistSublist: artist.artistSublist)
+                            AlbumSublistView()
+                            ArtistSublistView()
                         }
                         BottomBarView()
                     }

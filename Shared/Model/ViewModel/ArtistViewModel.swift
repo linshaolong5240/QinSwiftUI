@@ -32,7 +32,7 @@ class ArtistViewModel: ObservableObject, Identifiable, Codable {
         self.name = artist.name ?? ""
     }
     
-    init(_ artist: ArtistSub) {
+    init(_ artist: ArtistSubJSONModel) {
         self.coverUrl = artist.img1v1Url ?? ""
         self.id = artist.id
         self.name = artist.name

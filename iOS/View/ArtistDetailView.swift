@@ -16,10 +16,10 @@ struct ArtistDetailView: View {
     @State private var selection: Selection = .hotSong
     @State private var showDesc: Bool = false
     
-    private let artist: Artist
+    private let id: Int64
     
-    init(_ artist: Artist) {
-        self.artist = artist
+    init(id: Int64) {
+        self.id = id
     }
     
     var body: some View {
@@ -42,14 +42,13 @@ struct ArtistDetailView: View {
                 }
                 .padding(.horizontal)
                 .onAppear {
-                    Store.shared.dispatch(.artist(id: Int(artist.id)))
+                    Store.shared.dispatch(.artist(id: id))
                 }
                 if store.appState.artist.artistRequesting == true {
-                    DescriptionView(viewModel: artist)
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: artist)
+//                    DescriptionView(viewModel: viewModel)
                     Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
                         Text("热门歌曲").tag(Selection.hotSong)
                         Text("专辑").tag(Selection.album)
@@ -79,7 +78,7 @@ struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-            ArtistDetailView(Artist())
+            ArtistDetailView(id: 0)
                 .environmentObject(Store.shared)
         }
     }
@@ -99,26 +98,6 @@ struct ArtistAlbumView: View {
 //                    }
 //                }
 //            }/*@END_MENU_TOKEN@*/
-        }
-    }
-}
-
-struct AlbumView: View {
-    let viewModel: AlbumViewModel
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.coverUrl, coverShape: .rectangle, size: .small)
-                .padding()
-            Group {
-                Text(viewModel.name)
-                    .foregroundColor(Color.mainTextColor)
-                    .lineLimit(1)
-                    .frame(width: 110, alignment: .leading)
-//                Text("\(viewModel.count) songs")
-//                    .foregroundColor(Color.secondTextColor)
-            }
-            .padding(.leading)
         }
     }
 }

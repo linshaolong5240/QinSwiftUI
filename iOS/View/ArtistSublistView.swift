@@ -8,56 +8,42 @@
 import SwiftUI
 
 struct ArtistSublistView: View {
-    @FetchRequest(entity: Artist.entity(), sortDescriptors: [], predicate: nil) var artists: FetchedResults<Artist>
-
-    let artistSublist: [ArtistViewModel]
-    
-    @State private var artist = Artist()
+    @State private var artistId: Int64 = 0
     @State private var showArtistDetail: Bool = false
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
     
     var body: some View {
-        VStack(spacing: 0) {
-            NavigationLink(
-                destination: ArtistDetailView(artist),
-                isActive: $showArtistDetail,
-                label: {EmptyView()})
-            HStack {
-                Text("收藏的歌手")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
-                Spacer()
-                Text("\(artistSublist.count)收藏的歌手")
-                    .foregroundColor(Color.secondTextColor)
+        FetchedResultsView(entity: ArtistSub.entity()) { (results: FetchedResults<ArtistSub>) in
+            VStack(spacing: 0) {
+                NavigationLink(
+                    destination: ArtistDetailView(id: artistId),
+                    isActive: $showArtistDetail,
+                    label: {EmptyView()})
+                HStack {
+                    Text("收藏的歌手")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.mainTextColor)
+                    Spacer()
+                    Text("\(results.count)收藏的歌手")
+                        .foregroundColor(Color.secondTextColor)
+                }
+                .padding(.horizontal)
+                ScrollView(Axis.Set.horizontal) {
+                    let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
+                    LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
+                        ForEach(results) { item in
+                            Button(action: {
+                                artistId = item.id
+                                showArtistDetail.toggle()
+                            }, label: {
+                                GridItemView(item )
+                                    .padding(.vertical)
+                            })
+                        }
+                    }/*@END_MENU_TOKEN@*/
+                }
             }
-            .padding(.horizontal)
-            ScrollView(Axis.Set.horizontal) {
-                LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                    ForEach(artists) { item in
-                        Button(action: {
-                            artist = item
-                            showArtistDetail.toggle()
-                        }, label: {
-                            ArtistView(item)
-                                .padding(.vertical)
-                        })
-                    }
-                }/*@END_MENU_TOKEN@*/
-            }
-//            ScrollView(Axis.Set.horizontal) {
-//                LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-//                    ForEach(artistSublist) { item in
-//                        Button(action: {
-//                            artist = item
-//                            showArtistDetail.toggle()
-//                        }, label: {
-//                            ArtistView(item)
-//                                .padding(.vertical)
-//                        })
-//                    }
-//                }/*@END_MENU_TOKEN@*/
-//            }
         }
     }
 }
@@ -65,7 +51,7 @@ struct ArtistSublistView: View {
 #if DEBUG
 struct ArtistSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        ArtistSublistView(artistSublist: [ArtistViewModel]())
+        ArtistSublistView()
     }
 }
 #endif
@@ -79,7 +65,7 @@ struct ArtistView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: artist.picUrl ?? "", coverShape: .rectangle, size: .small)
+            NEUCoverView(url: artist.img1v1Url ?? "", coverShape: .rectangle, size: .small)
                 .padding()
             Group {
                 Text(artist.name ?? "")

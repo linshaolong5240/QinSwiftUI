@@ -14,7 +14,7 @@ struct PlaylistDetailView: View {
     @EnvironmentObject var player: Player
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
-    private var playlistDetail: AppState.Playlist { store.appState.playlist }
+    private var playlistDetail: AppState.Playlists { store.appState.playlist }
     private var viewModel: PlaylistViewModel { store.appState.playlist.detail }
     @State var isMoved: Bool = false
     

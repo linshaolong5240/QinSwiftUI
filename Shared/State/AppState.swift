@@ -17,7 +17,7 @@ struct AppState {
     var comment = Comment()
     var lyric = Lyric()
     var playing = Playing()
-    var playlist = Playlist()
+    var playlist = Playlists()
     var search = Search()
     var settings = Settings()
     var error: AppError?
@@ -69,7 +69,6 @@ extension AppState {
         var albumRequesting: Bool = false
         var albumSublistRequesting: Bool = false
         var albumViewModel =  AlbumViewModel()
-        var albumSublist = [AlbumViewModel]()
     }
     
     struct Artist {
@@ -79,7 +78,6 @@ extension AppState {
         var artistSublistRequesting: Bool = false
 
         var detail = ArtistViewModel()
-        var artistSublist = [ArtistViewModel]()
         var error: AppError?
     }
     
@@ -99,7 +97,7 @@ extension AppState {
         var lyric: LyricViewModel?
     }
     
-    struct Playlist {
+    struct Playlists {
         //用户相关歌单
         var recommendPlaylistRequesting: Bool = false
         var recommendSongsPlaylist = PlaylistModel(RecommendSongsModel())//每日推荐歌曲

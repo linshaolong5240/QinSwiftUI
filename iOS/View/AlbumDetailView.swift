@@ -11,11 +11,7 @@ struct AlbumDetailView: View {
     @EnvironmentObject var store: Store
     private var viewModel: AlbumViewModel {store.appState.album.albumViewModel}
 
-    let album: Album
-    
-    init(_ album: Album) {
-        self.album = album
-    }
+    let id: Int64
     
     var body: some View {
         ZStack {
@@ -36,14 +32,13 @@ struct AlbumDetailView: View {
                 }
                 .padding(.horizontal)
                 .onAppear(perform: {
-                    Store.shared.dispatch(.album(id: Int(album.id)))
+                    Store.shared.dispatch(.album(id: id))
                 })
                 if store.appState.album.albumRequesting {
-                    DescriptionView(viewModel: album)
                     Text("正在加载")
                     Spacer()
                 }else {
-                    DescriptionView(viewModel: album)
+//                    DescriptionView(viewModel: viewModel)
                     SongListView(songs: [SongViewModel]())
                 }
             }
@@ -55,7 +50,7 @@ struct AlbumDetailView: View {
 #if DEBUG
 struct AlbumDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AlbumDetailView(Album())
+        AlbumDetailView(id: 0)
     }
 }
 #endif

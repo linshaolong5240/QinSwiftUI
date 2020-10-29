@@ -14,7 +14,7 @@ protocol AppCommand {
 }
 
 struct AlbumCommand: AppCommand {
-    let id: Int
+    let id: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.album(id: id) { (data, error) in
@@ -87,13 +87,15 @@ struct AlbumSublistCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 let sublistDict = data!["data"] as! [[String: Any]]
-                let sublist = sublistDict.map{$0.toData!.toModel(AlbumSubJSONModel.self)!}.map(AlbumViewModel.init)
-                let objects = sublistDict
-                    .map{$0.toData!.toModel(AlbumModel.self)!}
-                    .map{try! JSONEncoder().encode($0)}
-                    .map{try! JSONSerialization.jsonObject(with: $0, options: .allowFragments) as! [String: Any]}
-                DataManager.shared.batchInsert(entityName: "Album", objects: objects)
-                store.dispatch(.albumSublistDone(result: .success(sublist)))
+                let albumSublist = sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
+                do {
+                    let data = try JSONEncoder().encode(albumSublist)
+                    let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
+                    DataManager.shared.batchInsertAfterDeleteAll(entityName: "AlbumSub", objects: objects)
+                } catch let err {
+                    print("\(#function) \(err)")
+                }
+                store.dispatch(.albumSublistDone(result: .success(albumSublist.map{$0.id})))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -104,7 +106,7 @@ struct AlbumSublistCommand: AppCommand {
 }
 
 struct ArtistCommand: AppCommand {
-    let id: Int
+    let id: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.artists(id: id) { (data, error) in
@@ -271,13 +273,15 @@ struct ArtistSublistCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 let artistSublistDict = data!["data"] as! [NeteaseCloudMusicApi.ResponseData]
-                let artistSublist = artistSublistDict.map{$0.toData!.toModel(ArtistSub.self)!}.map{ArtistViewModel($0)}
-                let objects = artistSublistDict
-                    .map{$0.toData!.toModel(ArtistModel.self)!}
-                    .map{try! JSONEncoder().encode($0)}
-                    .map{try! JSONSerialization.jsonObject(with: $0, options: .allowFragments) as! [String: Any]}
-                DataManager.shared.batchInsert(entityName: "Artist", objects: objects)
-                store.dispatch(.artistSublistDone(result: .success(artistSublist)))
+                let artistSublist = artistSublistDict.map{$0.toData!.toModel(ArtistSubModel.self)!}
+                do {
+                    let data = try JSONEncoder().encode(artistSublist)
+                    let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
+                    DataManager.shared.batchInsertAfterDeleteAll(entityName: "ArtistSub", objects: objects)
+                }catch let err {
+                    print("\(#function) \(err)")
+                }
+                store.dispatch(.artistSublistDone(result: .success(artistSublist.map{$0.id})))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"

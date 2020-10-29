@@ -11,5 +11,4 @@ struct RecommendPlaylistModel: Codable {
     var id: Int64
     var name: String
     var picUrl: String
-    var userId: Int64
 }

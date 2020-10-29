@@ -50,7 +50,6 @@ class Store: ObservableObject {
             switch result {
             case .success(let album):
                 appState.album.albumViewModel = album
-                appState.album.albumViewModel.isSub = appState.album.albumSublist.map{$0.id}.contains(album.id)
                 appCommand = AlbumDoneCommand(album: album)
             case .failure(let error):
                 appState.error = error
@@ -71,8 +70,8 @@ class Store: ObservableObject {
             appCommand = AlbumSublistCommand(limit: limit, offset: offset)
         case .albumSublistDone(let result):
             switch result {
-            case .success(let sublist):
-                appState.album.albumSublist = sublist
+            case .success:
+                break
             case .failure(let error):
                 appState.error = error
             }
@@ -136,8 +135,8 @@ class Store: ObservableObject {
             appCommand = ArtistSublistCommand(limit: limit, offset: offset)
         case .artistSublistDone(let result):
             switch result {
-            case .success(let artistSublist):
-                appState.artist.artistSublist = artistSublist
+            case .success:
+                break
             case .failure(let error):
                 appState.error = error
             }

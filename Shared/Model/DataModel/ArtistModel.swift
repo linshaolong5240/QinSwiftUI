@@ -22,13 +22,13 @@ struct ArtistModel: Codable {
     var name: String?
 //    var picId: Int
 //    var picId_str: String?// optional for Album
-    var picUrl: String?//歌手图片 optional for SongModel
+    var img1v1Url: String?//歌手图片 optional for SongModel
 //    var publishTime: Int?// optional for Album
 //    var topicPerson: Int
 //    var trans: String
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case name = "name"
-        case picUrl = "picUrl"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case id = "id"
+//        case name = "name"
+//        case picUrl = "picUrl"
+//    }
 }

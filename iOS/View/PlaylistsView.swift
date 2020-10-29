@@ -65,6 +65,14 @@ struct PlaylistsView: View {
                     ScrollView(Axis.Set.horizontal, showsIndicators: true) {
                         let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                         LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
+                            Button(action: {
+                                //                            playlist = item
+                                //                            playlistDetailId = item.id
+                                showPlaylistDetail.toggle()
+                            }, label: {
+                                GridItemView(Store.shared.appState.playlist.recommendSongsPlaylist)
+                                    .padding(.vertical)
+                            })
                             ForEach(results) { (item) in
                                 Button(action: {
                                     //                            playlist = item
@@ -160,7 +168,25 @@ struct GridItemViewConfiguration {
     var name: String?
     var picUrl: String?
     var subscribed: Bool?
+    init(_ item: AlbumSub) {
+        self.id = item.id
+        self.name = item.name
+        self.picUrl = item.picUrl
+        self.subscribed = nil
+    }
+    init(_ item: ArtistSub) {
+        self.id = item.id
+        self.name = item.name
+        self.picUrl = item.img1v1Url
+        self.subscribed = nil
+    }
     init(_ item: Playlist) {
+        self.id = item.id
+        self.name = item.name
+        self.picUrl = item.coverImgUrl
+        self.subscribed = item.subscribed
+    }
+    init(_ item: PlaylistModel) {
         self.id = item.id
         self.name = item.name
         self.picUrl = item.coverImgUrl
@@ -177,7 +203,16 @@ struct GridItemViewConfiguration {
 struct GridItemView: View {
     private let configuration: GridItemViewConfiguration
     
+    init(_ item: AlbumSub) {
+        self.configuration = GridItemViewConfiguration(item)
+    }
+    init(_ item: ArtistSub) {
+        self.configuration = GridItemViewConfiguration(item)
+    }
     init(_ item: Playlist) {
+        self.configuration = GridItemViewConfiguration(item)
+    }
+    init(_ item: PlaylistModel) {
         self.configuration = GridItemViewConfiguration(item)
     }
     init(_ item: RecommendPlaylist) {

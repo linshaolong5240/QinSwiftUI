@@ -9,13 +9,13 @@
 import Foundation
 
 enum AppAction {
-    case album(id: Int)
+    case album(id: Int64)
     case albumDone(result: Result<AlbumViewModel, AppError>)
     case albumSub(id: Int, sub: Bool)
     case albumSubDone(result: Result<Bool, AppError>)
     case albumSublist(limit: Int = 100, offset: Int = 0)
-    case albumSublistDone(result: Result<[AlbumViewModel], AppError>)
-    case artist(id: Int)
+    case albumSublistDone(result: Result<[Int64], AppError>)
+    case artist(id: Int64)
     case artistDone(result: Result<ArtistViewModel, AppError>)
     case artistAlbum(id: Int,limit: Int = 30, offset: Int = 0)
     case artistAlbumDone(result: Result<[AlbumViewModel], AppError>)
@@ -26,7 +26,7 @@ enum AppAction {
     case artistSub(id: Int, sub: Bool)
     case artistSubDone(result: Result<Bool, AppError>)
     case artistSublist(limit: Int = 30, offset: Int = 0)
-    case artistSublistDone(result: Result<[ArtistViewModel], AppError>)
+    case artistSublistDone(result: Result<[Int64], AppError>)
     case comment(id: Int = 0, cid: Int = 0, content: String = "", type: NeteaseCloudMusicApi.CommentType, action: NeteaseCloudMusicApi.CommentAction)
     case commentDone(result: Result<(id: Int, cid: Int, type: NeteaseCloudMusicApi.CommentType, action: NeteaseCloudMusicApi.CommentAction), AppError>)
     case commentLike(id: Int, cid: Int, like: Bool, type: NeteaseCloudMusicApi.CommentType)

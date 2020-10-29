@@ -34,7 +34,7 @@ struct SongModel: Codable {
             let artist = Artist(context: context)
             artist.id = ar.id
             artist.name = ar.name
-            artist.picUrl = ar.picUrl
+            artist.img1v1Url = ar.img1v1Url
             artist.addToSongs(song)
         }
     }
