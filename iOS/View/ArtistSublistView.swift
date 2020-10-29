@@ -37,7 +37,7 @@ struct ArtistSublistView: View {
                                 artistId = item.id
                                 showArtistDetail.toggle()
                             }, label: {
-                                GridItemView(item )
+                                CommonGridItemView(item )
                                     .padding(.vertical)
                             })
                         }

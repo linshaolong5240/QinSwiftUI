@@ -70,7 +70,7 @@ struct PlaylistsView: View {
                                 //                            playlistDetailId = item.id
                                 showPlaylistDetail.toggle()
                             }, label: {
-                                GridItemView(Store.shared.appState.playlist.recommendSongsPlaylist)
+                                CommonGridItemView(Store.shared.appState.playlist.recommendSongsPlaylist)
                                     .padding(.vertical)
                             })
                             ForEach(results) { (item) in
@@ -79,7 +79,7 @@ struct PlaylistsView: View {
                                     //                            playlistDetailId = item.id
                                     showPlaylistDetail.toggle()
                                 }, label: {
-                                    GridItemView(item )
+                                    CommonGridItemView(item )
                                         .padding(.vertical)
                                 })
                             }
@@ -113,7 +113,7 @@ struct PlaylistsView: View {
                                     //                            playlistDetailId = item.id
                                     showPlaylistDetail.toggle()
                                 }, label: {
-                                    GridItemView(item )
+                                    CommonGridItemView(item )
                                         .padding(.vertical)
                                 })
                             }
@@ -159,78 +159,6 @@ struct PlaylistRowView: View {
                 Text("\(viewModel.count) songs")
                     .foregroundColor(Color.secondTextColor)
             }
-        }
-    }
-}
-    
-struct GridItemViewConfiguration {
-    var id: Int64
-    var name: String?
-    var picUrl: String?
-    var subscribed: Bool?
-    init(_ item: AlbumSub) {
-        self.id = item.id
-        self.name = item.name
-        self.picUrl = item.picUrl
-        self.subscribed = nil
-    }
-    init(_ item: ArtistSub) {
-        self.id = item.id
-        self.name = item.name
-        self.picUrl = item.img1v1Url
-        self.subscribed = nil
-    }
-    init(_ item: Playlist) {
-        self.id = item.id
-        self.name = item.name
-        self.picUrl = item.coverImgUrl
-        self.subscribed = item.subscribed
-    }
-    init(_ item: PlaylistModel) {
-        self.id = item.id
-        self.name = item.name
-        self.picUrl = item.coverImgUrl
-        self.subscribed = item.subscribed
-    }
-    init(_ item: RecommendPlaylist) {
-        self.id = item.id
-        self.name = item.name
-        self.picUrl = item.picUrl
-        self.subscribed = nil
-    }
-}
-    
-struct GridItemView: View {
-    private let configuration: GridItemViewConfiguration
-    
-    init(_ item: AlbumSub) {
-        self.configuration = GridItemViewConfiguration(item)
-    }
-    init(_ item: ArtistSub) {
-        self.configuration = GridItemViewConfiguration(item)
-    }
-    init(_ item: Playlist) {
-        self.configuration = GridItemViewConfiguration(item)
-    }
-    init(_ item: PlaylistModel) {
-        self.configuration = GridItemViewConfiguration(item)
-    }
-    init(_ item: RecommendPlaylist) {
-        self.configuration = GridItemViewConfiguration(item)
-    }
-    var body: some View {
-        VStack(alignment: .leading) {
-            NEUCoverView(url: configuration.picUrl ?? "", coverShape: .rectangle, size: .small)
-                .padding()
-            Group {
-                Text(configuration.name ?? "")
-                    .foregroundColor(Color.mainTextColor)
-                    .lineLimit(1)
-                    .frame(width: 110, alignment: .leading)
-//                Text("\(viewModel.count) songs")
-//                    .foregroundColor(Color.secondTextColor)
-            }
-            .padding(.leading)
         }
     }
 }
