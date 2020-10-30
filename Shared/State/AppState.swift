@@ -114,6 +114,8 @@ extension AppState {
         var likedIds = [Int64]()
         //喜欢的音乐歌单ID
         var likedPlaylistId: Int = 0
+        
+        var songsRequesting: Bool = false
     }
     
     struct Playing {

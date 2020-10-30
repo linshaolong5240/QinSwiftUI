@@ -56,7 +56,7 @@ struct ArtistDetailView: View {
                     }/*@END_MENU_TOKEN@*/
                     .pickerStyle(SegmentedPickerStyle())
                     .padding()
-                    SongListView(songs: [SongViewModel]())
+//                    SongListView(songs: [SongViewModel]())
 
 //                    switch selection {
 //                    case .album:

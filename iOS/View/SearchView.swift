@@ -61,7 +61,7 @@ struct SearchView: View {
                 }else {
                     switch searchType {
                     case .song:
-                        SongListView(songs: search.songs)
+                        SongListView(songsIds: search.songs.map{$0.id})
                     case .playlist:
                         SearchPlaylistResultView()
                     default:

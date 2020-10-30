@@ -39,7 +39,7 @@ struct AlbumDetailView: View {
                     Spacer()
                 }else {
 //                    DescriptionView(viewModel: viewModel)
-                    SongListView(songs: [SongViewModel]())
+//                    SongListView(songs: [SongViewModel]())
                 }
             }
         }

@@ -24,7 +24,6 @@ struct PlaylistDetailView: View {
             ZStack {
                 NEUBackgroundView()
                 VStack {
-                    let playlist = results.first
                     HStack {
                         NEUBackwardButton()
                         Spacer()
@@ -59,7 +58,8 @@ struct PlaylistDetailView: View {
                             .foregroundColor(.secondTextColor)
                         Spacer()
                     }else {
-                        DescriptionView(viewModel: playlist!)
+                        let playlist = results.first!
+                        DescriptionView(viewModel: playlist)
     //                    HStack {
     //                        Text("歌曲列表(\(String(viewModel.count)))")
     //                            .fontWeight(.bold)
@@ -77,7 +77,9 @@ struct PlaylistDetailView: View {
 //                        if editModeBinding?.wrappedValue.isEditing ?? false {
 //                            PlaylistDetailEditSongsView(isMoved: $isMoved)
 //                        }else {
-//                            SongListView(songs: viewModel.songs)
+                        if let songsIds = playlist.songsIds {
+                            SongListView(songsIds: songsIds)
+                        }
 //                        }
                     }
                 }

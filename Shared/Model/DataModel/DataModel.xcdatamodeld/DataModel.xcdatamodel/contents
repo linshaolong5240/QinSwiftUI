@@ -72,7 +72,6 @@
     </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="like" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="al" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="songs" inverseEntity="Album">
             <userInfo>
@@ -103,10 +102,10 @@
         <element name="Album" positionX="-1677.609375" positionY="-1003.77734375" width="128" height="133"/>
         <element name="AlbumSub" positionX="-1105.984375" positionY="-997.1640625" width="128" height="88"/>
         <element name="Artist" positionX="-1673.7578125" positionY="-728.99609375" width="128" height="103"/>
+        <element name="ArtistSub" positionX="-925.44921875" positionY="-996.08203125" width="128" height="88"/>
         <element name="Playlist" positionX="-1458.59375" positionY="-772.6875" width="128" height="133"/>
         <element name="RecommendPlaylist" positionX="-1470.51953125" positionY="-1000.265625" width="128" height="88"/>
-        <element name="Song" positionX="-1896.49609375" positionY="-843.41015625" width="128" height="118"/>
-        <element name="ArtistSub" positionX="-925.44921875" positionY="-996.08203125" width="128" height="88"/>
+        <element name="Song" positionX="-1896.49609375" positionY="-843.41015625" width="128" height="103"/>
         <element name="UserPlaylist" positionX="-1285.53125" positionY="-998.25390625" width="128" height="118"/>
     </elements>
 </model>
