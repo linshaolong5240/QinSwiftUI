@@ -37,12 +37,6 @@ struct SongListView: View {
                     .fixedSize()
             }
             .padding(.horizontal)
-            .onAppear(perform: {
-                print("onAppear")
-            })
-            .onDisappear(perform: {
-                print("onDisappear")
-            })
             ScrollView {
                 ForEach(songss, id:\.id) { item in
                     Button(action: {

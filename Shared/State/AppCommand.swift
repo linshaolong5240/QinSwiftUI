@@ -48,7 +48,7 @@ struct AlbumDoneCommand: AppCommand {
 }
 
 struct AlbumSubCommand: AppCommand {
-    let id: Int
+    let id: Int64
     let sub: Bool
     
     func execute(in store: Store) {
@@ -148,7 +148,7 @@ struct ArtistDoneCommand: AppCommand {
 }
 
 struct ArtistIntroductionCommand: AppCommand {
-    let id: Int
+    let id: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.artistIntroduction(id: id) { (data, error) in
@@ -171,11 +171,11 @@ struct ArtistIntroductionCommand: AppCommand {
 }
 
 struct ArtistAlbumCommand: AppCommand {
-    let id: Int
+    let id: Int64
     let limit: Int
     let offset: Int
     
-    init(id: Int, limit: Int = 30, offset: Int = 0) {
+    init(id: Int64, limit: Int = 30, offset: Int = 0) {
         self.id = id
         self.limit = limit
         self.offset = offset
@@ -201,11 +201,11 @@ struct ArtistAlbumCommand: AppCommand {
 }
 
 struct ArtistMVCommand: AppCommand {
-    let id: Int
+    let id: Int64
     let limit: Int
     let offset: Int
     
-    init(id: Int, limit: Int = 30, offset: Int = 0) {
+    init(id: Int64, limit: Int = 30, offset: Int = 0) {
         self.id = id
         self.limit = limit
         self.offset = offset
@@ -230,7 +230,7 @@ struct ArtistMVCommand: AppCommand {
 }
 
 struct ArtistSubCommand: AppCommand {
-    let id: Int
+    let id: Int64
     let sub: Bool
     
     func execute(in store: Store) {
@@ -292,8 +292,8 @@ struct ArtistSublistCommand: AppCommand {
 }
 
 struct CommentCommand: AppCommand {
-    let id: Int
-    let cid: Int
+    let id: Int64
+    let cid: Int64
     let content: String
     let type: NeteaseCloudMusicApi.CommentType
     let action: NeteaseCloudMusicApi.CommentAction
@@ -319,7 +319,7 @@ struct CommentCommand: AppCommand {
 }
 
 struct CommentDoneCommand: AppCommand {
-    let id: Int
+    let id: Int64
     let type: NeteaseCloudMusicApi.CommentType
     let action: NeteaseCloudMusicApi.CommentAction
 
@@ -331,9 +331,10 @@ struct CommentDoneCommand: AppCommand {
         }
     }
 }
+
 struct CommentLikeCommand: AppCommand {
-    let id: Int
-    let cid: Int
+    let id: Int64
+    let cid: Int64
     let like: Bool
     let type: NeteaseCloudMusicApi.CommentType
     
@@ -362,12 +363,12 @@ struct CommentLikeCommand: AppCommand {
 }
 
 struct CommentMusicCommand: AppCommand {
-    let id: Int
+    let id: Int64
     let limit: Int
     let offset: Int
     let beforeTime: Int
     
-    init(id: Int = 0, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0) {
+    init(id: Int64 = 0, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0) {
         self.id = id
         self.limit = limit
         self.offset = offset
@@ -400,15 +401,13 @@ struct CommentMusicCommand: AppCommand {
 
 struct InitAcionCommand: AppCommand {
     func execute(in store: Store) {
-        if let user = store.appState.settings.loginUser {
-            store.dispatch(.recommendSongs)
-            store.dispatch(.recommendPlaylist)
-            store.dispatch(.userPlaylist())
-            store.dispatch(.likelist(uid: user.uid))
-            store.dispatch(.albumSublist())
-            store.dispatch(.artistSublist())
-            store.dispatch(.playlistCategories)
-        }
+        store.dispatch(.albumSublist())
+        store.dispatch(.artistSublist())
+        store.dispatch(.likelist())
+        store.dispatch(.playlistCategories)
+        store.dispatch(.recommendPlaylist)
+        store.dispatch(.recommendSongs)
+        store.dispatch(.userPlaylist())
     }
 }
 
@@ -440,7 +439,7 @@ struct LikeDoneCommand: AppCommand {
 }
 
 struct LikeListCommand: AppCommand {
-    let uid: Int
+    let uid: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.likeList(uid: uid) { (data, error) in
@@ -449,7 +448,7 @@ struct LikeListCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                let likelist = data!["ids"] as! [Int]
+                let likelist = data!["ids"] as! [Int64]
                 
                 store.dispatch(.likelistDone(result: .success(likelist)))
             }else {
@@ -460,7 +459,7 @@ struct LikeListCommand: AppCommand {
 }
 
 struct LyricCommand: AppCommand {
-    let id: Int
+    let id: Int64
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.lyric(id: id) { (data, error) in
             guard error == nil else {
@@ -501,7 +500,7 @@ struct LoginCommand: AppCommand {
                 user.loginType = data!["loginType"] as! Int
                 if let profile = data!["profile"] as? NeteaseCloudMusicApi.ResponseData {
                     user.profile = profile.toData!.toModel(Profile.self)!
-                    user.uid = profile["userId"] as! Int
+                    user.uid = profile["userId"] as! Int64
                 }
                 store.dispatch(.loginDone(result: .success(user)))
             }else {
@@ -685,7 +684,7 @@ struct PlaylistCreateDoneCommand: AppCommand {
 }
 
 struct PlaylistDeleteCommand: AppCommand {
-    let pid: Int
+    let pid: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.playlistDelete(pid: pid) { (data, error) in
@@ -694,7 +693,7 @@ struct PlaylistDeleteCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                store.dispatch(.playlistDeleteDone(result: .success(data!["id"] as! Int)))
+                store.dispatch(.playlistDeleteDone(result: .success(data!["id"] as! Int64)))
             }else {
                 store.dispatch(.playlistDeleteDone(result: .failure(.playlistDeleteError)))
             }
@@ -710,18 +709,28 @@ struct PlaylistDeleteDoneCommand: AppCommand {
 }
 
 struct PlaylistDetailCommand: AppCommand {
-    let id: Int
+    let id: Int64
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistDetail(id) { (data, error) in
+        NeteaseCloudMusicApi.shared.playlistDetail(id: id) { (data, error) in
             guard error == nil else {
                 store.dispatch(.playlistDetailDone(result: .failure(error!)))
                 return
             }
             if data!["code"] as! Int == 200 {
                 if let playlistDict = data?["playlist"] as? NeteaseCloudMusicApi.ResponseData {
-                    let playlist = playlistDict.toData!.toModel(PlaylistJSONModel.self)!
-                    store.dispatch(.playlistDetailDone(result: .success(PlaylistViewModel(playlist))))
+                    var playlistModel = playlistDict.toData!.toModel(PlaylistModel.self)!
+                    let trackIds = playlistDict["trackIds"] as! [[String: Any]]
+                    let songsIds = trackIds.map{$0["id"] as! Int64}
+                    playlistModel.songsIds = songsIds
+                    do {
+                        let data = try JSONEncoder().encode(playlistModel)
+                        let object = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [String: Any]
+                        DataManager.shared.batchInsert(entityName: "Playlist", objects: [object])
+                    }catch let error {
+                        print("\(#function) \(error)")
+                    }
+                    store.dispatch(.playlistDetailDone(result: .success(id)))
                 }
             }else {
                 store.dispatch(.playlistDetailDone(result: .failure(.playlistDetailError)))
@@ -731,10 +740,9 @@ struct PlaylistDetailCommand: AppCommand {
 }
 
 struct PlaylistDetailDoneCommand: AppCommand {
-    let playlist: PlaylistViewModel
+    let id: Int64
     
     func execute(in store: Store) {
-        store.dispatch(.songsDetail(ids: playlist.songsId))
     }
 }
 
@@ -763,7 +771,7 @@ struct PlaylistOrderUpdateDoneCommand: AppCommand {
 }
 
 struct PlaylisSubscribeCommand: AppCommand {
-    let id: Int
+    let id: Int64
     let sub: Bool
     
     func execute(in store: Store) {
@@ -784,14 +792,14 @@ struct PlaylisSubscribeCommand: AppCommand {
 struct PlaylisSubscribeDoneCommand: AppCommand {
 
     func execute(in store: Store) {
-        store.dispatch(.userPlaylist())
+//        store.dispatch(.userPlaylist())
     }
 }
 
 struct PlaylistTracksCommand: AppCommand {
-    let pid: Int
+    let pid: Int64
     let op: Bool
-    let ids: [Int]
+    let ids: [Int64]
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.playlistTracks(pid: pid, op: op, ids: ids) { (data, error) in
@@ -816,7 +824,7 @@ struct PlaylistTracksDoneCommand: AppCommand {
 }
 
 struct PlayRequestCommand: AppCommand {
-    let id: Int
+    let id: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.songsURL([id]) { data, error in
@@ -1002,7 +1010,7 @@ struct SearchSongDoneCommand: AppCommand {
 }
 
 struct SongsDetailCommand: AppCommand {
-    let ids: [Int]
+    let ids: [Int64]
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.songsDetail(ids) { data, error in
@@ -1058,8 +1066,8 @@ struct SongsDetailDoneCommand: AppCommand {
 }
 
 struct SongsOrderUpdateCommand: AppCommand {
-    let pid: Int
-    let ids: [Int]
+    let pid: Int64
+    let ids: [Int64]
     
     func execute(in store: Store) {
             NeteaseCloudMusicApi.shared.songsOrderUpdate(pid: pid, ids: ids) { data, error in
@@ -1077,7 +1085,7 @@ struct SongsOrderUpdateCommand: AppCommand {
 }
 
 struct SongsOrderUpdateDoneCommand: AppCommand {
-    let pid: Int
+    let pid: Int64
     
     func execute(in store: Store) {
         store.dispatch(.playlistDelete(pid: pid))
@@ -1085,7 +1093,7 @@ struct SongsOrderUpdateDoneCommand: AppCommand {
 }
 
 struct SongsURLCommand: AppCommand {
-    let ids: [Int]
+    let ids: [Int64]
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.songsURL(ids) { data, error in
@@ -1135,7 +1143,7 @@ struct TooglePlayCommand: AppCommand {
 }
 
 struct UserPlayListCommand: AppCommand {
-    let uid: Int
+    let uid: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.userPlayList(uid) { (data, error) in
@@ -1145,11 +1153,12 @@ struct UserPlayListCommand: AppCommand {
             }
             if data!["code"] as! Int == 200 {
                 if let playlistDicts = data?["playlist"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    let playlistModels = playlistDicts.map{$0.toData!.toModel(PlaylistModel.self)!}
+                    let playlistModels = playlistDicts.map{$0.toData!.toModel(UserPlaylistModel.self)!}
                     do {
                         let data = try JSONEncoder().encode(playlistModels)
                         let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
-                        DataManager.shared.batchInsert(entityName: "Playlist", objects: objects)
+                        print(objects)
+                        DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: objects)
                     }catch let error {
                         print("\(#function) \(error)")
                     }

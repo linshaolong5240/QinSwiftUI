@@ -11,7 +11,7 @@ struct MV: Codable, Identifiable {
     var artist: ArtistJSONModel
     var artistName: String
     var duration: Int
-    var id: Int
+    var id: Int64
     var imgurl: String
     var imgurl16v9: String
     var name: String

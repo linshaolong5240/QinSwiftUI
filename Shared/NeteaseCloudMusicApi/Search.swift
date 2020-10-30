@@ -8,7 +8,7 @@ struct SearchSongDetail: Codable, Identifiable {
 //    struct Artist: Codable, Identifiable {
 //        var albumSize: Int
 //        var alias: [String]
-//        var id: Int
+//        var id: Int64
 //        var img1v1: Int
 //        var img1v1Url: String
 //        var name: String
@@ -19,7 +19,7 @@ struct SearchSongDetail: Codable, Identifiable {
     struct Album: Codable, Identifiable {
         var artist: ArtistJSONModel
         var copyrightId: Int
-        var id: Int
+        var id: Int64
         var mark: Int
         var name: String
         var picId: Int
@@ -34,7 +34,7 @@ struct SearchSongDetail: Codable, Identifiable {
     var duration: Int
     var fee: Int
     var ftype: Int
-    var id: Int
+    var id: Int64
     var mark: Int
     var mvid: Int
     var name: String
@@ -48,7 +48,7 @@ struct SearchPlaylist: Codable, Identifiable {
         var albumSize: Int
         var alias: [String]
         var briefDesc: String
-        var id: Int
+        var id: Int64
         var img1v1Id: Int
         var img1v1Url: String
         var musicSize: Int
@@ -68,7 +68,7 @@ struct SearchPlaylist: Codable, Identifiable {
         var companyId: Int
         var copyrightId: Int
         var description: String
-        var id: Int
+        var id: Int64
         var name: String
         var pic: Int
         var picId: Int
@@ -94,7 +94,7 @@ struct SearchPlaylist: Codable, Identifiable {
             var bitrate: Int
             var dfsId: Int
             var `extension`: String
-            var id: Int
+            var id: Int64
             var name: String?
             var playTime: Int
             var size: Int
@@ -118,7 +118,7 @@ struct SearchPlaylist: Codable, Identifiable {
         var ftype: Int
         var hMusic: Quality?
         var hearTime: Int
-        var id: Int
+        var id: Int64
         var lMusic: Quality?
         var mMusic: Quality?
         var mp3Url: String?
@@ -145,7 +145,7 @@ struct SearchPlaylist: Codable, Identifiable {
     var creator: Creator
     var description: String?
     var highQuality: Bool
-    var id: Int
+    var id: Int64
     var name: String
 //    var officialTags: Any?
     var playCount: Int

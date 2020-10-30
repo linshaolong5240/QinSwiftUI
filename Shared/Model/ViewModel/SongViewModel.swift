@@ -15,7 +15,7 @@ class SongViewModel: ObservableObject, Identifiable, Equatable, Codable {
     var albumPicURL = ""
     var artists = [ArtistViewModel]()
     var durationTime: Int = 0
-    var id: Int = 0
+    var id: Int64 = 0
     @Published var liked: Bool = false
     var name: String = ""
     var url: String? = nil

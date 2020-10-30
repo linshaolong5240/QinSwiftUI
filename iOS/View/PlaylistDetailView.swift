@@ -15,74 +15,75 @@ struct PlaylistDetailView: View {
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     
     private var playlistDetail: AppState.Playlists { store.appState.playlist }
-    private var viewModel: PlaylistViewModel { store.appState.playlist.detail }
     @State var isMoved: Bool = false
     
-    let playlist: PlaylistViewModel
-    let id: Int
-    let type: PlaylistType
+    let id: Int64
     
     var body: some View {
-        ZStack {
-            NEUBackgroundView()
-            VStack {
-                HStack {
-                    NEUBackwardButton()
-                    Spacer()
-                    NEUNavigationBarTitleView("歌单详情")
-                    Spacer()
-                    if type == .created {
-                        Button(action: {
-                            Store.shared.dispatch(.playlistDelete(pid: viewModel.id))
-                        }, label: {
-                            NEUSFView(systemName: "trash.fill")
-                        })
-                        .buttonStyle(NEUButtonStyle(shape: Circle()))
+        FetchedResultsView(entity: Playlist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Playlist>) in
+            ZStack {
+                NEUBackgroundView()
+                VStack {
+                    let playlist = results.first
+                    HStack {
+                        NEUBackwardButton()
+                        Spacer()
+                        NEUNavigationBarTitleView("歌单详情")
+                        Spacer()
+    //                    if type == .created {
+    //                        Button(action: {
+    //                            Store.shared.dispatch(.playlistDelete(pid: viewModel.id))
+    //                        }, label: {
+    //                            NEUSFView(systemName: "trash.fill")
+    //                        })
+    //                        .buttonStyle(NEUButtonStyle(shape: Circle()))
+    //                    }
+    //                    if type == .subscribed && viewModel.id != 0 {
+    //                        Button(action: {
+    //                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed ? false : true))
+    //                        }, label: {
+    //                            NEUSFView(systemName: "heart.fill",
+    //                                      active: viewModel.subscribed)
+    //                        })
+    //                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.subscribed, shape: Circle()))
+    //                    }
                     }
-                    if type == .subscribed && viewModel.id != 0 {
-                        Button(action: {
-                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed ? false : true))
-                        }, label: {
-                            NEUSFView(systemName: "heart.fill",
-                                      active: viewModel.subscribed)
-                        })
-                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.subscribed, shape: Circle()))
-                    }
-                }
-                .padding(.horizontal)
-                .onAppear(perform: {
-                    Store.shared.dispatch(.playlistDetail(id: self.id))
-                })
-                if playlistDetail.detailRequesting {
-                    DescriptionView(viewModel: playlist)
-                    Text("正在加载...")
-                        .foregroundColor(.secondTextColor)
-                    Spacer()
-                }else {
-                    DescriptionView(viewModel: viewModel)
-//                    HStack {
-//                        Text("歌曲列表(\(String(viewModel.count)))")
-//                            .fontWeight(.bold)
-//                            .foregroundColor(.secondTextColor)
-//                        Spacer()
-//                        if type == .created {
-//                            NEUEditButton(action: {
-//                                if isMoved {
-//                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
-//                                }
-//                            })
-//                        }
-//                    }
-//                    .padding(.horizontal)
-                    if editModeBinding?.wrappedValue.isEditing ?? false {
-                        PlaylistDetailEditSongsView(isMoved: $isMoved)
+                    .padding(.horizontal)
+                    .onAppear(perform: {
+                        if results.count == 0 {
+                            Store.shared.dispatch(.playlistDetail(id: id))
+                        }
+                    })
+                    if results.count == 0 {
+                        Text("正在加载...")
+                            .foregroundColor(.secondTextColor)
+                        Spacer()
                     }else {
-                        SongListView(songs: viewModel.songs)
+                        DescriptionView(viewModel: playlist!)
+    //                    HStack {
+    //                        Text("歌曲列表(\(String(viewModel.count)))")
+    //                            .fontWeight(.bold)
+    //                            .foregroundColor(.secondTextColor)
+    //                        Spacer()
+    //                        if type == .created {
+    //                            NEUEditButton(action: {
+    //                                if isMoved {
+    //                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
+    //                                }
+    //                            })
+    //                        }
+    //                    }
+    //                    .padding(.horizontal)
+//                        if editModeBinding?.wrappedValue.isEditing ?? false {
+//                            PlaylistDetailEditSongsView(isMoved: $isMoved)
+//                        }else {
+//                            SongListView(songs: viewModel.songs)
+//                        }
                     }
                 }
             }
+            .navigationBarHidden(true)
         }
-        .navigationBarHidden(true)
     }
 }
 
@@ -92,15 +93,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
         ZStack {
             NEUBackgroundView()
             VStack {
-                PlaylistDetailView(playlist: PlaylistViewModel(), id: 1, type: .subscribed)
-                //                List {
-                //                    SongRowView(viewModel: SongViewModel(id: 0, name: "test", artists: "test"), active: false)
-                //                        .environment(\.colorScheme, .light)
-                //                    SongRowView(viewModel: SongViewModel(id: 0, name: "test", artists: "test"), active: true)
-                //                        .environment(\.colorScheme, .light)
-                //                    SongRowView(viewModel: SongViewModel(id: 0, name: "test", artists: "test"), active: false)
-                //                        .environment(\.colorScheme, .light)
-                //                }
+                PlaylistDetailView(id: 0)
             }
         }
         .environmentObject(Store.shared)
@@ -111,9 +104,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 
 struct PlaylistDetailEditSongsView: View {
     @EnvironmentObject var store: Store
-    private var viewModel: PlaylistViewModel {
-        store.appState.playlist.detail
-    }
+    private var viewModel = PlaylistViewModel()
     @Binding var isMoved: Bool
     
     var body: some View {

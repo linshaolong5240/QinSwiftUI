@@ -12,7 +12,7 @@ struct PlaylistJSONModel: Codable, Identifiable {
     struct TrackId: Codable, Identifiable {
 //        var alg: Any?
         var at: Int
-        var id: Int
+        var id: Int64
         var v: Int
     }
     var adType: Int
@@ -33,7 +33,7 @@ struct PlaylistJSONModel: Codable, Identifiable {
     var description: String?
 //    var englishTitle: Any?
     var highQuality: Bool
-    var id: Int
+    var id: Int64
     var name: String
     var newImported: Bool
     var opRecommend: Bool?
@@ -66,7 +66,7 @@ struct RecommendPlaylistJSONModel: Codable, Identifiable {
     var copywriter: String
     var createTime: Int
     var creator: Creator
-    var id: Int
+    var id: Int64
     var name: String
     var picUrl: String
     var playcount: Int

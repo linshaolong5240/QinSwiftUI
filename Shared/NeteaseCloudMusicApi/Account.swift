@@ -11,7 +11,7 @@ import Foundation
 struct User: Codable {
     var account: Account = Account()
     var csrf: String = ""
-    var uid: Int = 0
+    var uid: Int64 = 0
     var loginType: Int = 0
     var profile: Profile = Profile()
     init() {

@@ -19,20 +19,20 @@ struct Comment: Codable {
 //        var locationInfo: Any?
         var nickname: String
 //        var remarkName: String?
-        var userId: Int
+        var userId: Int64
         var userType: Int
 //        var vipRights: Any?
         var vipType: Int
     }
     struct RepliedComment: Codable {
-        var beRepliedCommentId: Int
+        var beRepliedCommentId: Int64
         var content: String?
         var expressionUrl: String?
         var status: Int
         var user: CommentUser
     }
     var beReplied: [RepliedComment]
-    var commentId: Int
+    var commentId: Int64
     var commentLocationType: Int
     var content: String
 //    var decoration: Any?

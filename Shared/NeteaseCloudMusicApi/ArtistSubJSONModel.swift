@@ -10,7 +10,7 @@ import Foundation
 struct ArtistSubJSONModel: Codable, Identifiable {
     var albumSize: Int
     var alias: [String]
-    var id: Int
+    var id: Int64
     var img1v1Url: String?
     var info: String
     var mvSize: Int

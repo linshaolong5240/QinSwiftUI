@@ -9,7 +9,7 @@
 import Foundation
 struct SongDetail: Codable, Identifiable {
     struct Album: Codable {
-        var id: Int
+        var id: Int64
         var name: String?
         var pic: Int
         var picUrl: String? //optional for album detail
@@ -18,7 +18,7 @@ struct SongDetail: Codable, Identifiable {
     }
     struct Artist: Codable, Identifiable {
         var alias: [String]? //optional for album detail
-        var id: Int
+        var id: Int64
         var name: String?
 //        var tns: [Any]
     }
@@ -37,7 +37,7 @@ struct SongDetail: Codable, Identifiable {
         var fee: Int
         var fl: Int
         var flag: Int
-        var id: Int
+        var id: Int64
         var maxbr: Int
         var payed: Int
         var pl: Int
@@ -67,7 +67,7 @@ struct SongDetail: Codable, Identifiable {
     var fee: Int
     var ftype: Int
     var h: Quality?
-    var id: Int
+    var id: Int64
     var l: Quality?
     var m: Quality?
     var mark: Int?//optional for album detail

@@ -12,6 +12,7 @@ import Combine
 import CoreData
 
 struct AppState {
+    var initRequesting: Bool = false
     var album = Album()
     var artist = Artist()
     var comment = Comment()
@@ -86,7 +87,7 @@ extension AppState {
         var commentMusicRequesting = false
         var hotComments = [CommentViewModel]()
         var comments = [CommentViewModel]()
-        var id: Int = 0
+        var id: Int64 = 0
         var offset: Int = 0
         var total: Int = 0
     }
@@ -107,11 +108,10 @@ extension AppState {
         var discoverPlaylist = DiscoverPlaylistViewModel()
         
         //歌单详情
-        var detail = PlaylistViewModel()
         var detailRequesting: Bool = false
         
         //喜欢的音乐ID
-        var likedIds = [Int]()
+        var likedIds = [Int64]()
         //喜欢的音乐歌单ID
         var likedPlaylistId: Int = 0
     }

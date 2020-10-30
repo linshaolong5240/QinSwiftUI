@@ -14,12 +14,12 @@ class PlaylistViewModel: ObservableObject, Identifiable {
     var creator: String = ""
     var creatorId: Int = 0
     var description: String = ""
-    var id: Int = 0
+    var id: Int64 = 0
     var name: String = ""
     var playCount: Int = 0
     @Published var subscribed: Bool = false
     var songs = [SongViewModel]()
-    var songsId = [Int]()
+    var songsId = [Int64]()
     var userId: Int = 0
     init() {
         
@@ -34,7 +34,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
         self.playCount = playList.playCount
         self.subscribed = playList.subscribed
         self.songs = playList.tracks?.map{ SongViewModel($0) } ?? [SongViewModel]()
-        self.songsId = playList.trackIds?.map({$0.id}) ?? [Int]()
+        self.songsId = playList.trackIds?.map({$0.id}) ?? [Int64]()
         self.userId = playList.userId
     }
     init(_ recommendPlaylist: RecommendPlaylistJSONModel) {

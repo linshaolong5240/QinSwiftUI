@@ -13,7 +13,7 @@ class ArtistViewModel: ObservableObject, Identifiable, Codable {
     var coverUrl: String = ""
     var description: String = ""
     @Published var followed: Bool = false
-    var id: Int = 0
+    var id: Int64 = 0
     var name: String = ""
     
     var albums = [AlbumViewModel]()

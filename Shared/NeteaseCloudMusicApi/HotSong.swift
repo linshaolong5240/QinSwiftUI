@@ -17,7 +17,7 @@ struct HotSong: Codable, Identifiable {
         var bitrate: Int
         var dfsId: Int
         var `extension`: String
-        var id: Int
+        var id: Int64
 //        var name: Any?
         var playTime: Int
         var size: Int
@@ -41,7 +41,7 @@ struct HotSong: Codable, Identifiable {
     var ftype: Int
     var hMusic: Quality?
     var hearTime: Int
-    var id: Int
+    var id: Int64
     var lMusic: Quality?
     var mMusic: Quality?
     var mark: Int

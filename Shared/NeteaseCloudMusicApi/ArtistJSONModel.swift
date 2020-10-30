@@ -13,7 +13,7 @@ struct ArtistJSONModel: Codable, Identifiable {
     var alias: [String]
     var briefDesc: String
     var followed: Bool?// optional for MV
-    var id: Int
+    var id: Int64
     var img1v1Id: Int
     var img1v1Id_str: String?
     var img1v1Url: String

@@ -76,6 +76,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.album.albumSublistRequesting = false
+            appState.initRequesting = false
         case .artist(let id):
             if id != appState.artist.detail.id {
                 appState.artist.artistRequesting = true
@@ -141,6 +142,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.artist.artistSublistRequesting = false
+            appState.initRequesting = false
         case .comment(let id, let cid, let content, let type, let action):
             if content.count > 0 {
                 appState.comment.commentRequesting = true
@@ -183,6 +185,7 @@ class Store: ObservableObject {
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
         case .initAction:
+            appState.initRequesting = true
             appCommand = InitAcionCommand()
         case .like(let song):
             appCommand = LikeCommand(song: song)
@@ -195,7 +198,11 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .likelist(let uid):
-            appCommand = LikeListCommand(uid: uid)
+            if let userId = uid {
+                appCommand = LikeListCommand(uid: userId)
+            }else if let userId = appState.settings.loginUser?.uid {
+                appCommand = LikeListCommand(uid: userId)
+            }
         case .likelistDone(let result):
             switch result {
             case .success(let ids):
@@ -203,6 +210,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
+            appState.initRequesting = false
         case .lyric(let id):
             appState.lyric.getLyricRequesting = true
             appCommand = LyricCommand(id: id)
@@ -309,6 +317,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.playlist.discoverPlaylist.categoriesRequesting = false
+            appState.initRequesting = false
         case .playlistCreate(let name, let privacy):
             appCommand = PlaylistCreateCommand(name: name, privacy: privacy)
         case .playlistCreateDone(let result):
@@ -320,7 +329,6 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistDelete(let pid):
-            appState.playlist.detail = PlaylistViewModel()
             appCommand = PlaylistDeleteCommand(pid: pid)
         case .playlistDeleteDone(let result):
             switch result {
@@ -333,20 +341,19 @@ class Store: ObservableObject {
         case .playlistDetail(let id):
             if id == 0 {
                 appState.playlist.detailRequesting = true
-                appCommand = PlaylistDetailDoneCommand(playlist: appState.playlist.detail)
-            }else if id != appState.playlist.detail.id {
+            }else {
                 appState.playlist.detailRequesting = true
-                appState.playlist.detail = PlaylistViewModel()
                 appCommand = PlaylistDetailCommand(id: id)
             }
         case .playlistDetailDone(let result):
             switch result {
-            case .success(let playlist):
-                appState.playlist.detail = playlist
-                appCommand = PlaylistDetailDoneCommand(playlist: playlist)
+            case .success:
+                break
+//                appCommand = PlaylistDetailDoneCommand(playlist: playlist)
             case .failure(let error):
                 appState.error = error
             }
+            appState.playlist.detailRequesting = false
         case .playlistOrderUpdate:
             break
 //            let allIds = [Int]()
@@ -368,8 +375,7 @@ class Store: ObservableObject {
             appCommand = PlaylisSubscribeCommand(id: id, sub: sub)
         case .playlistSubscibeDone(let result):
             switch result {
-            case .success(let subscribe):
-                appState.playlist.detail.subscribed = subscribe
+            case .success:
                 appCommand = PlaylisSubscribeDoneCommand()
             case .failure(let error):
                 appState.error = error
@@ -397,6 +403,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.playlist.recommendPlaylistRequesting = false
+            appState.initRequesting = false
         case .recommendSongs:
             appCommand = RecommendSongsCommand()
         case .recommendSongsDone(let result):
@@ -406,6 +413,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
+            appState.initRequesting = false
         case .search(let keyword, let type, let limit, let offset):
             appState.search.searchRequesting = true
             appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)
@@ -435,7 +443,6 @@ class Store: ObservableObject {
             }else{
                 appState.album.albumRequesting = false
                 appState.artist.artistRequesting = false
-                appState.playlist.detailRequesting = false
                 appState.search.searchRequesting = false
             }
         case .songsDetailDone(let result):
@@ -450,9 +457,6 @@ class Store: ObservableObject {
                 if appState.artist.artistRequesting {
                     appState.artist.detail.hotSongs = songs
                 }
-                if appState.playlist.detailRequesting {
-                    appState.playlist.detail.songs = songs
-                }
                 if appState.search.searchRequesting {
                     appState.search.songs = songs
                 }
@@ -462,7 +466,6 @@ class Store: ObservableObject {
             }
             appState.album.albumRequesting = false
             appState.artist.artistRequesting = false
-            appState.playlist.detailRequesting = false
             appState.search.searchRequesting = false
         case .songsOrderUpdate(let pid, let ids):
             appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
@@ -489,11 +492,6 @@ class Store: ObservableObject {
                         appState.artist.detail.hotSongs.first{$0.id == url.id}?.url = url.url
                     }
                 }
-                if appState.playlist.detailRequesting {
-                    for url in  songsURL {
-                        appState.playlist.detail.songs.first{$0.id == url.id}?.url = url.url
-                    }
-                }
                 if appState.search.searchRequesting {
                     for url in  songsURL {
                         appState.search.songs.first{$0.id == url.id}?.url = url.url
@@ -504,7 +502,6 @@ class Store: ObservableObject {
             }
             appState.album.albumRequesting = false
             appState.artist.artistRequesting = false
-            appState.playlist.detailRequesting = false
             appState.search.searchRequesting = false
         case .seek(let isSeeking):
             appState.playing.isSeeking = isSeeking
@@ -530,6 +527,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.playlist.userPlaylistRequesting = false
+            appState.initRequesting = false
         }
         return (appState, appCommand)
     }

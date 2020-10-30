@@ -43,14 +43,18 @@ struct HomeView: View {
                         }
                         .padding([.leading, .bottom, .trailing])
                         Divider()
-                        ScrollView {
+                        if !store.appState.initRequesting {
+                            ScrollView {
+                                Spacer()
+                                    .frame(height: 10)
+                                PlaylistsView(title: "推荐的歌单", type: .recommendPlaylist)
+                                PlaylistsView(title: "创建的歌单", type: .created)
+                                PlaylistsView(title: "收藏的歌单", type: .subscribed)
+                                AlbumSublistView()
+                                ArtistSublistView()
+                            }
+                        }else {
                             Spacer()
-                                .frame(height: 10)
-                            PlaylistsView(title: "推荐的歌单", type: .recommendPlaylist)
-                            PlaylistsView(title: "创建的歌单", type: .created)
-                            PlaylistsView(title: "收藏的歌单", type: .subscribed)
-                            AlbumSublistView()
-                            ArtistSublistView()
                         }
                         BottomBarView()
                     }

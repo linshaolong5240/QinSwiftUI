@@ -10,13 +10,13 @@ import Foundation
 
 class CommentViewModel: ObservableObject, Identifiable {
     var beReplied = [CommentViewModel]()
-    var commentId: Int = 0
+    var commentId: Int64 = 0
     var content: String = ""
-    var id: Int = 0 // commentId for Identifiable
+    var id: Int64 = 0 // commentId for Identifiable
     @Published var liked: Bool = false
     var likedCount: Int = 0
     var parentCommentId: Int = 0
-    var userId: Int = 0
+    var userId: Int64 = 0
     var avatarUrl: String = ""
     var nickname: String = ""
     

@@ -268,7 +268,7 @@ struct CommentListView: View {
     private var comment: AppState.Comment { store.appState.comment }
     @State var editComment: String = ""
     
-    let id: Int
+    let id: Int64
     
     var body: some View {
         VStack {
@@ -329,7 +329,7 @@ struct CommentRowView: View {
     private var user: User? {store.appState.settings.loginUser}
 
     @StateObject var viewModel: CommentViewModel
-    let id: Int
+    let id: Int64
     let type: NeteaseCloudMusicApi.CommentType
     
     @State var showBeReplied = false
@@ -388,7 +388,7 @@ struct CreatedPlaylistView: View {
 //    private var playlists: AppState.Playlists {store.appState.playlist}
 //
     let playlists: [PlaylistViewModel]
-    let songId: Int
+    let songId: Int64
     @Binding var showList: Bool
     @Binding  var bottomType: PlayingNowBottomType
     

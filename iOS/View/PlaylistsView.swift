@@ -22,8 +22,8 @@ struct PlaylistsView: View {
     private let type: PlaylistType
     private var sortDescriptors: [NSSortDescriptor] = []
     private var predicate: NSPredicate? = nil
-    @State private var playlist = PlaylistViewModel()
-    @State private var playlistDetailId: Int = 0
+
+    @State private var playlistDetailId: Int64 = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var isManaging: Bool = false
     @State private var isCreating: Bool = false
@@ -49,7 +49,7 @@ struct PlaylistsView: View {
             FetchedResultsView(entity: RecommendPlaylist.entity(), sortDescriptors: sortDescriptors, predicate: predicate) { (results: FetchedResults<RecommendPlaylist>) in
                 VStack(spacing: 0) {
                     NavigationLink(
-                        destination: PlaylistDetailView(playlist: playlist, id: playlistDetailId, type: type),
+                        destination: PlaylistDetailView(id: playlistDetailId),
                         isActive: $showPlaylistDetail,
                         label: {EmptyView()})
                     HStack {
@@ -66,8 +66,7 @@ struct PlaylistsView: View {
                         let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                         LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                             Button(action: {
-                                //                            playlist = item
-                                //                            playlistDetailId = item.id
+                                playlistDetailId = 0
                                 showPlaylistDetail.toggle()
                             }, label: {
                                 CommonGridItemView(Store.shared.appState.playlist.recommendSongsPlaylist)
@@ -75,8 +74,7 @@ struct PlaylistsView: View {
                             })
                             ForEach(results) { (item) in
                                 Button(action: {
-                                    //                            playlist = item
-                                    //                            playlistDetailId = item.id
+                                    playlistDetailId = item.id
                                     showPlaylistDetail.toggle()
                                 }, label: {
                                     CommonGridItemView(item )
@@ -88,10 +86,10 @@ struct PlaylistsView: View {
                 }
             }
         }else {
-            FetchedResultsView(entity: Playlist.entity(), sortDescriptors: sortDescriptors, predicate: predicate) { (results: FetchedResults<Playlist>) in
+            FetchedResultsView(entity: UserPlaylist.entity(), sortDescriptors: sortDescriptors, predicate: predicate) { (results: FetchedResults<UserPlaylist>) in
                 VStack(spacing: 0) {
                     NavigationLink(
-                        destination: PlaylistDetailView(playlist: playlist, id: playlistDetailId, type: type),
+                        destination: PlaylistDetailView(id: playlistDetailId),
                         isActive: $showPlaylistDetail,
                         label: {EmptyView()})
                     HStack {
@@ -109,8 +107,7 @@ struct PlaylistsView: View {
                         LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                             ForEach(results) { (item) in
                                 Button(action: {
-                                    //                            playlist = item
-                                    //                            playlistDetailId = item.id
+                                    playlistDetailId = item.id
                                     showPlaylistDetail.toggle()
                                 }, label: {
                                     CommonGridItemView(item )
@@ -223,7 +220,7 @@ struct PlaylistManageView: View {
                     Button(action: {
                         showSheet.toggle()
                         if isMoved {
-                            Store.shared.dispatch(.playlistOrderUpdate(ids: playlists.map{$0.id}, type: type))
+//                            Store.shared.dispatch(.playlistOrderUpdate(ids: playlists.map{$0.id}, type: type))
                         }
                         if isDeleted || isMoved {
                             Store.shared.dispatch(.userPlaylist())
@@ -253,16 +250,16 @@ struct PlaylistManageView: View {
     }
     func deleteAction(from source: IndexSet) {
         isDeleted = true
-        if let index = source.first {
-            let id = playlists[index].id
-            playlists.remove(at: index)
-            if type == .created {
-                Store.shared.dispatch(.playlistDelete(pid: id))
-            }
-            if type == .subscribed {
-                Store.shared.dispatch(.playlistSubscibe(id: id, sub: false))
-            }
-        }
+//        if let index = source.first {
+//            let id = playlists[index].id
+//            playlists.remove(at: index)
+//            if type == .created {
+//                Store.shared.dispatch(.playlistDelete(pid: id))
+//            }
+//            if type == .subscribed {
+//                Store.shared.dispatch(.playlistSubscibe(id: id, sub: false))
+//            }
+//        }
     }
     func moveAction(from source: IndexSet, offset: Int) {
         isMoved = true

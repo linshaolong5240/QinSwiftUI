@@ -85,10 +85,10 @@ struct SearchPlaylistResultView: View {
         ScrollView {
             LazyVStack {
                 ForEach(search.playlists) { item in
-                    NavigationLink(destination: PlaylistDetailView(playlist: item, id: item.id, type: .subscribed)) {
-                        SearchPlaylistResultRowView(viewModel: item)
-                            .padding(.horizontal)
-                    }
+//                    NavigationLink(destination: PlaylistDetailView(id: item.id)) {
+//                        SearchPlaylistResultRowView(viewModel: item)
+//                            .padding(.horizontal)
+//                    }
                 }
             }
         }

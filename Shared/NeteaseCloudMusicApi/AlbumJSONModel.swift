@@ -24,7 +24,7 @@ struct AlbumJSONModel: Codable, Identifiable {
     struct ResourceInfo: Codable {
         var creator: Creator?
 //        var encodedId: Any?
-        var id: Int
+        var id: Int64
         var imgUrl: String
         var name: String
         var subTitle: String?
@@ -53,7 +53,7 @@ struct AlbumJSONModel: Codable, Identifiable {
     var companyId: Int
     var copyrightId: Int
     var description: String?
-    var id: Int
+    var id: Int64
     var Info: Info?
     var isSub: Bool?
     var mark: Int

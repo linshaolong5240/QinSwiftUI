@@ -12,14 +12,14 @@ struct PlaylistModel: Codable {
     var id: Int64
     var name: String
     var subscribed: Bool
-    var trackIds: [Int64]?
+    var songsIds: [Int64]?
     var userId: Int64
     init(_ model: RecommendSongsModel) {
         self.coverImgUrl = nil
         self.id = 0
         self.name = "每日推荐"
         self.subscribed = false
-        self.trackIds = model.dailySongs.map{$0.id}
+        self.songsIds = model.dailySongs.map{$0.id}
         self.userId = 0
     }
 //    private enum CodingKeys: String, CodingKey {

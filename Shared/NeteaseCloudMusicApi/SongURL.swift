@@ -17,7 +17,7 @@ struct SongURL: Codable {
     var flag: Int
 //    var freeTrialInfo: Any?
     var gain: Int
-    var id: Int
+    var id: Int64
     var level: String?//standard, exhigh
     var md5: String?
     var payed: Int// 0 未购买 ， 3 已购买

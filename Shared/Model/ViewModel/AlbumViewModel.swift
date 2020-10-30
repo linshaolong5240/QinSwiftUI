@@ -14,7 +14,7 @@ class AlbumViewModel: ObservableObject, Identifiable, Equatable, Codable {
     
     var coverUrl: String = ""
     var description: String = ""
-    var id: Int = 0
+    var id: Int64 = 0
     @Published var isSub: Bool = false
     var name: String = ""
     var songs = [SongViewModel]()

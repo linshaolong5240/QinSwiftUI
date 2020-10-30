@@ -21,7 +21,9 @@ struct DescriptionView: View {
     init(viewModel: Artist) {
         self.configuration = DescriptionConfiguration(viewModel: viewModel)
     }
-    
+    init(viewModel: Playlist) {
+        self.configuration = DescriptionConfiguration(viewModel: viewModel)
+    }
     init(viewModel: PlaylistViewModel) {
         self.configuration = DescriptionConfiguration(viewModel: viewModel)
     }
@@ -55,11 +57,11 @@ struct DescriptionView: View {
 
 struct DescriptionConfiguration {
     var description: String
-    var id: Int
+    var id: Int64
     var name: String
     var picUrl: String
 
-    init(picUrl: String, name: String, description: String, id: Int) {
+    init(picUrl: String, name: String, description: String, id: Int64) {
         self.id = id
         self.name = name
         self.description = description
@@ -67,24 +69,29 @@ struct DescriptionConfiguration {
     }
 
     init(viewModel: Album) {
-        self.picUrl = viewModel.picUrl ?? ""
-        self.name = viewModel.name ?? ""
         self.description = viewModel.introduction ?? ""
-        self.id = Int(viewModel.id)
+        self.id = viewModel.id
+        self.name = viewModel.name ?? ""
+        self.picUrl = viewModel.picUrl ?? ""
     }
     
     init(viewModel: Artist) {
-        self.picUrl = viewModel.img1v1Url ?? ""
-        self.name = viewModel.name ?? ""
         self.description = ""//viewModel.description
-        self.id = Int(viewModel.id)
+        self.id = viewModel.id
+        self.name = viewModel.name ?? ""
+        self.picUrl = viewModel.img1v1Url ?? ""
     }
-    
-    init(viewModel: PlaylistViewModel) {
-        self.picUrl = viewModel.coverImgUrl
-        self.name = viewModel.name
+    init(viewModel: Playlist) {
         self.description = viewModel.description
         self.id = viewModel.id
+        self.name = viewModel.name ?? ""
+        self.picUrl = viewModel.coverImgUrl ?? ""
+    }
+    init(viewModel: PlaylistViewModel) {
+        self.description = viewModel.description
+        self.id = viewModel.id
+        self.name = viewModel.name
+        self.picUrl = viewModel.coverImgUrl
     }
 }
 
