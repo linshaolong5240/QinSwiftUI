@@ -12,7 +12,7 @@ import Combine
 import CoreData
 
 struct AppState {
-    var initRequesting: Bool = false
+    var initRequestingCount: Int = 0
     var album = Album()
     var artist = Artist()
     var comment = Comment()

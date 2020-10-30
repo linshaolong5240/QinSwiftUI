@@ -401,12 +401,25 @@ struct CommentMusicCommand: AppCommand {
 
 struct InitAcionCommand: AppCommand {
     func execute(in store: Store) {
+        store.appState.initRequestingCount += 1
         store.dispatch(.albumSublist())
+        
+        store.appState.initRequestingCount += 1
         store.dispatch(.artistSublist())
+        
+        store.appState.initRequestingCount += 1
         store.dispatch(.likelist())
+        
+        store.appState.initRequestingCount += 1
         store.dispatch(.playlistCategories)
+        
+        store.appState.initRequestingCount += 1
         store.dispatch(.recommendPlaylist)
+        
+        store.appState.initRequestingCount += 1
         store.dispatch(.recommendSongs)
+        
+        store.appState.initRequestingCount += 1
         store.dispatch(.userPlaylist())
     }
 }

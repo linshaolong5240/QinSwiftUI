@@ -43,7 +43,7 @@ struct HomeView: View {
                         }
                         .padding([.leading, .bottom, .trailing])
                         Divider()
-                        if !store.appState.initRequesting {
+                        if store.appState.initRequestingCount == 0 {
                             ScrollView {
                                 Spacer()
                                     .frame(height: 10)
