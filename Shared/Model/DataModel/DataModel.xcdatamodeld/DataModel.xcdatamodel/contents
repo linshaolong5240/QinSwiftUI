@@ -51,10 +51,12 @@
     <entity name="Playlist" representedClassName="Playlist" syncable="YES" codeGenerationType="class">
         <attribute name="coverImgUrl" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="introduction" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="songsIds" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
+        <attribute name="songsId" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
         <attribute name="subscribed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="userId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="playlist" inverseEntity="Song"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -80,6 +82,7 @@
             </userInfo>
         </relationship>
         <relationship name="ar" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" inverseName="songs" inverseEntity="Artist"/>
+        <relationship name="playlist" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" inverseName="songs" inverseEntity="Playlist"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -102,11 +105,11 @@
         <element name="AccountData" positionX="-931.87890625" positionY="-1111.08984375" width="128" height="58"/>
         <element name="Album" positionX="-1674.890625" positionY="-961.1328125" width="128" height="133"/>
         <element name="AlbumSub" positionX="-1270.00390625" positionY="-1128.484375" width="128" height="88"/>
-        <element name="Artist" positionX="-1677.390625" positionY="-781.31640625" width="128" height="118"/>
+        <element name="Artist" positionX="-1605.47265625" positionY="-816.4375" width="128" height="118"/>
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>
-        <element name="Playlist" positionX="-1667.65625" positionY="-630.6171875" width="128" height="133"/>
+        <element name="Playlist" positionX="-1654.83984375" positionY="-627.4921875" width="128" height="163"/>
         <element name="RecommendPlaylist" positionX="-1683.046875" positionY="-1134.73046875" width="128" height="88"/>
-        <element name="Song" positionX="-1896.49609375" positionY="-843.41015625" width="128" height="103"/>
+        <element name="Song" positionX="-1936.5078125" positionY="-853.33203125" width="128" height="118"/>
         <element name="UserPlaylist" positionX="-1465.15625" positionY="-1128.2421875" width="128" height="118"/>
     </elements>
 </model>

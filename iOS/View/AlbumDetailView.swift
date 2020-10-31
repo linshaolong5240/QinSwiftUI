@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AlbumDetailView: View {
+    @EnvironmentObject var store: Store
+
     let id: Int64
     
     var body: some View {
@@ -29,25 +31,26 @@ struct AlbumDetailView: View {
                         //                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
                     }
                     .padding(.horizontal)
-                    if let album = results.first {
-                        DescriptionView(viewModel: album)
-                        if let songsId = album.songsId {
-                            SongListView(songsIds: songsId)
-                        }else {
-                            Spacer()
+                    .onAppear {
+                        if results.first?.songs == nil {
+                            Store.shared.dispatch(.album(id: id))
+                        }
+                    }
+                    if !store.appState.album.albumRequesting {
+                        if let album = results.first {
+                            DescriptionView(viewModel: album)
+                            if let songsId = album.songsId {
+                                SongListView(songsId: songsId)
+                            }else {
+                                Spacer()
+                            }
                         }
                     }else {
                         Text("正在加载")
-                            .onAppear {
-                                if results.count == 0 {
-                                    Store.shared.dispatch(.album(id: id))
-                                }
-                            }
                         Spacer()
                     }
                 }
                 .navigationBarHidden(true)
-                
             }
         }
     }

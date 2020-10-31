@@ -15,10 +15,10 @@ struct SongListView: View {
     @State private var showPlayingNow: Bool = false
     @State private var showAlert: Bool = false
     
-    let songsIds: [Int64]
+    let songsId: [Int64]
     
     var body: some View {
-        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsIds)) { (results: FetchedResults<Song>) in
+        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
             if let songs = results {
                 VStack {
                     NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
@@ -41,12 +41,14 @@ struct SongListView: View {
                         Spacer()
                     }else {
                         ScrollView {
-                            ForEach(songs) { item in
-                                Button(action: {
-                                }, label: {
-                                    SongRowView(song: item)
-                                        .padding(.horizontal)
-                                })
+                            LazyVStack {
+                                ForEach(songs) { item in
+                                    Button(action: {
+                                    }, label: {
+                                        SongRowView(song: item)
+                                            .padding(.horizontal)
+                                    })
+                                }
                             }
                         }
                     }

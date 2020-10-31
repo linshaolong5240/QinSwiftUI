@@ -46,7 +46,7 @@ class Store: ObservableObject {
                 appCommand = AlbumCommand(id: id)
         case .albumDone(let result):
             switch result {
-            case .success(let ids):
+            case .success:
                 break
 //                appCommand = AlbumDoneCommand(ids: ids)
             case .failure(let error):
@@ -344,17 +344,21 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistDetail(let id):
-            if id == 0 {
-                appState.playlist.detailRequesting = true
-            }else {
-                appState.playlist.detailRequesting = true
-                appCommand = PlaylistDetailCommand(id: id)
-            }
+            appState.playlist.detailRequesting = true
+            appCommand = PlaylistDetailCommand(id: id)
         case .playlistDetailDone(let result):
+            switch result {
+            case .success(let playlistJSONModel):
+                appCommand = PlaylistDetailDoneCommand(playlistJSONModel: playlistJSONModel)
+            case .failure(let error):
+                appState.error = error
+            }
+        case .playlistDetailSongs(let playlistJSONModel):
+            appCommand = PlaylistDetailSongsCommand(playlistJSONModel: playlistJSONModel)
+        case .playlistDetailSongsDone(let result):
             switch result {
             case .success:
                 break
-//                appCommand = PlaylistDetailDoneCommand(playlist: playlist)
             case .failure(let error):
                 appState.error = error
             }

@@ -48,40 +48,45 @@ struct PlaylistDetailView: View {
     //                    }
                     }
                     .padding(.horizontal)
-                    .onAppear(perform: {
-                        if results.count == 0 {
+                    .onAppear {
+                        if results.first?.songs == nil {
                             Store.shared.dispatch(.playlistDetail(id: id))
                         }
-                    })
-                    if results.count == 0 {
-                        Text("正在加载...")
-                            .foregroundColor(.secondTextColor)
-                        Spacer()
+                    }
+                    if !store.appState.playlist.detailRequesting {
+                        if let playlist = results.first {
+                            DescriptionView(viewModel: playlist)
+                            if let songsId = playlist.songsId {
+                                SongListView(songsId: songsId)
+                            }else {
+                                Spacer()
+                            }
+                        }
+
+                        //                    HStack {
+                        //                        Text("歌曲列表(\(String(viewModel.count)))")
+                        //                            .fontWeight(.bold)
+                        //                            .foregroundColor(.secondTextColor)
+                        //                        Spacer()
+                        //                        if type == .created {
+                        //                            NEUEditButton(action: {
+                        //                                if isMoved {
+                        //                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
+                        //                                }
+                        //                            })
+                        //                        }
+                        //                    }
+                        //                    .padding(.horizontal)
+                    //                        if editModeBinding?.wrappedValue.isEditing ?? false {
+                    //                            PlaylistDetailEditSongsView(isMoved: $isMoved)
+                    //                        }else {
+                    //                        if let songsIds = playlist.songsIds {
+                    //                            SongListView(songsIds: songsIds)
+                    //                        }
+                    //                        }
                     }else {
-                        let playlist = results.first!
-                        DescriptionView(viewModel: playlist)
+                        Text("正在加载")
                         Spacer()
-    //                    HStack {
-    //                        Text("歌曲列表(\(String(viewModel.count)))")
-    //                            .fontWeight(.bold)
-    //                            .foregroundColor(.secondTextColor)
-    //                        Spacer()
-    //                        if type == .created {
-    //                            NEUEditButton(action: {
-    //                                if isMoved {
-    //                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
-    //                                }
-    //                            })
-    //                        }
-    //                    }
-    //                    .padding(.horizontal)
-//                        if editModeBinding?.wrappedValue.isEditing ?? false {
-//                            PlaylistDetailEditSongsView(isMoved: $isMoved)
-//                        }else {
-//                        if let songsIds = playlist.songsIds {
-//                            SongListView(songsIds: songsIds)
-//                        }
-//                        }
                     }
                 }
             }

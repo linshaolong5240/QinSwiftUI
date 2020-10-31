@@ -152,5 +152,5 @@ struct SearchPlaylist: Codable, Identifiable {
     var subscribed: Bool
     var track: Track
     var trackCount: Int
-    var userId: Int
+    var userId: Int64
 }

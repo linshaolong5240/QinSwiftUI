@@ -89,7 +89,7 @@ struct DescriptionConfiguration {
         self.picUrl = viewModel.img1v1Url ?? ""
     }
     init(viewModel: Playlist) {
-        self.description = viewModel.description
+        self.description = viewModel.introduction ?? ""
         self.id = viewModel.id
         self.name = viewModel.name ?? ""
         self.picUrl = viewModel.coverImgUrl ?? ""

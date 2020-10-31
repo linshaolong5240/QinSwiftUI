@@ -21,6 +21,9 @@ class DataManager {
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return container
     }()
+    public func Context() -> NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
     public func newBackgroundUniqueContext() -> NSManagedObjectContext {
         let context = persistentContainer.newBackgroundContext()
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy

@@ -20,7 +20,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
     @Published var subscribed: Bool = false
     var songs = [SongViewModel]()
     var songsId = [Int64]()
-    var userId: Int = 0
+    var userId: Int64 = 0
     init() {
         
     }

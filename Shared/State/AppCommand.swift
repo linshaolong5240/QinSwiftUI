@@ -28,7 +28,7 @@ struct AlbumCommand: AppCommand {
                     let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
                     let songsDict = data!["songs"] as! [[String: Any]]
                     let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                    let context = DataManager.shared.newBackgroundUniqueContext()
+                    let context = DataManager.shared.Context()
                     let album = Album(context: context)
                     let songsIds = songsJSONModel.map{$0.id}
                     print(songsIds)
@@ -747,20 +747,11 @@ struct PlaylistDetailCommand: AppCommand {
                 store.dispatch(.playlistDetailDone(result: .failure(error!)))
                 return
             }
+            print(data)
             if data!["code"] as! Int == 200 {
                 if let playlistDict = data?["playlist"] as? NeteaseCloudMusicApi.ResponseData {
-                    var playlistModel = playlistDict.toData!.toModel(PlaylistModel.self)!
-                    let trackIds = playlistDict["trackIds"] as! [[String: Any]]
-                    let songsIds = trackIds.map{$0["id"] as! Int64}
-                    playlistModel.songsIds = songsIds
-                    do {
-                        let data = try JSONEncoder().encode(playlistModel)
-                        let object = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [String: Any]
-                        DataManager.shared.batchInsert(entityName: "Playlist", objects: [object])
-                    }catch let error {
-                        print("\(#function) \(error)")
-                    }
-                    store.dispatch(.playlistDetailDone(result: .success(id)))
+                    let playlistJSONModel = playlistDict.toData!.toModel(PlaylistJSONModel.self)!
+                    store.dispatch(.playlistDetailDone(result: .success(playlistJSONModel)))
                 }
             }else {
                 store.dispatch(.playlistDetailDone(result: .failure(.playlistDetailError)))
@@ -770,11 +761,62 @@ struct PlaylistDetailCommand: AppCommand {
 }
 
 struct PlaylistDetailDoneCommand: AppCommand {
-    let id: Int64
+    let playlistJSONModel: PlaylistJSONModel
     
     func execute(in store: Store) {
+        store.dispatch(.playlistDetailSongs(playlistJSONModel: playlistJSONModel))
     }
 }
+
+struct PlaylistDetailSongsCommand: AppCommand {
+    let playlistJSONModel: PlaylistJSONModel
+
+    func execute(in store: Store) {
+        if let ids = playlistJSONModel.trackIds?.map({$0.id}) {
+            NeteaseCloudMusicApi.shared.songsDetail(ids: ids) { data, error in
+                guard error == nil else {
+                    store.dispatch(.playlistDetailSongsDone(result: .failure(error!)))
+                    return
+                }
+                if let songsDict = data?["songs"] as? [[String: Any]] {
+                    do {
+                        let songsDetailJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
+                        let songsId = songsDetailJSONModel.map{$0.id}
+                        let context = DataManager.shared.Context()
+                        let playlist = Playlist(context: context)
+                        playlist.coverImgUrl = playlistJSONModel.coverImgUrl
+                        playlist.id = playlistJSONModel.id
+                        playlist.introduction = playlistJSONModel.description
+                        playlist.name = playlistJSONModel.name
+                        playlist.songsId = songsId
+                        playlist.subscribed = playlistJSONModel.subscribed
+                        playlist.userId = playlistJSONModel.userId
+                        for songModel in songsDetailJSONModel {
+                            let song = Song(context: context)
+                            song.id = songModel.id
+                            song.name = songModel.name
+                            playlist.addToSongs(song)
+                        }
+                        try context.save()
+                        store.dispatch(.playlistDetailSongsDone(result: .success(songsId)))
+                    }catch let err {
+                        print("\(#function) \(err)")
+                    }
+
+                }else {
+                    store.dispatch(.playlistDetailSongsDone(result: .failure(.songsDetailError)))
+                }
+            }
+        }
+    }
+}
+
+//struct PlaylistDetailSongsDoneCommand: AppCommand {
+//    let playlistJSONModel: PlaylistJSONModel
+//
+//    func execute(in store: Store) {
+//    }
+//}
 
 struct PlaylistOrderUpdateCommand: AppCommand {
     let ids: [Int]
@@ -1043,42 +1085,14 @@ struct SongsDetailCommand: AppCommand {
     let ids: [Int64]
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.songsDetail(ids) { data, error in
+        NeteaseCloudMusicApi.shared.songsDetail(ids: ids) { data, error in
             guard error == nil else {
                 store.dispatch(.songsDetailDone(result: .failure(error!)))
                 return
             }
             if let songsDict = data?["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
                 let songs = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}.map(SongViewModel.init)
-                if songs.count > 0 {
-                    DataManager.shared.batchDelete(entityName: "Song")
-
-                    let context = DataManager.shared.newBackgroundUniqueContext()
-                    _ = songsDict.map{$0.toData!.toModel(SongModel.self)!}.map{$0.insetObject(context: context)}
-                    do {
-                        try context.save()
-                    }catch let error {
-                        print("\(#function) \(error)")
-                    }
-//                    DataManager.shared.batchInsert(entityName: "Song", objects: objects)
-//                    let objects = songsDict
-//                        .map{$0.toData!.toModel(SongModel.self)!}
-//                        .map{try! JSONEncoder().encode($0)}
-//                        .map{try! JSONSerialization.jsonObject(with: $0, options: .allowFragments) as! [String: Any]}
-//                    DataManager.shared.batchInsert(entityName: "Song", objects: objects)
-
-//                    let jsonObjects: [[String: Any]] = songsDict.map {
-//                        let dict: [String: Any] = [
-//                            "id": $0["id"]!,
-//                            "name": $0["name"]!,
-//                        ]
-//                        return dict
-//                    }
-//                    DataManager.shared.batchDelete(entityName: "Song")
-//                    DataManager.shared.batchInsert(entityName: "Song", objects: jsonObjects)
-//                    DataManager.shared.batchUpdateLike(ids: store.appState.playlist.likedIds)
-                    store.dispatch(.songsDetailDone(result: .success(songs)))
-                }
+                store.dispatch(.songsDetailDone(result: .success(songs)))
             }else {
                 store.dispatch(.songsDetailDone(result: .failure(.songsDetailError)))
             }
