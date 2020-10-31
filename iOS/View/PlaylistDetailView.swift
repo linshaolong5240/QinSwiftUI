@@ -60,6 +60,7 @@ struct PlaylistDetailView: View {
                     }else {
                         let playlist = results.first!
                         DescriptionView(viewModel: playlist)
+                        Spacer()
     //                    HStack {
     //                        Text("歌曲列表(\(String(viewModel.count)))")
     //                            .fontWeight(.bold)
@@ -77,9 +78,9 @@ struct PlaylistDetailView: View {
 //                        if editModeBinding?.wrappedValue.isEditing ?? false {
 //                            PlaylistDetailEditSongsView(isMoved: $isMoved)
 //                        }else {
-                        if let songsIds = playlist.songsIds {
-                            SongListView(songsIds: songsIds)
-                        }
+//                        if let songsIds = playlist.songsIds {
+//                            SongListView(songsIds: songsIds)
+//                        }
 //                        }
                     }
                 }

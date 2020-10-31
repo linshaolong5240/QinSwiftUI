@@ -66,7 +66,7 @@ struct AlbumJSONModel: Codable, Identifiable {
     var picUrl: String
     var publishTime: Int
     var size: Int
-    var songs: [SongDetail]
+//    var songs: [Any]
     var status: Int
     var subType: String?
     var tags: String

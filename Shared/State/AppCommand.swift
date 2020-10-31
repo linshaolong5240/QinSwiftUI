@@ -23,13 +23,31 @@ struct AlbumCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                let albumDict = data!["album"] as! NeteaseCloudMusicApi.ResponseData
-                var album = albumDict.toData!.toModel(AlbumJSONModel.self)!
-                let songDicts = data!["songs"] as! [NeteaseCloudMusicApi.ResponseData]
-                let songs = songDicts.map{$0.toData!.toModel(SongDetail.self)!}
-                album.songs = songs
-                let albumViewModel = AlbumViewModel(album)
-                store.dispatch(.albumDone(result: .success(albumViewModel)))
+                do {
+                    let albumDict = data!["album"] as! [String: Any]
+                    let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
+                    let songsDict = data!["songs"] as! [[String: Any]]
+                    let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
+                    let context = DataManager.shared.newBackgroundUniqueContext()
+                    let album = Album(context: context)
+                    let songsIds = songsJSONModel.map{$0.id}
+                    print(songsIds)
+                    album.id = albumJSONModel.id
+                    album.introduction = albumJSONModel.description
+                    album.name = albumJSONModel.name
+                    album.picUrl = albumJSONModel.picUrl
+                    album.songsId = songsIds
+                    for songModel in songsJSONModel {
+                        let song = Song(context: context)
+                        song.id = songModel.id
+                        song.name = songModel.name
+                        album.addToSongs(song)
+                    }
+                    try context.save()
+                    store.dispatch(.albumDone(result: .success(songsIds)))
+                }catch let err {
+                    print("\(#function) \(err)")
+                }
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -40,10 +58,9 @@ struct AlbumCommand: AppCommand {
 }
 
 struct AlbumDoneCommand: AppCommand {
-    let album: AlbumViewModel
+    let ids: [Int64]
     
     func execute(in store: Store) {
-        store.dispatch(.songsDetail(ids: album.songs.map{$0.id}))
     }
 }
 
@@ -119,7 +136,7 @@ struct ArtistCommand: AppCommand {
                 let artist = artistDict.toData!.toModel(ArtistJSONModel.self)!
                 let hotSongsDictArray = data!["hotSongs"] as! [NeteaseCloudMusicApi.ResponseData]
                 let hotSongs = hotSongsDictArray
-                                .map{$0.toData!.toModel(HotSong.self)!}
+                                .map{$0.toData!.toModel(SongJSONModel.self)!}
                                 .map{SongViewModel($0)}
                 let artistViewModel = ArtistViewModel(artist)
                 artistViewModel.hotSongs = hotSongs
@@ -1032,12 +1049,11 @@ struct SongsDetailCommand: AppCommand {
                 return
             }
             if let songsDict = data?["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
-                let songs = songsDict.map{$0.toData!.toModel(SongDetail.self)!}.map(SongViewModel.init)
+                let songs = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}.map(SongViewModel.init)
                 if songs.count > 0 {
                     DataManager.shared.batchDelete(entityName: "Song")
 
-                    let context = DataManager.shared.persistentContainer.newBackgroundContext()
-                    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy//合并插入
+                    let context = DataManager.shared.newBackgroundUniqueContext()
                     _ = songsDict.map{$0.toData!.toModel(SongModel.self)!}.map{$0.insetObject(context: context)}
                     do {
                         try context.save()

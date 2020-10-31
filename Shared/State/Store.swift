@@ -42,19 +42,17 @@ class Store: ObservableObject {
         
         switch action {
         case .album(let id):
-            if id != appState.album.albumViewModel.id {
                 appState.album.albumRequesting = true
                 appCommand = AlbumCommand(id: id)
-            }
         case .albumDone(let result):
             switch result {
-            case .success(let album):
-                appState.album.albumViewModel = album
-                appCommand = AlbumDoneCommand(album: album)
+            case .success(let ids):
+                break
+//                appCommand = AlbumDoneCommand(ids: ids)
             case .failure(let error):
                 appState.error = error
-                appState.album.albumRequesting = false
             }
+            appState.album.albumRequesting = false
         case .albumSub(let id, let sub):
             appCommand = AlbumSubCommand(id: id, sub: sub)
         case .albumSubDone(let result):

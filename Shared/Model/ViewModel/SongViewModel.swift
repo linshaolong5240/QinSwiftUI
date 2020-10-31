@@ -21,14 +21,14 @@ class SongViewModel: ObservableObject, Identifiable, Equatable, Codable {
     var url: String? = nil
     init() {
     }
-    init(_ song: HotSong) {
+    init(_ song: SongJSONModel) {
         self.albumPicURL = song.album.picUrl
         self.artists = song.artists.map(ArtistViewModel.init)
         self.durationTime = song.duration
         self.id = song.id
         self.name = song.name
     }
-    init(_ songDetail: SongDetail) {
+    init(_ songDetail: SongDetailJSONModel) {
         self.albumPicURL = songDetail.al.picUrl ?? ""
         self.artists = songDetail.ar.map(ArtistViewModel.init)
         self.durationTime = songDetail.dt / 1000

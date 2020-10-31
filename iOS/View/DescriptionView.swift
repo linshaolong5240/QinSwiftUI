@@ -42,9 +42,16 @@ struct DescriptionView: View {
                     .fontWeight(.bold)
                     .lineLimit(showMoreDescription ? nil : 1)
                     .foregroundColor(.mainTextColor)
-                Text(configuration.description)
-                    .foregroundColor(.secondTextColor)
-                    .lineLimit(showMoreDescription ? nil : 5)
+                if showMoreDescription {
+                    ScrollView {
+                        Text(configuration.description)
+                            .foregroundColor(.secondTextColor)
+                    }
+                }else {
+                    Text(configuration.description)
+                        .foregroundColor(.secondTextColor)
+                        .lineLimit(5)
+                }
             }
             .onTapGesture{
                 showMoreDescription.toggle()

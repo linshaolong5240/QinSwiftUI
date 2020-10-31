@@ -37,7 +37,7 @@ class ArtistViewModel: ObservableObject, Identifiable, Codable {
         self.id = artist.id
         self.name = artist.name
     }
-    init(_ artist: SongDetail.Artist) {
+    init(_ artist: SongDetailJSONModel.Artist) {
         self.id = artist.id
         self.name = artist.name ?? ""
     }

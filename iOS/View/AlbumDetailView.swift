@@ -8,42 +8,48 @@
 import SwiftUI
 
 struct AlbumDetailView: View {
-    @EnvironmentObject var store: Store
-    private var viewModel: AlbumViewModel {store.appState.album.albumViewModel}
-
     let id: Int64
     
     var body: some View {
-        ZStack {
-            NEUBackgroundView()
-            VStack {
-                HStack {
-                    NEUBackwardButton()
-                    Spacer()
-                    NEUNavigationBarTitleView("专辑详情")
-                    Spacer()
-//                    Button(action: {
-////                        viewModel.isSub.toggle()
-////                        Store.shared.dispatch(.albumSub(id: viewModel.id, sub: viewModel.isSub))
-//                    }, label: {
-//                        NEUSFView(systemName: "heart.fill")
-//                    })
-//                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
+        FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
+            ZStack {
+                NEUBackgroundView()
+                VStack {
+                    HStack {
+                        NEUBackwardButton()
+                        Spacer()
+                        NEUNavigationBarTitleView("专辑详情")
+                        Spacer()
+                        //                    Button(action: {
+                        ////                        viewModel.isSub.toggle()
+                        ////                        Store.shared.dispatch(.albumSub(id: viewModel.id, sub: viewModel.isSub))
+                        //                    }, label: {
+                        //                        NEUSFView(systemName: "heart.fill")
+                        //                    })
+                        //                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
+                    }
+                    .padding(.horizontal)
+                    if let album = results.first {
+                        DescriptionView(viewModel: album)
+                        if let songsId = album.songsId {
+                            SongListView(songsIds: songsId)
+                        }else {
+                            Spacer()
+                        }
+                    }else {
+                        Text("正在加载")
+                            .onAppear {
+                                if results.count == 0 {
+                                    Store.shared.dispatch(.album(id: id))
+                                }
+                            }
+                        Spacer()
+                    }
                 }
-                .padding(.horizontal)
-                .onAppear(perform: {
-                    Store.shared.dispatch(.album(id: id))
-                })
-                if store.appState.album.albumRequesting {
-                    Text("正在加载")
-                    Spacer()
-                }else {
-//                    DescriptionView(viewModel: viewModel)
-//                    SongListView(songs: [SongViewModel]())
-                }
+                .navigationBarHidden(true)
+                
             }
         }
-        .navigationBarHidden(true)
     }
 }
 

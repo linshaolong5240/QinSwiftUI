@@ -21,7 +21,11 @@ class DataManager {
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return container
     }()
-    
+    public func newBackgroundUniqueContext() -> NSManagedObjectContext {
+        let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        return context
+    }
     public func batchDelete(entityName: String, predicate: NSPredicate? = nil) {
         do {
             let context = persistentContainer.viewContext

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct SongDetail: Codable, Identifiable {
+struct SongDetailJSONModel: Codable, Identifiable {
     struct Album: Codable {
         var id: Int64
         var name: String?

@@ -1,5 +1,5 @@
 //
-//  HotSong.swift
+//  SongJSONModel.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/10/5.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HotSong: Codable, Identifiable {
+struct SongJSONModel: Codable, Identifiable {
     struct NoCopyrightRcmd: Codable {
         var songId: String?
         var type: Int

@@ -55,7 +55,7 @@ struct PlaylistJSONModel: Codable, Identifiable {
     var trackNumberUpdateTime: Int
     var trackUpdateTime: Int
     var trackIds: [TrackId]?
-    var tracks: [SongDetail]?//optional for user playlist
+    var tracks: [SongDetailJSONModel]?//optional for user playlist
 //    var updateFrequency: Any?
     var updateTime: Int
     var userId: Int
@@ -80,7 +80,7 @@ struct RecommendSongsJSONModel: Codable {
         var reason: String
         var songId: Int
     }
-    var dailySongs: [SongDetail]
+    var dailySongs: [SongDetailJSONModel]
 //    var orderSongs: [Any]
     var recommendReasons: [RecommendReasons]
 }

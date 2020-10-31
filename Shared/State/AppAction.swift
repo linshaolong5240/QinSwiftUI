@@ -10,7 +10,7 @@ import Foundation
 
 enum AppAction {
     case album(id: Int64)
-    case albumDone(result: Result<AlbumViewModel, AppError>)
+    case albumDone(result: Result<[Int64], AppError>)
     case albumSub(id: Int64, sub: Bool)
     case albumSubDone(result: Result<Bool, AppError>)
     case albumSublist(limit: Int = 100, offset: Int = 0)
