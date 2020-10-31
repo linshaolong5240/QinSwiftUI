@@ -42,7 +42,11 @@ struct SongListView: View {
                     }else {
                         ScrollView {
                             LazyVStack {
-                                ForEach(songs) { item in
+                                ForEach(songs.sorted(by: { (left, right) -> Bool in
+                                    let lIndex = songsId.firstIndex(of: left.id)!
+                                    let rIndex = songsId.firstIndex(of: right.id)!
+                                    return lIndex > rIndex ? false : true
+                                })) { item in
                                     Button(action: {
                                     }, label: {
                                         SongRowView(song: item)
