@@ -581,7 +581,6 @@ struct LoginRefreshCommand: AppCommand {
 
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.loginRefresh{ (data, error) in
-            print(data)
             guard error == nil else {
                 store.dispatch(.loginRefreshDone(result: .failure(error!)))
                 return
@@ -955,11 +954,6 @@ struct PlayRequestDoneCommand: AppCommand {
     func execute(in store: Store) {
         let index = store.appState.playing.index
         let songId = store.appState.playing.playinglist[index]
-        store.appState.playing.loadTime = 0
-        store.appState.playing.loadTimelabel = "00:00"
-        store.appState.playing.totalTime = 0
-        store.appState.playing.totalTimeLabel = "00:00"
-        store.appState.playing.loadPercent = 0
         Player.shared.playWithURL(url: url)
         store.dispatch(.lyric(id: songId))
     }
@@ -1198,9 +1192,10 @@ struct RePlayCommand: AppCommand {
 }
 
 struct SeeKCommand: AppCommand {
+    let time: Double
     
     func execute(in store: Store) {
-        Player.shared.seek(seconds: store.appState.playing.loadTime)
+        Player.shared.seek(seconds: time)
     }
 }
 

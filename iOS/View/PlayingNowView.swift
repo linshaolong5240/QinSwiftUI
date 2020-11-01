@@ -141,13 +141,13 @@ struct PlayinglistView: View {
     var body: some View {
         FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", playing.playinglist)) { (results: FetchedResults<Song>) in
             VStack {
-                HStack {
-                    Text("播放列表")
-                        .foregroundColor(.mainTextColor)
-                    Spacer()
-                }
-                .padding(.horizontal)
                 if let songs = results {
+                    HStack {
+                        Text("播放列表\(songs.count)首")
+                            .foregroundColor(.mainTextColor)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
                     ScrollView {
                         LazyVStack {
                             ForEach(songs.sorted(by: { (left, right) -> Bool in
@@ -181,7 +181,6 @@ struct PlayinglistView: View {
 }
 
 struct PlayingNowStatusView: View {
-    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
     
@@ -218,15 +217,14 @@ struct PlayingNowStatusView: View {
             .padding()
             Spacer()
             HStack {
-                Text(String(format: "%02d:%02d", Int(playing.loadTime/60),Int(playing.loadTime)%60))
+                Text(String(format: "%02d:%02d", Int(player.loadTime/60),Int(player.loadTime)%60))
                     .frame(width: 50, alignment: Alignment.leading)
-                Slider(value: playingBinding.loadTime, in: 0...(playing.totalTime > 0 ? playing.totalTime : 1.0), onEditingChanged: { (isEdit) in
-                    Store.shared.dispatch(.PlayerSeek(isSeeking: isEdit)
+                Slider(value: $player.loadTime, in: 0...(player.totalTime > 0 ? player.totalTime : 1.0), onEditingChanged: { (isEdit) in
+                    Store.shared.dispatch(.PlayerSeek(isSeeking: isEdit, time: player.loadTime)
                     )
                 })
-                .accentColor(Color(colorScheme == .light ? #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1) : #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1) ))
                 .modifier(NEUShadow())
-                Text(playing.totalTimeLabel)
+                Text(String(format: "%02d:%02d", Int(player.totalTime/60),Int(player.totalTime)%60))
                     .frame(width: 50, alignment: Alignment.trailing)
             }
             .font(.system(size: 13))

@@ -182,13 +182,6 @@ extension AppState {
 //                UserDefaults.standard.set(newValue, forKey: "playingSongUrl")
 //            }
 //        }
-        
-        var loadTime: Double = 0
-        var seekTime: Double = 0
-        var totalTime: Double = 0
-        var loadPercent: Double = 0
-        var loadTimelabel: String = "00:00"
-        var totalTimeLabel: String = "00:00"
     }
     
     struct Search {

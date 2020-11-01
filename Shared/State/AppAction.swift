@@ -57,7 +57,7 @@ enum AppAction {
     case PlayerPlayOrPause
     case PlayerPlayToendAction
     case playerReplay
-    case PlayerSeek(isSeeking: Bool)
+    case PlayerSeek(isSeeking: Bool, time: Double)
     case playlist(category: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
     case playlistDone(result: Result<(playlists: [PlaylistViewModel], category: String, total: Int , more: Bool), AppError>)
     case playlistCategories

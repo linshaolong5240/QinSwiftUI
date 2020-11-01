@@ -17,8 +17,12 @@ class Player: AVPlayer, ObservableObject {
     private var timeObserverToken: Any?
     private var cancellAble = AnyCancellable({})
     private var notificatioCancellAble = AnyCancellable({})
-
+    
+    //playingStatus
     @Published var isPlaying: Bool = false
+    @Published var loadTime: Double = 0.0
+    @Published var totalTime: Double = 0.0
+
     override init() {
         super.init()
         self.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.old, .new], context: nil)
@@ -83,32 +87,25 @@ class Player: AVPlayer, ObservableObject {
     }
     
     func addPeriodicTimeObserver() {
-//        // Invoke callback every half second
-//        let interval = CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-//        // Add time observer. Invoke closure on the main queue.
-//        timeObserverToken = self.addPeriodicTimeObserver(forInterval: interval, queue: .main) {
-//                /*[weak self]*/ time in
-//                // update player transport UI
-//                block()
-//        }
+        //        // Invoke callback every half second
+        //        let interval = CMTime(seconds: 1, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        //        // Add time observer. Invoke closure on the main queue.
+        //        timeObserverToken = self.addPeriodicTimeObserver(forInterval: interval, queue: .main) {
+        //                /*[weak self]*/ time in
+        //                // update player transport UI
+        //                block()
+        //        }
         cancellAble = Timer
-                        .publish(every: 1, on: .main, in: .default)
-                        .autoconnect()
-            .sink(receiveValue: {_ in
-                            let store = Store.shared
-                            if !store.appState.playing.isSeeking{
-                                let loadTime = Player.shared.currentTime().seconds
-                                if let totalTime = Player.shared.currentItem?.duration.seconds {
-                                    if totalTime > 0 {
-                                        store.appState.playing.totalTime = totalTime
-                                        store.appState.playing.totalTimeLabel = String(format: "%02d:%02d", Int(totalTime/60),Int(totalTime)%60)
-                                        store.appState.playing.loadPercent = loadTime / totalTime
-                                    }
-                                }
-                                store.appState.playing.loadTime = loadTime
-                                store.appState.playing.loadTimelabel = String(format: "%02d:%02d", Int(loadTime/60),Int(loadTime)%60)
-                            }
-                        })
+            .publish(every: 1, on: .main, in: .default)
+            .autoconnect()
+            .sink(receiveValue: { _ in
+                let store = Store.shared
+                let player = Player.shared
+                if !store.appState.playing.isSeeking {
+                    player.loadTime = player.currentTime().seconds
+                    player.totalTime = player.currentItem?.duration.seconds ?? 0.0
+                }
+            })
     }
     
     func removePeriodicTimeObserver() {

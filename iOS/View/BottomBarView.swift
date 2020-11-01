@@ -18,7 +18,7 @@ struct BottomBarView: View {
         ZStack {
             HStack {
                 ZStack {
-                    ProgressView(value: playing.loadPercent)
+                    ProgressView(value: player.loadTime / player.totalTime)
                         .progressViewStyle(NEURingProgressViewStyle())
                         .padding()
                         .frame(width: 90, height: 90)

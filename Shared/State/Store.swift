@@ -281,10 +281,10 @@ class Store: ObservableObject {
             appCommand = PlayToEndActionCommand()
         case .playerReplay:
             appCommand = RePlayCommand()
-        case .PlayerSeek(let isSeeking):
+        case .PlayerSeek(let isSeeking, let time):
             appState.playing.isSeeking = isSeeking
             if isSeeking == false {
-                appCommand = SeeKCommand()
+                appCommand = SeeKCommand(time: time)
             }
         case .playlist(let category, let hot, let limit, let offset):
             if category != appState.playlist.discoverPlaylist.subcategory || appState.playlist.discoverPlaylist.playlists.count == 0 {
