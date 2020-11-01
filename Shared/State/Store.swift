@@ -175,6 +175,9 @@ class Store: ObservableObject {
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
         case .initAction:
+            let index = appState.playing.index
+            let songId = appState.playing.playinglist[index]
+            appState.playing.song = DataManager.shared.getSong(id: songId)
             appCommand = InitAcionCommand()
         case .like(let song):
             appCommand = LikeCommand(song: song)

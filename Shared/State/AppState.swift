@@ -129,31 +129,14 @@ extension AppState {
         }
         var isSeeking: Bool = false
         
-        var playinglist = [Int64]()
-//        var playinglist: [SongViewModel] {
-//            get {
-//                let data = UserDefaults.standard.array(forKey: "playinglist") as? [Data]
-//                if let songs = data?.map({$0.toModel(SongViewModel.self) ?? SongViewModel()}) {
-//                    return songs
-//                }else {
-//                    return [SongViewModel()]
-//                }
-//            }
-//            set {
-//                let data: [Data] =  newValue.map{
-//                    var data = Data()
-//                    do {
-//                        data =  try JSONEncoder().encode($0)
-//        //                newValue.map{$0.}
-//                    }
-//                    catch let error{
-//                        print(error)
-//                    }
-//                    return data
-//                }
-//                UserDefaults.standard.set(data, forKey: "playinglist")
-//            }
-//        }
+        var playinglist: [Int64] {
+            get {
+                return UserDefaults.standard.array(forKey: "playinglist") as! [Int64]
+            }
+            set {
+                UserDefaults.standard.set(newValue, forKey: "playinglist")
+            }
+        }
 
         var playingError: AppError?
         var songDetail = SongViewModel()

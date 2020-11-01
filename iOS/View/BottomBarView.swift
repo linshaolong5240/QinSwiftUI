@@ -29,27 +29,29 @@ struct BottomBarView: View {
                     }.buttonStyle(NEUButtonToggleStyle(isHighlighted: true, shadow: false, shape: Circle()))
                 }
                 NavigationLink(destination: PlayingNowView()) {
-                    VStack(alignment: .leading) {
-                        Text(playing.song?.name ?? "")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .lineLimit(1)
-                            .foregroundColor(Color.mainTextColor)
-                        HStack {
-                            if let artists = playing.song?.ar {
-                                HStack {
-                                    ForEach(artists.map{SongDetailJSONModel.Artist(id: $0["id"] as! Int64, name: $0["name"] as? String)}) { item in
-                                        Text(item.name ?? "")
-                                            .fontWeight(.bold)
-                                            .lineLimit(1)
-                                            .foregroundColor(Color.secondTextColor)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(playing.song?.name ?? "")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .lineLimit(1)
+                                .foregroundColor(Color.mainTextColor)
+                            HStack {
+                                if let artists = playing.song?.ar {
+                                    HStack {
+                                        ForEach(artists.map{SongDetailJSONModel.Artist(id: $0["id"] as! Int64, name: $0["name"] as? String)}) { item in
+                                            Text(item.name ?? "")
+                                                .fontWeight(.bold)
+                                                .lineLimit(1)
+                                                .foregroundColor(Color.secondTextColor)
+                                        }
                                     }
                                 }
                             }
                         }
+                        Spacer()
                     }
                 }
-                Spacer()
                 Button(action: {
                     Store.shared.dispatch(.PlayerPlayForward)
                 }) {
@@ -62,7 +64,7 @@ struct BottomBarView: View {
         .background(
             NEUBackgroundView()
         )
-        .clipShape(Capsule())
+        .mask(Capsule())
     }
 }
 #if DEBUG
