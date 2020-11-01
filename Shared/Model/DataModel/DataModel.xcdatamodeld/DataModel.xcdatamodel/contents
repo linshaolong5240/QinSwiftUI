@@ -9,7 +9,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="picUrl" optional="YES" attributeType="String"/>
         <attribute name="songsId" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
-        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="al" inverseEntity="Song"/>
+        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="album" inverseEntity="Song"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -31,7 +31,7 @@
         <attribute name="img1v1Url" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="songsId" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
-        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="ar" inverseEntity="Song"/>
+        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="artists" inverseEntity="Song"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -74,14 +74,16 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
+        <attribute name="al" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String: Any]"/>
+        <attribute name="ar" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[[String:Any]]"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="al" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="songs" inverseEntity="Album">
+        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="songs" inverseEntity="Album">
             <userInfo>
                 <entry key="key" value="value"/>
             </userInfo>
         </relationship>
-        <relationship name="ar" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" inverseName="songs" inverseEntity="Artist"/>
+        <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" inverseName="songs" inverseEntity="Artist"/>
         <relationship name="playlist" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" inverseName="songs" inverseEntity="Playlist"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -105,11 +107,11 @@
         <element name="AccountData" positionX="-931.87890625" positionY="-1111.08984375" width="128" height="58"/>
         <element name="Album" positionX="-1674.890625" positionY="-961.1328125" width="128" height="133"/>
         <element name="AlbumSub" positionX="-1270.00390625" positionY="-1128.484375" width="128" height="88"/>
-        <element name="Artist" positionX="-1605.47265625" positionY="-816.4375" width="128" height="118"/>
+        <element name="Artist" positionX="-1679.97265625" positionY="-807.765625" width="128" height="118"/>
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>
         <element name="Playlist" positionX="-1654.83984375" positionY="-627.4921875" width="128" height="163"/>
         <element name="RecommendPlaylist" positionX="-1683.046875" positionY="-1134.73046875" width="128" height="88"/>
-        <element name="Song" positionX="-1936.5078125" positionY="-853.33203125" width="128" height="118"/>
+        <element name="Song" positionX="-1936.5078125" positionY="-853.33203125" width="128" height="148"/>
         <element name="UserPlaylist" positionX="-1465.15625" positionY="-1128.2421875" width="128" height="118"/>
     </elements>
 </model>

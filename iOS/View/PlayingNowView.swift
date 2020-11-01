@@ -25,7 +25,7 @@ struct PlayingNowView: View {
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
     @State private var showArtist: Bool = false
-    @State private var artist = ArtistViewModel()
+    @State private var artistId: Int64 = 0
 
     var body: some View {
         ZStack {
@@ -95,7 +95,7 @@ struct PlayingNowView: View {
                     }
                 }
                 ZStack {
-                    PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artist: $artist)
+                    PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     PlayinglistView(showList: $showMore, bottomType: $bottomType)
@@ -188,24 +188,26 @@ struct PlayingNowStatusView: View {
 
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
-    @Binding var artist: ArtistViewModel
+    @Binding var artistId: Int64
 
     var body: some View {
         VStack {
             VStack {
-                Text(playing.songDetail.name)
+                Text(playing.song.name ?? "")
                     .font(.title)
                     .fontWeight(.bold)
                     .lineLimit(1)
                     .foregroundColor(Color.mainTextColor)
-                HStack {
-                    ForEach(playing.songDetail.artists) { item in
-                        Button(action: {
-                            artist = item
-                            showArtist.toggle()
-                        }, label: {
-                            Text("\(item.name)")
-                        })
+                if let artists = playing.song.ar {
+                    HStack {
+                        ForEach(0..<artists.count) { index in
+                            Button(action: {
+//                                artist = item
+                                showArtist.toggle()
+                            }, label: {
+                                Text("\(artists[index]["name"] as! String)")
+                            })
+                        }
                     }
                 }
             }

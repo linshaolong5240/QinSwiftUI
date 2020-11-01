@@ -10,73 +10,74 @@ import SwiftUI
 import KingfisherSwiftUI
 
 struct PlaylistDetailView: View {
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
-    @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
-    
-    private var playlistDetail: AppState.Playlists { store.appState.playlist }
-    @State var isMoved: Bool = false
-    
+//    @EnvironmentObject var store: Store
+//    @EnvironmentObject var player: Player
+//    @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
+        
     let id: Int64
     
-    var body: some View {
-        FetchedResultsView(entity: Playlist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Playlist>) in
-            ZStack {
-                NEUBackgroundView()
-                VStack {
-                    HStack {
-                        NEUBackwardButton()
-                        Spacer()
-                        NEUNavigationBarTitleView("歌单详情")
-                        Spacer()
-    //                    if type == .created {
-    //                        Button(action: {
-    //                            Store.shared.dispatch(.playlistDelete(pid: viewModel.id))
-    //                        }, label: {
-    //                            NEUSFView(systemName: "trash.fill")
-    //                        })
-    //                        .buttonStyle(NEUButtonStyle(shape: Circle()))
-    //                    }
-    //                    if type == .subscribed && viewModel.id != 0 {
-    //                        Button(action: {
-    //                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed ? false : true))
-    //                        }, label: {
-    //                            NEUSFView(systemName: "heart.fill",
-    //                                      active: viewModel.subscribed)
-    //                        })
-    //                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.subscribed, shape: Circle()))
-    //                    }
-                    }
-                    .padding(.horizontal)
-                    .onAppear {
-                        if results.first?.songs == nil {
-                            Store.shared.dispatch(.playlistDetail(id: id))
-                        }
-                    }
-                    if !store.appState.playlist.detailRequesting {
-                        if let playlist = results.first {
-                            DescriptionView(viewModel: playlist)
-                            if let songsId = playlist.songsId {
-                                SongListView(songsId: songsId)
-                            }else {
-                                Spacer()
-                            }
-                        }
+    @State var isMoved: Bool = false
 
-                        //                    HStack {
-                        //                        Text("歌曲列表(\(String(viewModel.count)))")
-                        //                            .fontWeight(.bold)
-                        //                            .foregroundColor(.secondTextColor)
-                        //                        Spacer()
-                        //                        if type == .created {
-                        //                            NEUEditButton(action: {
-                        //                                if isMoved {
-                        //                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
-                        //                                }
-                        //                            })
-                        //                        }
-                        //                    }
-                        //                    .padding(.horizontal)
+    var body: some View {
+        ZStack {
+            NEUBackgroundView()
+            VStack {
+                HStack {
+                    NEUBackwardButton()
+                    Spacer()
+                    NEUNavigationBarTitleView("歌单详情")
+                    Spacer()
+                    //                    if type == .created {
+                    //                        Button(action: {
+                    //                            Store.shared.dispatch(.playlistDelete(pid: viewModel.id))
+                    //                        }, label: {
+                    //                            NEUSFView(systemName: "trash.fill")
+                    //                        })
+                    //                        .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    //                    }
+                    //                    if type == .subscribed && viewModel.id != 0 {
+                    //                        Button(action: {
+                    //                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed ? false : true))
+                    //                        }, label: {
+                    //                            NEUSFView(systemName: "heart.fill",
+                    //                                      active: viewModel.subscribed)
+                    //                        })
+                    //                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.subscribed, shape: Circle()))
+                    //                    }
+                }
+                .padding(.horizontal)
+                FetchedResultsView(entity: Playlist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Playlist>) in
+                    if let playlist = results.first {
+                        DescriptionView(viewModel: playlist)
+                        if let songsId = playlist.songsId {
+                            FetchedSongListView(songsId: songsId)
+                        }else {
+                            Spacer()
+                        }
+                    }else {
+                        Text("正在加载")
+                            .onAppear {
+                                if results.first?.songs == nil {
+                                    Store.shared.dispatch(.playlistDetail(id: id))
+                                }
+                            }
+                        Spacer()
+                    }
+                    
+                    //                    HStack {
+                    //                        Text("歌曲列表(\(String(viewModel.count)))")
+                    //                            .fontWeight(.bold)
+                    //                            .foregroundColor(.secondTextColor)
+                    //                        Spacer()
+                    //                        if type == .created {
+                    //                            NEUEditButton(action: {
+                    //                                if isMoved {
+                    //                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
+                    //                                }
+                    //                            })
+                    //                        }
+                    //                    }
+                    //                    .padding(.horizontal)
                     //                        if editModeBinding?.wrappedValue.isEditing ?? false {
                     //                            PlaylistDetailEditSongsView(isMoved: $isMoved)
                     //                        }else {
@@ -84,10 +85,6 @@ struct PlaylistDetailView: View {
                     //                            SongListView(songsIds: songsIds)
                     //                        }
                     //                        }
-                    }else {
-                        Text("正在加载")
-                        Spacer()
-                    }
                 }
             }
             .navigationBarHidden(true)

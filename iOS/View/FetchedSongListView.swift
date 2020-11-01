@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SongListView: View {
+struct FetchedSongListView: View {
     @EnvironmentObject private var store: Store
     private var playing: AppState.Playing { store.appState.playing }
 
@@ -25,9 +25,14 @@ struct SongListView: View {
                         EmptyView()
                     }
                     HStack {
-                        Text("\(String(songs.count)) 首")
-                            .fontWeight(.bold)
-                            .foregroundColor(.secondTextColor)
+                        Button(action: {
+                            Store.shared.dispatch(.setPlayinglist(playinglist: songsId, index: 0))
+                            Store.shared.dispatch(.playByIndex(index: 0))
+                        }) {
+                            Text("\(String(songs.count)) 首")
+                                .fontWeight(.bold)
+                                .foregroundColor(.secondTextColor)
+                        }
                         Spacer()
                         Text(showFavorite ? "喜欢" : "全部")
                             .fontWeight(.bold)
@@ -36,23 +41,18 @@ struct SongListView: View {
                             .fixedSize()
                     }
                     .padding(.horizontal)
-                    if store.appState.playlist.songsRequesting {
-                        Text("Loading")
-                        Spacer()
-                    }else {
-                        ScrollView {
-                            LazyVStack {
-                                ForEach(songs.sorted(by: { (left, right) -> Bool in
-                                    let lIndex = songsId.firstIndex(of: left.id)!
-                                    let rIndex = songsId.firstIndex(of: right.id)!
-                                    return lIndex > rIndex ? false : true
-                                })) { item in
-                                    Button(action: {
-                                    }, label: {
-                                        SongRowView(song: item)
-                                            .padding(.horizontal)
-                                    })
-                                }
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(songs.sorted(by: { (left, right) -> Bool in
+                                let lIndex = songsId.firstIndex(of: left.id)!
+                                let rIndex = songsId.firstIndex(of: right.id)!
+                                return lIndex > rIndex ? false : true
+                            })) { item in
+                                Button(action: {
+                                }, label: {
+                                    SongRowView(song: item)
+                                        .padding(.horizontal)
+                                })
                             }
                         }
                     }

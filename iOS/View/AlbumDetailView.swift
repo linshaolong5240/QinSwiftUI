@@ -8,51 +8,49 @@
 import SwiftUI
 
 struct AlbumDetailView: View {
-    @EnvironmentObject var store: Store
-
     let id: Int64
     
+    @State private var show: Bool = false
+
     var body: some View {
-        FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
-            ZStack {
-                NEUBackgroundView()
-                VStack {
-                    HStack {
-                        NEUBackwardButton()
-                        Spacer()
-                        NEUNavigationBarTitleView("专辑详情")
-                        Spacer()
-                        //                    Button(action: {
-                        ////                        viewModel.isSub.toggle()
-                        ////                        Store.shared.dispatch(.albumSub(id: viewModel.id, sub: viewModel.isSub))
-                        //                    }, label: {
-                        //                        NEUSFView(systemName: "heart.fill")
-                        //                    })
-                        //                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
-                    }
-                    .padding(.horizontal)
-                    .onAppear {
-                        if results.first?.songs == nil {
-                            Store.shared.dispatch(.album(id: id))
-                        }
-                    }
-                    if !store.appState.album.albumRequesting {
-                        if let album = results.first {
-                            DescriptionView(viewModel: album)
-                            if let songsId = album.songsId {
-                                SongListView(songsId: songsId)
-                            }else {
-                                Spacer()
-                            }
+        ZStack {
+            NEUBackgroundView()
+            VStack {
+                HStack {
+                    NEUBackwardButton()
+                    Spacer()
+                    NEUNavigationBarTitleView("专辑详情")
+                    Spacer()
+                    //                    Button(action: {
+                    ////                        viewModel.isSub.toggle()
+                    ////                        Store.shared.dispatch(.albumSub(id: viewModel.id, sub: viewModel.isSub))
+                    //                    }, label: {
+                    //                        NEUSFView(systemName: "heart.fill")
+                    //                    })
+                    //                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
+                }
+                .padding(.horizontal)
+                FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
+                    if let album = results.first {
+                        DescriptionView(viewModel: album)
+                        if let songsId = album.songsId {
+                            FetchedSongListView(songsId: songsId)
+                        }else {
+                            Spacer()
                         }
                     }else {
                         Text("正在加载")
+                            .onAppear {
+                                if results.first?.songs == nil {
+                                    Store.shared.dispatch(.album(id: id))
+                                }
+                            }
                         Spacer()
                     }
                 }
-                .navigationBarHidden(true)
             }
         }
+        .navigationBarHidden(true)
     }
 }
 

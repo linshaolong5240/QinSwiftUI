@@ -265,10 +265,10 @@ class Store: ObservableObject {
         case .playForward:
             appCommand = PlayForwardCommand()
         case .playByIndex(let index):
-            let song = appState.playing.playinglist[index]
             appState.playing.index = index
-            appState.playing.songDetail = song
-            appCommand = PlayRequestCommand(id: song.id)
+            let id = appState.playing.playinglist[index]
+            appState.playing.song = DataManager.shared.getSong(id: id) ?? Song()
+            appCommand = PlayRequestCommand(id: id)
         case .playMode:
             appState.settings.playMode = appState.settings.playMode.next()
         case .playRequest(let id):

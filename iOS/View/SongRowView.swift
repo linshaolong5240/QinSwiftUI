@@ -30,7 +30,7 @@ struct SongRowView: View {
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
                 HStack {
-                    ForEach(Array(song.ar as! Set<Artist>)) { item in
+                    ForEach(Array(song.artists as! Set<Artist>)) { item in
                         Text(item.name ?? "")
                             .foregroundColor(Color.secondTextColor)
                             .lineLimit(1)

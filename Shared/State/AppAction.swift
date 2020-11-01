@@ -73,7 +73,7 @@ enum AppAction {
     case searchClean
     case searchSongDone(result: Result<[SearchSongDetail], AppError>)
     case searchPlaylistDone(result: Result<[PlaylistViewModel], AppError>)
-    case setPlayinglist(playinglist: [SongViewModel], index: Int)
+    case setPlayinglist(playinglist: [Int64], index: Int)
     case songsDetail(ids: [Int64])
     case songsDetailDone(result: Result<[SongViewModel], AppError>)
     case songsOrderUpdate(pid: Int64, ids: [Int64])

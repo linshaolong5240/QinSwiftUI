@@ -129,7 +129,7 @@ extension AppState {
         }
         var isSeeking: Bool = false
         
-        var playinglist = [SongViewModel]()
+        var playinglist = [Int64]()
 //        var playinglist: [SongViewModel] {
 //            get {
 //                let data = UserDefaults.standard.array(forKey: "playinglist") as? [Data]
@@ -157,6 +157,8 @@ extension AppState {
 
         var playingError: AppError?
         var songDetail = SongViewModel()
+        var song = Song()
+        var songs = [Song]()
 //        var songDetail: SongViewModel {
 //            get {
 //                return UserDefaults.standard.data(forKey: "playingSongDetail")?.toModel(SongViewModel.self) ?? SongViewModel()

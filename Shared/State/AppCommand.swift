@@ -39,6 +39,12 @@ struct AlbumCommand: AppCommand {
                     album.songsId = songsIds
                     for songModel in songsJSONModel {
                         let song = Song(context: context)
+                        song.al = ["id": songModel.al.id, "name": songModel.al.name ?? ""] as [String: Any]
+                        var ar = [[String: Any]]()
+                        for a in songModel.ar {
+                            ar.append(["id": a.id, "name": a.name ?? ""])
+                        }
+                        song.ar = ar
                         song.id = songModel.id
                         song.name = songModel.name
                         album.addToSongs(song)
@@ -747,7 +753,6 @@ struct PlaylistDetailCommand: AppCommand {
                 store.dispatch(.playlistDetailDone(result: .failure(error!)))
                 return
             }
-            print(data)
             if data!["code"] as! Int == 200 {
                 if let playlistDict = data?["playlist"] as? NeteaseCloudMusicApi.ResponseData {
                     let playlistJSONModel = playlistDict.toData!.toModel(PlaylistJSONModel.self)!
@@ -793,6 +798,12 @@ struct PlaylistDetailSongsCommand: AppCommand {
                         playlist.userId = playlistJSONModel.userId
                         for songModel in songsDetailJSONModel {
                             let song = Song(context: context)
+                            song.al = ["id": songModel.al.id, "name": songModel.al.name ?? ""] as [String: Any]
+                            var ar = [[String: Any]]()
+                            for a in songModel.ar {
+                                ar.append(["id": a.id, "name": a.name ?? ""])
+                            }
+                            song.ar = ar
                             song.id = songModel.id
                             song.name = songModel.name
                             playlist.addToSongs(song)
@@ -920,7 +931,7 @@ struct PlayRequestDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         let index = store.appState.playing.index
-        let songId = store.appState.playing.playinglist[index].id
+        let songId = store.appState.playing.playinglist[index]
         store.appState.playing.loadTime = 0
         store.appState.playing.loadTimelabel = "00:00"
         store.appState.playing.totalTime = 0
