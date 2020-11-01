@@ -138,15 +138,37 @@ struct ArtistCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                let artistDict = data!["artist"] as! NeteaseCloudMusicApi.ResponseData
-                let artist = artistDict.toData!.toModel(ArtistJSONModel.self)!
-                let hotSongsDictArray = data!["hotSongs"] as! [NeteaseCloudMusicApi.ResponseData]
-                let hotSongs = hotSongsDictArray
-                                .map{$0.toData!.toModel(SongJSONModel.self)!}
-                                .map{SongViewModel($0)}
-                let artistViewModel = ArtistViewModel(artist)
-                artistViewModel.hotSongs = hotSongs
-                store.dispatch(.artistDone(result: .success(artistViewModel)))
+                do {
+                    let artistDict = data!["artist"] as! [String: Any]
+                    let artistJSONModel = artistDict.toData!.toModel(ArtistJSONModel.self)!
+                    
+                    let hotSongsDictArray = data!["hotSongs"] as! [[String: Any]]
+                    let songsJSONModel = hotSongsDictArray.map{$0.toData!.toModel(SongJSONModel.self)!}
+                    
+                    let context = DataManager.shared.Context()
+                    let artist = Artist(context: context)
+                    let songsIds = songsJSONModel.map{$0.id}
+                    artist.id = artistJSONModel.id
+                    artist.name = artistJSONModel.name
+                    artist.img1v1Url = artistJSONModel.img1v1Url
+                    artist.songsId = songsIds
+                    for songModel in songsJSONModel {
+                        let song = Song(context: context)
+                        song.al = songModel.album.toDictionary()
+                        var ar = [[String: Any]]()
+                        for a in songModel.artists {
+                            ar.append((a.toDictionary()))
+                        }
+                        song.ar = ar
+                        song.id = songModel.id
+                        song.name = songModel.name
+                        artist.addToSongs(song)
+                    }
+                    try context.save()
+                    store.dispatch(.artistDone(result: .success(artistJSONModel)))
+                }catch let err {
+                    print("\(#function) \(err)")
+                }
             }else {
                 if let code = data?["code"] as? Int ?? 0 {
                     if let message = data?["message"] as? String ?? "" {
@@ -159,14 +181,14 @@ struct ArtistCommand: AppCommand {
 }
 
 struct ArtistDoneCommand: AppCommand {
-    let artist: ArtistViewModel
+    let artist: ArtistJSONModel
     
     func execute(in store: Store) {
-        store.dispatch(.songsDetail(ids: artist.hotSongs.map{$0.id}))
-        let id = artist.id
-        store.dispatch(.artistIntroduction(id: id))
-        store.dispatch(.artistAlbum(id: id))
-        store.dispatch(.artistMV(id: id))
+        
+//        let id = artist.id
+//        store.dispatch(.artistIntroduction(id: id))
+//        store.dispatch(.artistAlbum(id: id))
+//        store.dispatch(.artistMV(id: id))
     }
 }
 
@@ -559,6 +581,7 @@ struct LoginRefreshCommand: AppCommand {
 
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.loginRefresh{ (data, error) in
+            print(data)
             guard error == nil else {
                 store.dispatch(.loginRefreshDone(result: .failure(error!)))
                 return
@@ -906,21 +929,21 @@ struct PlaylistTracksDoneCommand: AppCommand {
     }
 }
 
-struct PlayRequestCommand: AppCommand {
+struct PlayerPlayRequestCommand: AppCommand {
     let id: Int64
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.songsURL([id]) { data, error in
             guard error == nil else {
-                store.dispatch(.playRequestDone(result: .failure(error!)))
+                store.dispatch(.PlayerPlayRequestDone(result: .failure(error!)))
                 return
             }
             if let songsURLDict = data?["data"] as? [NeteaseCloudMusicApi.ResponseData] {
                 if songsURLDict.count > 0 {
-                    store.dispatch(.playRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURL.self)!)))
+                    store.dispatch(.PlayerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURL.self)!)))
                 }
             }else {
-                store.dispatch(.playRequestDone(result: .failure(.songsURLError)))
+                store.dispatch(.PlayerPlayRequestDone(result: .failure(.songsURLError)))
             }
         }
     }
@@ -954,9 +977,9 @@ struct PlayBackwardCommand: AppCommand {
             }else {
                 index = (index - 1) % count
             }
-            store.dispatch(.playByIndex(index: index))
+            store.dispatch(.PlayerPlayByIndex(index: index))
         }else if count == 1 {
-            store.dispatch(.replay)
+            store.dispatch(.playerReplay)
         }else {
             return
         }
@@ -973,9 +996,9 @@ struct PlayForwardCommand: AppCommand {
         if count > 1 {
             var index = store.appState.playing.index
             index = (index + 1) % count
-            store.dispatch(.playByIndex(index: index))
+            store.dispatch(.PlayerPlayByIndex(index: index))
         }else if count == 1 {
-            store.dispatch(.replay)
+            store.dispatch(.playerReplay)
         }else {
             return
         }
@@ -987,9 +1010,9 @@ struct PlayToEndActionCommand: AppCommand {
     func execute(in store: Store) {
         switch store.appState.settings.playMode {
         case .playlist:
-            store.dispatch(.playForward)
+            store.dispatch(.PlayerPlayForward)
         case .relplay:
-            store.dispatch(.replay)
+            store.dispatch(.playerReplay)
             break
         }
     }
@@ -1185,13 +1208,13 @@ struct TooglePlayCommand: AppCommand {
 
     func execute(in store: Store) {
         guard store.appState.playing.songUrl != nil else {
-            store.dispatch(.playByIndex(index: store.appState.playing.index))
+            store.dispatch(.PlayerPlayByIndex(index: store.appState.playing.index))
             return
         }
         if Player.shared.isPlaying {
-            store.dispatch(.pause)
+            store.dispatch(.PlayerPause)
         }else {
-            store.dispatch(.play)
+            store.dispatch(.PlayerPlay)
         }
     }
 }

@@ -16,11 +16,7 @@ struct ArtistDetailView: View {
     @State private var selection: Selection = .hotSong
     @State private var showDesc: Bool = false
     
-    private let id: Int64
-    
-    init(id: Int64) {
-        self.id = id
-    }
+    let id: Int64
     
     var body: some View {
         ZStack {
@@ -41,21 +37,34 @@ struct ArtistDetailView: View {
 //                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.followed, shape: Circle()))
                 }
                 .padding(.horizontal)
-                .onAppear {
-                    Store.shared.dispatch(.artist(id: id))
+                FetchedResultsView(entity: Artist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Artist>) in
+                    if let artist = results.first {
+                        DescriptionView(viewModel: artist)
+                        if let songsId = artist.songsId {
+                            FetchedSongListView(songsId: songsId)
+                        }else {
+                            Spacer()
+                        }
+                    }else {
+                        Text("正在加载")
+                            .onAppear {
+                                Store.shared.dispatch(.artist(id: id))
+                            }
+                        Spacer()
+                    }
                 }
-                if store.appState.artist.artistRequesting == true {
-                    Text("正在加载")
-                    Spacer()
-                }else {
-//                    DescriptionView(viewModel: viewModel)
-                    Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
-                        Text("热门歌曲").tag(Selection.hotSong)
-                        Text("专辑").tag(Selection.album)
-                        Text("MV").tag(Selection.mv)
-                    }/*@END_MENU_TOKEN@*/
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding()
+//                if store.appState.artist.artistRequesting == true {
+//                    Text("正在加载")
+//                    Spacer()
+//                }else {
+////                    DescriptionView(viewModel: viewModel)
+//                    Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
+//                        Text("热门歌曲").tag(Selection.hotSong)
+//                        Text("专辑").tag(Selection.album)
+//                        Text("MV").tag(Selection.mv)
+//                    }/*@END_MENU_TOKEN@*/
+//                    .pickerStyle(SegmentedPickerStyle())
+//                    .padding()
 //                    SongListView(songs: [SongViewModel]())
 
 //                    switch selection {
@@ -66,7 +75,7 @@ struct ArtistDetailView: View {
 //                    case .mv:
 //                        ArtistMVView(mvs: viewModel.mvs)
 //                    }
-                }
+//                }
             }
         }
         .navigationBarHidden(true)

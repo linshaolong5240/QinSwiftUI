@@ -13,15 +13,6 @@ class Store: ObservableObject {
     static let shared = Store()
     
     @Published var appState = AppState()
-    
-    init() {
-        #if os(macOS)
-        dispatch(.initAction)
-        #else
-        dispatch(.loginRefresh)
-        #endif
-    }
-    
     func dispatch(_ action: AppAction) {
         #if DEBUG
         print("[ACTION]: \(action)")
@@ -78,19 +69,16 @@ class Store: ObservableObject {
                 appState.initRequestingCount -= 1
             }
         case .artist(let id):
-            if id != appState.artist.detail.id {
                 appState.artist.artistRequesting = true
                 appCommand = ArtistCommand(id: id)
-            }
         case .artistDone(let result):
             switch result {
             case .success(let artist):
-                appState.artist.detail = artist
                 appCommand = ArtistDoneCommand(artist: artist)
             case .failure(let error):
                 appState.artist.error = error
-                appState.artist.artistRequesting = false
             }
+            appState.artist.artistRequesting = false
         case .artistAlbum(let id, let limit, let offset):
             appState.artist.artistAlbumRequesting = true
             appCommand = ArtistAlbumCommand(id: id, limit: limit, offset: offset)
@@ -222,7 +210,7 @@ class Store: ObservableObject {
             case .success(let lyric):
                 if lyric != nil {
                     appState.lyric.lyric = LyricViewModel(lyric: lyric!)
-                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
+//                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
                 }else {
                     appState.lyric.lyric = nil
                 }
@@ -254,26 +242,26 @@ class Store: ObservableObject {
         case .logout:
             appState.settings.loginUser = nil
             appCommand = LogoutCommand()
-        case .pause:
+        case .PlayerPause:
             Player.shared.pause()
             appState.lyric.lyric?.stopTimer()
-        case .play:
+        case .PlayerPlay:
             Player.shared.play()
             appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
-        case .playBackward:
+        case .PlayerPlayBackward:
             appCommand = PlayBackwardCommand()
-        case .playForward:
-            appCommand = PlayForwardCommand()
-        case .playByIndex(let index):
+        case .PlayerPlayByIndex(let index):
             appState.playing.index = index
             let id = appState.playing.playinglist[index]
-            appState.playing.song = DataManager.shared.getSong(id: id) ?? Song()
-            appCommand = PlayRequestCommand(id: id)
-        case .playMode:
+            appState.playing.song = DataManager.shared.getSong(id: id)
+            appCommand = PlayerPlayRequestCommand(id: id)
+        case .PlayerPlayForward:
+            appCommand = PlayForwardCommand()
+        case .PlayerPlayMode:
             appState.settings.playMode = appState.settings.playMode.next()
-        case .playRequest(let id):
-            appCommand = PlayRequestCommand(id: id)
-        case .playRequestDone(let result):
+        case .PlayerPlayRequest(let id):
+            appCommand = PlayerPlayRequestCommand(id: id)
+        case .PlayerPlayRequestDone(let result):
             switch result {
             case .success(let songURL):
                 appState.playing.songUrl = songURL.url
@@ -287,10 +275,17 @@ class Store: ObservableObject {
                 appState.error = error
                 break
             }
-        case .playToendAction:
+        case .PlayerPlayOrPause:
+            appCommand = TooglePlayCommand()
+        case .PlayerPlayToendAction:
             appCommand = PlayToEndActionCommand()
-        case .replay:
+        case .playerReplay:
             appCommand = RePlayCommand()
+        case .PlayerSeek(let isSeeking):
+            appState.playing.isSeeking = isSeeking
+            if isSeeking == false {
+                appCommand = SeeKCommand()
+            }
         case .playlist(let category, let hot, let limit, let offset):
             if category != appState.playlist.discoverPlaylist.subcategory || appState.playlist.discoverPlaylist.playlists.count == 0 {
                 appState.playlist.discoverPlaylist.playlistRequesting = true
@@ -398,8 +393,6 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .playOrPause:
-            appCommand = TooglePlayCommand()
         case .recommendPlaylist:
             appState.playlist.recommendPlaylistRequesting = true
             appCommand = RecommendPlaylistCommand()
@@ -518,12 +511,6 @@ class Store: ObservableObject {
             appState.album.albumRequesting = false
             appState.artist.artistRequesting = false
             appState.search.searchRequesting = false
-        case .seek(let isSeeking):
-            appState.playing.isSeeking = isSeeking
-            if isSeeking == false {
-                appCommand = SeeKCommand()
-            }
-            break
         case .setPlayinglist(let playlist, let index):
             appState.playing.playinglist = playlist
             appState.playing.index = index

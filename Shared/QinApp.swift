@@ -16,6 +16,9 @@ struct QinApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    store.dispatch(.loginRefresh)
+                }
                 .environmentObject(store)
                 .environmentObject(player)
                 .environment(\.managedObjectContext, context)

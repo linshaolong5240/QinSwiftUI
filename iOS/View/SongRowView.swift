@@ -29,37 +29,39 @@ struct SongRowView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
-                HStack {
-                    ForEach(Array(song.artists as! Set<Artist>)) { item in
-                        Text(item.name ?? "")
-                            .foregroundColor(Color.secondTextColor)
-                            .lineLimit(1)
+                if let artists = song.ar {
+                    HStack {
+                        ForEach(artists.map{SongDetailJSONModel.Artist(id: $0["id"] as! Int64, name: $0["name"] as? String)}) { item in
+                            Text(item.name ?? "")
+                                .foregroundColor(Color.secondTextColor)
+                                .lineLimit(1)
+                        }
                     }
                 }
             }
             Spacer()
-//            Button(action: {
-//                Store.shared.dispatch(.like(song: viewModel))
-//            }, label: {
-//                Image(systemName: viewModel.liked ? "heart.fill" : "heart")
-//                    .foregroundColor(Color.mainTextColor)
-//                    .frame(width: 30, height: 30, alignment: .center)
-////                NEUSFView(systemName: viewModel.liked ? "heart.fill" : "heart", size: .medium)
-//            })
+            //            Button(action: {
+            //                Store.shared.dispatch(.like(song: viewModel))
+            //            }, label: {
+            //                Image(systemName: viewModel.liked ? "heart.fill" : "heart")
+            //                    .foregroundColor(Color.mainTextColor)
+            //                    .frame(width: 30, height: 30, alignment: .center)
+            ////                NEUSFView(systemName: viewModel.liked ? "heart.fill" : "heart", size: .medium)
+            //            })
             Button(action: {
                 action()
             }) {
-                NEUSFView(systemName: player.isPlaying && song.id == playing.songDetail.id ? "pause.fill" : "play.fill",
+                NEUSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",
                           size: .small,
-                          active: song.id == playing.songDetail.id && player.isPlaying ?  true : false,
-                          activeColor: song.id == playing.songDetail.id ? Color.orange : Color.mainTextColor,
-                          inactiveColor: song.id == playing.songDetail.id ? Color.orange : Color.mainTextColor)
+                          active: song.id == playing.song?.id && player.isPlaying ?  true : false,
+                          activeColor: song.id == playing.song?.id ? Color.orange : Color.mainTextColor,
+                          inactiveColor: song.id == playing.song?.id ? Color.orange : Color.mainTextColor)
             }
-            .buttonStyle((NEUBorderButtonToggleStyle(isHighlighted: song.id == playing.songDetail.id && player.isPlaying ?  true : false, shadow: true, shape: Circle())))
+            .buttonStyle((NEUBorderButtonToggleStyle(isHighlighted: song.id == playing.song?.id && player.isPlaying ?  true : false, shadow: true, shape: Circle())))
         }
         .padding(10)
         .background(
-            NEUListRowBackgroundView(isHighlighted: song.id == playing.songDetail.id)
+            NEUListRowBackgroundView(isHighlighted: song.id == playing.song?.id)
         )
     }
 }

@@ -109,9 +109,9 @@ struct PlayingNowView: View {
 //                        .transition(.move(edge: .bottom))
                 }
             }
-//            NavigationLink(destination: ArtistDetailView(artist), isActive: $showArtist) {
-//                EmptyView()
-//            }
+            NavigationLink(destination: ArtistDetailView(id: artistId), isActive: $showArtist) {
+                EmptyView()
+            }
         }
         .navigationBarHidden(true)
         .alert(item: $store.appState.error) { error in
@@ -126,6 +126,7 @@ struct PlayingView_Previews: PreviewProvider {
         PlayingNowView()
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
+            .environment(\.managedObjectContext, DataManager.shared.Context())
             .environment(\.colorScheme, .dark)
     }
 }
@@ -138,40 +139,42 @@ struct PlayinglistView: View {
     @Binding var bottomType: PlayingNowBottomType
 
     var body: some View {
-        VStack {
-            HStack {
-                Text("播放列表")
-                    .font(.title)
-                    .foregroundColor(.mainTextColor)
-                Spacer()
-            }
-            .padding(.horizontal)
-            ScrollView {
-                Spacer()
-                    .frame(height: 10)
-//                LazyVStack {
-//                    ForEach(0 ..< playing.playinglist.count, id: \.self) { index in
-//                        SongRowView(viewModel: playing.playinglist[index],index: index, action: {
-//                            if self.playing.index != index {
-//                                Store.shared.dispatch(.playByIndex(index: index))
-//                            }else {
-//                                Store.shared.dispatch(.playOrPause)
-//                            }
-//                        })
-//                        .contentShape(Rectangle())
-//                        .onTapGesture {
-//                            if playing.index != index {
-//                                Store.shared.dispatch(.playByIndex(index: index))
-//                            }else {
-//                                withAnimation(.default){
-//                                    showList = false
-//                                    bottomType = .playingStatus
-//                                }
-//                            }
-//                        }
-//                        .padding(.horizontal)
-//                    }
-//                }
+        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", playing.playinglist)) { (results: FetchedResults<Song>) in
+            VStack {
+                HStack {
+                    Text("播放列表")
+                        .foregroundColor(.mainTextColor)
+                    Spacer()
+                }
+                .padding(.horizontal)
+                if let songs = results {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(songs.sorted(by: { (left, right) -> Bool in
+                                let lIndex = playing.playinglist.firstIndex(of: left.id)!
+                                let rIndex = playing.playinglist.firstIndex(of: right.id)!
+                                return lIndex > rIndex ? false : true
+                            })) { item in
+                                Button(action: {
+                                    if item.id == playing.song?.id {
+                                        withAnimation(.default) {
+                                            showList.toggle()
+                                            bottomType = .playingStatus
+                                        }
+                                    }
+                                }) {
+                                    SongRowView(song: item, action: {
+                                        if item.id == playing.song?.id {
+                                            store.dispatch(.PlayerPlayOrPause)
+                                        }
+                                    })
+                                    .contentShape(Rectangle())
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -184,7 +187,6 @@ struct PlayingNowStatusView: View {
     
     private var playing: AppState.Playing { store.appState.playing }
     private var playingBinding: Binding<AppState.Playing> { $store.appState.playing }
-    private var lyric: AppState.Lyric { store.appState.lyric }
 
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
@@ -193,19 +195,21 @@ struct PlayingNowStatusView: View {
     var body: some View {
         VStack {
             VStack {
-                Text(playing.song.name ?? "")
+                Text(playing.song?.name ?? "")
                     .font(.title)
                     .fontWeight(.bold)
                     .lineLimit(1)
                     .foregroundColor(Color.mainTextColor)
-                if let artists = playing.song.ar {
+                if let artists = playing.song?.ar {
                     HStack {
-                        ForEach(0..<artists.count) { index in
+                        ForEach(artists.map{SongDetailJSONModel.Artist(id: $0["id"] as! Int64, name: $0["name"] as? String)}) { item in
                             Button(action: {
-//                                artist = item
-                                showArtist.toggle()
+                                if item.id != 0 {
+                                    artistId = item.id
+                                    showArtist.toggle()
+                                }
                             }, label: {
-                                Text("\(artists[index]["name"] as! String)")
+                                Text(item.name ?? "")
                             })
                         }
                     }
@@ -213,21 +217,11 @@ struct PlayingNowStatusView: View {
             }
             .padding()
             Spacer()
-            if lyric.lyric != nil {
-                LyricView(lyric.lyric!)
-                    .padding(.horizontal)
-                    .onTapGesture(perform: {
-                        withAnimation(.default) {
-                            showMore.toggle()
-                        }
-                    })
-            }
-            Spacer()
             HStack {
                 Text(String(format: "%02d:%02d", Int(playing.loadTime/60),Int(playing.loadTime)%60))
                     .frame(width: 50, alignment: Alignment.leading)
                 Slider(value: playingBinding.loadTime, in: 0...(playing.totalTime > 0 ? playing.totalTime : 1.0), onEditingChanged: { (isEdit) in
-                    Store.shared.dispatch(.seek(isSeeking: isEdit)
+                    Store.shared.dispatch(.PlayerSeek(isSeeking: isEdit)
                     )
                 })
                 .accentColor(Color(colorScheme == .light ? #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1) : #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1) ))
@@ -239,7 +233,7 @@ struct PlayingNowStatusView: View {
             .foregroundColor(Color.secondTextColor)
             HStack(spacing: 20) {
                 Button(action: {
-                    Store.shared.dispatch(.playBackward)
+                    Store.shared.dispatch(.PlayerPlayBackward)
                 }) {
                     NEUSFView(systemName: "backward.fill", size: .big)
                 }
@@ -250,11 +244,11 @@ struct PlayingNowStatusView: View {
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
                     )
                     .onTapGesture {
-                        Store.shared.dispatch(.playOrPause)
+                        Store.shared.dispatch(.PlayerPlayOrPause)
                     }
                 
                 Button(action: {
-                    Store.shared.dispatch(.playForward)
+                    Store.shared.dispatch(.PlayerPlayForward)
                 }) {
                     NEUSFView(systemName: "forward.fill", size: .big)
                 }
@@ -461,7 +455,7 @@ struct PlayingExtensionControllView: View {
             }
             
             Button(action: {
-                Store.shared.dispatch(.playMode)
+                Store.shared.dispatch(.PlayerPlayMode)
             }) {
                 NEUSFView(systemName: settings.playMode.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }

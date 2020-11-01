@@ -26,4 +26,7 @@ struct ArtistJSONModel: Codable, Identifiable {
     var publishTime: Int?// optional for Album
     var topicPerson: Int
     var trans: String
+    func toDictionary() -> Dictionary<String, Any> {
+        return ["id": self.id, "name": self.name ?? ""]
+    }
 }

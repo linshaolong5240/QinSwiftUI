@@ -13,7 +13,6 @@ struct BottomBarView: View {
     @EnvironmentObject var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-    private var lyric: AppState.Lyric { store.appState.lyric }
 
     var body: some View {
         ZStack {
@@ -24,36 +23,35 @@ struct BottomBarView: View {
                         .padding()
                         .frame(width: 90, height: 90)
                     Button(action: {
-                        Store.shared.dispatch(.playOrPause)
+                        Store.shared.dispatch(.PlayerPlayOrPause)
                     }) {
                         NEUSFView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
                     }.buttonStyle(NEUButtonToggleStyle(isHighlighted: true, shadow: false, shape: Circle()))
                 }
                 NavigationLink(destination: PlayingNowView()) {
                     VStack(alignment: .leading) {
-                        Text(playing.songDetail.name)
+                        Text(playing.song?.name ?? "")
                             .font(.title)
                             .fontWeight(.bold)
                             .lineLimit(1)
                             .foregroundColor(Color.mainTextColor)
                         HStack {
-                            if lyric.lyric != nil {
-                                LyricView(lyric.lyric!, onelineMode: true)
-                            }else {
-                                ForEach(playing.songDetail.artists) { item in
-                                    Text(item.name)
-                                        .fontWeight(.bold)
-                                        .lineLimit(1)
-                                        .foregroundColor(Color.secondTextColor)
+                            if let artists = playing.song?.ar {
+                                HStack {
+                                    ForEach(artists.map{SongDetailJSONModel.Artist(id: $0["id"] as! Int64, name: $0["name"] as? String)}) { item in
+                                        Text(item.name ?? "")
+                                            .fontWeight(.bold)
+                                            .lineLimit(1)
+                                            .foregroundColor(Color.secondTextColor)
+                                    }
                                 }
-                                Spacer()
                             }
                         }
                     }
                 }
                 Spacer()
                 Button(action: {
-                    Store.shared.dispatch(.playForward)
+                    Store.shared.dispatch(.PlayerPlayForward)
                 }) {
                     NEUSFView(systemName: "forward.fill", size: .medium)
                 }

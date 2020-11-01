@@ -16,7 +16,7 @@ enum AppAction {
     case albumSublist(limit: Int = 100, offset: Int = 0)
     case albumSublistDone(result: Result<[Int64], AppError>)
     case artist(id: Int64)
-    case artistDone(result: Result<ArtistViewModel, AppError>)
+    case artistDone(result: Result<ArtistJSONModel, AppError>)
     case artistAlbum(id: Int64,limit: Int = 30, offset: Int = 0)
     case artistAlbumDone(result: Result<[AlbumViewModel], AppError>)
     case artistIntroduction(id: Int64)
@@ -46,6 +46,18 @@ enum AppAction {
     case logout
     case lyric(id: Int64)
     case lyricDone(result: Result<String?, AppError>)
+    case PlayerPause
+    case PlayerPlay
+    case PlayerPlayBackward
+    case PlayerPlayByIndex(index: Int)
+    case PlayerPlayForward
+    case PlayerPlayMode
+    case PlayerPlayRequest(id: Int64)
+    case PlayerPlayRequestDone(result: Result<SongURL, AppError>)
+    case PlayerPlayOrPause
+    case PlayerPlayToendAction
+    case playerReplay
+    case PlayerSeek(isSeeking: Bool)
     case playlist(category: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
     case playlistDone(result: Result<(playlists: [PlaylistViewModel], category: String, total: Int , more: Bool), AppError>)
     case playlistCategories
@@ -64,7 +76,6 @@ enum AppAction {
     case playlistSubscibeDone(result: Result<Bool, AppError>)
     case playlistTracks(pid: Int64, op: Bool, ids: [Int64])
     case playlistTracksDone(result: Result<Bool, AppError>)
-    case playOrPause
     case recommendPlaylist
     case recommendPlaylistDone(result: Result<[Int64], AppError>)
     case recommendSongs
@@ -82,15 +93,4 @@ enum AppAction {
     case songsURLDone(result: Result<[SongURL], AppError>)
     case userPlaylist(uid: Int64? = nil)
     case userPlaylistDone(result: Result<Int64, AppError>)
-    case pause
-    case play
-    case playRequest(id: Int64)
-    case playRequestDone(result: Result<SongURL, AppError>)
-    case playBackward
-    case playByIndex(index: Int)
-    case playForward
-    case playMode
-    case playToendAction
-    case replay
-    case seek(isSeeking: Bool)
 }

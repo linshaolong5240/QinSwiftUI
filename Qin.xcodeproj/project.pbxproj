@@ -380,9 +380,11 @@
 				2B20BC142525EE5A00679D0D /* ArtistDetailView.swift */,
 				2B69172B252EFB7100F05DB9 /* ArtistSublistView.swift */,
 				2BCCB28A24DC5A2A004CAD67 /* BottomBarView.swift */,
+				2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */,
 				2B8F56E9252F8969008FFF8F /* DescriptionView.swift */,
 				2B41D86D25336D5F000B6FAC /* DiscoverPlaylistView.swift */,
 				2B066911253177EF0007053C /* DiscoverView.swift */,
+				2B8F56E2252F831E008FFF8F /* FetchedSongListView.swift */,
 				2BCCB28F24DC5A2A004CAD67 /* HomeView.swift */,
 				2B1ABED225387E8800B9A15C /* LoginView.swift */,
 				2BED107F253439B4005A14AA /* LyricView.swift */,
@@ -391,12 +393,10 @@
 				2BCCB28E24DC5A2A004CAD67 /* PlaylistsView.swift */,
 				2B2D517724E39C1C007B52A4 /* SearchView.swift */,
 				2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */,
-				2B8F56E2252F831E008FFF8F /* FetchedSongListView.swift */,
 				2BC664AA250C03F700A08BD7 /* SongRowView.swift */,
 				2BCCB28824DC5A2A004CAD67 /* TestView.swift */,
 				2BCCB29724DC5A2B004CAD67 /* UserView.swift */,
 				2BCCB28924DC5A2A004CAD67 /* ViewModifier.swift */,
-				2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -462,13 +462,13 @@
 				2B0668F32530586F0007053C /* ArtistSubJSONModel.swift */,
 				2BCCB2E924DC7A61004CAD67 /* Comment.swift */,
 				2B691737252F556E00F05DB9 /* Creator.swift */,
-				2BD285B8252B1108000E4B9F /* SongJSONModel.swift */,
 				2B691724252D84D300F05DB9 /* MV.swift */,
 				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */,
-				2BCCB2E624DC7A61004CAD67 /* PlaylistJSONModel.swift */,
 				2B4867272531A977001E08CB /* PlaylistCategory.swift */,
+				2BCCB2E624DC7A61004CAD67 /* PlaylistJSONModel.swift */,
 				2BE2607024F6C2860039A39E /* Search.swift */,
 				2BCCB2EC24DC7A61004CAD67 /* SongDetailJSONModel.swift */,
+				2BD285B8252B1108000E4B9F /* SongJSONModel.swift */,
 				2B69171D252D84AA00F05DB9 /* SongURL.swift */,
 			);
 			path = NeteaseCloudMusicApi;

@@ -24,6 +24,11 @@ struct SongDetailJSONModel: Codable, Identifiable {
         var id: Int64
         var name: String?
 //        var tns: [Any]
+        init(id: Int64, name: String?) {
+            self.alias = nil
+            self.id = id
+            self.name = name
+        }
         func toDictionary() -> Dictionary<String, Any> {
             return ["id": self.id, "name": self.name ?? ""]
         }

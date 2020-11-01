@@ -24,7 +24,7 @@ class Player: AVPlayer, ObservableObject {
         self.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.old, .new], context: nil)
         self.notificatioCancellAble = NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime).sink { (Notification) in
             print("end play")
-            Store.shared.dispatch(.playToendAction)
+            Store.shared.dispatch(.PlayerPlayToendAction)
         }
         #if !os(macOS)
         initAudioSession()
@@ -175,19 +175,19 @@ class Player: AVPlayer, ObservableObject {
     func initMPRemoteCommand() {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.play)
+            Store.shared.dispatch(.PlayerPlay)
             return .success
         }
         commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.pause)
+            Store.shared.dispatch(.PlayerPause)
             return .success
         }
         commandCenter.nextTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playForward)
+            Store.shared.dispatch(.PlayerPlayForward)
             return .success
         }
         commandCenter.previousTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playBackward)
+            Store.shared.dispatch(.PlayerPlayBackward)
             return .success
         }
     }

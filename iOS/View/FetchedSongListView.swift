@@ -27,9 +27,9 @@ struct FetchedSongListView: View {
                     HStack {
                         Button(action: {
                             Store.shared.dispatch(.setPlayinglist(playinglist: songsId, index: 0))
-                            Store.shared.dispatch(.playByIndex(index: 0))
+                            Store.shared.dispatch(.PlayerPlayByIndex(index: 0))
                         }) {
-                            Text("\(String(songs.count)) 首")
+                            Text("播放全部\(String(songs.count)) 首")
                                 .fontWeight(.bold)
                                 .foregroundColor(.secondTextColor)
                         }

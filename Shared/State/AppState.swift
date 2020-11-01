@@ -157,8 +157,7 @@ extension AppState {
 
         var playingError: AppError?
         var songDetail = SongViewModel()
-        var song = Song()
-        var songs = [Song]()
+        var song: Song? = nil
 //        var songDetail: SongViewModel {
 //            get {
 //                return UserDefaults.standard.data(forKey: "playingSongDetail")?.toModel(SongViewModel.self) ?? SongViewModel()

@@ -71,4 +71,7 @@ struct AlbumJSONModel: Codable, Identifiable {
     var subType: String?
     var tags: String
     var type: String?
+    func toDictionary() -> Dictionary<String, Any> {
+        return ["id": self.id, "name": self.name ?? "", "picUrl": self.picUrl]
+    }
 }
