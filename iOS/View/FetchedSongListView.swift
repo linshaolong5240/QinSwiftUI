@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct FetchedSongListView: View {
-    @EnvironmentObject private var store: Store
-    private var playing: AppState.Playing { store.appState.playing }
-
     @State private var showFavorite: Bool = false
     @State private var showPlayingNow: Bool = false
     @State private var showAlert: Bool = false
