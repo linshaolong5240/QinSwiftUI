@@ -39,10 +39,10 @@ struct AlbumCommand: AppCommand {
                     album.songsId = songsIds
                     for songModel in songsJSONModel {
                         let song = Song(context: context)
-                        song.al = ["id": songModel.al.id, "name": songModel.al.name ?? ""] as [String: Any]
+                        song.al = songModel.al.toDictionary()
                         var ar = [[String: Any]]()
                         for a in songModel.ar {
-                            ar.append(["id": a.id, "name": a.name ?? ""])
+                            ar.append((a.toDictionary()))
                         }
                         song.ar = ar
                         song.id = songModel.id
@@ -798,10 +798,10 @@ struct PlaylistDetailSongsCommand: AppCommand {
                         playlist.userId = playlistJSONModel.userId
                         for songModel in songsDetailJSONModel {
                             let song = Song(context: context)
-                            song.al = ["id": songModel.al.id, "name": songModel.al.name ?? ""] as [String: Any]
+                            song.al = songModel.al.toDictionary()
                             var ar = [[String: Any]]()
                             for a in songModel.ar {
-                                ar.append(["id": a.id, "name": a.name ?? ""])
+                                ar.append(a.toDictionary())
                             }
                             song.ar = ar
                             song.id = songModel.id

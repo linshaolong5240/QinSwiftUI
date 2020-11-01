@@ -1,5 +1,5 @@
 //
-//  comment.swift
+//  Comment.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/7/30.
@@ -19,20 +19,20 @@ struct Comment: Codable {
 //        var locationInfo: Any?
         var nickname: String
 //        var remarkName: String?
-        var userId: Int64
+        var userId: Int
         var userType: Int
 //        var vipRights: Any?
         var vipType: Int
     }
     struct RepliedComment: Codable {
-        var beRepliedCommentId: Int64
+        var beRepliedCommentId: Int
         var content: String?
         var expressionUrl: String?
         var status: Int
         var user: CommentUser
     }
     var beReplied: [RepliedComment]
-    var commentId: Int64
+    var commentId: Int
     var commentLocationType: Int
     var content: String
 //    var decoration: Any?

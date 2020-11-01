@@ -15,12 +15,18 @@ struct SongDetailJSONModel: Codable, Identifiable {
         var picUrl: String? //optional for album detail
         var pic_str: String?//optional for playlist detail
 //        var tns: [Any]
+        func toDictionary() -> Dictionary<String, Any> {
+            return ["id": self.id, "name": self.name ?? "", "picUrl": self.picUrl ?? ""]
+        }
     }
     struct Artist: Codable, Identifiable {
         var alias: [String]? //optional for album detail
         var id: Int64
         var name: String?
 //        var tns: [Any]
+        func toDictionary() -> Dictionary<String, Any> {
+            return ["id": self.id, "name": self.name ?? ""]
+        }
     }
     struct Privilege: Codable {// album,recommendSongs
         struct ChargeInfoList: Codable {// album
