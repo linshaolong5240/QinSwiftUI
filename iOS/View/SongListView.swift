@@ -9,22 +9,24 @@ import SwiftUI
 
 struct SongListView: View {
     @State private var showFavorite: Bool = false
-    @State private var showPlayingNow: Bool = false
-    @State private var showAlert: Bool = false
     
     let songs: [Song]
     
     var body: some View {
         VStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
-                EmptyView()
-            }
             HStack {
                 Button(action: {
-                    Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{$0.id}, index: 0))
+                    if showFavorite {
+                        let likeIds = Store.shared.appState.playlist.likedIds
+                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{$0.id}.filter({ (id) -> Bool in
+                            return likeIds.contains(id)
+                        }), index: 0))
+                    }else {
+                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{$0.id}, index: 0))
+                    }
                     Store.shared.dispatch(.PlayerPlayByIndex(index: 0))
                 }) {
-                    Text("播放全部\(String(songs.count)) 首")
+                    Text(showFavorite ? "播放喜欢\(String(songs.count)) 首" : "播放全部\(String(songs.count)) 首")
                         .fontWeight(.bold)
                 }
                 Spacer()

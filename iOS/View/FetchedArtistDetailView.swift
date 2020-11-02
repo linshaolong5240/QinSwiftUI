@@ -19,7 +19,7 @@ struct FetchedArtistDetailView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                CommonNavigationBarView(title: "歌单详情")
+                CommonNavigationBarView(id: id, title: "歌单详情", type: .artist)
                     .padding(.horizontal)
                     .onAppear {
                         DispatchQueue.main.async {
@@ -90,10 +90,10 @@ struct ArtistDetailView: View {
             DescriptionView(viewModel: artist)
             if let songs = artist.songs {
                 if let songsId = artist.songsId {
-                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left: Song, right) -> Bool in
-                        let lIndex = songsId.firstIndex(of: left.id)!
-                        let rIndex = songsId.firstIndex(of: right.id)!
-                        return lIndex > rIndex ? false : true
+                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
+                        let lIndex = songsId.firstIndex(of: left.id)
+                        let rIndex = songsId.firstIndex(of: right.id)
+                        return lIndex ?? 0 > rIndex ?? 0 ? false : true
                     }))
                 }
             }else {

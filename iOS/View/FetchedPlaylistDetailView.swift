@@ -7,18 +7,18 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
+import Combine
 
 struct FetchedPlaylistDetailView: View {
     @State private var show: Bool = false
     
     let id: Int64
-
+    
     var body: some View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                CommonNavigationBarView(title: "歌单详情")
+                CommonNavigationBarView(id: id, title: "歌单详情", type: .playlist)
                     .padding(.horizontal)
                     .onAppear {
                         DispatchQueue.main.async {
@@ -67,10 +67,10 @@ struct PlaylistDetailView: View {
             DescriptionView(viewModel: playlist)
             if let songs = playlist.songs {
                 if let songsId = playlist.songsId {
-                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left: Song, right) -> Bool in
-                        let lIndex = songsId.firstIndex(of: left.id)!
-                        let rIndex = songsId.firstIndex(of: right.id)!
-                        return lIndex > rIndex ? false : true
+                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
+                        let lIndex = songsId.firstIndex(of: left.id)
+                        let rIndex = songsId.firstIndex(of: right.id)
+                        return lIndex ?? 0 > rIndex ?? 0 ? false : true
                     }))
                 }
             }else {
@@ -125,16 +125,31 @@ struct PlaylistDetailEditSongsView: View {
 }
 
 struct CommonNavigationBarView: View {
+    enum CommonNavigationBarType {
+        case album, artist, playlist
+    }
     @State private var showPlayingNow: Bool = false
+    let id: Int64
     let title: String
+    let type: CommonNavigationBarType
     
     var body: some View {
         HStack {
             NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
             NEUBackwardButton()
             Spacer()
-            NEUNavigationBarTitleView(title)
-            Spacer()
+            Button(action: {
+                switch type {
+                case .album:
+                    Store.shared.dispatch(.album(id: id))
+                case .artist:
+                    Store.shared.dispatch(.artist(id: id))
+                case .playlist:
+                    Store.shared.dispatch(.playlistDetail(id: id))
+                }
+            }){
+                NEUSFView(systemName: "music.quarternote.3")
+            }
             Button(action: {
                 showPlayingNow.toggle()
             }){
@@ -142,5 +157,10 @@ struct CommonNavigationBarView: View {
             }
             .buttonStyle(NEUButtonStyle(shape: Circle()))
         }
+        .overlay(
+            HStack {
+                NEUNavigationBarTitleView(title)
+            }
+        )
     }
 }
