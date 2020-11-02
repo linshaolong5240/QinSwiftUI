@@ -11,10 +11,7 @@ struct ArtistDetailView: View {
     enum Selection {
         case album, hotSong, mv
     }
-    @EnvironmentObject var store: Store
-    private var viewModel: ArtistViewModel {store.appState.artist.detail}
-    @State private var selection: Selection = .hotSong
-    @State private var showDesc: Bool = false
+    @State private var show: Bool = false
     
     let id: Int64
     
@@ -37,21 +34,30 @@ struct ArtistDetailView: View {
 //                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.followed, shape: Circle()))
                 }
                 .padding(.horizontal)
-                FetchedResultsView(entity: Artist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Artist>) in
-                    if let artist = results.first {
-                        DescriptionView(viewModel: artist)
-                        if let songsId = artist.songsId {
-                            FetchedSongListView(songsId: songsId)
+                .onAppear {
+                    DispatchQueue.main.async {
+                        show.toggle()
+                    }
+                }
+                if show {
+                    FetchedResultsView(entity: Artist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Artist>) in
+                        if let artist = results.first {
+                            DescriptionView(viewModel: artist)
+                            if let songsId = artist.songsId {
+                                FetchedSongListView(songsId: songsId)
+                            }else {
+                                Spacer()
+                            }
                         }else {
+                            Text("正在加载")
+                                .onAppear {
+                                    Store.shared.dispatch(.artist(id: id))
+                                }
                             Spacer()
                         }
-                    }else {
-                        Text("正在加载")
-                            .onAppear {
-                                Store.shared.dispatch(.artist(id: id))
-                            }
-                        Spacer()
                     }
+                }else {
+                    Spacer()
                 }
 //                if store.appState.artist.artistRequesting == true {
 //                    Text("正在加载")

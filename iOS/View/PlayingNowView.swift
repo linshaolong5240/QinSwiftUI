@@ -31,6 +31,9 @@ struct PlayingNowView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
+                NavigationLink(destination: ArtistDetailView(id: artistId), isActive: $showArtist) {
+                    EmptyView()
+                }
                 if !showMore {
                     HStack {
                         NEUBackwardButton()
@@ -98,19 +101,16 @@ struct PlayingNowView: View {
                     PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                    PlayinglistView(showList: $showMore, bottomType: $bottomType)
+                    PlayinglistView(songsId: playing.playinglist)
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                    CommentListView(id: playing.songDetail.id)
-                        .offset(y: bottomType == .commentlist ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
-//                    CreatedPlaylistView(playlists: playlists.createdPlaylist, songId: playing.songDetail.id, showList: $showMore, bottomType: $bottomType)
-//                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
+//                    CommentListView(id: playing.songDetail.id)
+//                        .offset(y: bottomType == .commentlist ? 0 : screen.height)
 //                        .transition(.move(edge: .bottom))
+                    //                    CreatedPlaylistView(playlists: playlists.createdPlaylist, songId: playing.songDetail.id, showList: $showMore, bottomType: $bottomType)
+                    //                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
+                    //                        .transition(.move(edge: .bottom))
                 }
-            }
-            NavigationLink(destination: ArtistDetailView(id: artistId), isActive: $showArtist) {
-                EmptyView()
             }
         }
         .navigationBarHidden(true)
@@ -133,42 +133,33 @@ struct PlayingView_Previews: PreviewProvider {
 #endif
 
 struct PlayinglistView: View {
-    @EnvironmentObject var store: Store
-    private var playing: AppState.Playing { store.appState.playing }
-    @Binding var showList: Bool
-    @Binding var bottomType: PlayingNowBottomType
-
+    @State private var show: Bool = false
+    let songsId: [Int64]
+    
     var body: some View {
-        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", playing.playinglist)) { (results: FetchedResults<Song>) in
-            VStack {
-                if let songs = results {
-                    HStack {
-                        Text("播放列表\(songs.count)首")
-                            .foregroundColor(.mainTextColor)
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    ScrollView {
-                        LazyVStack {
-                            ForEach(songs.sorted(by: { (left, right) -> Bool in
-                                let lIndex = playing.playinglist.firstIndex(of: left.id)!
-                                let rIndex = playing.playinglist.firstIndex(of: right.id)!
-                                return lIndex > rIndex ? false : true
-                            })) { item in
-                                Button(action: {
-                                    if item.id == playing.song?.id {
-                                        withAnimation(.default) {
-                                            showList.toggle()
-                                            bottomType = .playingStatus
-                                        }
-                                    }
-                                }) {
-                                    SongRowView(song: item, action: {
-                                        if item.id == playing.song?.id {
-                                            store.dispatch(.PlayerPlayOrPause)
-                                        }
-                                    })
-                                    .contentShape(Rectangle())
+        VStack {
+            HStack {
+                Text("播放列表\(songsId.count)首")
+                    .foregroundColor(.mainTextColor)
+                Spacer()
+            }
+            .padding(.horizontal)
+            .onAppear {
+                DispatchQueue.main.async {
+                    show.toggle()
+                }
+            }
+            if show {
+                FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
+                    if let songs = results {
+                        ScrollView {
+                            LazyVStack {
+                                ForEach(songs.sorted(by: { (left, right) -> Bool in
+                                    let lIndex = songsId.firstIndex(of: left.id)!
+                                    let rIndex = songsId.firstIndex(of: right.id)!
+                                    return lIndex > rIndex ? false : true
+                                })) { item in
+                                    SongRowView(song: item, action: {})
                                     .padding(.horizontal)
                                 }
                             }

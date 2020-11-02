@@ -49,7 +49,7 @@ struct PlaylistsView: View {
             FetchedResultsView(entity: RecommendPlaylist.entity(), sortDescriptors: sortDescriptors, predicate: predicate) { (results: FetchedResults<RecommendPlaylist>) in
                 VStack(spacing: 0) {
                     NavigationLink(
-                        destination: PlaylistDetailView(id: playlistDetailId),
+                        destination: FetchedPlaylistDetailView(id: playlistDetailId),
                         isActive: $showPlaylistDetail,
                         label: {EmptyView()})
                     HStack {
@@ -89,7 +89,7 @@ struct PlaylistsView: View {
             FetchedResultsView(entity: UserPlaylist.entity(), sortDescriptors: sortDescriptors, predicate: predicate) { (results: FetchedResults<UserPlaylist>) in
                 VStack(spacing: 0) {
                     NavigationLink(
-                        destination: PlaylistDetailView(id: playlistDetailId),
+                        destination: FetchedPlaylistDetailView(id: playlistDetailId),
                         isActive: $showPlaylistDetail,
                         label: {EmptyView()})
                     HStack {

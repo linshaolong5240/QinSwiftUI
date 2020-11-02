@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct AlbumDetailView: View {
-    let id: Int64
-    
     @State private var show: Bool = false
 
+    let id: Int64
+    
     var body: some View {
         ZStack {
             NEUBackgroundView()
@@ -30,23 +30,32 @@ struct AlbumDetailView: View {
                     //                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.isSub, shape: Circle()))
                 }
                 .padding(.horizontal)
-                FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
-                    if let album = results.first {
-                        DescriptionView(viewModel: album)
-                        if let songsId = album.songsId {
-                            FetchedSongListView(songsId: songsId)
+                .onAppear {
+                    DispatchQueue.main.async {
+                        show.toggle()
+                    }
+                }
+                if show {
+                    FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
+                        if let album = results.first {
+                            DescriptionView(viewModel: album)
+                            if let songsId = album.songsId {
+                                FetchedSongListView(songsId: songsId)
+                            }else {
+                                Spacer()
+                            }
                         }else {
+                            Text("正在加载")
+                                .onAppear {
+                                    if results.first?.songs == nil {
+                                        Store.shared.dispatch(.album(id: id))
+                                    }
+                                }
                             Spacer()
                         }
-                    }else {
-                        Text("正在加载")
-                            .onAppear {
-                                if results.first?.songs == nil {
-                                    Store.shared.dispatch(.album(id: id))
-                                }
-                            }
-                        Spacer()
                     }
+                }else {
+                    Spacer()
                 }
             }
         }

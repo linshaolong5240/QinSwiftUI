@@ -18,44 +18,29 @@ struct FetchedPlaylistDetailView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                HStack {
-                    NEUBackwardButton()
-                    Spacer()
-                    NEUNavigationBarTitleView("歌单详情")
-                    Spacer()
-                    //                    if type == .created {
-                    //                        Button(action: {
-                    //                            Store.shared.dispatch(.playlistDelete(pid: viewModel.id))
-                    //                        }, label: {
-                    //                            NEUSFView(systemName: "trash.fill")
-                    //                        })
-                    //                        .buttonStyle(NEUButtonStyle(shape: Circle()))
-                    //                    }
-                    //                    if type == .subscribed && viewModel.id != 0 {
-                    //                        Button(action: {
-                    //                            Store.shared.dispatch(.playlistSubscibe(id: viewModel.id, sub: viewModel.subscribed ? false : true))
-                    //                        }, label: {
-                    //                            NEUSFView(systemName: "heart.fill",
-                    //                                      active: viewModel.subscribed)
-                    //                        })
-                    //                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.subscribed, shape: Circle()))
-                    //                    }
-                }
-                .padding(.horizontal)
-                .onAppear(perform: {
-                    DispatchQueue.main.async {
-                        show.toggle()
+                if !show {
+                    HStack {
+                        NEUBackwardButton()
+                        Spacer()
+                        NEUNavigationBarTitleView("歌单详情")
+                        Spacer()
+                        Button(action: {}){
+                            NEUSFView(systemName: "trash.fill")
+                        }
+                        .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
-                })
-                if show {
+                    .padding(.horizontal)
+                    .onAppear(perform: {
+                        DispatchQueue.main.async {
+                            show.toggle()
+                        }
+                    })
+                    Spacer()
+                }
+                else{
                     FetchedResultsView(entity: Playlist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Playlist>) in
                         if let playlist = results.first {
-                            DescriptionView(viewModel: playlist)
-                            if let songsId = playlist.songsId {
-                                FetchedSongListView(songsId: songsId)
-                            }else {
-                                Spacer()
-                            }
+                            PlaylistDetailView(playlist: playlist)
                         }else {
                             Text("正在加载")
                                 .onAppear {
@@ -86,8 +71,6 @@ struct FetchedPlaylistDetailView: View {
                         //                        }
                         //                        }
                     }
-                }else {
-                    Spacer()
                 }
             }
             .navigationBarHidden(true)
@@ -110,6 +93,83 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 }
 #endif
 
+struct PlaylistDetailView: View {
+    let playlist :Playlist
+    
+    var body: some View {
+        VStack {
+            HStack {
+                NEUBackwardButton()
+                Spacer()
+                NEUNavigationBarTitleView("歌单详情")
+                Spacer()
+                Button(action: {}){
+                    NEUSFView(systemName: "trash.fill")
+                }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
+            }
+            .padding(.horizontal)
+            DescriptionView(viewModel: playlist)
+            if let songs = playlist.songs {
+                if let songsId = playlist.songsId {
+                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left: Song, right) -> Bool in
+                        let lIndex = songsId.firstIndex(of: left.id)!
+                        let rIndex = songsId.firstIndex(of: right.id)!
+                        return lIndex > rIndex ? false : true
+                    }))
+                }
+            }else {
+                Spacer()
+            }
+        }
+    }
+}
+
+struct SongListView: View {
+    @EnvironmentObject private var store: Store
+    private var playing: AppState.Playing {store.appState.playing}
+    @State private var showFavorite: Bool = false
+    @State private var showPlayingNow: Bool = false
+    @State private var showAlert: Bool = false
+    
+    let songs: [Song]
+    
+    var body: some View {
+        VStack {
+            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
+                EmptyView()
+            }
+            HStack {
+                Button(action: {
+                    Store.shared.dispatch(.setPlayinglist(playinglist: songs.map{$0.id}, index: 0))
+                    Store.shared.dispatch(.PlayerPlayByIndex(index: 0))
+                }) {
+                    Text("播放全部\(String(songs.count)) 首")
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondTextColor)
+                }
+                Spacer()
+                Text(showFavorite ? "喜欢" : "全部")
+                    .fontWeight(.bold)
+                    .foregroundColor(.secondTextColor)
+                Toggle("", isOn: $showFavorite)
+                    .fixedSize()
+            }
+            .padding(.horizontal)
+            ScrollView {
+                LazyVStack {
+                    ForEach(songs) { item in
+                        Button(action: {
+                        }, label: {
+                            SongRowView(song: item)
+                                .padding(.horizontal)
+                        })
+                    }
+                }
+            }
+        }
+    }
+}
 struct PlaylistDetailEditSongsView: View {
     @EnvironmentObject var store: Store
     private var viewModel = PlaylistViewModel()

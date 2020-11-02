@@ -22,6 +22,7 @@ class Player: AVPlayer, ObservableObject {
     @Published var isPlaying: Bool = false
     @Published var loadTime: Double = 0.0
     @Published var totalTime: Double = 0.0
+    @Published var loadPercent: Double = 0.0
 
     override init() {
         super.init()
@@ -103,7 +104,10 @@ class Player: AVPlayer, ObservableObject {
                 let player = Player.shared
                 if !store.appState.playing.isSeeking {
                     player.loadTime = player.currentTime().seconds
-                    player.totalTime = player.currentItem?.duration.seconds ?? 0.0
+                    if let totalTime = player.currentItem?.duration.seconds {
+                        player.totalTime = totalTime
+                        player.loadPercent = player.loadTime / player.totalTime
+                    }
                 }
             })
     }
