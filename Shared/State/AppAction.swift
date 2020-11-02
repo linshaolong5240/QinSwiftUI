@@ -58,6 +58,8 @@ enum AppAction {
     case PlayerPlayToendAction
     case playerReplay
     case PlayerSeek(isSeeking: Bool, time: Double)
+    case PlayinglistInsert(id: Int64)
+    case PlayinglistSet(playinglist: [Int64], index: Int)
     case playlist(category: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
     case playlistDone(result: Result<(playlists: [PlaylistViewModel], category: String, total: Int , more: Bool), AppError>)
     case playlistCategories
@@ -84,7 +86,6 @@ enum AppAction {
     case searchClean
     case searchSongDone(result: Result<[SearchSongDetail], AppError>)
     case searchPlaylistDone(result: Result<[PlaylistViewModel], AppError>)
-    case setPlayinglist(playinglist: [Int64], index: Int)
     case songsDetail(ids: [Int64])
     case songsDetailDone(result: Result<[SongViewModel], AppError>)
     case songsOrderUpdate(pid: Int64, ids: [Int64])

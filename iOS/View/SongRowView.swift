@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct SongRowView: View {
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
-    private var playing: AppState.Playing {
-        store.appState.playing
-    }
-    
+    @EnvironmentObject private var store: Store
+    @EnvironmentObject private var player: Player
+    private var playing: AppState.Playing {  store.appState.playing }
+    @State private var showPlayingNow: Bool = false
     let song: Song
-    let action: () -> Void
     
-    init(song: Song, action: @escaping () -> Void = {}) {
+    init(song: Song) {
         self.song = song
-        self.action = action
     }
     
     var body: some View {
         HStack {
+            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
+                .navigationViewStyle(StackNavigationViewStyle())
             VStack(alignment: .leading) {
                 Text(song.name ?? "")
                     .fontWeight(.bold)
@@ -49,7 +47,11 @@ struct SongRowView: View {
             ////                NEUSFView(systemName: viewModel.liked ? "heart.fill" : "heart", size: .medium)
             //            })
             Button(action: {
-                action()
+                if playing.song?.id == song.id {
+                    Store.shared.dispatch(.PlayerPlayOrPause)
+                }else {
+                    Store.shared.dispatch(.PlayinglistInsert(id: song.id))
+                }
             }) {
                 NEUSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",
                           size: .small,
@@ -63,6 +65,9 @@ struct SongRowView: View {
         .background(
             NEUListRowBackgroundView(isHighlighted: song.id == playing.song?.id)
         )
+        .onTapGesture {
+            showPlayingNow.toggle()
+        }
     }
 }
 

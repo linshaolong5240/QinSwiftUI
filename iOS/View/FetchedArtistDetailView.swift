@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ArtistDetailView: View {
+struct FetchedArtistDetailView: View {
     enum Selection {
         case album, hotSong, mv
     }
@@ -19,35 +19,17 @@ struct ArtistDetailView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                HStack {
-                    NEUBackwardButton()
-                    Spacer()
-                    NEUNavigationBarTitleView("歌手详情")
-                    Spacer()
-//                    Button(action: {
-//                        viewModel.followed.toggle()
-//                        Store.shared.dispatch(.artistSub(id: viewModel.id, sub: viewModel.followed))
-//                    }, label: {
-//                        NEUSFView(systemName: "heart.fill",
-//                                  active: viewModel.followed)
-//                    })
-//                    .buttonStyle(NEUButtonToggleStyle(isHighlighted: viewModel.followed, shape: Circle()))
-                }
-                .padding(.horizontal)
-                .onAppear {
-                    DispatchQueue.main.async {
-                        show.toggle()
+                CommonNavigationBarView(title: "歌单详情")
+                    .padding(.horizontal)
+                    .onAppear {
+                        DispatchQueue.main.async {
+                            show = true
+                        }
                     }
-                }
                 if show {
                     FetchedResultsView(entity: Artist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Artist>) in
                         if let artist = results.first {
-                            DescriptionView(viewModel: artist)
-                            if let songsId = artist.songsId {
-                                FetchedSongListView(songsId: songsId)
-                            }else {
-                                Spacer()
-                            }
+                            ArtistDetailView(artist: artist)
                         }else {
                             Text("正在加载")
                                 .onAppear {
@@ -59,29 +41,29 @@ struct ArtistDetailView: View {
                 }else {
                     Spacer()
                 }
-//                if store.appState.artist.artistRequesting == true {
-//                    Text("正在加载")
-//                    Spacer()
-//                }else {
-////                    DescriptionView(viewModel: viewModel)
-//                    Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
-//                        Text("热门歌曲").tag(Selection.hotSong)
-//                        Text("专辑").tag(Selection.album)
-//                        Text("MV").tag(Selection.mv)
-//                    }/*@END_MENU_TOKEN@*/
-//                    .pickerStyle(SegmentedPickerStyle())
-//                    .padding()
-//                    SongListView(songs: [SongViewModel]())
-
-//                    switch selection {
-//                    case .album:
-//                        ArtistAlbumView(albums: viewModel.albums)
-//                    case .hotSong:
-//                        SongListView(songs: viewModel.hotSongs)
-//                    case .mv:
-//                        ArtistMVView(mvs: viewModel.mvs)
-//                    }
-//                }
+                //                if store.appState.artist.artistRequesting == true {
+                //                    Text("正在加载")
+                //                    Spacer()
+                //                }else {
+                ////                    DescriptionView(viewModel: viewModel)
+                //                    Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
+                //                        Text("热门歌曲").tag(Selection.hotSong)
+                //                        Text("专辑").tag(Selection.album)
+                //                        Text("MV").tag(Selection.mv)
+                //                    }/*@END_MENU_TOKEN@*/
+                //                    .pickerStyle(SegmentedPickerStyle())
+                //                    .padding()
+                //                    SongListView(songs: [SongViewModel]())
+                
+                //                    switch selection {
+                //                    case .album:
+                //                        ArtistAlbumView(albums: viewModel.albums)
+                //                    case .hotSong:
+                //                        SongListView(songs: viewModel.hotSongs)
+                //                    case .mv:
+                //                        ArtistMVView(mvs: viewModel.mvs)
+                //                    }
+                //                }
             }
         }
         .navigationBarHidden(true)
@@ -93,12 +75,33 @@ struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-            ArtistDetailView(id: 0)
+            FetchedArtistDetailView(id: 0)
                 .environmentObject(Store.shared)
         }
     }
 }
 #endif
+
+struct ArtistDetailView: View {
+    let artist: Artist
+    
+    var body: some View {
+        VStack {
+            DescriptionView(viewModel: artist)
+            if let songs = artist.songs {
+                if let songsId = artist.songsId {
+                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left: Song, right) -> Bool in
+                        let lIndex = songsId.firstIndex(of: left.id)!
+                        let rIndex = songsId.firstIndex(of: right.id)!
+                        return lIndex > rIndex ? false : true
+                    }))
+                }
+            }else {
+                Spacer()
+            }
+        }
+    }
+}
 
 struct ArtistAlbumView: View {
     let albums: [AlbumViewModel]

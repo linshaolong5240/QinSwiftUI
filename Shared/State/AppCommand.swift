@@ -624,6 +624,98 @@ struct LogoutCommand: AppCommand {
     }
 }
 
+struct PlayerPlayBackwardCommand: AppCommand {
+    
+    func execute(in store: Store) {
+        let count = store.appState.playing.playinglist.count
+        
+        if count > 1 {
+            var index = store.appState.playing.index
+            if index == 0 {
+                index = count - 1
+            }else {
+                index = (index - 1) % count
+            }
+            store.dispatch(.PlayerPlayByIndex(index: index))
+        }else if count == 1 {
+            store.dispatch(.playerReplay)
+        }else {
+            return
+        }
+    }
+}
+
+struct PlayerPlayForwardCommand: AppCommand {
+    
+    func execute(in store: Store) {
+        let count = store.appState.playing.playinglist.count
+        guard count > 0 else {
+            return
+        }
+        if count > 1 {
+            var index = store.appState.playing.index
+            index = (index + 1) % count
+            store.dispatch(.PlayerPlayByIndex(index: index))
+        }else if count == 1 {
+            store.dispatch(.playerReplay)
+        }else {
+            return
+        }
+    }
+}
+
+struct PlayerPlayRequestCommand: AppCommand {
+    let id: Int64
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.songsURL([id]) { data, error in
+            guard error == nil else {
+                store.dispatch(.PlayerPlayRequestDone(result: .failure(error!)))
+                return
+            }
+            if let songsURLDict = data?["data"] as? [NeteaseCloudMusicApi.ResponseData] {
+                if songsURLDict.count > 0 {
+                    store.dispatch(.PlayerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURL.self)!)))
+                }
+            }else {
+                store.dispatch(.PlayerPlayRequestDone(result: .failure(.songsURLError)))
+            }
+        }
+    }
+}
+
+struct PlayerPlayRequestDoneCommand: AppCommand {
+    let url: String
+    
+    func execute(in store: Store) {
+        let index = store.appState.playing.index
+        let songId = store.appState.playing.playinglist[index]
+        Player.shared.playWithURL(url: url)
+        store.dispatch(.lyric(id: songId))
+    }
+}
+
+struct PlayerPlayToEndActionCommand: AppCommand {
+    
+    func execute(in store: Store) {
+        switch store.appState.settings.playMode {
+        case .playlist:
+            store.dispatch(.PlayerPlayForward)
+        case .relplay:
+            store.dispatch(.playerReplay)
+            break
+        }
+    }
+}
+
+struct PlayinglistInsertCommand: AppCommand {
+    let index: Int
+    
+    func execute(in store: Store) {
+        store.dispatch(.PlayerPlayByIndex(index: index))
+    }
+}
+
 struct PlaylistCommand: AppCommand {
     let cat: String
     let hot: Bool
@@ -925,90 +1017,6 @@ struct PlaylistTracksDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         store.dispatch(.userPlaylist())
-    }
-}
-
-struct PlayerPlayRequestCommand: AppCommand {
-    let id: Int64
-    
-    func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.songsURL([id]) { data, error in
-            guard error == nil else {
-                store.dispatch(.PlayerPlayRequestDone(result: .failure(error!)))
-                return
-            }
-            if let songsURLDict = data?["data"] as? [NeteaseCloudMusicApi.ResponseData] {
-                if songsURLDict.count > 0 {
-                    store.dispatch(.PlayerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURL.self)!)))
-                }
-            }else {
-                store.dispatch(.PlayerPlayRequestDone(result: .failure(.songsURLError)))
-            }
-        }
-    }
-}
-
-struct PlayRequestDoneCommand: AppCommand {
-    let url: String
-    
-    func execute(in store: Store) {
-        let index = store.appState.playing.index
-        let songId = store.appState.playing.playinglist[index]
-        Player.shared.playWithURL(url: url)
-        store.dispatch(.lyric(id: songId))
-    }
-}
-
-struct PlayBackwardCommand: AppCommand {
-    
-    func execute(in store: Store) {
-        let count = store.appState.playing.playinglist.count
-        
-        if count > 1 {
-            var index = store.appState.playing.index
-            if index == 0 {
-                index = count - 1
-            }else {
-                index = (index - 1) % count
-            }
-            store.dispatch(.PlayerPlayByIndex(index: index))
-        }else if count == 1 {
-            store.dispatch(.playerReplay)
-        }else {
-            return
-        }
-    }
-}
-
-struct PlayForwardCommand: AppCommand {
-    
-    func execute(in store: Store) {
-        let count = store.appState.playing.playinglist.count
-        guard count > 0 else {
-            return
-        }
-        if count > 1 {
-            var index = store.appState.playing.index
-            index = (index + 1) % count
-            store.dispatch(.PlayerPlayByIndex(index: index))
-        }else if count == 1 {
-            store.dispatch(.playerReplay)
-        }else {
-            return
-        }
-    }
-}
-
-struct PlayToEndActionCommand: AppCommand {
-    
-    func execute(in store: Store) {
-        switch store.appState.settings.playMode {
-        case .playlist:
-            store.dispatch(.PlayerPlayForward)
-        case .relplay:
-            store.dispatch(.playerReplay)
-            break
-        }
     }
 }
 

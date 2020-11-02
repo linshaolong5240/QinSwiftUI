@@ -1,5 +1,5 @@
 //
-//  PlaylistDetailView.swift
+//  FetchedPlaylistDetailView.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/6/26.
@@ -18,26 +18,14 @@ struct FetchedPlaylistDetailView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                if !show {
-                    HStack {
-                        NEUBackwardButton()
-                        Spacer()
-                        NEUNavigationBarTitleView("歌单详情")
-                        Spacer()
-                        Button(action: {}){
-                            NEUSFView(systemName: "trash.fill")
-                        }
-                        .buttonStyle(NEUButtonStyle(shape: Circle()))
-                    }
+                CommonNavigationBarView(title: "歌单详情")
                     .padding(.horizontal)
-                    .onAppear(perform: {
+                    .onAppear {
                         DispatchQueue.main.async {
-                            show.toggle()
+                            show = true
                         }
-                    })
-                    Spacer()
-                }
-                else{
+                    }
+                if show {
                     FetchedResultsView(entity: Playlist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Playlist>) in
                         if let playlist = results.first {
                             PlaylistDetailView(playlist: playlist)
@@ -48,28 +36,6 @@ struct FetchedPlaylistDetailView: View {
                                 }
                             Spacer()
                         }
-                        
-                        //                    HStack {
-                        //                        Text("歌曲列表(\(String(viewModel.count)))")
-                        //                            .fontWeight(.bold)
-                        //                            .foregroundColor(.secondTextColor)
-                        //                        Spacer()
-                        //                        if type == .created {
-                        //                            NEUEditButton(action: {
-                        //                                if isMoved {
-                        //                                    Store.shared.dispatch(.songsOrderUpdate(pid: viewModel.id, ids: viewModel.songIds))
-                        //                                }
-                        //                            })
-                        //                        }
-                        //                    }
-                        //                    .padding(.horizontal)
-                        //                        if editModeBinding?.wrappedValue.isEditing ?? false {
-                        //                            PlaylistDetailEditSongsView(isMoved: $isMoved)
-                        //                        }else {
-                        //                        if let songsIds = playlist.songsIds {
-                        //                            SongListView(songsIds: songsIds)
-                        //                        }
-                        //                        }
                     }
                 }
             }
@@ -98,17 +64,6 @@ struct PlaylistDetailView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                NEUBackwardButton()
-                Spacer()
-                NEUNavigationBarTitleView("歌单详情")
-                Spacer()
-                Button(action: {}){
-                    NEUSFView(systemName: "trash.fill")
-                }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
-            }
-            .padding(.horizontal)
             DescriptionView(viewModel: playlist)
             if let songs = playlist.songs {
                 if let songsId = playlist.songsId {
@@ -125,51 +80,6 @@ struct PlaylistDetailView: View {
     }
 }
 
-struct SongListView: View {
-    @EnvironmentObject private var store: Store
-    private var playing: AppState.Playing {store.appState.playing}
-    @State private var showFavorite: Bool = false
-    @State private var showPlayingNow: Bool = false
-    @State private var showAlert: Bool = false
-    
-    let songs: [Song]
-    
-    var body: some View {
-        VStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow) {
-                EmptyView()
-            }
-            HStack {
-                Button(action: {
-                    Store.shared.dispatch(.setPlayinglist(playinglist: songs.map{$0.id}, index: 0))
-                    Store.shared.dispatch(.PlayerPlayByIndex(index: 0))
-                }) {
-                    Text("播放全部\(String(songs.count)) 首")
-                        .fontWeight(.bold)
-                        .foregroundColor(.secondTextColor)
-                }
-                Spacer()
-                Text(showFavorite ? "喜欢" : "全部")
-                    .fontWeight(.bold)
-                    .foregroundColor(.secondTextColor)
-                Toggle("", isOn: $showFavorite)
-                    .fixedSize()
-            }
-            .padding(.horizontal)
-            ScrollView {
-                LazyVStack {
-                    ForEach(songs) { item in
-                        Button(action: {
-                        }, label: {
-                            SongRowView(song: item)
-                                .padding(.horizontal)
-                        })
-                    }
-                }
-            }
-        }
-    }
-}
 struct PlaylistDetailEditSongsView: View {
     @EnvironmentObject var store: Store
     private var viewModel = PlaylistViewModel()
@@ -211,5 +121,26 @@ struct PlaylistDetailEditSongsView: View {
         isMoved = true
         viewModel.songsId.move(fromOffsets: source, toOffset: destination)
         viewModel.songs.move(fromOffsets: source, toOffset: destination)
+    }
+}
+
+struct CommonNavigationBarView: View {
+    @State private var showPlayingNow: Bool = false
+    let title: String
+    
+    var body: some View {
+        HStack {
+            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
+            NEUBackwardButton()
+            Spacer()
+            NEUNavigationBarTitleView(title)
+            Spacer()
+            Button(action: {
+                showPlayingNow.toggle()
+            }){
+                NEUSFView(systemName: "music.quarternote.3")
+            }
+            .buttonStyle(NEUButtonStyle(shape: Circle()))
+        }
     }
 }

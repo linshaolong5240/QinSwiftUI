@@ -16,7 +16,7 @@ struct ArtistSublistView: View {
         FetchedResultsView(entity: ArtistSub.entity()) { (results: FetchedResults<ArtistSub>) in
             VStack(spacing: 0) {
                 NavigationLink(
-                    destination: ArtistDetailView(id: artistId),
+                    destination: FetchedArtistDetailView(id: artistId),
                     isActive: $showArtistDetail,
                     label: {EmptyView()})
                 HStack {

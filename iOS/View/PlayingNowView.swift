@@ -31,7 +31,7 @@ struct PlayingNowView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                NavigationLink(destination: ArtistDetailView(id: artistId), isActive: $showArtist) {
+                NavigationLink(destination: FetchedArtistDetailView(id: artistId), isActive: $showArtist) {
                     EmptyView()
                 }
                 if !showMore {
@@ -146,7 +146,7 @@ struct PlayinglistView: View {
             .padding(.horizontal)
             .onAppear {
                 DispatchQueue.main.async {
-                    show.toggle()
+                    show = true
                 }
             }
             if show {
@@ -159,7 +159,7 @@ struct PlayinglistView: View {
                                     let rIndex = songsId.firstIndex(of: right.id)!
                                     return lIndex > rIndex ? false : true
                                 })) { item in
-                                    SongRowView(song: item, action: {})
+                                    SongRowView(song: item)
                                     .padding(.horizontal)
                                 }
                             }
