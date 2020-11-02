@@ -24,14 +24,22 @@ struct AlbumCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 do {
+                    let context = DataManager.shared.Context()
+                    //clean relationship
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
+                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+                    if let saved = try context.fetch(fetchRequest).first as? Album {
+                        if let songs = saved.songs {
+                            saved.removeFromSongs(songs)
+                            try context.save()
+                        }
+                    }
                     let albumDict = data!["album"] as! [String: Any]
                     let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
                     let songsDict = data!["songs"] as! [[String: Any]]
                     let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                    let context = DataManager.shared.Context()
                     let album = Album(context: context)
                     let songsIds = songsJSONModel.map{$0.id}
-                    print(songsIds)
                     album.id = albumJSONModel.id
                     album.introduction = albumJSONModel.description
                     album.name = albumJSONModel.name
@@ -139,13 +147,22 @@ struct ArtistCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 do {
+                    let context = DataManager.shared.Context()
+                    //clean relationship
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+                    if let saved = try context.fetch(fetchRequest).first as? Artist {
+                        if let songs = saved.songs {
+                            saved.removeFromSongs(songs)
+                            try context.save()
+                        }
+                    }
                     let artistDict = data!["artist"] as! [String: Any]
                     let artistJSONModel = artistDict.toData!.toModel(ArtistJSONModel.self)!
                     
                     let hotSongsDictArray = data!["hotSongs"] as! [[String: Any]]
                     let songsJSONModel = hotSongsDictArray.map{$0.toData!.toModel(SongJSONModel.self)!}
                     
-                    let context = DataManager.shared.Context()
                     let artist = Artist(context: context)
                     let songsIds = songsJSONModel.map{$0.id}
                     artist.id = artistJSONModel.id
@@ -900,15 +917,18 @@ struct PlaylistDetailSongsCommand: AppCommand {
                 }
                 if let songsDict = data?["songs"] as? [[String: Any]] {
                     do {
+                        let context = DataManager.shared.Context()
                         //clean relationship
-                        if let saved = DataManager.shared.getPlaylist(id: playlistJSONModel.id) {
+                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+                        fetchRequest.predicate = NSPredicate(format: "%K == \(playlistJSONModel.id)", "id")
+                        if let saved = try context.fetch(fetchRequest).first as? Playlist {
                             if let songs = saved.songs {
                                 saved.removeFromSongs(songs)
+                                try context.save()
                             }
                         }
                         let songsDetailJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
                         let songsId = songsDetailJSONModel.map{$0.id}
-                        let context = DataManager.shared.Context()
                         let playlist = Playlist(context: context)
                         playlist.coverImgUrl = playlistJSONModel.coverImgUrl
                         playlist.id = playlistJSONModel.id

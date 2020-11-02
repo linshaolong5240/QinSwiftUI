@@ -67,18 +67,16 @@ extension AppState {
     }
     
     struct Album {
-        var albumRequesting: Bool = false
-        var albumSublistRequesting: Bool = false
-        var albumViewModel =  AlbumViewModel()
+        var detailRequesting: Bool = false
+        var sublistRequesting: Bool = false
     }
     
     struct Artist {
-        var artistRequesting: Bool = false
+        var detailRequesting: Bool = false
         var artistAlbumRequesting: Bool = false
         var artistMVRequesting: Bool = false
         var artistSublistRequesting: Bool = false
 
-        var detail = ArtistViewModel()
         var error: AppError?
     }
     
@@ -114,8 +112,6 @@ extension AppState {
         var likedIds = [Int64]()
         //喜欢的音乐歌单ID
         var likedPlaylistId: Int = 0
-        
-        var songsRequesting: Bool = false
     }
     
     struct Playing {
@@ -128,7 +124,6 @@ extension AppState {
             }
         }
         var isSeeking: Bool = false
-        
         var playinglist: [Int64] {
             get {
                 return UserDefaults.standard.array(forKey: "playinglist") as? [Int64] ?? [Int64]()
@@ -137,34 +132,10 @@ extension AppState {
                 UserDefaults.standard.set(newValue, forKey: "playinglist")
             }
         }
-
         var playingError: AppError?
         var songDetail = SongViewModel()
         var song: Song? = nil
-//        var songDetail: SongViewModel {
-//            get {
-//                return UserDefaults.standard.data(forKey: "playingSongDetail")?.toModel(SongViewModel.self) ?? SongViewModel()
-//            }
-//            set {
-//                do {
-//                    UserDefaults.standard.set(try JSONEncoder().encode(newValue), forKey: "playingSongDetail")
-//
-//                } catch let error {
-//                    print(error)
-//                }
-//            }
-//        }
-        
         var songUrl: String?
-
-//        var songUrl: String? {
-//            get {
-//                UserDefaults.standard.string(forKey: "playingSongUrl")
-//            }
-//            set {
-//                UserDefaults.standard.set(newValue, forKey: "playingSongUrl")
-//            }
-//        }
     }
     
     struct Search {

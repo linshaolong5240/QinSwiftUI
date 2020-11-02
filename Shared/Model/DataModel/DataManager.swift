@@ -80,14 +80,14 @@ class DataManager {
     public func batchUpdateLike(ids: [Int]) {
         self.batchUpdate(entityName: "Song", propertiesToUpdate: ["like" : true], predicate: NSPredicate(format: "id IN %@", ids))
     }
-    public func getSong(id: Int64) -> Song? {
+    public func getAlbum(id: Int64) -> Playlist? {
         do {
             let context = persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
             fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-            let song = try context.fetch(fetchRequest).first as? Song
+            let album = try context.fetch(fetchRequest).first as? Playlist
             print("\(#function)")
-            return song
+            return album
         }catch let error {
             print("\(#function):\(error)")
         }
@@ -98,7 +98,20 @@ class DataManager {
             let context = persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
             fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-            let song = try context.fetch(fetchRequest).first as? Playlist
+            let playlist = try context.fetch(fetchRequest).first as? Playlist
+            print("\(#function)")
+            return playlist
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+        return nil
+    }
+    public func getSong(id: Int64) -> Song? {
+        do {
+            let context = persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+            fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+            let song = try context.fetch(fetchRequest).first as? Song
             print("\(#function)")
             return song
         }catch let error {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct  FetchedAlbumDetailView: View {
+    @EnvironmentObject private var store: Store
     @State private var show: Bool = false
 
     let id: Int64
@@ -23,7 +24,7 @@ struct  FetchedAlbumDetailView: View {
                             show = true
                         }
                     }
-                if show {
+                if show && !store.appState.album.detailRequesting {
                     FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
                         if let album = results.first {
                             AlbumDetailView(album: album)

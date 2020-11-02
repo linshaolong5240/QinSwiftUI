@@ -11,6 +11,7 @@ struct FetchedArtistDetailView: View {
     enum Selection {
         case album, hotSong, mv
     }
+    @EnvironmentObject private var store: Store
     @State private var show: Bool = false
     
     let id: Int64
@@ -26,7 +27,7 @@ struct FetchedArtistDetailView: View {
                             show = true
                         }
                     }
-                if show {
+                if show && !store.appState.artist.detailRequesting {
                     FetchedResultsView(entity: Artist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Artist>) in
                         if let artist = results.first {
                             ArtistDetailView(artist: artist)
