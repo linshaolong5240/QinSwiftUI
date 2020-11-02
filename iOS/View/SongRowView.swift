@@ -38,14 +38,12 @@ struct SongRowView: View {
                 }
             }
             Spacer()
-            //            Button(action: {
-            //                Store.shared.dispatch(.like(song: viewModel))
-            //            }, label: {
-            //                Image(systemName: viewModel.liked ? "heart.fill" : "heart")
-            //                    .foregroundColor(Color.mainTextColor)
-            //                    .frame(width: 30, height: 30, alignment: .center)
-            ////                NEUSFView(systemName: viewModel.liked ? "heart.fill" : "heart", size: .medium)
-            //            })
+//            Button(action: {
+////                Store.shared.dispatch(.like(song: viewModel))
+//            }, label: {
+//                Image(systemName: viewModel.liked ? "heart.fill" : "heart")
+//                    .foregroundColor(Color.mainTextColor)
+//            })
             Button(action: {
                 if playing.song?.id == song.id {
                     Store.shared.dispatch(.PlayerPlayOrPause)

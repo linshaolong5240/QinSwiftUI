@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct SongListView: View {
-    @State private var showFavorite: Bool = false
+    @State private var showLike: Bool = false
     
     let songs: [Song]
     
     var body: some View {
         VStack {
+            let likeIds = Store.shared.appState.playlist.likedIds
             HStack {
                 Button(action: {
-                    if showFavorite {
+                    if showLike {
                         let likeIds = Store.shared.appState.playlist.likedIds
                         Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{$0.id}.filter({ (id) -> Bool in
                             return likeIds.contains(id)
@@ -26,25 +27,24 @@ struct SongListView: View {
                     }
                     Store.shared.dispatch(.PlayerPlayByIndex(index: 0))
                 }) {
-                    Text(showFavorite ? "播放喜欢\(String(songs.count)) 首" : "播放全部\(String(songs.count)) 首")
+                    Text("播放全部")
                         .fontWeight(.bold)
                 }
                 Spacer()
-                Text(showFavorite ? "喜欢" : "全部")
+                Text(showLike ? "喜欢" : "全部")
                     .fontWeight(.bold)
                     .foregroundColor(.secondTextColor)
-                Toggle("", isOn: $showFavorite)
+                Toggle("", isOn: $showLike)
                     .fixedSize()
             }
             .padding(.horizontal)
             ScrollView {
                 LazyVStack {
                     ForEach(songs) { item in
-                        Button(action: {
-                        }, label: {
+                        if !showLike || likeIds.contains(item.id) {
                             SongRowView(song: item)
                                 .padding(.horizontal)
-                        })
+                        }
                     }
                 }
             }
