@@ -391,11 +391,11 @@
 				2BCCB28E24DC5A2A004CAD67 /* PlaylistsView.swift */,
 				2B2D517724E39C1C007B52A4 /* SearchView.swift */,
 				2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */,
+				2B95469B25508F3500903B27 /* SongListView.swift */,
 				2BC664AA250C03F700A08BD7 /* SongRowView.swift */,
 				2BCCB28824DC5A2A004CAD67 /* TestView.swift */,
 				2BCCB29724DC5A2B004CAD67 /* UserView.swift */,
 				2BCCB28924DC5A2A004CAD67 /* ViewModifier.swift */,
-				2B95469B25508F3500903B27 /* SongListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

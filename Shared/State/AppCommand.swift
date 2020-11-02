@@ -899,6 +899,12 @@ struct PlaylistDetailSongsCommand: AppCommand {
                 }
                 if let songsDict = data?["songs"] as? [[String: Any]] {
                     do {
+                        //clean relationship
+                        if let saved = DataManager.shared.getPlaylist(id: playlistJSONModel.id) {
+                            if let songs = saved.songs {
+                                saved.removeFromSongs(songs)
+                            }
+                        }
                         let songsDetailJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
                         let songsId = songsDetailJSONModel.map{$0.id}
                         let context = DataManager.shared.Context()

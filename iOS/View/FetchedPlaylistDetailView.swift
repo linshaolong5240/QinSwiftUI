@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 
 struct FetchedPlaylistDetailView: View {
+    @EnvironmentObject private var store: Store
     @State private var show: Bool = false
     
     let id: Int64
@@ -25,7 +26,7 @@ struct FetchedPlaylistDetailView: View {
                             show = true
                         }
                     }
-                if show {
+                if show && !store.appState.playlist.detailRequesting {
                     FetchedResultsView(entity: Playlist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Playlist>) in
                         if let playlist = results.first {
                             PlaylistDetailView(playlist: playlist)
@@ -37,6 +38,9 @@ struct FetchedPlaylistDetailView: View {
                             Spacer()
                         }
                     }
+                }else {
+                    Text("正在加载")
+                    Spacer()
                 }
             }
             .navigationBarHidden(true)
@@ -148,7 +152,7 @@ struct CommonNavigationBarView: View {
                     Store.shared.dispatch(.playlistDetail(id: id))
                 }
             }){
-                NEUSFView(systemName: "music.quarternote.3")
+                Image(systemName: "icloud.and.arrow.down.fill")
             }
             Button(action: {
                 showPlayingNow.toggle()

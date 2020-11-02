@@ -35,6 +35,8 @@ struct  FetchedAlbumDetailView: View {
                             Spacer()
                         }
                     }
+                }else {
+                    Spacer()
                 }
             }
         }

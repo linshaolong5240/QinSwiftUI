@@ -93,6 +93,19 @@ class DataManager {
         }
         return nil
     }
+    public func getPlaylist(id: Int64) -> Playlist? {
+        do {
+            let context = persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+            fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+            let song = try context.fetch(fetchRequest).first as? Playlist
+            print("\(#function)")
+            return song
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+        return nil
+    }
     public func userLogin(_ user: User) {
         userLogout()
         let accountData = NSEntityDescription.insertNewObject(forEntityName: "AccountData", into: persistentContainer.viewContext) as! AccountData
