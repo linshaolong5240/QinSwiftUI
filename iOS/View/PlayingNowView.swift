@@ -51,44 +51,45 @@ struct PlayingNowView: View {
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
                     .padding(.horizontal)
-                    .transition(.move(edge: .top))
+                    .transition(.move(edge: .bottom))
                 }
                 ZStack {
-                    HStack {
-                        Button(action: {
-                            Store.shared.dispatch(.like(song: playing.songDetail))
-                        }) {
-                            NEUSFView(systemName: playing.songDetail.liked ? "heart.fill" : "heart", size: .medium, active: playing.songDetail.liked)
-
-                        }
-                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: playing.songDetail.liked, shape: Circle()))
-                        .offset(x: showMore ? 0 : -screen.width/4)
-                        .transition(.move(edge: .trailing))
-                        Spacer()
-                        Button(action: {
-                            showComment.toggle()
-                            if showComment {
-                                if store.appState.comment.id != playing.songDetail.id {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
+                    if showMore {
+                        HStack {
+                            Button(action: {
+                                if let id = Store.shared.appState.playing.song?.id {
+                                    let like = !Store.shared.appState.playlist.likedIds.contains(id)
+                                    Store.shared.dispatch(.like(id: id, like: like))
+                                }
+                            }) {
+                                NEUSFView(systemName: store.appState.playlist.likedIds.contains(playing.song?.id ?? 0) ? "heart.fill" : "heart", size: .medium, active: playing.songDetail.liked)
+                            }
+                            .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            Spacer()
+                            Button(action: {
+                                showComment.toggle()
+                                if showComment {
+                                    if store.appState.comment.id != playing.songDetail.id {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
+                                        }
                                     }
                                 }
-                            }
-                            withAnimation(.default) {
-                                if showComment {
-                                    bottomType = .commentlist
-                                }else {
-                                    bottomType = .playinglist
+                                withAnimation(.default) {
+                                    if showComment {
+                                        bottomType = .commentlist
+                                    }else {
+                                        bottomType = .playinglist
+                                    }
                                 }
+                            }) {
+                                NEUSFView(systemName: showComment ? "text.bubble.fill" : "text.bubble", size: .medium, active: showComment)
                             }
-                        }) {
-                            NEUSFView(systemName: showComment ? "text.bubble.fill" : "text.bubble", size: .medium, active: showComment)
+                            .buttonStyle(NEUButtonStyle(shape: Circle()))
                         }
-                        .buttonStyle(NEUButtonToggleStyle(isHighlighted: showComment, shape: Circle()))
-                        .offset(x: showMore ? 0 : screen.width/4)
-                        .transition(.move(edge: .leading))
+                        .padding(.horizontal)
+                        .transition(.move(edge: .top))
                     }
-                    .padding(.horizontal)
                     PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType, showComment: $showComment)
                     HStack {
                         Spacer()

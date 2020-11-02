@@ -38,12 +38,14 @@ struct SongRowView: View {
                 }
             }
             Spacer()
-//            Button(action: {
-////                Store.shared.dispatch(.like(song: viewModel))
-//            }, label: {
-//                Image(systemName: viewModel.liked ? "heart.fill" : "heart")
-//                    .foregroundColor(Color.mainTextColor)
-//            })
+            Button(action: {
+                let like = !Store.shared.appState.playlist.likedIds.contains(song.id)
+                Store.shared.dispatch(.like(id: song.id, like: like))
+            }, label: {
+                Image(systemName: store.appState.playlist.likedIds.contains(song.id) ? "heart.fill" : "heart")
+                    .foregroundColor(Color.mainTextColor)
+                    .padding(.horizontal)
+            })
             Button(action: {
                 if playing.song?.id == song.id {
                     Store.shared.dispatch(.PlayerPlayOrPause)

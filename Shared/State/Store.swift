@@ -179,12 +179,11 @@ class Store: ObservableObject {
             let songId = appState.playing.playinglist[index]
             appState.playing.song = DataManager.shared.getSong(id: songId)
             appCommand = InitAcionCommand()
-        case .like(let song):
-            appCommand = LikeCommand(song: song)
-        case .likeDone(let song, let result):
+        case .like(let id, let like):
+            appCommand = LikeCommand(id: id, like: like)
+        case .likeDone(let result):
             switch result {
-            case .success(let like):
-                song.liked = like
+            case .success:
                 appCommand = LikeDoneCommand()
             case .failure(let error):
                 appState.error = error

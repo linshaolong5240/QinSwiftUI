@@ -35,8 +35,8 @@ enum AppAction {
     case commentMusicLoadMore
     case coverShape
     case initAction
-    case like(song: SongViewModel)
-    case likeDone(song: SongViewModel, result: Result<Bool, AppError>)
+    case like(id: Int64, like: Bool)
+    case likeDone(result: Result<Bool, AppError>)
     case likelist(uid: Int64? = nil)
     case likelistDone(result: Result<[Int64], AppError>)
     case login(email: String, password: String)

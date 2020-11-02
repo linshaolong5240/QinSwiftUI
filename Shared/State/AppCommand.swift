@@ -470,18 +470,19 @@ struct InitAcionCommand: AppCommand {
 }
 
 struct LikeCommand: AppCommand {
-    let song: SongViewModel
+    let id: Int64
+    let like: Bool
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.like(id: song.id, like: song.liked ? false : true) { (data, error) in
+        NeteaseCloudMusicApi.shared.like(id: id, like: like) { (data, error) in
             guard error == nil else {
-                store.dispatch(.likeDone(song: song, result: .failure(error!)))
+                store.dispatch(.likeDone(result: .failure(error!)))
                 return
             }
             if data!["code"] as! Int == 200 {
-                store.dispatch(.likeDone(song: song, result: .success(song.liked ? false : true)))
+                store.dispatch(.likeDone(result: .success(like)))
             }else {
-                store.dispatch(.likeDone(song: song, result: .failure(.like)))
+                store.dispatch(.likeDone(result: .failure(.like)))
             }
         }
     }

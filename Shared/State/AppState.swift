@@ -131,7 +131,7 @@ extension AppState {
         
         var playinglist: [Int64] {
             get {
-                return UserDefaults.standard.array(forKey: "playinglist") as! [Int64]
+                return UserDefaults.standard.array(forKey: "playinglist") as? [Int64] ?? [Int64]()
             }
             set {
                 UserDefaults.standard.set(newValue, forKey: "playinglist")
