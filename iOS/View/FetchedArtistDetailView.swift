@@ -91,7 +91,7 @@ struct ArtistDetailView: View {
                 }
             case .mv:
                 if let mvs = artist.mvs {
-                    CommonGridView(mvs.allObjects as! [MV], gridColumns: 3) { item in
+                    VGridView(mvs.allObjects as! [MV], gridColumns: 3) { item in
                         CommonGridItemView(item)
                     }
                 }
@@ -119,27 +119,6 @@ struct ArtistDetailView: View {
             //                        ArtistMVView(mvs: viewModel.mvs)
             //                    }
             //                }
-        }
-    }
-}
-
-struct CommonGridView<Data: RandomAccessCollection,  Content: View>: View where Data.Element: Hashable {
-    let data: Data
-    let content: (Data.Element) -> Content
-    let gridColumns: Int
-    init(_ data: Data, gridColumns: Int, @ViewBuilder content: @escaping (Data.Element) -> Content) {
-        self.data = data
-        self.gridColumns = gridColumns
-        self.content = content
-    }
-    var body: some View {
-        ScrollView {
-            let columns: [GridItem] = Array<GridItem>(repeating: .init(.flexible()), count: gridColumns)
-            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-                ForEach(data, id: \.self) { item in
-                    content(item)
-                }
-            }/*@END_MENU_TOKEN@*/
         }
     }
 }
