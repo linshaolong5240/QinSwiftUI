@@ -77,7 +77,6 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.artist.error = error
             }
-            appState.artist.detailRequesting = false
         case .artistAlbum(let id, let limit, let offset):
             appState.artist.artistAlbumRequesting = true
             appCommand = ArtistAlbumCommand(id: id, limit: limit, offset: offset)
@@ -99,7 +98,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.artist.error = error
             }
-            appState.artist.artistMVRequesting = false
+            appState.artist.detailRequesting = false
         case .artistIntroduction(let id):
             appCommand = ArtistIntroductionCommand(id: id)
         case .artistIntroductionDone(let result):

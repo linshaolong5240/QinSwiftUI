@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct SongListView: View {
+    @EnvironmentObject private var store: Store
     @State private var showLike: Bool = false
     
     let songs: [Song]
     
     var body: some View {
         VStack {
-            let likeIds = Store.shared.appState.playlist.likedIds
             HStack {
                 Button(action: {
                     if showLike {
@@ -27,11 +27,11 @@ struct SongListView: View {
                     }
                     Store.shared.dispatch(.PlayerPlayByIndex(index: 0))
                 }) {
-                    Text("播放全部")
+                    Text(showLike ? "播放喜欢" : "播放全部")
                         .fontWeight(.bold)
                 }
                 Spacer()
-                Text(showLike ? "喜欢" : "全部")
+                Text("喜欢")
                     .fontWeight(.bold)
                     .foregroundColor(.secondTextColor)
                 Toggle("", isOn: $showLike)
@@ -41,7 +41,7 @@ struct SongListView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(songs) { item in
-                        if !showLike || likeIds.contains(item.id) {
+                        if !showLike || store.appState.playlist.likedIds.contains(item.id) {
                             SongRowView(song: item)
                                 .padding(.horizontal)
                         }

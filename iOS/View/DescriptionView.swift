@@ -44,11 +44,11 @@ struct DescriptionView: View {
                     .foregroundColor(.mainTextColor)
                 if showMoreDescription {
                     ScrollView {
-                        Text(configuration.description)
+                        Text(configuration.introduction)
                             .foregroundColor(.secondTextColor)
                     }
                 }else {
-                    Text(configuration.description)
+                    Text(configuration.introduction)
                         .foregroundColor(.secondTextColor)
                         .lineLimit(5)
                 }
@@ -63,39 +63,39 @@ struct DescriptionView: View {
 }
 
 struct DescriptionConfiguration {
-    var description: String
+    var introduction: String
     var id: Int64
     var name: String
     var picUrl: String
 
-    init(picUrl: String, name: String, description: String, id: Int64) {
+    init(picUrl: String, name: String, introduction: String, id: Int64) {
         self.id = id
         self.name = name
-        self.description = description
+        self.introduction = introduction
         self.picUrl = picUrl
     }
 
     init(viewModel: Album) {
-        self.description = viewModel.introduction ?? ""
+        self.introduction = viewModel.introduction ?? ""
         self.id = viewModel.id
         self.name = viewModel.name ?? ""
         self.picUrl = viewModel.picUrl ?? ""
     }
     
     init(viewModel: Artist) {
-        self.description = ""//viewModel.description
+        self.introduction = viewModel.introduction ?? ""
         self.id = viewModel.id
         self.name = viewModel.name ?? ""
         self.picUrl = viewModel.img1v1Url ?? ""
     }
     init(viewModel: Playlist) {
-        self.description = viewModel.introduction ?? ""
+        self.introduction = viewModel.introduction ?? ""
         self.id = viewModel.id
         self.name = viewModel.name ?? ""
         self.picUrl = viewModel.coverImgUrl ?? ""
     }
     init(viewModel: PlaylistViewModel) {
-        self.description = viewModel.description
+        self.introduction = viewModel.description
         self.id = viewModel.id
         self.name = viewModel.name
         self.picUrl = viewModel.coverImgUrl
@@ -107,7 +107,7 @@ struct DescriptionView_Previews: PreviewProvider {
     static var previews: some View {
         DescriptionView(configuration: DescriptionConfiguration(picUrl: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602189927688&di=3f64d8e667c95aef44b1ab729dfb39f6&imgtype=0&src=http%3A%2F%2Fimge.kugou.com%2Fstdmusic%2F20150720%2F20150720162823338587.jpg",
                                                                 name: "aliez",
-                                                                description: "description",
+                                                                introduction: "description",
                                                                 id: 0))
     }
 }

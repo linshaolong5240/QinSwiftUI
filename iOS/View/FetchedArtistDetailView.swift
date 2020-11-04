@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct FetchedArtistDetailView: View {
-    enum Selection {
-        case album, hotSong, mv
-    }
     @EnvironmentObject private var store: Store
     @State private var show: Bool = false
     
@@ -42,29 +39,6 @@ struct FetchedArtistDetailView: View {
                 }else {
                     Spacer()
                 }
-                //                if store.appState.artist.artistRequesting == true {
-                //                    Text("正在加载")
-                //                    Spacer()
-                //                }else {
-                ////                    DescriptionView(viewModel: viewModel)
-                //                    Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
-                //                        Text("热门歌曲").tag(Selection.hotSong)
-                //                        Text("专辑").tag(Selection.album)
-                //                        Text("MV").tag(Selection.mv)
-                //                    }/*@END_MENU_TOKEN@*/
-                //                    .pickerStyle(SegmentedPickerStyle())
-                //                    .padding()
-                //                    SongListView(songs: [SongViewModel]())
-                
-                //                    switch selection {
-                //                    case .album:
-                //                        ArtistAlbumView(albums: viewModel.albums)
-                //                    case .hotSong:
-                //                        SongListView(songs: viewModel.hotSongs)
-                //                    case .mv:
-                //                        ArtistMVView(mvs: viewModel.mvs)
-                //                    }
-                //                }
             }
         }
         .navigationBarHidden(true)
@@ -84,39 +58,105 @@ struct ArtistView_Previews: PreviewProvider {
 #endif
 
 struct ArtistDetailView: View {
+    enum Selection {
+        case album, hotSong, mv
+    }
+    @State private var selection: Selection = .hotSong
     let artist: Artist
     
     var body: some View {
         VStack {
             DescriptionView(viewModel: artist)
-            if let songs = artist.songs {
-                if let songsId = artist.songsId {
-                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
-                        let lIndex = songsId.firstIndex(of: left.id)
-                        let rIndex = songsId.firstIndex(of: right.id)
-                        return lIndex ?? 0 > rIndex ?? 0 ? false : true
-                    }))
+            Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
+                Text("热门歌曲50").tag(Selection.hotSong)
+                Text("专辑").tag(Selection.album)
+                Text("MV").tag(Selection.mv)
+            }/*@END_MENU_TOKEN@*/
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            switch selection {
+            case .album:
+                if let albums = artist.albums {
+                    ArtistAlbumView(albums: Array(albums as! Set<Album>))
                 }
-            }else {
-                Spacer()
+            case .hotSong:
+                if let songs = artist.songs {
+                    if let songsId = artist.songsId {
+                        SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
+                            let lIndex = songsId.firstIndex(of: left.id)
+                            let rIndex = songsId.firstIndex(of: right.id)
+                            return lIndex ?? 0 > rIndex ?? 0 ? false : true
+                        }))
+                    }
+                }
+            case .mv:
+                if let mvs = artist.mvs {
+                    CommonGridView(mvs.allObjects as! [MV], gridColumns: 3) { item in
+                        CommonGridItemView(item)
+                    }
+                }
             }
+            //                if store.appState.artist.artistRequesting == true {
+            //                    Text("正在加载")
+            //                    Spacer()
+            //                }else {
+            ////                    DescriptionView(viewModel: viewModel)
+            //                    Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
+            //                        Text("热门歌曲").tag(Selection.hotSong)
+            //                        Text("专辑").tag(Selection.album)
+            //                        Text("MV").tag(Selection.mv)
+            //                    }/*@END_MENU_TOKEN@*/
+            //                    .pickerStyle(SegmentedPickerStyle())
+            //                    .padding()
+            //                    SongListView(songs: [SongViewModel]())
+            
+            //                    switch selection {
+            //                    case .album:
+            //                        ArtistAlbumView(albums: viewModel.albums)
+            //                    case .hotSong:
+            //                        SongListView(songs: viewModel.hotSongs)
+            //                    case .mv:
+            //                        ArtistMVView(mvs: viewModel.mvs)
+            //                    }
+            //                }
+        }
+    }
+}
+
+struct CommonGridView<Data: RandomAccessCollection,  Content: View>: View where Data.Element: Hashable {
+    let data: Data
+    let content: (Data.Element) -> Content
+    let gridColumns: Int
+    init(_ data: Data, gridColumns: Int, @ViewBuilder content: @escaping (Data.Element) -> Content) {
+        self.data = data
+        self.gridColumns = gridColumns
+        self.content = content
+    }
+    var body: some View {
+        ScrollView {
+            let columns: [GridItem] = Array<GridItem>(repeating: .init(.flexible()), count: gridColumns)
+            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
+                ForEach(data, id: \.self) { item in
+                    content(item)
+                }
+            }/*@END_MENU_TOKEN@*/
         }
     }
 }
 
 struct ArtistAlbumView: View {
-    let albums: [AlbumViewModel]
+    let albums: [Album]
     
-    private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
+    private let columns: [GridItem] = Array<GridItem>(repeating: .init(.flexible()), count: 3)
     var body: some View {
         ScrollView {
-//            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-//                ForEach(albums) { item in
-//                    NavigationLink(destination: AlbumDetailView(item)) {
-//                        AlbumView(viewModel: item)
-//                    }
-//                }
-//            }/*@END_MENU_TOKEN@*/
+            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
+                ForEach(albums) { item in
+                    NavigationLink(destination: FetchedAlbumDetailView(id: item.id)) {
+                        CommonGridItemView(item)
+                    }
+                }
+            }/*@END_MENU_TOKEN@*/
         }
     }
 }
@@ -124,34 +164,14 @@ struct ArtistAlbumView: View {
 struct ArtistMVView: View {
     let mvs: [MV]
     
-    private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
+    private let columns: [GridItem] = Array<GridItem>(repeating: .init(.flexible()), count: 3)
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
                 ForEach(mvs) { item in
-                    MVView(viewModel: item)
+                    CommonGridItemView(item)
                 }
             }/*@END_MENU_TOKEN@*/
-        }
-    }
-}
-
-struct MVView: View {
-    let viewModel: MV
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            NEUCoverView(url: viewModel.imgurl, coverShape: .rectangle, size: .small)
-                .padding()
-            Group {
-                Text(viewModel.name)
-                    .foregroundColor(Color.mainTextColor)
-                    .lineLimit(1)
-                    .frame(width: 110, alignment: .leading)
-                Text("\(viewModel.publishTime)")
-                    .foregroundColor(Color.secondTextColor)
-            }
-            .padding(.leading)
         }
     }
 }

@@ -201,11 +201,10 @@ struct ArtistDoneCommand: AppCommand {
     let artist: ArtistJSONModel
     
     func execute(in store: Store) {
-        
-//        let id = artist.id
-//        store.dispatch(.artistIntroduction(id: id))
-//        store.dispatch(.artistAlbum(id: id))
-//        store.dispatch(.artistMV(id: id))
+        let id = artist.id
+        store.dispatch(.artistIntroduction(id: id))
+        store.dispatch(.artistAlbum(id: id))
+        store.dispatch(.artistMV(id: id))
     }
 }
 
@@ -219,14 +218,24 @@ struct ArtistIntroductionCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                let briefDesc = data!["briefDesc"] as! String
-                store.dispatch(.artistIntroductionDone(result: .success(briefDesc)))
-            }else {
-                if let code = data?["code"] as? Int ?? 0 {
-                    if let message = data?["message"] as? String ?? "" {
-                        store.dispatch(.artistIntroductionDone(result: .failure(.comment(code: code, message: message))))
+                do {
+                    var introduction: String = ""
+                    let context = DataManager.shared.Context()
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+                    if let aritst = try context.fetch(fetchRequest).first as? Artist {
+                        introduction = data!["briefDesc"] as! String
+                        aritst.introduction = introduction
+                        try context.save()
                     }
+                    store.dispatch(.artistIntroductionDone(result: .success(introduction)))
+                }catch let err {
+                    print("\(#function) \(err)")
                 }
+            }else {
+                let code = data?["code"] as? Int ?? -1
+                let message = data?["message"] as? String ?? "错误信息解码错误"
+                store.dispatch(.artistIntroductionDone(result: .failure(.comment(code: code, message: message))))
             }
         }
     }
@@ -249,10 +258,31 @@ struct ArtistAlbumCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                let albumsDict = data!["hotAlbums"] as! [NeteaseCloudMusicApi.ResponseData]
-                let albums = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
-                let albumsViewModel = albums.map{ AlbumViewModel($0) }
-                store.dispatch(.artistAlbumDone(result: .success(albumsViewModel)))
+                do {
+                    let context = DataManager.shared.Context()
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+                    if let artist = try context.fetch(fetchRequest).first as? Artist {
+                        //clean albums relationship
+                        if let albums = artist.albums {
+                            artist.removeFromAlbums(albums)
+                            try context.save()
+                        }
+                        let albumsDict = data!["hotAlbums"] as! [[String: Any]]
+                        let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
+                        for albumModel in albumsJSONModel {
+                            let album = Album(context: context)
+                            album.id = albumModel.id
+                            album.name = albumModel.name
+                            album.picUrl = albumModel.picUrl
+                            artist.addToAlbums(album)
+                        }
+                        try context.save()
+                        store.dispatch(.artistAlbumDone(result: .success(albumsJSONModel)))
+                    }
+                }catch let err {
+                    print("\(#function) \(err)")
+                }
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -279,9 +309,28 @@ struct ArtistMVCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                let mvsDict = data!["mvs"] as! [NeteaseCloudMusicApi.ResponseData]
-                let mvs = mvsDict.map{$0.toData!.toModel(MV.self)!}
-                store.dispatch(.artistMVDone(result: .success(mvs)))
+                do {
+                    let context = DataManager.shared.Context()
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+                    if let artist = try context.fetch(fetchRequest).first as? Artist {
+                        //clean albums relationship
+                        if let albums = artist.albums {
+                            artist.removeFromAlbums(albums)
+                            try context.save()
+                        }
+                        let mvsDict = data!["mvs"] as! [[String: Any]]
+                        let mvsJSONModel = mvsDict.map{$0.toData!.toModel(MVJSONModel.self)!}
+                        for mvModel in mvsJSONModel {
+                            let mv = mvModel.toMVEntity(context: context)
+                            artist.addToMvs(mv)
+                        }
+                        try context.save()
+                        store.dispatch(.artistMVDone(result: .success(mvsJSONModel)))
+                    }
+                }catch let err {
+                    print("\(#function) \(err)")
+                }
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"

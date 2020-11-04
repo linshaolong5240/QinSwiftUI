@@ -27,7 +27,15 @@ struct  FetchedAlbumDetailView: View {
                 if show && !store.appState.album.detailRequesting {
                     FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
                         if let album = results.first {
-                            AlbumDetailView(album: album)
+                            if album.songsId != nil {
+                                AlbumDetailView(album: album)
+                            }else {
+                                Text("正在加载")
+                                    .onAppear {
+                                        Store.shared.dispatch(.album(id: id))
+                                    }
+                                Spacer()
+                            }
                         }else {
                             Text("正在加载")
                                 .onAppear {
@@ -37,6 +45,7 @@ struct  FetchedAlbumDetailView: View {
                         }
                     }
                 }else {
+                    Text("正在加载")
                     Spacer()
                 }
             }

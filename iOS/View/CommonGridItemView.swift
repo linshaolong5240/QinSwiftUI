@@ -10,10 +10,16 @@ import SwiftUI
 struct CommonGridItemView: View {
     private let configuration: CommonGridItemViewConfiguration
     
+    init(_ item: Album) {
+        self.configuration = CommonGridItemViewConfiguration(item)
+    }
     init(_ item: AlbumSub) {
         self.configuration = CommonGridItemViewConfiguration(item)
     }
     init(_ item: ArtistSub) {
+        self.configuration = CommonGridItemViewConfiguration(item)
+    }
+    init(_ item: MV) {
         self.configuration = CommonGridItemViewConfiguration(item)
     }
     init(_ item: Playlist) {
@@ -59,6 +65,12 @@ struct CommonGridItemViewConfiguration {
     var name: String?
     var picUrl: String?
     var subscribed: Bool?
+    init(_ item: Album) {
+        self.id = item.id
+        self.name = item.name
+        self.picUrl = item.picUrl
+        self.subscribed = nil
+    }
     init(_ item: AlbumSub) {
         self.id = item.id
         self.name = item.name
@@ -70,6 +82,12 @@ struct CommonGridItemViewConfiguration {
         self.name = item.name
         self.picUrl = item.img1v1Url
         self.subscribed = nil
+    }
+    init(_ item: MV) {
+        self.id = item.id
+        self.name = item.name
+        self.picUrl = item.imgurl
+        self.subscribed = item.subed
     }
     init(_ item: Playlist) {
         self.id = item.id
