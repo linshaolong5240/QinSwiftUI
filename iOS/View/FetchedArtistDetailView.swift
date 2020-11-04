@@ -96,29 +96,6 @@ struct ArtistDetailView: View {
                     }
                 }
             }
-            //                if store.appState.artist.artistRequesting == true {
-            //                    Text("正在加载")
-            //                    Spacer()
-            //                }else {
-            ////                    DescriptionView(viewModel: viewModel)
-            //                    Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
-            //                        Text("热门歌曲").tag(Selection.hotSong)
-            //                        Text("专辑").tag(Selection.album)
-            //                        Text("MV").tag(Selection.mv)
-            //                    }/*@END_MENU_TOKEN@*/
-            //                    .pickerStyle(SegmentedPickerStyle())
-            //                    .padding()
-            //                    SongListView(songs: [SongViewModel]())
-            
-            //                    switch selection {
-            //                    case .album:
-            //                        ArtistAlbumView(albums: viewModel.albums)
-            //                    case .hotSong:
-            //                        SongListView(songs: viewModel.hotSongs)
-            //                    case .mv:
-            //                        ArtistMVView(mvs: viewModel.mvs)
-            //                    }
-            //                }
         }
     }
 }
