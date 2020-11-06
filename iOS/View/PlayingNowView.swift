@@ -51,7 +51,6 @@ struct PlayingNowView: View {
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
                     .padding(.horizontal)
-                    .transition(.move(edge: .bottom))
                 }
                 ZStack {
                     if showMore {
