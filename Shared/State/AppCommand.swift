@@ -1101,8 +1101,31 @@ struct RecommendSongsCommand: AppCommand {
             }
             if data!["code"] as! Int == 200 {
                 if let recommendSongDicts = data?["data"] as? NeteaseCloudMusicApi.ResponseData {
-                    let recommendSongsModel = recommendSongDicts.toData!.toModel(RecommendSongsModel.self)!
-                    store.dispatch(.recommendSongsDone(result: .success(PlaylistModel(recommendSongsModel))))
+                    do {
+                        let context = DataManager.shared.Context()
+                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+                        fetchRequest.predicate = NSPredicate(format: "%K == 0", "id")
+                        if let saved = try context.fetch(fetchRequest).first as? Playlist {
+                            if let songs = saved.songs {
+                                saved.removeFromSongs(songs)
+                                try context.save()
+                            }
+                        }
+                        let recommendSongsJSONModel = recommendSongDicts.toData!.toModel(RecommendSongsJSONModel.self)!
+                        let playlist = Playlist(context: context)
+                        playlist.id = 0
+                        playlist.name = "每日推荐"
+                        playlist.introduction = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
+                        playlist.songsId = recommendSongsJSONModel.dailySongs.map{$0.id}
+                        for songModel in recommendSongsJSONModel.dailySongs {
+                            let song = songModel.toSongEntity(context: context)
+                            playlist.addToSongs(song)
+                        }
+                        try context.save()
+                        store.dispatch(.recommendSongsDone(result: .success(recommendSongsJSONModel)))
+                    } catch let err {
+                        print("\(#function) \(err)")
+                    }
                 }
             }else {
                 store.dispatch(.recommendSongsDone(result: .failure(.playlistDetailError)))

@@ -7,12 +7,18 @@
 
 import Foundation
 
-struct RecommendSongsModel: Codable {
+struct RecommendSongsJSONModel: Codable {
     struct RecommendReasons: Codable {
         var reason: String
         var songId: Int
     }
-    var dailySongs = [SongModel]()
+    struct SongModel: Codable {
+        var al: AlbumModel
+        var ar: [ArtistModel]
+        var id: Int64
+        var name: String
+    }
+    var dailySongs = [SongDetailJSONModel]()
 //    var orderSongs: [Any]
     var recommendReasons = [RecommendReasons]()
 }

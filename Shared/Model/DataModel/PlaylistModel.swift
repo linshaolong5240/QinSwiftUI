@@ -14,7 +14,7 @@ struct PlaylistModel: Codable {
     var subscribed: Bool
     var songsId: [Int64]?
     var userId: Int64
-    init(_ model: RecommendSongsModel) {
+    init(_ model: RecommendSongsJSONModel) {
         self.coverImgUrl = nil
         self.id = 0
         self.name = "每日推荐"

@@ -431,8 +431,8 @@ class Store: ObservableObject {
             appCommand = RecommendSongsCommand()
         case .recommendSongsDone(let result):
             switch result {
-            case .success(let playlsit):
-                appState.playlist.recommendSongsPlaylist = playlsit
+            case .success:
+                break
             case .failure(let error):
                 appState.error = error
             }

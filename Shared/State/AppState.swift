@@ -99,7 +99,7 @@ extension AppState {
     struct Playlists {
         //用户相关歌单
         var recommendPlaylistRequesting: Bool = false
-        var recommendSongsPlaylist = PlaylistModel(RecommendSongsModel())//每日推荐歌曲
+        var recommendSongsPlaylist = PlaylistModel(RecommendSongsJSONModel())//每日推荐歌曲
         var userPlaylistRequesting: Bool = false
 
         //发现歌单

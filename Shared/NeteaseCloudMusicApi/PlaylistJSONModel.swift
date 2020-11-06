@@ -88,14 +88,3 @@ struct RecommendPlaylistJSONModel: Codable, Identifiable {
     var type: Int
     var userId: Int64
 }
-
-struct RecommendSongsJSONModel: Codable {
-    struct RecommendReasons: Codable {
-        var reason: String
-        var songId: Int
-    }
-    var dailySongs: [SongDetailJSONModel]
-//    var orderSongs: [Any]
-    var recommendReasons: [RecommendReasons]
-}
-
