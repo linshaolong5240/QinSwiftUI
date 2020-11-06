@@ -465,7 +465,7 @@ struct PlayingNowCoverView: View {
     var body: some View {
         switch settings.coverShape {
         case .circle:
-            NEUImageView(url: playing.songDetail.albumPicURL,
+            NEUImageView(url: playing.song?.album?.picUrl ?? "",
                          size: !showMore ? .large: .medium,
                          innerShape: Circle(),
                          outerShape: Circle(),
@@ -474,7 +474,7 @@ struct PlayingNowCoverView: View {
                          isOrigin: true)
                 .onTapGesture(perform: tapAction)
         case .rectangle:
-            NEUImageView(url: playing.songDetail.albumPicURL,
+            NEUImageView(url: playing.song?.album?.picUrl ?? "",
                          size: showMore ? .medium: .large,
                          innerShape: RoundedRectangle(cornerRadius: showMore ? 25 : 50, style: .continuous),
                          outerShape: RoundedRectangle(cornerRadius: showMore ? 35 : 65, style: .continuous),
