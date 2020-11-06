@@ -20,7 +20,7 @@ enum AppAction {
     case artistAlbum(id: Int64,limit: Int = 100, offset: Int = 0)
     case artistAlbumDone(result: Result<[AlbumJSONModel], AppError>)
     case artistIntroduction(id: Int64)
-    case artistIntroductionDone(result: Result<String, AppError>)
+    case artistIntroductionDone(result: Result<String?, AppError>)
     case artistMV(id: Int64,limit: Int = 30, offset: Int = 0)
     case artistMVDone(result: Result<[MVJSONModel], AppError>)
     case artistSub(id: Int64, sub: Bool)

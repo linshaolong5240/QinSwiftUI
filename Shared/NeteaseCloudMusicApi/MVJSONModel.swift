@@ -24,17 +24,17 @@ struct MVJSONModel: Codable, Identifiable {
 
 extension MVJSONModel {
     public func toMVEntity(context: NSManagedObjectContext) -> MV {
-        let mv = MV(context: context)
-        mv.artistName = self.artistName
-        mv.duration = self.duration
-        mv.id = self.id
-        mv.imgurl = self.imgurl
-        mv.imgurl16v9 = self.imgurl16v9
-        mv.name = self.name
-        mv.playCount = self.playCount
-        mv.publishTime = self.publishTime
-        mv.status = self.status
-        mv.subed = self.subed
-        return mv
+        let entity = MV(context: context)
+        entity.artistName = self.artistName
+        entity.duration = self.duration
+        entity.id = self.id
+        entity.imgurl = self.imgurl
+        entity.imgurl16v9 = self.imgurl16v9
+        entity.name = self.name
+        entity.playCount = self.playCount
+        entity.publishTime = self.publishTime
+        entity.status = self.status
+        entity.subed = self.subed
+        return entity
     }
 }

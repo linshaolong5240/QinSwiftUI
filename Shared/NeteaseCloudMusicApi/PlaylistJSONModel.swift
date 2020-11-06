@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct PlaylistJSONModel: Codable, Identifiable {
     struct TrackId: Codable, Identifiable {
@@ -61,6 +62,19 @@ struct PlaylistJSONModel: Codable, Identifiable {
     var userId: Int64
 }
 
+extension PlaylistJSONModel {
+    public func toPlaylistEntity(context: NSManagedObjectContext) -> Playlist {
+        let playlist = Playlist(context: context)
+        playlist.coverImgUrl = self.coverImgUrl
+        playlist.id = self.id
+        playlist.introduction = self.description
+        playlist.name = self.name
+        playlist.subscribed = self.subscribed
+        playlist.userId = self.userId
+        return playlist
+    }
+}
+
 struct RecommendPlaylistJSONModel: Codable, Identifiable {
     var alg: String
     var copywriter: String
@@ -84,3 +98,4 @@ struct RecommendSongsJSONModel: Codable {
 //    var orderSongs: [Any]
     var recommendReasons: [RecommendReasons]
 }
+

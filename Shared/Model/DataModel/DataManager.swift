@@ -18,6 +18,13 @@ class DataManager {
                 fatalError("Unable to load persistent stores: \(error)")
             }
         }
+        /*add necessary support for migration*/
+        let description = NSPersistentStoreDescription()
+        description.shouldMigrateStoreAutomatically = true
+        description.shouldInferMappingModelAutomatically = true
+        container.persistentStoreDescriptions =  [description]
+        /*add necessary support for migration*/
+        //防止重复插入数据
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return container
     }()

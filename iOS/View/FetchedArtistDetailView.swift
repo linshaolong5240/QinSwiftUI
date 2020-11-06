@@ -26,8 +26,8 @@ struct FetchedArtistDetailView: View {
                     }
                 if show && !store.appState.artist.detailRequesting {
                     FetchedResultsView(entity: Artist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Artist>) in
-                        if let artist = results.first {
-                            ArtistDetailView(artist: artist)
+                        if results.first?.songsId != nil {
+                            ArtistDetailView(artist: results.first!)
                         }else {
                             Text("正在加载")
                                 .onAppear {
@@ -76,8 +76,12 @@ struct ArtistDetailView: View {
             .padding()
             switch selection {
             case .album:
-                if let albums = artist.albums {
-                    ArtistAlbumView(albums: Array(albums as! Set<Album>))
+                if let albums = artist.albums?.allObjects as? [Album] {
+                    VGridView(albums.sorted(by: { (left, right) -> Bool in
+                        return left.publishTime > right.publishTime ? true : false
+                    }), gridColumns: 3) { item in
+                        CommonGridItemView(item)
+                    }
                 }
             case .hotSong:
                 if let songs = artist.songs {
@@ -90,44 +94,14 @@ struct ArtistDetailView: View {
                     }
                 }
             case .mv:
-                if let mvs = artist.mvs {
-                    VGridView(mvs.allObjects as! [MV], gridColumns: 3) { item in
+                if let mvs = artist.mvs?.allObjects as? [MV] {
+                    VGridView(mvs.sorted(by: { (left, right) -> Bool in
+                        return left.publishTime ?? "" > right.publishTime ?? "" ? true : false
+                    }), gridColumns: 3) { item in
                         CommonGridItemView(item)
                     }
                 }
             }
-        }
-    }
-}
-
-struct ArtistAlbumView: View {
-    let albums: [Album]
-    
-    private let columns: [GridItem] = Array<GridItem>(repeating: .init(.flexible()), count: 3)
-    var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-                ForEach(albums) { item in
-                    NavigationLink(destination: FetchedAlbumDetailView(id: item.id)) {
-                        CommonGridItemView(item)
-                    }
-                }
-            }/*@END_MENU_TOKEN@*/
-        }
-    }
-}
-
-struct ArtistMVView: View {
-    let mvs: [MV]
-    
-    private let columns: [GridItem] = Array<GridItem>(repeating: .init(.flexible()), count: 3)
-    var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-                ForEach(mvs) { item in
-                    CommonGridItemView(item)
-                }
-            }/*@END_MENU_TOKEN@*/
         }
     }
 }

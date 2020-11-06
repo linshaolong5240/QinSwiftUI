@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct AlbumJSONModel: Codable, Identifiable {
     struct CommentThread: Codable {
@@ -64,14 +65,27 @@ struct AlbumJSONModel: Codable, Identifiable {
     var picId: Int
     var picId_str: String?
     var picUrl: String
-    var publishTime: Int
+    var publishTime: Int64
     var size: Int
 //    var songs: [Any]
     var status: Int
     var subType: String?
     var tags: String
     var type: String?
+}
+
+extension AlbumJSONModel {
     func toDictionary() -> Dictionary<String, Any> {
-        return ["id": self.id, "name": self.name ?? "", "picUrl": self.picUrl]
+        return ["id": self.id, "name": self.name ?? ""]
+    }
+    public func toAlbumEntity(context: NSManagedObjectContext) -> Album {
+        let entity = Album(context: context)
+        entity.id = self.id
+        entity.introduction = self.briefDesc
+        entity.isSub = isSub ?? false
+        entity.name = self.name
+        entity.picUrl = self.picUrl
+        entity.publishTime = self.publishTime
+        return entity
     }
 }

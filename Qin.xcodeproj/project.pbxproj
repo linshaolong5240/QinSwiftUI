@@ -209,6 +209,7 @@
 		2B8F56E9252F8969008FFF8F /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		2B95469B25508F3500903B27 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidirectionalCollection+Extension.swift"; sourceTree = "<group>"; };
+		2BB726D62554F66A00E98B23 /* DataModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "DataModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		2BB8558224E63CC800D600BB /* ThemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeViewModel.swift; sourceTree = "<group>"; };
 		2BC4C2002549B22100121D3E /* PlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistModel.swift; sourceTree = "<group>"; };
 		2BC4C209254A2E7C00121D3E /* RecommendPlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendPlaylistModel.swift; sourceTree = "<group>"; };
@@ -1066,6 +1067,7 @@
 		2BCCB33224DC98A6004CAD67 /* DataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				2BB726D62554F66A00E98B23 /* DataModel 2.xcdatamodel */,
 				2BCCB33324DC98A6004CAD67 /* DataModel.xcdatamodel */,
 			);
 			currentVersion = 2BCCB33324DC98A6004CAD67 /* DataModel.xcdatamodel */;

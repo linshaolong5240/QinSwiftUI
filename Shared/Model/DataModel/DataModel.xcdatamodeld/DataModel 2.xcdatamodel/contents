@@ -6,10 +6,10 @@
     <entity name="Album" representedClassName="Album" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="introduction" optional="YES" attributeType="String"/>
-        <attribute name="isSub" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isSub" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="picUrl" optional="YES" attributeType="String"/>
-        <attribute name="publishTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="publishTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="songsId" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
         <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" inverseName="albums" inverseEntity="Artist"/>
         <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="album" inverseEntity="Song"/>
@@ -30,7 +30,6 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Artist" representedClassName="Artist" syncable="YES" codeGenerationType="class">
-        <attribute name="followed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="img1v1Url" optional="YES" attributeType="String"/>
         <attribute name="introduction" optional="YES" attributeType="String"/>
@@ -99,7 +98,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
-        <attribute name="al" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String:Any]"/>
+        <attribute name="al" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String: Any]"/>
         <attribute name="ar" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[[String:Any]]"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -132,7 +131,7 @@
         <element name="AccountData" positionX="-931.87890625" positionY="-1111.08984375" width="128" height="58"/>
         <element name="Album" positionX="-1907.171875" positionY="-1037.75390625" width="128" height="178"/>
         <element name="AlbumSub" positionX="-1270.00390625" positionY="-1128.484375" width="128" height="88"/>
-        <element name="Artist" positionX="-1911.62109375" positionY="-758.921875" width="128" height="178"/>
+        <element name="Artist" positionX="-1911.62109375" positionY="-758.921875" width="128" height="163"/>
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>
         <element name="MV" positionX="-1539" positionY="-891" width="128" height="208"/>
         <element name="Playlist" positionX="-2153.5625" positionY="-1122.75" width="128" height="163"/>

@@ -38,23 +38,15 @@ struct AlbumCommand: AppCommand {
                     let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
                     let songsDict = data!["songs"] as! [[String: Any]]
                     let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                    let album = Album(context: context)
+                    let album = albumJSONModel.toAlbumEntity(context: context)
                     let songsIds = songsJSONModel.map{$0.id}
-                    album.id = albumJSONModel.id
-                    album.introduction = albumJSONModel.description
-                    album.name = albumJSONModel.name
-                    album.picUrl = albumJSONModel.picUrl
                     album.songsId = songsIds
+                    for ar in albumJSONModel.artists {
+                        let artist = ar.toArtistEntity(context: context)
+                        album.addToArtists(artist)
+                    }
                     for songModel in songsJSONModel {
-                        let song = Song(context: context)
-                        song.al = songModel.al.toDictionary()
-                        var ar = [[String: Any]]()
-                        for a in songModel.ar {
-                            ar.append((a.toDictionary()))
-                        }
-                        song.ar = ar
-                        song.id = songModel.id
-                        song.name = songModel.name
+                        let song = songModel.toSongEntity(context: context)
                         album.addToSongs(song)
                     }
                     try context.save()
@@ -163,22 +155,11 @@ struct ArtistCommand: AppCommand {
                     let hotSongsDictArray = data!["hotSongs"] as! [[String: Any]]
                     let songsJSONModel = hotSongsDictArray.map{$0.toData!.toModel(SongJSONModel.self)!}
                     
-                    let artist = Artist(context: context)
+                    let artist = artistJSONModel.toArtistEntity(context: context)
                     let songsIds = songsJSONModel.map{$0.id}
-                    artist.id = artistJSONModel.id
-                    artist.name = artistJSONModel.name
-                    artist.img1v1Url = artistJSONModel.img1v1Url
                     artist.songsId = songsIds
                     for songModel in songsJSONModel {
-                        let song = Song(context: context)
-                        song.al = songModel.album.toDictionary()
-                        var ar = [[String: Any]]()
-                        for a in songModel.artists {
-                            ar.append((a.toDictionary()))
-                        }
-                        song.ar = ar
-                        song.id = songModel.id
-                        song.name = songModel.name
+                        let song = songModel.toSongEntity(context: context)
                         artist.addToSongs(song)
                     }
                     try context.save()
@@ -219,12 +200,12 @@ struct ArtistIntroductionCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 do {
-                    var introduction: String = ""
+                    var introduction: String?
                     let context = DataManager.shared.Context()
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
                     fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
                     if let aritst = try context.fetch(fetchRequest).first as? Artist {
-                        introduction = data!["briefDesc"] as! String
+                        introduction = data!["briefDesc"] as? String ?? nil
                         aritst.introduction = introduction
                         try context.save()
                     }
@@ -271,10 +252,7 @@ struct ArtistAlbumCommand: AppCommand {
                         let albumsDict = data!["hotAlbums"] as! [[String: Any]]
                         let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
                         for albumModel in albumsJSONModel {
-                            let album = Album(context: context)
-                            album.id = albumModel.id
-                            album.name = albumModel.name
-                            album.picUrl = albumModel.picUrl
+                            let album = albumModel.toAlbumEntity(context: context)
                             artist.addToAlbums(album)
                         }
                         try context.save()
@@ -978,24 +956,10 @@ struct PlaylistDetailSongsCommand: AppCommand {
                         }
                         let songsDetailJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
                         let songsId = songsDetailJSONModel.map{$0.id}
-                        let playlist = Playlist(context: context)
-                        playlist.coverImgUrl = playlistJSONModel.coverImgUrl
-                        playlist.id = playlistJSONModel.id
-                        playlist.introduction = playlistJSONModel.description
-                        playlist.name = playlistJSONModel.name
+                        let playlist = playlistJSONModel.toPlaylistEntity(context: context)
                         playlist.songsId = songsId
-                        playlist.subscribed = playlistJSONModel.subscribed
-                        playlist.userId = playlistJSONModel.userId
                         for songModel in songsDetailJSONModel {
-                            let song = Song(context: context)
-                            song.al = songModel.al.toDictionary()
-                            var ar = [[String: Any]]()
-                            for a in songModel.ar {
-                                ar.append(a.toDictionary())
-                            }
-                            song.ar = ar
-                            song.id = songModel.id
-                            song.name = songModel.name
+                            let song = songModel.toSongEntity(context: context)
                             playlist.addToSongs(song)
                         }
                         try context.save()

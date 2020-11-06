@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct SongJSONModel: Codable, Identifiable {
     struct NoCopyrightRcmd: Codable {
@@ -62,4 +63,19 @@ struct SongJSONModel: Codable, Identifiable {
     var starred: Bool
     var starredNum: Int
     var status: Int
+}
+
+extension SongJSONModel {
+    public func toSongEntity(context: NSManagedObjectContext) -> Song {
+        let song = Song(context: context)
+        song.al = self.album.toDictionary()
+        var ar = [[String: Any]]()
+        for a in self.artists {
+            ar.append(a.toDictionary())
+        }
+        song.ar = ar
+        song.id = self.id
+        song.name = self.name
+        return song
+    }
 }

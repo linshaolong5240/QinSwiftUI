@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import CoreData
+
 struct SongDetailJSONModel: Codable, Identifiable {
-    struct Album: Codable {
+    struct SongDetailAlbum: Codable {
         var id: Int64
         var name: String?
         var pic: Int
@@ -19,7 +21,7 @@ struct SongDetailJSONModel: Codable, Identifiable {
             return ["id": self.id, "name": self.name ?? "", "picUrl": self.picUrl ?? ""]
         }
     }
-    struct Artist: Codable, Identifiable {
+    struct SongDetailArtist: Codable, Identifiable {
         var alias: [String]? //optional for album detail
         var id: Int64
         var name: String?
@@ -65,9 +67,9 @@ struct SongDetailJSONModel: Codable, Identifiable {
         var vd: Double?
     }
 //    var a: Any?
-    var al: Album
+    var al: SongDetailAlbum
     var alia: [String]
-    var ar: [Artist]
+    var ar: [SongDetailArtist]
     var cd: String?
     var cf: String?
     var copyright: Int? //optional for album detail
@@ -103,4 +105,19 @@ struct SongDetailJSONModel: Codable, Identifiable {
     var st: Int
     var t: Int
     var v: Int
+}
+
+extension SongDetailJSONModel {
+    public func toSongEntity(context: NSManagedObjectContext) -> Song {
+        let song = Song(context: context)
+        song.al = self.al.toDictionary()
+        var ar = [[String: Any]]()
+        for a in self.ar {
+            ar.append(a.toDictionary())
+        }
+        song.ar = ar
+        song.id = self.id
+        song.name = self.name
+        return song
+    }
 }

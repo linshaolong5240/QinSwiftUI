@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 struct ArtistJSONModel: Codable, Identifiable {
     var accountId: Int?
@@ -26,7 +27,18 @@ struct ArtistJSONModel: Codable, Identifiable {
     var publishTime: Int?// optional for Album
     var topicPerson: Int
     var trans: String
+}
+
+extension ArtistJSONModel {
     func toDictionary() -> Dictionary<String, Any> {
         return ["id": self.id, "name": self.name ?? ""]
+    }
+    public func toArtistEntity(context: NSManagedObjectContext) -> Artist {
+        let entity = Artist(context: context)
+        entity.followed = self.followed ?? false
+        entity.id = self.id
+        entity.img1v1Url = self.img1v1Url
+        entity.name = self.name
+        return entity
     }
 }
