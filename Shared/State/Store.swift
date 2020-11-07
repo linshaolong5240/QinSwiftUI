@@ -428,6 +428,7 @@ class Store: ObservableObject {
                 appState.initRequestingCount -= 1
             }
         case .recommendSongs:
+            appState.playlist.detailRequesting = true
             appCommand = RecommendSongsCommand()
         case .recommendSongsDone(let result):
             switch result {
@@ -436,6 +437,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
+            appState.playlist.detailRequesting = false
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }

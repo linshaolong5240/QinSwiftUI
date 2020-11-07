@@ -8,31 +8,34 @@
 import SwiftUI
 
 struct CommonGridItemView: View {
-    private let configuration: CommonGridItemViewConfiguration
+    private let configuration: CommonGridItemConfiguration
     
+    init(_ configuration: CommonGridItemConfiguration) {
+        self.configuration = configuration
+    }
     init(_ item: Album) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: AlbumSub) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: ArtistSub) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: MV) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: Playlist) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: PlaylistModel) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: RecommendPlaylist) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: UserPlaylist) {
-        self.configuration = CommonGridItemViewConfiguration(item)
+        self.configuration = CommonGridItemConfiguration(item)
     }
     var body: some View {
         VStack(alignment: .leading) {
@@ -60,11 +63,17 @@ struct CommonGridItemView: View {
 //}
 //#endif
 
-struct CommonGridItemViewConfiguration {
+struct CommonGridItemConfiguration {
     var id: Int64
     var name: String?
     var picUrl: String?
     var subscribed: Bool?
+    init(id: Int64, name: String, picUrl: String, subscribed: Bool) {
+        self.id = id
+        self.name = name
+        self.picUrl = picUrl
+        self.subscribed = subscribed
+    }
     init(_ item: Album) {
         self.id = item.id
         self.name = item.name

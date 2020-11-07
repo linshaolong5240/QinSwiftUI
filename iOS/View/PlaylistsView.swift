@@ -69,7 +69,7 @@ struct PlaylistsView: View {
                                 playlistDetailId = 0
                                 showPlaylistDetail.toggle()
                             }, label: {
-                                CommonGridItemView(Store.shared.appState.playlist.recommendSongsPlaylist)
+                                CommonGridItemView(CommonGridItemConfiguration(id: 0, name: "每日推荐", picUrl: "", subscribed: false))
                                     .padding(.vertical)
                             })
                             ForEach(results) { (item) in

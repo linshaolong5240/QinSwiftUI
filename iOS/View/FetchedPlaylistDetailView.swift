@@ -149,7 +149,11 @@ struct CommonNavigationBarView: View {
                 case .artist:
                     Store.shared.dispatch(.artist(id: id))
                 case .playlist:
-                    Store.shared.dispatch(.playlistDetail(id: id))
+                    if id == 0 {
+                        Store.shared.dispatch(.recommendSongs)
+                    } else {
+                        Store.shared.dispatch(.playlistDetail(id: id))
+                    }
                 }
             }){
                 Image(systemName: "icloud.and.arrow.down.fill")
