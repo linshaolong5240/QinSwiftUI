@@ -9,12 +9,15 @@ import SwiftUI
 
 struct SongListView: View {
     @EnvironmentObject private var store: Store
+    @State private var showPlayingNow: Bool = false
     @State private var showLike: Bool = false
     
     let songs: [Song]
     
     var body: some View {
         VStack {
+            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
+                .navigationViewStyle(StackNavigationViewStyle())
             HStack {
                 Button(action: {
                     if showLike {
@@ -44,6 +47,11 @@ struct SongListView: View {
                         if !showLike || store.appState.playlist.likedIds.contains(item.id) {
                             SongRowView(song: item)
                                 .padding(.horizontal)
+                                .onTapGesture {
+                                    if item.id == Store.shared.appState.playing.song?.id {
+                                        showPlayingNow.toggle()
+                                    }
+                                }
                         }
                     }
                 }

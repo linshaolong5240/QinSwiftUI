@@ -35,7 +35,7 @@ class SongViewModel: ObservableObject, Identifiable, Equatable, Codable {
 //        self.id = songDetail.id
 //        self.name = songDetail.name
 //    }
-    init(_ searchSongDetail: SearchSongDetail) {
+    init(_ searchSongDetail: SearchSongResultJSONModel) {
         self.artists = searchSongDetail.artists.map(ArtistViewModel.init)
         self.durationTime = searchSongDetail.duration / 1000
         self.id = searchSongDetail.id

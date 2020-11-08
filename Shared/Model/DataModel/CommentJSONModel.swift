@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Comment: Codable {
+struct CommentJSONModel: Codable {
     struct CommentUser: Codable {
         var anonym: Int
         var authStatus: Int

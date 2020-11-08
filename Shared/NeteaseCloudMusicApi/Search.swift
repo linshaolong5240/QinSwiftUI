@@ -4,18 +4,7 @@
 //
 //  Created by 林少龙 on 2020/8/27.
 //
-struct SearchSongDetail: Codable, Identifiable {
-//    struct Artist: Codable, Identifiable {
-//        var albumSize: Int
-//        var alias: [String]
-//        var id: Int64
-//        var img1v1: Int
-//        var img1v1Url: String
-//        var name: String
-//        var picId: Int
-//        var picUrl: String?
-////        var trans: Any?
-//    }
+struct SearchSongResultJSONModel: Codable, Identifiable {
     struct Album: Codable, Identifiable {
         var artist: ArtistJSONModel
         var copyrightId: Int

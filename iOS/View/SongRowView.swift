@@ -11,7 +11,6 @@ struct SongRowView: View {
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
     private var playing: AppState.Playing {  store.appState.playing }
-    @State private var showPlayingNow: Bool = false
     let song: Song
     
     init(song: Song) {
@@ -20,8 +19,6 @@ struct SongRowView: View {
     
     var body: some View {
         HStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
-                .navigationViewStyle(StackNavigationViewStyle())
             VStack(alignment: .leading) {
                 Text(song.name ?? "")
                     .fontWeight(.bold)
@@ -65,9 +62,6 @@ struct SongRowView: View {
         .background(
             NEUListRowBackgroundView(isHighlighted: song.id == playing.song?.id)
         )
-        .onTapGesture {
-            showPlayingNow.toggle()
-        }
     }
 }
 

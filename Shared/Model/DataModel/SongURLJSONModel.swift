@@ -1,5 +1,5 @@
 //
-//  SongURL.swift
+//  SongURLJSONModel.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/10/7.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SongURL: Codable {
+struct SongURLJSONModel: Codable {
     var br: Int
     var canExtend: Bool
     var code: Int

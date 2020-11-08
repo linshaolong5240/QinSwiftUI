@@ -470,14 +470,14 @@ struct CommentMusicCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                var hotComments = [Comment]()
-                var comments = [Comment]()
+                var hotComments = [CommentJSONModel]()
+                var comments = [CommentJSONModel]()
                
                 if let hotCommentsArray = data?["hotComments"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    hotComments = hotCommentsArray.map({$0.toData!.toModel(Comment.self)!})
+                    hotComments = hotCommentsArray.map({$0.toData!.toModel(CommentJSONModel.self)!})
                 }
                 if let commentsArray = data?["comments"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    comments = commentsArray.map({$0.toData!.toModel(Comment.self)!})
+                    comments = commentsArray.map({$0.toData!.toModel(CommentJSONModel.self)!})
                 }
                 let total = data!["total"] as! Int
                 store.dispatch(.commentMusicDone(result: .success((hotComments,comments,total))))
@@ -720,7 +720,7 @@ struct PlayerPlayRequestCommand: AppCommand {
             }
             if let songsURLDict = data?["data"] as? [NeteaseCloudMusicApi.ResponseData] {
                 if songsURLDict.count > 0 {
-                    store.dispatch(.PlayerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURL.self)!)))
+                    store.dispatch(.PlayerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURLJSONModel.self)!)))
                 }
             }else {
                 store.dispatch(.PlayerPlayRequestDone(result: .failure(.songsURLError)))
@@ -799,13 +799,13 @@ struct PlaylistCategoriesCommand: AppCommand {
             }
             if data!["code"] as! Int == 200 {
                 let alldict = data!["all"] as! NeteaseCloudMusicApi.ResponseData
-                let all = alldict.toData!.toModel(NeteaseCloudMusicApi.PlaylistSubCategory.self)!
+                let all = alldict.toData!.toModel(PlaylistSubCategory.self)!
                 
-                let categoriesdict = data!["categories"] as! NeteaseCloudMusicApi.ResponseData
-                let categoriesModel = categoriesdict.toData!.toModel(NeteaseCloudMusicApi.PlaylistCategory.self)!
+                let categoriesdict = data!["categories"] as! [String: Any]
+                let categoriesModel = categoriesdict.toData!.toModel(PlaylistCategoryJSONModel.self)!
 
-                let subcategoriesdict = data!["sub"] as! [NeteaseCloudMusicApi.ResponseData]
-                let subcategories = subcategoriesdict.map{$0.toData!.toModel(NeteaseCloudMusicApi.PlaylistSubCategory.self)!}
+                let subcategoriesdict = data!["sub"] as! [[String: Any]]
+                let subcategories = subcategoriesdict.map{$0.toData!.toModel(PlaylistSubCategory.self)!}
                 
                 let categoriesMirror = Mirror(reflecting: categoriesModel)
                 
@@ -1153,16 +1153,15 @@ struct SearchCommand: AppCommand {
             return
         }
         NeteaseCloudMusicApi.shared.search(keyword: keyword, type: type, limit: limit, offset: offset) { data, error in
-//            print(data as? NeteaseCloudMusicApi.ResponseData)
             guard error == nil else {
                 store.dispatch(.searchSongDone(result: .failure(error!)))
                 return
             }
-            if let result = data?["result"] as? NeteaseCloudMusicApi.ResponseData {
-                if let songs = result["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    store.dispatch(.searchSongDone(result: .success(songs.map{($0.toData?.toModel(SearchSongDetail.self))!})))
+            if let result = data?["result"] as? [String: Any] {
+                if let songs = result["songs"] as? [[String: Any]] {
+                    store.dispatch(.searchSongDone(result: .success(songs.map{($0.toData?.toModel(SearchSongResultJSONModel.self))!})))
                 }
-                if let playlists = result["playlists"] as? [NeteaseCloudMusicApi.ResponseData] {
+                if let playlists = result["playlists"] as? [[String: Any]] {
                     let playlistsViewModel = playlists.map{$0.toData!.toModel(SearchPlaylist.self)!}.map{PlaylistViewModel($0)}
                     store.dispatch(.searchPlaylistDone(result: .success(playlistsViewModel)))
                 }
@@ -1245,7 +1244,7 @@ struct SongsURLCommand: AppCommand {
             }
             if let songsURLDict = data?["data"] as? [NeteaseCloudMusicApi.ResponseData] {
                 if songsURLDict.count > 0 {
-                    store.dispatch(.songsURLDone(result: .success(songsURLDict.map{$0.toData!.toModel(SongURL.self)!})))
+                    store.dispatch(.songsURLDone(result: .success(songsURLDict.map{$0.toData!.toModel(SongURLJSONModel.self)!})))
                 }
             }else {
                 store.dispatch(.songsURLDone(result: .failure(.songsURLError)))

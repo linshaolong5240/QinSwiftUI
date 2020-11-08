@@ -31,7 +31,7 @@ enum AppAction {
     case commentDone(result: Result<(id: Int64, cid: Int64, type: NeteaseCloudMusicApi.CommentType, action: NeteaseCloudMusicApi.CommentAction), AppError>)
     case commentLike(id: Int64, cid: Int64, like: Bool, type: NeteaseCloudMusicApi.CommentType)
     case commentMusic(id: Int64, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0)
-    case commentMusicDone(result: Result<([Comment],[Comment],Int), AppError>)
+    case commentMusicDone(result: Result<([CommentJSONModel],[CommentJSONModel],Int), AppError>)
     case commentMusicLoadMore
     case coverShape
     case initAction
@@ -53,7 +53,7 @@ enum AppAction {
     case PlayerPlayForward
     case PlayerPlayMode
     case PlayerPlayRequest(id: Int64)
-    case PlayerPlayRequestDone(result: Result<SongURL, AppError>)
+    case PlayerPlayRequestDone(result: Result<SongURLJSONModel, AppError>)
     case PlayerPlayOrPause
     case PlayerPlayToendAction
     case playerReplay
@@ -84,14 +84,14 @@ enum AppAction {
     case recommendSongsDone(result: Result<RecommendSongsJSONModel, AppError>)
     case search(keyword: String, type: NeteaseCloudMusicApi.SearchType = .song, limit: Int = 30, offset: Int = 0)
     case searchClean
-    case searchSongDone(result: Result<[SearchSongDetail], AppError>)
+    case searchSongDone(result: Result<[SearchSongResultJSONModel], AppError>)
     case searchPlaylistDone(result: Result<[PlaylistViewModel], AppError>)
     case songsDetail(ids: [Int64])
     case songsDetailDone(result: Result<[SongViewModel], AppError>)
     case songsOrderUpdate(pid: Int64, ids: [Int64])
     case songsOrderUpdateDone(result: Result<Int64, AppError>)
     case songsURL(ids: [Int64])
-    case songsURLDone(result: Result<[SongURL], AppError>)
+    case songsURLDone(result: Result<[SongURLJSONModel], AppError>)
     case userPlaylist(uid: Int64? = nil)
     case userPlaylistDone(result: Result<Int64, AppError>)
 }
