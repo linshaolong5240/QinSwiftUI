@@ -47,7 +47,7 @@ struct AlbumCommand: AppCommand {
                     }
                     for songModel in songsJSONModel {
                         let song = songModel.toSongEntity(context: context)
-                        album.addToSongs(song)
+                        song.al?["picUrl"] = album.picUrl
                     }
                     try context.save()
                     store.dispatch(.albumDone(result: .success(songsIds)))
@@ -159,8 +159,7 @@ struct ArtistCommand: AppCommand {
                     let songsIds = songsJSONModel.map{$0.id}
                     artist.songsId = songsIds
                     for songModel in songsJSONModel {
-                        let song = songModel.toSongEntity(context: context)
-                        artist.addToSongs(song)
+                        _ = songModel.toSongEntity(context: context)
                     }
                     try context.save()
                     store.dispatch(.artistDone(result: .success(artistJSONModel)))
@@ -1158,8 +1157,9 @@ struct SearchCommand: AppCommand {
                 return
             }
             if let result = data?["result"] as? [String: Any] {
-                if let songs = result["songs"] as? [[String: Any]] {
-                    store.dispatch(.searchSongDone(result: .success(songs.map{($0.toData?.toModel(SearchSongResultJSONModel.self))!})))
+                if let songsDict = result["songs"] as? [[String: Any]] {
+                    let songsJSONModel = songsDict.map{$0.toData!.toModel(SearchSongJSONModel.self)!}
+                    store.dispatch(.searchSongDone(result: .success(songsJSONModel.map{$0.id})))
                 }
                 if let playlists = result["playlists"] as? [[String: Any]] {
                     let playlistsViewModel = playlists.map{$0.toData!.toModel(SearchPlaylist.self)!}.map{PlaylistViewModel($0)}
@@ -1173,9 +1173,10 @@ struct SearchCommand: AppCommand {
 }
 
 struct SearchSongDoneCommand: AppCommand {
+    let ids: [Int64]
     
     func execute(in store: Store) {
-        store.dispatch(.songsDetail(ids: store.appState.search.songs.map{$0.id}))
+        store.dispatch(.songsDetail(ids: ids))
     }
 }
 
@@ -1188,7 +1189,7 @@ struct SongsDetailCommand: AppCommand {
                 store.dispatch(.songsDetailDone(result: .failure(error!)))
                 return
             }
-            if let songsDict = data?["songs"] as? [NeteaseCloudMusicApi.ResponseData] {
+            if let songsDict = data?["songs"] as? [[String: Any]] {
                 let songs = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}.map(SongViewModel.init)
                 store.dispatch(.songsDetailDone(result: .success(songs)))
             }else {

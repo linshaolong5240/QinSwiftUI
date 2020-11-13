@@ -61,7 +61,7 @@ struct PlayingNowView: View {
                                     Store.shared.dispatch(.like(id: id, like: like))
                                 }
                             }) {
-                                NEUSFView(systemName: store.appState.playlist.likedIds.contains(playing.song?.id ?? 0) ? "heart.fill" : "heart", size: .medium, active: playing.songDetail.liked)
+                                NEUSFView(systemName: store.appState.playlist.likedIds.contains(playing.song?.id ?? 0) ? "heart.fill" : "heart", size: .medium)
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             Spacer()
@@ -190,9 +190,9 @@ struct PlayingNowStatusView: View {
                     .fontWeight(.bold)
                     .lineLimit(1)
                     .foregroundColor(Color.mainTextColor)
-                if let artists = playing.song?.ar {
+                if let artists = playing.song?.artists {
                     HStack {
-                        ForEach(artists.map{SongDetailJSONModel.SongDetailArtist(id: $0["id"] as! Int64, name: $0["name"] as? String)}) { item in
+                        ForEach(Array(artists as! Set<Artist>)) { item in
                             Button(action: {
                                 if item.id != 0 {
                                     artistId = item.id

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AlbumViewModel: ObservableObject, Identifiable, Equatable, Codable {
+class AlbumViewModel: ObservableObject, Identifiable, Equatable {
     static func == (lhs: AlbumViewModel, rhs: AlbumViewModel) -> Bool {
         lhs.id == rhs.id
     }

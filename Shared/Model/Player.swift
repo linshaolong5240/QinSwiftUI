@@ -151,7 +151,7 @@ class Player: AVPlayer, ObservableObject {
         info[MPMediaItemPropertyArtist] = Store.shared.appState.playing.songDetail.artists.map{$0.name}.joined(separator: " ")
         //         [info setObject:self.model.filename forKey:MPMediaItemPropertyAlbumTitle];//专辑名
         //         info[MPMediaItemPropertyAlbumArtist] = mainChannels.first?.value.soundMeta?.artist//专辑作者
-        if let url = URL(string: Store.shared.appState.playing.songDetail.albumPicURL) {
+        if let url = URL(string: Store.shared.appState.playing.songDetail.album.picURL ?? "") {
             let _ = KingfisherManager.shared.retrieveImage(with: .network(url)) { (result) in
                 switch result {
                 case .success(let value):

@@ -162,8 +162,8 @@
 		2BD285BF252B119B000E4B9F /* AlbumJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */; };
 		2BD4D9CB251BC460006798ED /* LyricViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD4D9CA251BC460006798ED /* LyricViewModel.swift */; };
 		2BD4D9CC251BC460006798ED /* LyricViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD4D9CA251BC460006798ED /* LyricViewModel.swift */; };
-		2BE2607124F6C2860039A39E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE2607024F6C2860039A39E /* Search.swift */; };
-		2BE2607224F6C2860039A39E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE2607024F6C2860039A39E /* Search.swift */; };
+		2BE2607124F6C2860039A39E /* SearchSongJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE2607024F6C2860039A39E /* SearchSongJSONModel.swift */; };
+		2BE2607224F6C2860039A39E /* SearchSongJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE2607024F6C2860039A39E /* SearchSongJSONModel.swift */; };
 		2BE89B15250F7F5100E0F278 /* NEUButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE89B14250F7F5100E0F278 /* NEUButton.swift */; };
 		2BE89B16250F7F5100E0F278 /* NEUButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE89B14250F7F5100E0F278 /* NEUButton.swift */; };
 		2BEB5C26250EE64700EEF5E0 /* NEUCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */; };
@@ -264,7 +264,7 @@
 		2BD285B8252B1108000E4B9F /* SongJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongJSONModel.swift; sourceTree = "<group>"; };
 		2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumJSONModel.swift; sourceTree = "<group>"; };
 		2BD4D9CA251BC460006798ED /* LyricViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricViewModel.swift; sourceTree = "<group>"; };
-		2BE2607024F6C2860039A39E /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		2BE2607024F6C2860039A39E /* SearchSongJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSongJSONModel.swift; sourceTree = "<group>"; };
 		2BE89B14250F7F5100E0F278 /* NEUButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUButton.swift; sourceTree = "<group>"; };
 		2BEB5C25250EE64700EEF5E0 /* NEUCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEUCoverView.swift; sourceTree = "<group>"; };
 		2BED107F253439B4005A14AA /* LyricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricView.swift; sourceTree = "<group>"; };
@@ -472,7 +472,7 @@
 				2BCCB2EB24DC7A61004CAD67 /* Account.swift */,
 				2B691737252F556E00F05DB9 /* Creator.swift */,
 				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */,
-				2BE2607024F6C2860039A39E /* Search.swift */,
+				2BE2607024F6C2860039A39E /* SearchSongJSONModel.swift */,
 			);
 			path = NeteaseCloudMusicApi;
 			sourceTree = "<group>";
@@ -696,7 +696,7 @@
 				2BCCB29D24DC5A2B004CAD67 /* ViewModifier.swift in Sources */,
 				2BCCB31E24DC7BCC004CAD67 /* AppState.swift in Sources */,
 				2BD4D9CB251BC460006798ED /* LyricViewModel.swift in Sources */,
-				2BE2607124F6C2860039A39E /* Search.swift in Sources */,
+				2BE2607124F6C2860039A39E /* SearchSongJSONModel.swift in Sources */,
 				2BCCB2E224DC7A17004CAD67 /* Player.swift in Sources */,
 				2BC4C20F254A3FBE00121D3E /* RecommendSongsJSONModel.swift in Sources */,
 				2B89DA38254B6A4300FFD1BF /* ArtistSubModel.swift in Sources */,
@@ -733,7 +733,7 @@
 				2BCCB2F524DC7A62004CAD67 /* DataManager.swift in Sources */,
 				2B672B1325489228007A8FC5 /* ArtistModel.swift in Sources */,
 				2BCCB32524DC7BCD004CAD67 /* AppAction.swift in Sources */,
-				2BE2607224F6C2860039A39E /* Search.swift in Sources */,
+				2BE2607224F6C2860039A39E /* SearchSongJSONModel.swift in Sources */,
 				2BCCB32324DC7BCD004CAD67 /* AppError.swift in Sources */,
 				2BCCB33524DC98A7004CAD67 /* DataModel.xcdatamodeld in Sources */,
 				2B89DA39254B6A4300FFD1BF /* ArtistSubModel.swift in Sources */,

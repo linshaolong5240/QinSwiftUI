@@ -17,7 +17,14 @@ struct SongDetailJSONModel: Codable, Identifiable {
         var picUrl: String? //optional for album detail
         var pic_str: String?//optional for playlist detail
 //        var tns: [Any]
-        func toDictionary() -> Dictionary<String, Any> {
+        public func toAlbumEntity(context: NSManagedObjectContext) -> Album {
+            let album = Album(context: context)
+            album.id = self.id
+            album.name = self.name
+            album.picUrl = self.picUrl
+            return album
+        }
+        public func toDictionary() -> Dictionary<String, Any> {
             return ["id": self.id, "name": self.name ?? "", "picUrl": self.picUrl ?? ""]
         }
     }
@@ -31,7 +38,13 @@ struct SongDetailJSONModel: Codable, Identifiable {
             self.id = id
             self.name = name
         }
-        func toDictionary() -> Dictionary<String, Any> {
+        public func toArtist(context: NSManagedObjectContext) -> Artist {
+            let artist = Artist(context: context)
+            artist.id = self.id
+            artist.name = self.name
+            return artist
+        }
+        public func toDictionary() -> Dictionary<String, Any> {
             return ["id": self.id, "name": self.name ?? ""]
         }
     }
@@ -76,7 +89,7 @@ struct SongDetailJSONModel: Codable, Identifiable {
     var cp: Int
 //    var crbt: Any?
     var djId: Int
-    var dt: Int// duration time
+    var dt: Int64// duration time
     var fee: Int
     var ftype: Int
     var h: Quality?
@@ -111,11 +124,17 @@ extension SongDetailJSONModel {
     public func toSongEntity(context: NSManagedObjectContext) -> Song {
         let song = Song(context: context)
         song.al = self.al.toDictionary()
+        let album = self.al.toAlbumEntity(context: context)
+        album.addToSongs(song)
         var ar = [[String: Any]]()
         for a in self.ar {
             ar.append(a.toDictionary())
+            let artist = a.toArtist(context: context)
+            artist.addToSongs(song)
+            artist.addToAlbums(album)
         }
         song.ar = ar
+        song.durationTime = self.dt
         song.id = self.id
         song.name = self.name
         return song

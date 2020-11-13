@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ArtistViewModel: ObservableObject, Identifiable, Codable {
+class ArtistViewModel: ObservableObject, Identifiable {
     var albumSize: Int = 0
     var alias = [String]()
     var coverUrl: String = ""

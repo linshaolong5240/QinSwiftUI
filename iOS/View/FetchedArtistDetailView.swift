@@ -17,7 +17,7 @@ struct FetchedArtistDetailView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                CommonNavigationBarView(id: id, title: "歌单详情", type: .artist)
+                CommonNavigationBarView(id: id, title: "歌手详情", type: .artist)
                     .padding(.horizontal)
                     .onAppear {
                         DispatchQueue.main.async {
@@ -31,6 +31,7 @@ struct FetchedArtistDetailView: View {
                         }else {
                             Text("正在加载")
                                 .onAppear {
+                                    print("artist: \(id)")
                                     Store.shared.dispatch(.artist(id: id))
                                 }
                             Spacer()

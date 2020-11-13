@@ -100,12 +100,12 @@ struct PlaylistDetailEditSongsView: View {
                             .foregroundColor(.mainTextColor )
                             .lineLimit(1)
                         HStack {
-                            ForEach(item.artists) { item in
-                                Text(item.name)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color.secondTextColor)
-                                    .lineLimit(1)
-                            }
+//                            ForEach(item.artists) { item in
+//                                Text(item.name)
+//                                    .fontWeight(.bold)
+//                                    .foregroundColor(Color.secondTextColor)
+//                                    .lineLimit(1)
+//                            }
                         }
                     }
                     Spacer()

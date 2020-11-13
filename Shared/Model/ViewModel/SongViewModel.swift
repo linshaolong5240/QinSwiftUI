@@ -8,37 +8,61 @@
 
 import Foundation
 
-class SongViewModel: ObservableObject, Identifiable, Equatable, Codable {
+struct SongViewModel: Identifiable, Equatable {
     static func == (lhs: SongViewModel, rhs: SongViewModel) -> Bool {
         lhs.id == rhs.id
     }
-    var albumPicURL = ""
-    var artists = [ArtistViewModel]()
-    var durationTime: Int = 0
-    var id: Int64 = 0
-    @Published var liked: Bool = false
-    var name: String = ""
-    var url: String? = nil
-    init() {
+    struct Album {
+        var id: Int64 = 0
+        var name: String = ""
+        var picURL: String? = nil
     }
+    struct Artist {
+        var id: Int64 = 0
+        var name: String = ""
+    }
+    var album = Album()
+    var artists = [Artist]()
+    var durationTime: Int64 = 0
+    var id: Int64 = 0
+    var name: String = ""
+    init() {
+        
+    }
+    
+    init(_ song: Song) {
+        if let al = song.al {
+            self.album = Album(id: al["id"] as? Int64 ?? 0, name: al["name"] as? String ?? "", picURL: al["picUrl"] as? String ?? nil)
+        }
+        if let ar = song.ar {
+            self.artists = ar.map{Artist(id: $0["id"] as? Int64 ?? 0, name: $0["name"] as? String ?? "")}
+        }
+        self.durationTime = song.durationTime
+        self.id = song.id
+        self.name = song.name ?? ""
+    }
+    
     init(_ song: SongJSONModel) {
-        self.albumPicURL = song.album.picUrl
-        self.artists = song.artists.map(ArtistViewModel.init)
+        self.album = Album(id: song.album.id, name: song.album.name ?? "", picURL: song.album.picUrl)
+        self.artists = song.artists.map{Artist(id: $0.id, name: $0.name ?? "")}
         self.durationTime = song.duration
         self.id = song.id
         self.name = song.name
     }
-//    init(_ songDetail: SongDetailJSONModel) {
-//        self.albumPicURL = songDetail.al.picUrl ?? ""
-//        self.artists = songDetail.ar.map(ArtistViewModel.init)
-//        self.durationTime = songDetail.dt / 1000
-//        self.id = songDetail.id
-//        self.name = songDetail.name
-//    }
-    init(_ searchSongDetail: SearchSongResultJSONModel) {
-        self.artists = searchSongDetail.artists.map(ArtistViewModel.init)
-        self.durationTime = searchSongDetail.duration / 1000
-        self.id = searchSongDetail.id
-        self.name = searchSongDetail.name
+    
+    init(_ song: SongDetailJSONModel) {
+        self.album = Album(id: song.al.id, name: song.al.name ?? "", picURL: song.al.picUrl)
+        self.artists = song.ar.map{Artist(id: $0.id, name: $0.name ?? "")}
+        self.durationTime = song.dt / 1000
+        self.id = song.id
+        self.name = song.name
     }
+    
+//    init(_ song: SearchSongJSONModel) {
+//        self.album = Album(id: song.album.id, name: song.album.name, picURL: "https://p3.music.126.net/e-uzCEle689BX0Z_-edljg==/\(song.album.picId).jpg")
+//        self.artists = song.artists.map{Artist(id: $0.id, name: $0.name )}
+//        self.durationTime = song.duration / 1000
+//        self.id = song.id
+//        self.name = song.name
+//    }
 }

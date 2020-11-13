@@ -76,6 +76,7 @@ class Store: ObservableObject {
                 appCommand = ArtistDoneCommand(artist: artist)
             case .failure(let error):
                 appState.artist.error = error
+                appState.artist.detailRequesting = false
             }
         case .artistAlbum(let id, let limit, let offset):
             appState.artist.artistAlbumRequesting = true
@@ -256,6 +257,8 @@ class Store: ObservableObject {
             appState.playing.index = index
             let id = appState.playing.playinglist[index]
             appState.playing.song = DataManager.shared.getSong(id: id)
+            print(appState.playing.song?.al?["picUrl"])
+            print(appState.playing.song?.album?.picUrl)
             appCommand = PlayerPlayRequestCommand(id: id)
         case .PlayerPlayForward:
             appCommand = PlayerPlayForwardCommand()
@@ -457,21 +460,17 @@ class Store: ObservableObject {
             appState.search.searchRequesting = false
         case .searchSongDone(let result):
             switch result {
-            case .success(let songs):
-                appState.search.songs = songs.map{SongViewModel($0)}
-                appCommand = SearchSongDoneCommand()
+            case .success(let ids):
+                appCommand = SearchSongDoneCommand(ids: ids)
             case .failure(let error):
                 appState.error = error
                 appState.search.searchRequesting = false
             }
-        case .songsDetail:
-            break
+        case .songsDetail(let ids):
+            appCommand = SongsDetailCommand(ids: ids)
         case .songsDetailDone(let result):
             switch result {
             case .success(let songs):
-                for song in songs {
-                    song.liked = appState.playlist.likedIds.contains(song.id) ? true : false
-                }
                 if appState.search.searchRequesting {
                     appState.search.songs = songs
                 }
@@ -494,12 +493,8 @@ class Store: ObservableObject {
             appCommand = SongsURLCommand(ids: ids)
         case .songsURLDone(let result):
             switch result {
-            case .success(let songsURL):
-                if appState.search.searchRequesting {
-                    for url in  songsURL {
-                        appState.search.songs.first{$0.id == url.id}?.url = url.url
-                    }
-                }
+            case .success:
+                break
             case .failure(let error):
                 appState.error = error
             }

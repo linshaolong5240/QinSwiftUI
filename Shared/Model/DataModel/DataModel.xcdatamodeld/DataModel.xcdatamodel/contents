@@ -101,6 +101,7 @@
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
         <attribute name="al" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String:Any]"/>
         <attribute name="ar" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[[String:Any]]"/>
+        <attribute name="durationTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="songs" inverseEntity="Album">
@@ -137,7 +138,7 @@
         <element name="MV" positionX="-1539" positionY="-891" width="128" height="208"/>
         <element name="Playlist" positionX="-2153.5625" positionY="-1122.75" width="128" height="163"/>
         <element name="RecommendPlaylist" positionX="-1683.046875" positionY="-1134.73046875" width="128" height="88"/>
-        <element name="Song" positionX="-2152.6953125" positionY="-921.55859375" width="128" height="148"/>
+        <element name="Song" positionX="-2152.6953125" positionY="-921.55859375" width="128" height="163"/>
         <element name="UserPlaylist" positionX="-1465.15625" positionY="-1128.2421875" width="128" height="118"/>
     </elements>
 </model>
