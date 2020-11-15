@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct FetchedArtistDetailView: View {
-    @EnvironmentObject private var store: Store
     @State private var show: Bool = false
     
     let id: Int64
@@ -24,20 +23,25 @@ struct FetchedArtistDetailView: View {
                             show = true
                         }
                     }
-                if show && !store.appState.artist.detailRequesting {
+                if show {
                     FetchedResultsView(entity: Artist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Artist>) in
-                        if results.first?.songsId != nil {
-                            ArtistDetailView(artist: results.first!)
-                        }else {
-                            Text("正在加载")
+                        if let artist = results.first {
+                            ArtistDetailView(artist: artist)
                                 .onAppear {
-                                    print("artist: \(id)")
+                                    if results.first?.introduction == nil {
+                                        Store.shared.dispatch(.artist(id: id))
+                                    }
+                                }
+                        }else {
+                            Text("Loading...")
+                                .onAppear {
                                     Store.shared.dispatch(.artist(id: id))
                                 }
                             Spacer()
                         }
                     }
                 }else {
+                    Text("Loading...")
                     Spacer()
                 }
             }
@@ -63,7 +67,7 @@ struct ArtistDetailView: View {
         case album, hotSong, mv
     }
     @State private var selection: Selection = .hotSong
-    let artist: Artist
+    @ObservedObject var artist: Artist
     
     var body: some View {
         VStack {
@@ -83,16 +87,20 @@ struct ArtistDetailView: View {
                     }), gridColumns: 3) { item in
                         CommonGridItemView(item)
                     }
+                }else {
+                    Spacer()
                 }
             case .hotSong:
-                if let songs = artist.songs {
-                    if let songsId = artist.songsId {
+                if let songsId = artist.songsId {
+                    if let songs = artist.songs {
                         SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
                             let lIndex = songsId.firstIndex(of: left.id)
                             let rIndex = songsId.firstIndex(of: right.id)
                             return lIndex ?? 0 > rIndex ?? 0 ? false : true
                         }))
                     }
+                }else {
+                    Spacer()
                 }
             case .mv:
                 if let mvs = artist.mvs?.allObjects as? [MV] {
@@ -101,6 +109,8 @@ struct ArtistDetailView: View {
                     }), gridColumns: 3) { item in
                         CommonGridItemView(item)
                     }
+                }else {
+                    Spacer()
                 }
             }
         }

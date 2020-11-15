@@ -31,12 +31,6 @@ struct SongViewModel: Identifiable, Equatable {
     }
     
     init(_ song: Song) {
-        if let al = song.al {
-            self.album = Album(id: al["id"] as? Int64 ?? 0, name: al["name"] as? String ?? "", picURL: al["picUrl"] as? String ?? nil)
-        }
-        if let ar = song.ar {
-            self.artists = ar.map{Artist(id: $0["id"] as? Int64 ?? 0, name: $0["name"] as? String ?? "")}
-        }
         self.durationTime = song.durationTime
         self.id = song.id
         self.name = song.name ?? ""

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct  FetchedAlbumDetailView: View {
-    @EnvironmentObject private var store: Store
     @State private var show: Bool = false
 
     let id: Int64
@@ -24,10 +23,15 @@ struct  FetchedAlbumDetailView: View {
                             show = true
                         }
                     }
-                if show && !store.appState.album.detailRequesting {
+                if show {
                     FetchedResultsView(entity: Album.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Album>) in
-                        if results.first?.songsId != nil {
-                            AlbumDetailView(album: results.first!)
+                        if let album = results.first {
+                            AlbumDetailView(album: album)
+                                .onAppear {
+                                    if album.introduction == nil {
+                                        Store.shared.dispatch(.album(id: id))
+                                    }
+                                }
                         }else {
                             Text("正在加载")
                                 .onAppear {
@@ -55,7 +59,7 @@ struct AlbumDetailView_Previews: PreviewProvider {
 #endif
 
 struct AlbumDetailView: View {
-    let album: Album
+    @ObservedObject var album: Album
     
     var body: some View {
         DescriptionView(viewModel: album)
@@ -67,6 +71,8 @@ struct AlbumDetailView: View {
                     return lIndex ?? 0 > rIndex ?? 0 ? false : true
                 }))
             }
+        }else {
+            Spacer()
         }
     }
 }

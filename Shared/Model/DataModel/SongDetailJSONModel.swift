@@ -24,9 +24,6 @@ struct SongDetailJSONModel: Codable, Identifiable {
             album.picUrl = self.picUrl
             return album
         }
-        public func toDictionary() -> Dictionary<String, Any> {
-            return ["id": self.id, "name": self.name ?? "", "picUrl": self.picUrl ?? ""]
-        }
     }
     struct SongDetailArtist: Codable, Identifiable {
         var alias: [String]? //optional for album detail
@@ -38,14 +35,11 @@ struct SongDetailJSONModel: Codable, Identifiable {
             self.id = id
             self.name = name
         }
-        public func toArtist(context: NSManagedObjectContext) -> Artist {
+        public func toArtistEntity(context: NSManagedObjectContext) -> Artist {
             let artist = Artist(context: context)
             artist.id = self.id
             artist.name = self.name
             return artist
-        }
-        public func toDictionary() -> Dictionary<String, Any> {
-            return ["id": self.id, "name": self.name ?? ""]
         }
     }
     struct Privilege: Codable {// album,recommendSongs
@@ -123,17 +117,6 @@ struct SongDetailJSONModel: Codable, Identifiable {
 extension SongDetailJSONModel {
     public func toSongEntity(context: NSManagedObjectContext) -> Song {
         let song = Song(context: context)
-        song.al = self.al.toDictionary()
-        let album = self.al.toAlbumEntity(context: context)
-        album.addToSongs(song)
-        var ar = [[String: Any]]()
-        for a in self.ar {
-            ar.append(a.toDictionary())
-            let artist = a.toArtist(context: context)
-            artist.addToSongs(song)
-            artist.addToAlbums(album)
-        }
-        song.ar = ar
         song.durationTime = self.dt
         song.id = self.id
         song.name = self.name

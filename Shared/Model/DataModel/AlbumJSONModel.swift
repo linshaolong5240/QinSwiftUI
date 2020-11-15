@@ -75,13 +75,10 @@ struct AlbumJSONModel: Codable, Identifiable {
 }
 
 extension AlbumJSONModel {
-    func toDictionary() -> Dictionary<String, Any> {
-        return ["id": self.id, "name": self.name ?? "", "picUrl": self.picUrl]
-    }
     public func toAlbumEntity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
         entity.id = self.id
-        entity.introduction = self.briefDesc
+        entity.introduction = self.description
         entity.isSub = isSub ?? false
         entity.name = self.name
         entity.picUrl = self.picUrl

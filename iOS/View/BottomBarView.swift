@@ -37,9 +37,9 @@ struct BottomBarView: View {
                                 .lineLimit(1)
                                 .foregroundColor(Color.mainTextColor)
                             HStack {
-                                if let artists = playing.song?.ar {
+                                if let artists = playing.song?.artists {
                                     HStack {
-                                        ForEach(artists.map{SongDetailJSONModel.SongDetailArtist(id: $0["id"] as! Int64, name: $0["name"] as? String)}) { item in
+                                        ForEach(Array(artists as! Set<Artist>)) { item in
                                             Text(item.name ?? "")
                                                 .fontWeight(.bold)
                                                 .lineLimit(1)

@@ -68,17 +68,6 @@ struct SongJSONModel: Codable, Identifiable {
 extension SongJSONModel {
     public func toSongEntity(context: NSManagedObjectContext) -> Song {
         let song = Song(context: context)
-        song.al = self.album.toDictionary()
-        let album = self.album.toAlbumEntity(context: context)
-        album.addToSongs(song)
-        var ar = [[String: Any]]()
-        for a in self.artists {
-            let artist = a.toArtistEntity(context: context)
-            artist.addToSongs(song)
-            artist.addToAlbums(album)
-            ar.append(a.toDictionary())
-        }
-        song.ar = ar
         song.durationTime = self.duration
         song.id = self.id
         song.name = self.name

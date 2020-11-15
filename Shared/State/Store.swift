@@ -79,7 +79,7 @@ class Store: ObservableObject {
                 appState.artist.detailRequesting = false
             }
         case .artistAlbum(let id, let limit, let offset):
-            appState.artist.artistAlbumRequesting = true
+            appState.artist.albumRequesting = true
             appCommand = ArtistAlbumCommand(id: id, limit: limit, offset: offset)
         case .artistAlbumDone(let result):
             switch result {
@@ -88,9 +88,28 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.artist.error = error
             }
-            appState.artist.artistAlbumRequesting = false
+            appState.artist.albumRequesting = false
+            if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
+                print("##########################1")
+                appState.artist.detailRequesting = false
+            }
+        case .artistIntroduction(let id):
+            appState.artist.introductionRequesting = true
+            appCommand = ArtistIntroductionCommand(id: id)
+        case .artistIntroductionDone(let result):
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                appState.artist.error = error
+            }
+            appState.artist.introductionRequesting = false
+            if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
+                print("##########################2")
+                appState.artist.detailRequesting = false
+            }
         case .artistMV(let id, let limit, let offset):
-            appState.artist.artistMVRequesting = true
+            appState.artist.mvRequesting = true
             appCommand = ArtistMVCommand(id: id, limit: limit, offset: offset)
         case .artistMVDone(let result):
             switch result {
@@ -99,15 +118,10 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.artist.error = error
             }
-            appState.artist.detailRequesting = false
-        case .artistIntroduction(let id):
-            appCommand = ArtistIntroductionCommand(id: id)
-        case .artistIntroductionDone(let result):
-            switch result {
-            case .success:
-                break
-            case .failure(let error):
-                appState.artist.error = error
+            appState.artist.mvRequesting = false
+            if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
+                print("##########################3")
+                appState.artist.detailRequesting = false
             }
         case .artistSub(let id, let sub):
             appCommand = ArtistSubCommand(id: id, sub: sub)
@@ -257,8 +271,6 @@ class Store: ObservableObject {
             appState.playing.index = index
             let id = appState.playing.playinglist[index]
             appState.playing.song = DataManager.shared.getSong(id: id)
-            print(appState.playing.song?.al?["picUrl"])
-            print(appState.playing.song?.album?.picUrl)
             appCommand = PlayerPlayRequestCommand(id: id)
         case .PlayerPlayForward:
             appCommand = PlayerPlayForwardCommand()

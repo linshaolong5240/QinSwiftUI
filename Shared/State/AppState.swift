@@ -73,8 +73,9 @@ extension AppState {
     
     struct Artist {
         var detailRequesting: Bool = false
-        var artistAlbumRequesting: Bool = false
-        var artistMVRequesting: Bool = false
+        var albumRequesting: Bool = false
+        var introductionRequesting: Bool = false
+        var mvRequesting: Bool = false
         var artistSublistRequesting: Bool = false
 
         var error: AppError?

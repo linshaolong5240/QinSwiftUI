@@ -10,7 +10,6 @@ import SwiftUI
 import Combine
 
 struct FetchedPlaylistDetailView: View {
-    @EnvironmentObject private var store: Store
     @State private var show: Bool = false
     
     let id: Int64
@@ -26,7 +25,7 @@ struct FetchedPlaylistDetailView: View {
                             show = true
                         }
                     }
-                if show && !store.appState.playlist.detailRequesting {
+                if show {
                     FetchedResultsView(entity: Playlist.entity(), predicate: NSPredicate(format: "%K == \(id)", "id")) { (results: FetchedResults<Playlist>) in
                         if let playlist = results.first {
                             PlaylistDetailView(playlist: playlist)
@@ -64,7 +63,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 #endif
 
 struct PlaylistDetailView: View {
-    let playlist :Playlist
+    @ObservedObject var playlist :Playlist
     
     var body: some View {
         VStack {

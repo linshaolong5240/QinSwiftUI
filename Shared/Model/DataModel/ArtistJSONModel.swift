@@ -30,9 +30,6 @@ struct ArtistJSONModel: Codable, Identifiable {
 }
 
 extension ArtistJSONModel {
-    func toDictionary() -> Dictionary<String, Any> {
-        return ["id": self.id, "name": self.name ?? ""]
-    }
     public func toArtistEntity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.followed = self.followed ?? false
