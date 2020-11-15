@@ -55,7 +55,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
 //        self.songs = recommendSongs.dailySongs.map{SongViewModel($0)}
         self.songsId = self.songs.map{$0.id}
     }
-    init(_ searchPlaylist: SearchPlaylist) {
+    init(_ searchPlaylist: SearchPlaylistJSONModel) {
         self.count = searchPlaylist.trackCount
         self.coverImgUrl = searchPlaylist.coverImgUrl
         self.creator = searchPlaylist.creator.nickname

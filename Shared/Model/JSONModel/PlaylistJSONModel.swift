@@ -30,7 +30,7 @@ struct PlaylistJSONModel: Codable, Identifiable {
     var coverImgUrl: String
     var coverStatus: Int?
     var createTime: Int
-    var creator: Creator
+    var creator: CreatorJSONModel
     var description: String?
 //    var englishTitle: Any?
     var highQuality: Bool
@@ -79,7 +79,7 @@ struct RecommendPlaylistJSONModel: Codable, Identifiable {
     var alg: String
     var copywriter: String
     var createTime: Int
-    var creator: Creator
+    var creator: CreatorJSONModel
     var id: Int64
     var name: String
     var picUrl: String

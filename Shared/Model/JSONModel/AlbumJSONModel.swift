@@ -23,7 +23,7 @@ struct AlbumJSONModel: Codable, Identifiable {
         var shareCount: Int
     }
     struct ResourceInfo: Codable {
-        var creator: Creator?
+        var creator: CreatorJSONModel?
 //        var encodedId: Any?
         var id: Int64
         var imgUrl: String

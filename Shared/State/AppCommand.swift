@@ -1233,7 +1233,7 @@ struct SearchCommand: AppCommand {
                     store.dispatch(.searchSongDone(result: .success(songsJSONModel.map{$0.id})))
                 }
                 if let playlists = result["playlists"] as? [[String: Any]] {
-                    let playlistsViewModel = playlists.map{$0.toData!.toModel(SearchPlaylist.self)!}.map{PlaylistViewModel($0)}
+                    let playlistsViewModel = playlists.map{$0.toData!.toModel(SearchPlaylistJSONModel.self)!}.map{PlaylistViewModel($0)}
                     store.dispatch(.searchPlaylistDone(result: .success(playlistsViewModel)))
                 }
             }else {

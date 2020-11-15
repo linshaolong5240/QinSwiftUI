@@ -1,5 +1,5 @@
 //
-//  Creator.swift
+//  CreatorJSONModel.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/10/8.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Creator: Codable {
+struct CreatorJSONModel: Codable {
     var accountStatus: Int
     var authStatus: Int
     var authority: Int
