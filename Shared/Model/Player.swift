@@ -158,6 +158,11 @@ class Player: AVPlayer, ObservableObject {
         if let artists = Store.shared.appState.playing.song?.artists as? Set<Artist> {
             info[MPMediaItemPropertyArtist] = artists.map{($0.name ?? "")}.joined(separator: " ")
         }
+        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  Player.shared.currentItem?.currentTime().seconds
+        info[MPMediaItemPropertyPlaybackDuration] = Player.shared.currentItem?.duration.seconds//总时长
+//        info[MPNowPlayingInfoPropertyIsLiveStream] = 1.0
+        info[MPNowPlayingInfoPropertyPlaybackRate] = Player.shared.rate//播放速率
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         if let url = URL(string: Store.shared.appState.playing.song?.album?.picUrl ?? "") {
             let _ = KingfisherManager.shared.retrieveImage(with: .network(url)) { (result) in
                 switch result {
@@ -165,16 +170,12 @@ class Player: AVPlayer, ObservableObject {
                             info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: value.image.size, requestHandler: { (size) -> UIImage in
                                     return value.image
                                 })//显示的图片
+                    MPNowPlayingInfoCenter.default().nowPlayingInfo = info
                 case .failure(_):
                     break
                 }
             }
         }
-        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  Player.shared.currentItem?.currentTime().seconds
-        info[MPMediaItemPropertyPlaybackDuration] = Player.shared.currentItem?.duration.seconds//总时长
-//        info[MPNowPlayingInfoPropertyIsLiveStream] = 1.0
-        info[MPNowPlayingInfoPropertyPlaybackRate] = Player.shared.rate//播放速率
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         #endif
 //        #if os(macOS)
 //        MPNowPlayingInfoCenter.default().playbackState = Player.shared.isPlaying ? .playing : .paused
