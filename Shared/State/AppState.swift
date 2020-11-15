@@ -133,7 +133,6 @@ extension AppState {
             }
         }
         var playingError: AppError?
-        var songDetail = SongViewModel()
         var song: Song? = nil
         var songUrl: String?
     }

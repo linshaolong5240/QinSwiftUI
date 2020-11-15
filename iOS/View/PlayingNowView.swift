@@ -460,24 +460,25 @@ struct PlayingNowCoverView: View {
     @Binding var showComment: Bool
 
     var body: some View {
+        let url = playing.song?.album?.picUrl ?? ""
         switch settings.coverShape {
         case .circle:
-            NEUImageView(url: playing.song?.album?.picUrl ?? "",
+            NEUImageView(url: url,
                          size: !showMore ? .large: .medium,
                          innerShape: Circle(),
                          outerShape: Circle(),
                          innerPadding: showMore ? (screen.width * 0.3 / 16) : (screen.width * 0.7 / 24),
                          shadowReverse: true,
-                         isOrigin: true)
+                         isOrigin: false)
                 .onTapGesture(perform: tapAction)
         case .rectangle:
-            NEUImageView(url: playing.song?.album?.picUrl ?? "",
+            NEUImageView(url: url,
                          size: showMore ? .medium: .large,
                          innerShape: RoundedRectangle(cornerRadius: showMore ? 25 : 50, style: .continuous),
                          outerShape: RoundedRectangle(cornerRadius: showMore ? 35 : 65, style: .continuous),
                          innerPadding: showMore ? (screen.width * 0.3 / 12) : (screen.width * 0.7 / 16),
                          shadowReverse: false,
-                         isOrigin: true)
+                         isOrigin: false)
                 .onTapGesture(perform: tapAction)
         }
     }

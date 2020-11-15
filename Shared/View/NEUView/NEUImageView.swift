@@ -145,7 +145,7 @@ struct NEULightImageView<S: Shape>: View {
                            height: size.width - innerPadding * 2)
                     .clipShape(innerShape)
             }else {
-                KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 100, height: size.width + 100)))])
+                KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width, height: size.width)))])
                     .resizable()
                     .renderingMode(.original)
                     .aspectRatio(contentMode: .fill)
