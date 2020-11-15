@@ -12,5 +12,6 @@ struct UserPlaylistModel: Codable {
     var id: Int64
     var name: String
     var subscribed: Bool
+    var trackCount: Int64
     var userId: Int64
 }

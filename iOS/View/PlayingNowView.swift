@@ -107,9 +107,9 @@ struct PlayingNowView: View {
 //                    CommentListView(id: playing.songDetail.id)
 //                        .offset(y: bottomType == .commentlist ? 0 : screen.height)
 //                        .transition(.move(edge: .bottom))
-                    //                    CreatedPlaylistView(playlists: playlists.createdPlaylist, songId: playing.songDetail.id, showList: $showMore, bottomType: $bottomType)
-                    //                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
-                    //                        .transition(.move(edge: .bottom))
+                    CreatedPlaylistView(showList: $showMore, bottomType: $bottomType)
+                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
+                        .transition(.move(edge: .bottom))
                 }
             }
         }
@@ -368,12 +368,6 @@ struct CommentRowView: View {
 }
 
 struct CreatedPlaylistView: View {
-//    @EnvironmentObject var store: Store
-//    private var playing: AppState.Playing { store.appState.playing }
-//    private var playlists: AppState.Playlists {store.appState.playlist}
-//
-    let playlists: [PlaylistViewModel]
-    let songId: Int64
     @Binding var showList: Bool
     @Binding  var bottomType: PlayingNowBottomType
     
@@ -397,34 +391,37 @@ struct CreatedPlaylistView: View {
                 }
             }
             .padding(.horizontal)
-            ScrollView {
-                LazyVStack{
-                    ForEach(playlists){ item in
-                        Button(action: {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
-                            }
-                            withAnimation(.default){
-                                showList = false
-                                bottomType = .playingStatus
-                            }
-                        }) {
-                            HStack {
-                                NEUCoverView(url: item.coverImgUrl, coverShape: .rectangle, size: .little)
-                                VStack(alignment: .leading) {
-                                    Text(item.name)
-                                        .foregroundColor(.mainTextColor)
-                                    Text("\(item.count) songs")
-                                        .foregroundColor(.secondTextColor)
+            FetchedResultsView(entity: UserPlaylist.entity()) { (results: FetchedResults<UserPlaylist>) in
+                ScrollView {
+                    LazyVStack{
+                        ForEach(results){ (item: UserPlaylist) in
+                            Button(action: {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    if let songId = Store.shared.appState.playing.song?.id {
+                                        Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
+                                    }
                                 }
-                                Spacer()
+                                withAnimation(.default){
+                                    showList = false
+                                    bottomType = .playingStatus
+                                }
+                            }) {
+                                HStack {
+                                    NEUCoverView(url: item.coverImgUrl ?? "", coverShape: .rectangle, size: .little)
+                                    VStack(alignment: .leading) {
+                                        Text(item.name ?? "")
+                                            .foregroundColor(.mainTextColor)
+                                        Text("\(item.trackCount) songs")
+                                            .foregroundColor(.secondTextColor)
+                                    }
+                                    Spacer()
+                                }
+                                .padding(.horizontal)
                             }
-                            .padding(.horizontal)
                         }
                     }
                 }
             }
-            Spacer()
         }
     }
 }

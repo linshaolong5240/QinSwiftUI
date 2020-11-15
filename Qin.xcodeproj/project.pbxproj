@@ -466,7 +466,6 @@
 				2BD285B8252B1108000E4B9F /* SongJSONModel.swift */,
 				2B1C6A3125489C8600BF76D8 /* SongModel.swift */,
 				2B69171D252D84AA00F05DB9 /* SongURLJSONModel.swift */,
-				2B89DA4A254C3F4700FFD1BF /* UserPlaylistModel.swift */,
 			);
 			path = JSONModel;
 			sourceTree = "<group>";
@@ -511,6 +510,7 @@
 		2BF59EFE256166BB004863D5 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				2B89DA4A254C3F4700FFD1BF /* UserPlaylistModel.swift */,
 				2BCCB2EA24DC7A61004CAD67 /* DataManager.swift */,
 				2BCCB33224DC98A6004CAD67 /* DataModel.xcdatamodeld */,
 			);
