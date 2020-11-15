@@ -147,11 +147,18 @@ class Player: AVPlayer, ObservableObject {
         #if os(iOS)
         var info = [String : Any]()
         info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
-        info[MPMediaItemPropertyTitle] = Store.shared.appState.playing.songDetail.name//歌名
-        info[MPMediaItemPropertyArtist] = Store.shared.appState.playing.songDetail.artists.map{$0.name}.joined(separator: " ")
-        //         [info setObject:self.model.filename forKey:MPMediaItemPropertyAlbumTitle];//专辑名
-        //         info[MPMediaItemPropertyAlbumArtist] = mainChannels.first?.value.soundMeta?.artist//专辑作者
-        if let url = URL(string: Store.shared.appState.playing.songDetail.album.picURL ?? "") {
+        if let title = Store.shared.appState.playing.song?.name {
+            info[MPMediaItemPropertyTitle] = title//歌名
+        }
+        if let album = Store.shared.appState.playing.song?.album {
+            info[MPMediaItemPropertyAlbumTitle] = album.name//专辑名
+//                     info[MPMediaItemPropertyAlbumArtist] = mainChannels.first?.value.soundMeta?.artist//专辑作者
+        }
+
+        if let artists = Store.shared.appState.playing.song?.artists as? Set<Artist> {
+            info[MPMediaItemPropertyArtist] = artists.map{($0.name ?? "")}.joined(separator: " ")
+        }
+        if let url = URL(string: Store.shared.appState.playing.song?.album?.picUrl ?? "") {
             let _ = KingfisherManager.shared.retrieveImage(with: .network(url)) { (result) in
                 switch result {
                 case .success(let value):

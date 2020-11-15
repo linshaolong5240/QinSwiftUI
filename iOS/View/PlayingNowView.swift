@@ -68,11 +68,11 @@ struct PlayingNowView: View {
                             Button(action: {
                                 showComment.toggle()
                                 if showComment {
-                                    if store.appState.comment.id != playing.songDetail.id {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                            Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
-                                        }
-                                    }
+//                                    if store.appState.comment.id != playing.songDetail.id {
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                            Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
+//                                        }
+//                                    }
                                 }
                                 withAnimation(.default) {
                                     if showComment {
