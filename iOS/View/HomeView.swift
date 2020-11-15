@@ -7,9 +7,7 @@
 //
 
 import SwiftUI
-#if os(iOS)
-let screen = UIScreen.main.bounds
-#endif
+
 struct HomeView: View {
     @EnvironmentObject var store: Store
     @EnvironmentObject var player: Player

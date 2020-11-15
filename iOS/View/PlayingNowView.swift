@@ -98,6 +98,7 @@ struct PlayingNowView: View {
                     }
                 }
                 ZStack {
+                    let screen = UIScreen.main.bounds
                     PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
