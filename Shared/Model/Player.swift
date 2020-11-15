@@ -40,15 +40,13 @@ class Player: AVPlayer, ObservableObject {
     override func pause() {
         super.pause()
         self.removePeriodicTimeObserver()
-        updateMPNowPlayingInfo()
+        self.updateMPNowPlayingInfo()
     }
     
     override func play() {
         super.play()
         self.addPeriodicTimeObserver()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {//等待封面图片下载完成
-            Player.shared.updateMPNowPlayingInfo()
-        }
+        self.updateMPNowPlayingInfo()
     }
     func playWithURL(url: String) {
         self.removePeriodicTimeObserver()
@@ -164,7 +162,7 @@ class Player: AVPlayer, ObservableObject {
         info[MPNowPlayingInfoPropertyPlaybackRate] = Player.shared.rate//播放速率
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         if let url = URL(string: Store.shared.appState.playing.song?.album?.picUrl ?? "") {
-            let _ = KingfisherManager.shared.retrieveImage(with: .network(url)) { (result) in
+            let _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 130, height: 130)))]) { (result) in
                 switch result {
                 case .success(let value):
                             info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: value.image.size, requestHandler: { (size) -> UIImage in
@@ -176,6 +174,7 @@ class Player: AVPlayer, ObservableObject {
                 }
             }
         }
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         #endif
 //        #if os(macOS)
 //        MPNowPlayingInfoCenter.default().playbackState = Player.shared.isPlaying ? .playing : .paused
