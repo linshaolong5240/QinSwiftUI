@@ -20,7 +20,7 @@ struct PlayingNowView: View {
     @EnvironmentObject var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-    private var playlists: AppState.Playlists {store.appState.playlist}
+    private var playlists: AppState.Playlists { store.appState.playlist }
     @State private var showMore: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
@@ -311,7 +311,7 @@ struct CommentListView: View {
 
 struct CommentRowView: View {
     @EnvironmentObject var store: Store
-    private var user: User? {store.appState.settings.loginUser}
+    private var user: User? { store.appState.settings.loginUser }
 
     @StateObject var viewModel: CommentViewModel
     let id: Int64
@@ -429,7 +429,7 @@ struct CreatedPlaylistView: View {
 struct PlayingExtensionControllView: View {
     @EnvironmentObject var store: Store
 
-    private var settings: AppState.Settings {store.appState.settings}
+    private var settings: AppState.Settings { store.appState.settings }
 
     var body: some View {
         VStack {
@@ -453,7 +453,7 @@ struct PlayingExtensionControllView: View {
 struct PlayingNowCoverView: View {
     @EnvironmentObject var store: Store
     private var playing: AppState.Playing { store.appState.playing }
-    private var settings: AppState.Settings {store.appState.settings}
+    private var settings: AppState.Settings { store.appState.settings }
     
     @Binding var showMore: Bool
     @Binding var bottomType: PlayingNowBottomType
@@ -467,7 +467,7 @@ struct PlayingNowCoverView: View {
                          size: !showMore ? .large: .medium,
                          innerShape: Circle(),
                          outerShape: Circle(),
-                         innerPadding: showMore ? (screen.width * 0.3 / 16) : (screen.width * 0.7 / 24),
+                         innerPadding: showMore ? 6 : 12,
                          shadowReverse: true,
                          isOrigin: false)
                 .onTapGesture(perform: tapAction)
@@ -476,7 +476,7 @@ struct PlayingNowCoverView: View {
                          size: showMore ? .medium: .large,
                          innerShape: RoundedRectangle(cornerRadius: showMore ? 25 : 50, style: .continuous),
                          outerShape: RoundedRectangle(cornerRadius: showMore ? 35 : 65, style: .continuous),
-                         innerPadding: showMore ? (screen.width * 0.3 / 12) : (screen.width * 0.7 / 16),
+                         innerPadding: showMore ? 10 : 20,
                          shadowReverse: false,
                          isOrigin: false)
                 .onTapGesture(perform: tapAction)
