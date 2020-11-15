@@ -59,7 +59,7 @@ enum NEUCoverShape: Int, CaseIterable {
 }
 
 struct NEUCoverView: View {
-    let url: String
+    let url: String?
     let coverShape: NEUCoverShape
     let size: NEUImageSize
     var innerPadding: CGFloat {

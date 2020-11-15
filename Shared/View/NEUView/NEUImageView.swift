@@ -33,7 +33,7 @@ enum NEUImageSize {
 struct NEUImageView<S: Shape>: View {
     @Environment(\.colorScheme) var colorScheme
 
-    let url: String
+    let url: String?
     let size: NEUImageSize
     let innerShape: S
     let outerShape: S
@@ -41,7 +41,7 @@ struct NEUImageView<S: Shape>: View {
     let shadowReverse: Bool
     let isOrigin: Bool
     
-    init(url: String,
+    init(url: String?,
          size: NEUImageSize = .medium,
          innerShape: S,
          outerShape: S,
@@ -79,7 +79,7 @@ struct NEUImageView<S: Shape>: View {
 }
 
 struct NEULightImageView<S: Shape>: View {
-    let url: String
+    let url: String?
     let size: NEUImageSize
     let innerShape: S
     let outerShape: S
@@ -87,7 +87,7 @@ struct NEULightImageView<S: Shape>: View {
     let shadowReverse: Bool
     let isOrigin: Bool
     
-    init(url: String,
+    init(url: String?,
          size: NEUImageSize = .medium,
          innerShape: S,
          outerShape: S,
@@ -136,30 +136,31 @@ struct NEULightImageView<S: Shape>: View {
                 .frame(width: size.width - innerPadding * 2,
                        height: size.width - innerPadding * 2)
                 .clipShape(innerShape)
-            if isOrigin {
-                KFImage(URL(string: url))
-                    .resizable()
-                    .renderingMode(.original)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size.width - innerPadding * 2,
-                           height: size.width - innerPadding * 2)
-                    .clipShape(innerShape)
-            }else {
-                KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width, height: size.width)))])
-                    .resizable()
-                    .renderingMode(.original)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size.width - innerPadding * 2,
-                           height: size.width - innerPadding * 2)
-                    .clipShape(innerShape)
+            if let imageUrl = url {
+                if isOrigin {
+                    KFImage(URL(string: imageUrl))
+                        .resizable()
+                        .renderingMode(.original)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size.width - innerPadding * 2,
+                               height: size.width - innerPadding * 2)
+                        .clipShape(innerShape)
+                }else {
+                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width, height: size.width)))])
+                        .resizable()
+                        .renderingMode(.original)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size.width - innerPadding * 2,
+                               height: size.width - innerPadding * 2)
+                        .clipShape(innerShape)
+                }
             }
-
         }
     }
 }
 
 struct NEUDarkImageView<S: Shape>: View {
-    let url: String
+    let url: String?
     let size: NEUImageSize
     let innerShape: S
     let outerShape: S
@@ -167,7 +168,7 @@ struct NEUDarkImageView<S: Shape>: View {
     let shadowReverse: Bool
     let isOrigin: Bool
     
-    init(url: String,
+    init(url: String?,
          size: NEUImageSize = .medium,
          innerShape: S,
          outerShape: S,
@@ -232,24 +233,25 @@ struct NEUDarkImageView<S: Shape>: View {
                 .frame(width: size.width - innerPadding * 2,
                        height: size.width - innerPadding * 2)
                 .clipShape(innerShape)
-            if isOrigin {
-                KFImage(URL(string: url))
-                    .resizable()
-                    .renderingMode(.original)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size.width - innerPadding * 2,
-                           height: size.width - innerPadding * 2)
-                    .clipShape(innerShape)
-            }else {
-                KFImage(URL(string: url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 100, height: size.width + 100)))])
-                    .resizable()
-                    .renderingMode(.original)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size.width - innerPadding * 2,
-                           height: size.width - innerPadding * 2)
-                    .clipShape(innerShape)
+            if let imageUrl = url {
+                if isOrigin {
+                    KFImage(URL(string: imageUrl))
+                        .resizable()
+                        .renderingMode(.original)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size.width - innerPadding * 2,
+                               height: size.width - innerPadding * 2)
+                        .clipShape(innerShape)
+                }else {
+                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 100, height: size.width + 100)))])
+                        .resizable()
+                        .renderingMode(.original)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size.width - innerPadding * 2,
+                               height: size.width - innerPadding * 2)
+                        .clipShape(innerShape)
+                }
             }
-
         }
     }
 }
