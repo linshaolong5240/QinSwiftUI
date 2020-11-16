@@ -12,12 +12,6 @@ struct RecommendSongsJSONModel: Codable {
         var reason: String
         var songId: Int
     }
-    struct SongModel: Codable {
-        var al: AlbumModel
-        var ar: [ArtistModel]
-        var id: Int64
-        var name: String
-    }
     var dailySongs = [SongDetailJSONModel]()
 //    var orderSongs: [Any]
     var recommendReasons = [RecommendReasons]()
