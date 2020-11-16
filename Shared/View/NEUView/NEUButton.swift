@@ -34,6 +34,9 @@ struct NEUBackwardButton: View {
     }
 }
 
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
+@available(watchOS, unavailable)
 struct NEUEditButton: View {
     @Environment(\.editMode) var editModeBinding:  Binding<EditMode>?
     let action: () -> Void

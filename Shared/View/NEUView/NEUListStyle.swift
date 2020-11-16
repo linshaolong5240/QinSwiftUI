@@ -54,7 +54,7 @@ struct NEULightListRowBackgroundView: View {
                 .shadow(color: .lightBackgourdEnd, radius: 1, y: 2)
 
         }else{
-            Color(.clear)
+            Color.clear
         }
     }
 }
