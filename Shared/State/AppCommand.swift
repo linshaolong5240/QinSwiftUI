@@ -1261,7 +1261,7 @@ struct SongsDetailCommand: AppCommand {
                 return
             }
             if let songsDict = data?["songs"] as? [[String: Any]] {
-                let songs = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}.map(SongViewModel.init)
+                let songs = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
                 store.dispatch(.songsDetailDone(result: .success(songs)))
             }else {
                 store.dispatch(.songsDetailDone(result: .failure(.songsDetailError)))
@@ -1271,10 +1271,11 @@ struct SongsDetailCommand: AppCommand {
 }
 
 struct SongsDetailDoneCommand: AppCommand {
-    let songs: [SongViewModel]
+    let songs: [SongDetailJSONModel]
     
     func execute(in store: Store) {
-        store.dispatch(.songsURL(ids: songs.map{$0.id}))
+        DataManager.shared.updateSongs(songs: songs)
+//        store.dispatch(.songsURL(ids: songs.map{$0.id}))
     }
 }
 

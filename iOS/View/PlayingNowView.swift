@@ -17,8 +17,7 @@ enum PlayingNowBottomType {
 
 struct PlayingNowView: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
-    
+ 
     private var playing: AppState.Playing { store.appState.playing }
     private var playlists: AppState.Playlists { store.appState.playlist }
     @State private var showMore: Bool = false
@@ -41,7 +40,7 @@ struct PlayingNowView: View {
                         NEUNavigationBarTitleView("PLAYING NOW")
                         Spacer()
                         Button(action: {
-                            withAnimation(.default){
+                            withAnimation(.default) {
                                 showMore = true
                                 bottomType = .createdPlaylist
                             }

@@ -61,8 +61,7 @@ struct SearchView: View {
                 }else {
                     switch searchType {
                     case .song:
-//                        SongListView(songs: search.songs.map{$0.id})
-                        SearchPlaylistResultView()
+                        SearchSongResultView(songsId: search.songsId)
                     case .playlist:
                         SearchPlaylistResultView()
                     default:
@@ -70,7 +69,7 @@ struct SearchView: View {
                     }
                 }
             }
-            .onAppear{
+            .onAppear {
                 Store.shared.dispatch(.search(keyword: search.keyword))
             }
         }
@@ -95,6 +94,7 @@ struct SearchPlaylistResultView: View {
         }
     }
 }
+
 struct SearchPlaylistResultRowView: View {
     let viewModel: PlaylistViewModel
     
@@ -108,6 +108,29 @@ struct SearchPlaylistResultRowView: View {
                     .foregroundColor(Color.secondTextColor)
             }
             Spacer()
+        }
+    }
+}
+
+struct SearchSongResultView: View {
+    let songsId: [Int64]
+    
+    var body: some View {
+        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
+            if let songs = results {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(songs.sorted(by: { (left, right) -> Bool in
+                            let lIndex = songsId.firstIndex(of: left.id)!
+                            let rIndex = songsId.firstIndex(of: right.id)!
+                            return lIndex > rIndex ? false : true
+                        })) { item in
+                            SongRowView(song: item)
+                            .padding(.horizontal)
+                        }
+                    }
+                }
+            }
         }
     }
 }

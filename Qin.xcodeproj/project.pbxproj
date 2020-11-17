@@ -436,7 +436,6 @@
 				2BC4C215254B531700121D3E /* AlbumSubModel.swift */,
 				2B20BBF62525D86A00679D0D /* ArtistJSONModel.swift */,
 				2B0668F32530586F0007053C /* ArtistSubJSONModel.swift */,
-				2B89DA37254B6A4300FFD1BF /* ArtistSubModel.swift */,
 				2BCCB2E924DC7A61004CAD67 /* CommentJSONModel.swift */,
 				2B691737252F556E00F05DB9 /* CreatorJSONModel.swift */,
 				2B691724252D84D300F05DB9 /* MVJSONModel.swift */,
@@ -495,6 +494,7 @@
 			isa = PBXGroup;
 			children = (
 				2B89DA4A254C3F4700FFD1BF /* UserPlaylistModel.swift */,
+				2B89DA37254B6A4300FFD1BF /* ArtistSubModel.swift */,
 				2BCCB2EA24DC7A61004CAD67 /* DataManager.swift */,
 				2BCCB33224DC98A6004CAD67 /* DataModel.xcdatamodeld */,
 			);

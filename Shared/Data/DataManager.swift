@@ -167,4 +167,39 @@ class DataManager {
             print("DataManager save \(error)")
         }
     }
+    public func updateSongs(songs: [SongDetailJSONModel]) {
+        do {
+            let context = persistentContainer.viewContext
+            for songModel in songs {
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+                fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
+                if (try context.fetch(fetchRequest).first as? Song) != nil {
+                    
+                }else {
+                    let song = songModel.toSongEntity(context: context)
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
+                    fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.al.id)", "id")
+                    if let album = try context.fetch(fetchRequest).first as? Album {
+                        album.addToSongs(song)
+                    }else {
+                        let album = songModel.al.toAlbumEntity(context: context)
+                        album.addToSongs(song)
+                    }
+                    for ar in songModel.ar {
+                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                        fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
+                        if let artist = try context.fetch(fetchRequest).first as? Artist {
+                            artist.addToSongs(song)
+                        }else {
+                            let artist = ar.toArtistEntity(context: context)
+                            artist.addToSongs(song)
+                        }
+                    }
+                }
+            }
+            try context.save()
+        }catch let err {
+            print("\(#function) \(err)")
+        }
+    }
 }

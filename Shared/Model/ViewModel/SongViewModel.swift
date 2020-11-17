@@ -12,17 +12,17 @@ struct SongViewModel: Identifiable, Equatable {
     static func == (lhs: SongViewModel, rhs: SongViewModel) -> Bool {
         lhs.id == rhs.id
     }
-    struct Album {
+    struct SongAlbum {
         var id: Int64 = 0
         var name: String = ""
         var picURL: String? = nil
     }
-    struct Artist {
+    struct SongArtist: Identifiable {
         var id: Int64 = 0
         var name: String = ""
     }
-    var album = Album()
-    var artists = [Artist]()
+    var album = SongAlbum()
+    var artists = [SongArtist]()
     var durationTime: Int64 = 0
     var id: Int64 = 0
     var name: String = ""
@@ -31,22 +31,28 @@ struct SongViewModel: Identifiable, Equatable {
     }
     
     init(_ song: Song) {
+        if let al = song.album {
+            self.album = SongAlbum(id: al.id , name: al.name ?? "", picURL: al.picUrl)
+        }
+        if let ar = song.artists as? Set<Artist> {
+            self.artists = ar.map{ SongArtist(id: $0.id, name: $0.name ?? "") }
+        }
         self.durationTime = song.durationTime
         self.id = song.id
         self.name = song.name ?? ""
     }
     
     init(_ song: SongJSONModel) {
-        self.album = Album(id: song.album.id, name: song.album.name ?? "", picURL: song.album.picUrl)
-        self.artists = song.artists.map{Artist(id: $0.id, name: $0.name ?? "")}
+        self.album = SongAlbum(id: song.album.id, name: song.album.name ?? "", picURL: song.album.picUrl)
+        self.artists = song.artists.map{SongArtist(id: $0.id, name: $0.name ?? "")}
         self.durationTime = song.duration
         self.id = song.id
         self.name = song.name
     }
     
     init(_ song: SongDetailJSONModel) {
-        self.album = Album(id: song.al.id, name: song.al.name ?? "", picURL: song.al.picUrl)
-        self.artists = song.ar.map{Artist(id: $0.id, name: $0.name ?? "")}
+        self.album = SongAlbum(id: song.al.id, name: song.al.name ?? "", picURL: song.al.picUrl)
+        self.artists = song.ar.map{SongArtist(id: $0.id, name: $0.name ?? "")}
         self.durationTime = song.dt / 1000
         self.id = song.id
         self.name = song.name

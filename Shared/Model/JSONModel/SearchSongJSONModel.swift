@@ -19,7 +19,6 @@ struct SearchSongJSONModel: Codable, Identifiable {
     struct Artist: Codable, Identifiable {
         var albumSize: Int
         var alias: [String]
-        var copyrightId: Int
         var id: Int64
         var img1v1: Int
         var img1v1Url: String

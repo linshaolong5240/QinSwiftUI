@@ -459,9 +459,6 @@ class Store: ObservableObject {
         case .search(let keyword, let type, let limit, let offset):
             appState.search.searchRequesting = true
             appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)
-        case .searchClean:
-            appState.search.songs = [SongViewModel]()
-            appState.search.playlists = [PlaylistViewModel]()
         case .searchPlaylistDone(let result):
             switch result {
             case .success(let playlists):
@@ -484,9 +481,9 @@ class Store: ObservableObject {
             switch result {
             case .success(let songs):
                 if appState.search.searchRequesting {
-                    appState.search.songs = songs
+                    appState.search.songsId = songs.map{ $0.id }
                 }
-//                appCommand = SongsDetailDoneCommand(songs: songs)
+                appCommand = SongsDetailDoneCommand(songs: songs)
             case .failure(let error):
                 appState.error = error
             }

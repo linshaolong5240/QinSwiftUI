@@ -140,7 +140,7 @@ extension AppState {
     struct Search {
         var keyword: String = ""
         var searchRequesting: Bool = false
-        var songs = [SongViewModel]()
+        var songsId = [Int64]()
         var playlists = [PlaylistViewModel]()
     }
 }
