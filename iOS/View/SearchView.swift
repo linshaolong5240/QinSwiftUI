@@ -17,14 +17,7 @@ struct SearchView: View {
     @State private var showCancel = false
     
     var body: some View {
-        let searchTypeBinding = Binding<NeteaseCloudMusicApi.SearchType>(get: {
-            self.searchType
-        }, set: {
-            self.searchType = $0
-            Store.shared.dispatch(.search(keyword: search.keyword, type: searchType))
-        })
-
-        return ZStack {
+        ZStack {
             NEUBackgroundView()
             VStack {
                 HStack {
@@ -38,7 +31,7 @@ struct SearchView: View {
                               onCommit: {
                                 store.dispatch(.search(keyword: search.keyword, type: searchType))
                               })
-                    .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
+                        .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
                     if showCancel {
                         Button(action: {
                             hideKeyboard()
@@ -48,12 +41,15 @@ struct SearchView: View {
                     }
                 }
                 .padding(.horizontal)
-                Picker(selection: searchTypeBinding, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
+                Picker(selection: $searchType, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
                     Text("单曲").tag(NeteaseCloudMusicApi.SearchType.song)
                     Text("歌单").tag(NeteaseCloudMusicApi.SearchType.playlist)
                 }/*@END_MENU_TOKEN@*/
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
+                .onChange(of: searchType, perform: { value in
+                    Store.shared.dispatch(.search(keyword: search.keyword, type: value))
+                })
                 if search.searchRequesting {
                     Text("正在搜索...")
                         .foregroundColor(.secondTextColor)
@@ -85,10 +81,10 @@ struct SearchPlaylistResultView: View {
         ScrollView {
             LazyVStack {
                 ForEach(search.playlists) { item in
-//                    NavigationLink(destination: PlaylistDetailView(id: item.id)) {
-//                        SearchPlaylistResultRowView(viewModel: item)
-//                            .padding(.horizontal)
-//                    }
+                    NavigationLink(destination: FetchedPlaylistDetailView(id: item.id)) {
+                        SearchPlaylistResultRowView(viewModel: item)
+                            .padding(.horizontal)
+                    }
                 }
             }
         }
