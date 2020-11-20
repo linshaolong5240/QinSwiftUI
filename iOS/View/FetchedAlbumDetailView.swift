@@ -28,7 +28,7 @@ struct  FetchedAlbumDetailView: View {
                         if let album = results.first {
                             AlbumDetailView(album: album)
                                 .onAppear {
-                                    if album.introduction == nil {
+                                    if album.songsId == nil {
                                         Store.shared.dispatch(.album(id: id))
                                     }
                                 }

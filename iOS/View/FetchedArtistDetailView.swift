@@ -85,7 +85,9 @@ struct ArtistDetailView: View {
                     VGridView(albums.sorted(by: { (left, right) -> Bool in
                         return left.publishTime > right.publishTime ? true : false
                     }), gridColumns: 3) { item in
-                        CommonGridItemView(item)
+                        NavigationLink(destination: FetchedAlbumDetailView(id: item.id)) {
+                            CommonGridItemView(item)
+                        }
                     }
                 }else {
                     Spacer()
