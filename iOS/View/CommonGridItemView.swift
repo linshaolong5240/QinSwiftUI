@@ -28,7 +28,7 @@ struct CommonGridItemView: View {
     init(_ item: Playlist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ item: PlaylistModel) {
+    init(_ item: PlaylistViewModel) {
         self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: RecommendPlaylist) {
@@ -104,7 +104,7 @@ struct CommonGridItemConfiguration {
         self.picUrl = item.coverImgUrl
         self.subscribed = item.subscribed
     }
-    init(_ item: PlaylistModel) {
+    init(_ item: PlaylistViewModel) {
         self.id = item.id
         self.name = item.name
         self.picUrl = item.coverImgUrl

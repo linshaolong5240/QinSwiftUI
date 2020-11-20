@@ -110,21 +110,21 @@ struct PlaylistDetailEditSongsView: View {
                     Spacer()
                 }
             }
-            .onDelete(perform: deleteAction)
-            .onMove(perform: moveAction)
+//            .onDelete(perform: deleteAction)
+//            .onMove(perform: moveAction)
         }
     }
-    func deleteAction(from source: IndexSet) {
-        if let index = source.first {
-            viewModel.songs.remove(at: index)
-            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.songsId[index]]))
-        }
-    }
-    func moveAction(from source: IndexSet, to destination: Int) {
-        isMoved = true
-        viewModel.songsId.move(fromOffsets: source, toOffset: destination)
-        viewModel.songs.move(fromOffsets: source, toOffset: destination)
-    }
+//    func deleteAction(from source: IndexSet) {
+//        if let index = source.first {
+//            viewModel.songs.remove(at: index)
+//            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.songsId[index]]))
+//        }
+//    }
+//    func moveAction(from source: IndexSet, to destination: Int) {
+//        isMoved = true
+//        viewModel.songsId.move(fromOffsets: source, toOffset: destination)
+//        viewModel.songs.move(fromOffsets: source, toOffset: destination)
+//    }
 }
 
 struct CommonNavigationBarView: View {

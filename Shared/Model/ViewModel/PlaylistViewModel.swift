@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PlaylistViewModel: ObservableObject, Identifiable {
+struct PlaylistViewModel: Identifiable {
     var count: Int = 0
     var coverImgUrl: String = ""
     var creator: String = ""
@@ -17,7 +17,7 @@ class PlaylistViewModel: ObservableObject, Identifiable {
     var id: Int64 = 0
     var name: String = ""
     var playCount: Int = 0
-    @Published var subscribed: Bool = false
+    var subscribed: Bool = false
     var songs = [SongViewModel]()
     var songsId = [Int64]()
     var userId: Int64 = 0

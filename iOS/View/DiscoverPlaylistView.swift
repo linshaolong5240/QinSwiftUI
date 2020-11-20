@@ -67,7 +67,11 @@ struct DiscoverPlaylistView: View {
                         Text("Loading")
                         Spacer()
                     }else {
-                        DiscoverPlaylistsView(data: viewModel.playlists)
+                        VGridView(viewModel.playlists, gridColumns: 3) { item in
+                            NavigationLink(destination: FetchedPlaylistDetailView(id: item.id)) {
+                                CommonGridItemView(item)
+                            }
+                        }
                     }
             }
         }
@@ -82,21 +86,3 @@ struct DiscoverPlaylistView_Previews: PreviewProvider {
     }
 }
 #endif
-
-struct DiscoverPlaylistsView: View {
-    let data: [PlaylistViewModel]
-    
-    private let columns: [GridItem] = [.init(.adaptive(minimum: 130))]
-    
-    var body: some View {
-        ScrollView {
-//            LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-//                ForEach(data) { item in
-//                    NavigationLink(destination: PlaylistDetailView(playlist: item, id: item.id, type: .subable)) {
-//                        PlaylistColumnView(item)
-//                    }
-//                }
-//            }/*@END_MENU_TOKEN@*/
-        }
-    }
-}

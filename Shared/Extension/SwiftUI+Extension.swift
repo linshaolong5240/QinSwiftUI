@@ -162,7 +162,7 @@ struct FetchedResultsView<T: NSManagedObject, Content: View>: View {
     }
 }
 
-struct VGridView<Data: RandomAccessCollection,  Content: View>: View where Data.Element: Hashable {
+struct VGridView<Data: RandomAccessCollection,  Content: View>: View where Data.Element: Identifiable {
     let data: Data
     let content: (Data.Element) -> Content
     let gridColumns: Int
@@ -175,7 +175,7 @@ struct VGridView<Data: RandomAccessCollection,  Content: View>: View where Data.
         ScrollView {
             let columns: [GridItem] = Array<GridItem>(repeating: .init(.flexible()), count: gridColumns)
             LazyVGrid(columns: columns) /*@START_MENU_TOKEN@*/{
-                ForEach(data, id: \.self) { item in
+                ForEach(data) { item in
                     content(item)
                 }
             }/*@END_MENU_TOKEN@*/
