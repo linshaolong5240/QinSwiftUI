@@ -50,10 +50,16 @@ struct CommentListView: View {
     var body: some View {
         VStack {
             HStack {
-                TextField("编辑评论", text: $editComment)
+                TextField("编辑评论", text: $editComment,
+                          onEditingChanged: { isEditing in
+                            if showCancel != isEditing {
+                                showCancel = isEditing
+                            }
+                          })
                     .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "text.bubble", size: .small)))
                 if showCancel {
                     Button(action: {
+                        editComment = ""
                         hideKeyboard()
                     }, label: {
                         Text("取消")
@@ -68,7 +74,7 @@ struct CommentListView: View {
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
-            .padding(.horizontal)
+            .padding()
             .onAppear {
                 Store.shared.dispatch(.commentMusic(id: id))
             }
