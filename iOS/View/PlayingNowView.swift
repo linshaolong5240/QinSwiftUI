@@ -38,9 +38,11 @@ struct PlayingNowView: View {
                 if !showMore {
                     HStack {
                         NEUBackwardButton()
+                            .transition(.move(edge: .bottom))
                             .matchedGeometryEffect(id: 0, in: namespace)
                         Spacer()
                         NEUNavigationBarTitleView("PLAYING NOW")
+                            .transition(.move(edge: .top))
                         Spacer()
                         Button(action: {
                             withAnimation(.default) {
@@ -51,10 +53,10 @@ struct PlayingNowView: View {
                             NEUSFView(systemName: "plus" , size:  .medium)
                         }
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
+                        .transition(.move(edge: .bottom))
                         .matchedGeometryEffect(id: 1, in: namespace)
                     }
                     .padding(.horizontal)
-                    .transition(.move(edge: .top))
                 }else {
                     NEUNavigationBarTitleView(playing.song?.name ?? "")
                 }
