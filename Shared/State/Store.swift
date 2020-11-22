@@ -90,7 +90,6 @@ class Store: ObservableObject {
             }
             appState.artist.albumRequesting = false
             if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
-                print("##########################1")
                 appState.artist.detailRequesting = false
             }
         case .artistIntroduction(let id):
@@ -105,7 +104,6 @@ class Store: ObservableObject {
             }
             appState.artist.introductionRequesting = false
             if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
-                print("##########################2")
                 appState.artist.detailRequesting = false
             }
         case .artistMV(let id, let limit, let offset):
@@ -120,7 +118,6 @@ class Store: ObservableObject {
             }
             appState.artist.mvRequesting = false
             if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
-                print("##########################3")
                 appState.artist.detailRequesting = false
             }
         case .artistSub(let id, let sub):
@@ -162,14 +159,12 @@ class Store: ObservableObject {
         case .commentLike(let id, let cid, let like, let type):
             appCommand = CommentLikeCommand(id: id, cid: cid, like: like, type: type)
         case .commentMusic(let id, let limit, let offset, let beforeTime):
-            appState.comment.commentMusicRequesting = true
-            appState.comment.id = id
-            appState.comment.offset = offset
-            if offset == 0 {
-                appState.comment.hotComments = [CommentViewModel]()
-                appState.comment.comments = [CommentViewModel]()
+            if id != 0 && id != appState.comment.id {
+                appState.comment.commentMusicRequesting = true
+                appState.comment.id = id
+                appState.comment.offset = offset
+                appCommand = CommentMusicCommand(id: id, limit: limit, offset: offset, beforeTime: beforeTime)
             }
-            appCommand = CommentMusicCommand(id: id, limit: limit, offset: offset, beforeTime: beforeTime)
         case .commentMusicDone(let result):
             switch result {
             case .success(let result):

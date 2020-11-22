@@ -9,7 +9,6 @@
 import SwiftUI
 
 enum PlayingNowBottomType {
-    case commentlist
     case createdPlaylist
     case playinglist
     case playingStatus
@@ -19,7 +18,6 @@ struct PlayingNowView: View {
     @EnvironmentObject var store: Store
  
     private var playing: AppState.Playing { store.appState.playing }
-    private var playlists: AppState.Playlists { store.appState.playlist }
     @State private var showMore: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
@@ -31,6 +29,9 @@ struct PlayingNowView: View {
             NEUBackgroundView()
             VStack {
                 NavigationLink(destination: FetchedArtistDetailView(id: artistId), isActive: $showArtist) {
+                    EmptyView()
+                }
+                NavigationLink(destination: CommentView(id: playing.song?.id ?? 0), isActive: $showComment) {
                     EmptyView()
                 }
                 if !showMore {
@@ -50,6 +51,8 @@ struct PlayingNowView: View {
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                     }
                     .padding(.horizontal)
+                }else {
+                    NEUNavigationBarTitleView(playing.song?.name ?? "")
                 }
                 ZStack {
                     if showMore {
@@ -64,29 +67,12 @@ struct PlayingNowView: View {
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             Spacer()
-                            Button(action: {
-                                showComment.toggle()
-                                if showComment {
-//                                    if store.appState.comment.id != playing.songDetail.id {
-//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                                            Store.shared.dispatch(.commentMusic(id: playing.songDetail.id))
-//                                        }
-//                                    }
-                                }
-                                withAnimation(.default) {
-                                    if showComment {
-                                        bottomType = .commentlist
-                                    }else {
-                                        bottomType = .playinglist
-                                    }
-                                }
-                            }) {
-                                NEUSFView(systemName: showComment ? "text.bubble.fill" : "text.bubble", size: .medium, active: showComment)
+                            Button(action: {}) {
+                                NEUSFView(systemName: "ellipsis")
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                         }
                         .padding(.horizontal)
-                        .transition(.move(edge: .top))
                     }
                     PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType, showComment: $showComment)
                     HStack {
@@ -101,12 +87,9 @@ struct PlayingNowView: View {
                     PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
                         .offset(y: bottomType == .playingStatus ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-                    PlayinglistView(songsId: playing.playinglist)
+                    PlayingNowListView()
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
-//                    CommentListView(id: playing.songDetail.id)
-//                        .offset(y: bottomType == .commentlist ? 0 : screen.height)
-//                        .transition(.move(edge: .bottom))
                     CreatedPlaylistView(showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
@@ -137,32 +120,17 @@ struct PlayinglistView: View {
     let songsId: [Int64]
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("播放列表\(songsId.count)首")
-                    .foregroundColor(.mainTextColor)
-                Spacer()
-            }
-            .padding(.horizontal)
-            .onAppear {
-                DispatchQueue.main.async {
-                    show = true
-                }
-            }
-            if show {
-                FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
-                    if let songs = results {
-                        ScrollView {
-                            LazyVStack {
-                                ForEach(songs.sorted(by: { (left, right) -> Bool in
-                                    let lIndex = songsId.firstIndex(of: left.id)!
-                                    let rIndex = songsId.firstIndex(of: right.id)!
-                                    return lIndex > rIndex ? false : true
-                                })) { item in
-                                    SongRowView(song: item)
-                                    .padding(.horizontal)
-                                }
-                            }
+        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
+            ScrollView {
+                if let songs = results {
+                    LazyVStack {
+                        ForEach(songs.sorted(by: { (left, right) -> Bool in
+                            let lIndex = songsId.firstIndex(of: left.id)!
+                            let rIndex = songsId.firstIndex(of: right.id)!
+                            return lIndex > rIndex ? false : true
+                        })) { item in
+                            SongRowView(song: item)
+                                .padding(.horizontal)
                         }
                     }
                 }
@@ -244,125 +212,6 @@ struct PlayingNowStatusView: View {
                 .buttonStyle(NEUButtonStyle2(shape: Circle()))
             }
             .padding(.vertical)
-        }
-    }
-}
-
-struct CommentListView: View {
-    @EnvironmentObject var store: Store
-    private var comment: AppState.Comment { store.appState.comment }
-    @State var editComment: String = ""
-    
-    let id: Int64
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Text("评论")
-                    .font(.title)
-                    .foregroundColor(.mainTextColor)
-                TextField("编辑评论", text: $editComment)
-                    .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "text.bubble", size: .small)))
-                Button(action: {
-                    hideKeyboard()
-                    Store.shared.dispatch(.comment(id: id, content: editComment, type: .song, action: .add))
-                    editComment = ""
-                }) {
-                    NEUSFView(systemName: "arrow.up.message", size: .small)
-                }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
-            }
-            .padding(.horizontal)
-            if comment.commentMusicRequesting {
-                Text("正在加载...")
-                    .foregroundColor(.mainTextColor)
-                Spacer()
-            }else {
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        Text("热门评论(\(String(comment.hotComments.count)))")
-                            .foregroundColor(.mainTextColor)
-                        ForEach(comment.hotComments) { item in
-                            CommentRowView(viewModel: item, id: id, type: .song)
-                            Divider()
-                        }
-                        Text("最新评论(\(String(comment.total)))")
-                            .foregroundColor(.mainTextColor)
-                        ForEach(comment.comments) { item in
-                            CommentRowView(viewModel: item, id: id, type: .song)
-                            Divider()
-                        }
-                    }
-                    .padding(.horizontal)
-                    if comment.comments.count < comment.total {
-                        Button(action: {
-                            Store.shared.dispatch(.commentMusicLoadMore)
-                        }, label: {
-                            Text("加载更多")
-                        })
-                    }
-                    Spacer()
-                        .frame(height: 20)
-                }
-            }
-        }
-    }
-}
-
-struct CommentRowView: View {
-    @EnvironmentObject var store: Store
-    private var user: User? { store.appState.settings.loginUser }
-
-    @StateObject var viewModel: CommentViewModel
-    let id: Int64
-    let type: NeteaseCloudMusicApi.CommentType
-    
-    @State var showBeReplied = false
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            NEUCoverView(url: viewModel.avatarUrl, coverShape: .rectangle, size: .little)
-            VStack(alignment: .leading) {
-                HStack(alignment: .top) {
-                    Text(viewModel.nickname)
-                    Spacer()
-                    Text(String(viewModel.likedCount))
-                    Button(action: {
-                        Store.shared.dispatch(.commentLike(id: id, cid:viewModel.commentId, like: viewModel.liked ? false : true, type: type))
-                        viewModel.liked.toggle()
-                    }, label: {
-                        Image(systemName: viewModel.liked ? "hand.thumbsup.fill" : "hand.thumbsup")
-                    })
-                }
-                .foregroundColor(.secondTextColor)
-                Text(viewModel.content)
-                    .foregroundColor(.mainTextColor)
-                HStack {
-                    if viewModel.beReplied.count > 0 {
-                        Button(action: {
-                            showBeReplied.toggle()
-                        }, label: {
-                            HStack(spacing: 0.0) {
-                                Text("\(viewModel.beReplied.count)条回复")
-                                Image(systemName: showBeReplied ? "chevron.down" : "chevron.up")
-                            }
-                        })
-                    }
-                    Spacer()
-                    if viewModel.userId == user?.uid {
-                        Button(action: {
-                            Store.shared.dispatch(.comment(id: id, cid: viewModel.commentId, type: type, action: .delete))
-                        }, label: {
-                            Text("删除")
-                        })
-                    }
-                }
-                if showBeReplied {
-                    ForEach(viewModel.beReplied) { item in
-                        CommentRowView(viewModel: item, id: id, type: type)
-                    }
-                }
-            }
         }
     }
 }
@@ -493,6 +342,31 @@ struct PlayingNowCoverView: View {
         }
         if !showMore {
             showComment = false
+        }
+    }
+}
+
+struct PlayingNowListView: View {
+    @EnvironmentObject private var store: Store
+    @State private var listType: Int = 0
+    
+    var body: some View {
+        VStack {
+            Picker(selection: $listType, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
+                Text("播放列表").tag(0)
+                Text("歌曲评论").tag(1)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .fixedSize()
+            
+            switch listType {
+            case 0:
+                PlayinglistView(songsId: store.appState.playing.playinglist)
+            case 1:
+                CommentListView(id: store.appState.playing.song?.id ?? 0)
+            default:
+                Spacer()
+            }
         }
     }
 }

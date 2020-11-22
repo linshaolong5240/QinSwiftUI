@@ -497,6 +497,7 @@ struct CommentMusicCommand: AppCommand {
         self.offset = offset
         self.beforeTime = beforeTime
     }
+    
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.commentMusic(id: id, limit: limit, offset: offset, beforeTime: beforeTime) { (data, error) in
             guard error == nil else {
