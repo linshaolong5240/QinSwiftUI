@@ -23,7 +23,8 @@ struct PlayingNowView: View {
     @State private var showComment: Bool = false
     @State private var showArtist: Bool = false
     @State private var artistId: Int64 = 0
-
+    @Namespace private var namespace
+    
     var body: some View {
         ZStack {
             NEUBackgroundView()
@@ -37,6 +38,7 @@ struct PlayingNowView: View {
                 if !showMore {
                     HStack {
                         NEUBackwardButton()
+                            .matchedGeometryEffect(id: 0, in: namespace)
                         Spacer()
                         NEUNavigationBarTitleView("PLAYING NOW")
                         Spacer()
@@ -49,8 +51,10 @@ struct PlayingNowView: View {
                             NEUSFView(systemName: "plus" , size:  .medium)
                         }
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
+                        .matchedGeometryEffect(id: 1, in: namespace)
                     }
                     .padding(.horizontal)
+                    .transition(.move(edge: .top))
                 }else {
                     NEUNavigationBarTitleView(playing.song?.name ?? "")
                 }
@@ -66,13 +70,16 @@ struct PlayingNowView: View {
                                 NEUSFView(systemName: store.appState.playlist.likedIds.contains(playing.song?.id ?? 0) ? "heart.fill" : "heart", size: .medium)
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            .matchedGeometryEffect(id: 0, in: namespace)
                             Spacer()
                             Button(action: {}) {
                                 NEUSFView(systemName: "ellipsis")
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            .matchedGeometryEffect(id: 1, in: namespace)
                         }
                         .padding(.horizontal)
+                        .transition(.move(edge: .top))
                     }
                     PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType, showComment: $showComment)
                     HStack {
@@ -359,13 +366,18 @@ struct PlayingNowListView: View {
             .pickerStyle(SegmentedPickerStyle())
             .fixedSize()
             
-            switch listType {
-            case 0:
-                PlayinglistView(songsId: store.appState.playing.playinglist)
-            case 1:
-                CommentListView(id: store.appState.playing.song?.id ?? 0)
-            default:
-                Spacer()
+            ZStack {
+                if listType == 0 {
+                    PlayinglistView(songsId: store.appState.playing.playinglist)
+                        .transition(.move(edge: .bottom))
+                        .animation(.default)
+                }
+
+                if listType == 1 {
+                    CommentListView(id: store.appState.playing.song?.id ?? 0)
+                        .transition(.move(edge: .bottom))
+                        .animation(.default)
+                }
             }
         }
     }

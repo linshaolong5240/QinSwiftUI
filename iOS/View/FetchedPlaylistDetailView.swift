@@ -155,7 +155,7 @@ struct CommonNavigationBarView: View {
                     }
                 }
             }){
-                Image(systemName: "icloud.and.arrow.down.fill")
+                Image(systemName: "arrow.triangle.2.circlepath")
             }
             Button(action: {
                 showPlayingNow.toggle()
