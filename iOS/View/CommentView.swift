@@ -84,7 +84,7 @@ struct CommentListView: View {
                 Spacer()
             }else {
                 ScrollView {
-                    VStack(alignment: .leading) {
+                    LazyVStack(alignment: .leading) {
                         HStack {
                             Text("热门评论(\(String(comment.hotComments.count)))")
                                 .foregroundColor(.mainTextColor)
