@@ -157,7 +157,6 @@ struct PlayingNowStatusView: View {
     @EnvironmentObject private var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-    private var playingBinding: Binding<AppState.Playing> { $store.appState.playing }
 
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
@@ -187,7 +186,11 @@ struct PlayingNowStatusView: View {
                 }
             }
             .padding()
-            Spacer()
+            if let lyric = store.appState.lyric.lyric {
+                LyricView(lyric)
+            }else {
+                Spacer()
+            }
             HStack {
                 Text(String(format: "%02d:%02d", Int(player.loadTime/60),Int(player.loadTime)%60))
                     .frame(width: 50, alignment: Alignment.leading)

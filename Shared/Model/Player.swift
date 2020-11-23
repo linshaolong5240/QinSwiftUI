@@ -125,7 +125,9 @@ class Player: AVPlayer, ObservableObject {
             case .readyToPlay:
                 self.play()
                 self.removeObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem.status))
+                #if DEBUG
                 print("player readyToPlay")
+                #endif
                 break
             case .failed:
                 break

@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct LyricView: View {
-    @EnvironmentObject private var store: Store
-    
-    private var viewModel: LyricViewModel
+    @ObservedObject private var viewModel: LyricViewModel
+    @State private var highlightId: Int = 0
     private let onelineMode: Bool
 
     init(_ viewModel: LyricViewModel, onelineMode: Bool = false) {
@@ -30,13 +29,14 @@ struct LyricView: View {
                     ScrollView {
                         ForEach(0..<viewModel.lyricParser.lyrics.count, id: \.self) { index in
                             Text(viewModel.lyricParser.lyrics[index])
-                                .fontWeight(index == viewModel.index ? .bold : .none)
-                                .foregroundColor(index == viewModel.index ? .orange : .secondTextColor)
+                                .fontWeight(index == highlightId ? .bold : .none)
+                                .foregroundColor(index == highlightId ? .accentColor : .secondTextColor)
                                 .multilineTextAlignment(.center)
                                 .id(index)
                         }
                     }
                     .onReceive(viewModel.$index, perform: { value in
+                        highlightId = value
                         withAnimation(.easeInOut) {
                             proxy.scrollTo(value, anchor: .center)
                         }

@@ -72,8 +72,8 @@ class LyricParser {
         var index: Int = 0
         var delta: Double = 10 * 60.0
         
-        guard time > 0 && times.count > 0 else {
-            return ("", index)
+        guard time >= 0 && times.count > 0 else {
+            return (lyric, index)
         }
         
         for ts in times {

@@ -225,7 +225,7 @@ class Store: ObservableObject {
             case .success(let lyric):
                 if lyric != nil {
                     appState.lyric.lyric = LyricViewModel(lyric: lyric!)
-//                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
+                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
                 }else {
                     appState.lyric.lyric = nil
                 }
