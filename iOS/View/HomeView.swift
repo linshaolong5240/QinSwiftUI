@@ -43,13 +43,15 @@ struct HomeView: View {
                         Divider()
                         if store.appState.initRequestingCount == 0 {
                             ScrollView {
-                                Spacer()
-                                    .frame(height: 10)
-                                PlaylistsView(title: "推荐的歌单", type: .recommendPlaylist)
-                                PlaylistsView(title: "创建的歌单", type: .created)
-                                PlaylistsView(title: "收藏的歌单", type: .subscribed)
-                                AlbumSublistView()
-                                ArtistSublistView()
+                                LazyVStack {
+                                    Spacer()
+                                        .frame(height: 10)
+                                    PlaylistsView(title: "推荐的歌单", type: .recommendPlaylist)
+                                    PlaylistsView(title: "创建的歌单", type: .created)
+                                    PlaylistsView(title: "收藏的歌单", type: .subscribed)
+                                    AlbumSublistView()
+                                    ArtistSublistView()
+                                }
                             }
                         }else {
                             Spacer()
