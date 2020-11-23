@@ -378,10 +378,12 @@ struct PlayingNowListView: View {
                     .offset(y: listType == 0 ? 0 : offset)
                     .transition(.move(edge: .bottom))
                     .animation(.default)
-                CommentListView(id: store.appState.playing.song?.id ?? 0)
-                    .offset(y: listType == 1 ? 0 : offset)
-                    .transition(.move(edge: .bottom))
-                    .animation(.default)
+                if listType == 1 {
+                    CommentListView(id: store.appState.playing.song?.id ?? 0)
+//                        .offset(y: listType == 1 ? 0 : offset)
+                        .transition(.move(edge: .bottom))
+                        .animation(.default)
+                }
             }
         }
     }
