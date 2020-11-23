@@ -159,10 +159,13 @@ class Store: ObservableObject {
         case .commentLike(let id, let cid, let like, let type):
             appCommand = CommentLikeCommand(id: id, cid: cid, like: like, type: type)
         case .commentMusic(let id, let limit, let offset, let beforeTime):
-            if id != 0 && id != appState.comment.id {
+            if id != 0 {
                 appState.comment.commentMusicRequesting = true
                 appState.comment.id = id
                 appState.comment.offset = offset
+                appState.comment.hotComments = [CommentViewModel]()
+                appState.comment.comments = [CommentViewModel]()
+                appState.comment.total = 0
                 appCommand = CommentMusicCommand(id: id, limit: limit, offset: offset, beforeTime: beforeTime)
             }
         case .commentMusicDone(let result):

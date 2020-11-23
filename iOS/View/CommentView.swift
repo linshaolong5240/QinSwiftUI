@@ -76,7 +76,9 @@ struct CommentListView: View {
             }
             .padding()
             .onAppear {
-                Store.shared.dispatch(.commentMusic(id: id))
+                if Store.shared.appState.comment.id != id {
+                    Store.shared.dispatch(.commentMusic(id: id))
+                }
             }
             if comment.commentMusicRequesting {
                 Text("正在加载...")
