@@ -51,9 +51,14 @@ struct AlbumCommand: AppCommand {
                             album.addToArtists(artist)
                         }
                     }
+                    try context.save()
                     for songModel in songsJSONModel {
                         let song = songModel.toSongEntity(context: context)
-                        album.addToSongs(song)
+                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
+                        fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.al.id)", "id")
+                        if let album = try context.fetch(fetchRequest).first as? Album {
+                            album.addToSongs(song)
+                        }
                         for ar in songModel.ar {
                             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
                             fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
