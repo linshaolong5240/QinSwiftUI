@@ -158,6 +158,7 @@ struct PlayingNowStatusView: View {
     
     private var playing: AppState.Playing { store.appState.playing }
 
+    @State private var showLyric: Bool = false
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
     @Binding var artistId: Int64
@@ -186,10 +187,31 @@ struct PlayingNowStatusView: View {
                 }
             }
             .padding()
-            if let lyric = store.appState.lyric.lyric {
-                LyricView(lyric)
-            }else {
-                Spacer()
+            ZStack {
+                if showLyric {
+                    if let lyric = store.appState.lyric.lyric {
+                        LyricView(lyric)
+                            .onTapGesture {
+                                withAnimation(.default) {
+                                    showMore.toggle()
+                                }
+                            }
+                    }else {
+                        Text("无歌词")
+                            .foregroundColor(.secondTextColor)
+                    }
+                }
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            showLyric.toggle()
+                        }) {
+                            NEUSFView(systemName: "text.justify", size: .small, inactiveColor: Color.secondTextColor)
+                        }
+                    }
+                }
             }
             HStack {
                 Text(String(format: "%02d:%02d", Int(player.loadTime/60),Int(player.loadTime)%60))
