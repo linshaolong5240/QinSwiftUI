@@ -93,15 +93,19 @@ struct PlayingNowView: View {
                 }
                 ZStack {
                     let screen = UIScreen.main.bounds
-                    PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
-                        .offset(y: bottomType == .playingStatus ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
+                    if bottomType == .playingStatus {
+                        PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
+//                            .offset(y: bottomType == .playingStatus ? 0 : screen.height)
+                            .transition(.move(edge: .bottom))
+                    }
                     PlayingNowListView()
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
+                    if bottomType == .createdPlaylist {
                     CreatedPlaylistView(showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
+                    }
                 }
             }
         }
@@ -369,17 +373,15 @@ struct PlayingNowListView: View {
             .fixedSize()
             
             ZStack {
-                if listType == 0 {
-                    PlayinglistView(songsId: store.appState.playing.playinglist)
-                        .transition(.move(edge: .bottom))
-                        .animation(.default)
-                }
-
-                if listType == 1 {
-                    CommentListView(id: store.appState.playing.song?.id ?? 0)
-                        .transition(.move(edge: .bottom))
-                        .animation(.default)
-                }
+                let offset = UIScreen.main.bounds.height
+                PlayinglistView(songsId: store.appState.playing.playinglist)
+                    .offset(y: listType == 0 ? 0 : offset)
+                    .transition(.move(edge: .bottom))
+                    .animation(.default)
+                CommentListView(id: store.appState.playing.song?.id ?? 0)
+                    .offset(y: listType == 1 ? 0 : offset)
+                    .transition(.move(edge: .bottom))
+                    .animation(.default)
             }
         }
     }
