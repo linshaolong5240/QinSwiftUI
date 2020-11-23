@@ -101,7 +101,8 @@ class Player: AVPlayer, ObservableObject {
                 let store = Store.shared
                 let player = Player.shared
                 if !store.appState.playing.isSeeking {
-                    player.loadTime = player.currentTime().seconds
+                    let loadTime = player.currentTime().seconds
+                    player.loadTime = loadTime.isNaN || loadTime.isInfinite ? 0 : loadTime
                     if let totalTime = player.currentItem?.duration.seconds {
                         player.totalTime = totalTime
                         player.loadPercent = player.loadTime / player.totalTime
