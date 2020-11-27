@@ -207,6 +207,9 @@ struct PlayingNowStatusView: View {
                         Spacer()
                         Button(action: {
                             showLyric.toggle()
+                            withAnimation(.default) {
+                                showMore = showLyric
+                            }
                         }) {
                             NEUSFView(systemName: "text.justify", size: .small, inactiveColor: Color.secondTextColor)
                         }
