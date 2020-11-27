@@ -73,14 +73,17 @@ struct PlaylistDetailView: View {
                 Text("id:\(String(playlist.id))")
                     .foregroundColor(.secondTextColor)
                 Spacer()
-                if playlist.id != 0 && playlist.userId != Store.shared.appState.settings.loginUser?.uid {
-                    Button(action: {
+                Button(action: {
+                    if playlist.userId != Store.shared.appState.settings.loginUser?.uid && playlist.id != 0 {
                         let id = playlist.id
                         let sub = !Store.shared.appState.playlist.userPlaylistIds.contains(id)
                         Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
-                    }) {
-                        NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus")
+                    }else {
+                        let id = playlist.id
+                        Store.shared.dispatch(.playlistDelete(pid: id))
                     }
+                }) {
+                    NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus")
                 }
             }
             .padding(.horizontal)
