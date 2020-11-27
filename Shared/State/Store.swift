@@ -58,8 +58,8 @@ class Store: ObservableObject {
             appCommand = AlbumSublistCommand(limit: limit, offset: offset)
         case .albumSublistDone(let result):
             switch result {
-            case .success:
-                break
+            case .success(let ids):
+                appState.album.subedIds = ids
             case .failure(let error):
                 appState.error = error
             }

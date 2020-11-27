@@ -37,7 +37,7 @@ struct AlbumJSONModel: Codable, Identifiable {
         var commentThread: CommentThread
 //        var comments: Any?
 //        var latestLikedUsers: Any?
-        var liked: Int
+        var liked: Bool
         var likedCount: Int
         var resourceId: Int
         var resourceType: Int
@@ -56,7 +56,7 @@ struct AlbumJSONModel: Codable, Identifiable {
     var description: String?
     var id: Int64
     var Info: Info?
-    var isSub: Bool?
+    var isSub: Bool? //optional for Artist album
     var mark: Int
     var name: String?
     var onSale: Bool
@@ -79,7 +79,6 @@ extension AlbumJSONModel {
         let entity = Album(context: context)
         entity.id = self.id
         entity.introduction = self.description
-        entity.isSub = isSub ?? false
         entity.name = self.name
         entity.picUrl = self.picUrl
         entity.publishTime = self.publishTime

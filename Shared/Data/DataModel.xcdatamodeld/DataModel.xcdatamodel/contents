@@ -6,7 +6,6 @@
     <entity name="Album" representedClassName="Album" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="introduction" optional="YES" attributeType="String"/>
-        <attribute name="isSub" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="picUrl" optional="YES" attributeType="String"/>
         <attribute name="publishTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -130,7 +129,7 @@
     </entity>
     <elements>
         <element name="AccountData" positionX="-931.87890625" positionY="-1111.08984375" width="128" height="58"/>
-        <element name="Album" positionX="-1907.171875" positionY="-1037.75390625" width="128" height="178"/>
+        <element name="Album" positionX="-1907.171875" positionY="-1037.75390625" width="128" height="149"/>
         <element name="AlbumSub" positionX="-1270.00390625" positionY="-1128.484375" width="128" height="88"/>
         <element name="Artist" positionX="-1911.62109375" positionY="-758.921875" width="128" height="178"/>
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>

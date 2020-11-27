@@ -59,10 +59,24 @@ struct AlbumDetailView_Previews: PreviewProvider {
 #endif
 
 struct AlbumDetailView: View {
+    @EnvironmentObject private var store: Store
     @ObservedObject var album: Album
     
     var body: some View {
         DescriptionView(viewModel: album)
+        HStack {
+            Text("id:\(String(album.id))")
+                .foregroundColor(.secondTextColor)
+            Spacer()
+            Button(action: {
+                let id = album.id
+                let sub = !Store.shared.appState.album.subedIds.contains(id)
+                Store.shared.dispatch(.albumSub(id: id, sub: sub))
+            }) {
+                NEUSFView(systemName: store.appState.album.subedIds.contains(album.id) ? "folder" : "folder.badge.plus")
+            }
+        }
+        .padding(.horizontal)
         if let songs = album.songs {
             if let songsId = album.songsId {
                 SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in

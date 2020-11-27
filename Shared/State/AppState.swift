@@ -69,6 +69,7 @@ extension AppState {
     struct Album {
         var detailRequesting: Bool = false
         var sublistRequesting: Bool = false
+        var subedIds = [Int64]()
     }
     
     struct Artist {

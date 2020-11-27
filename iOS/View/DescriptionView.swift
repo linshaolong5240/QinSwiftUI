@@ -32,11 +32,7 @@ struct DescriptionView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            VStack(alignment: .leading) {
-                NEUCoverView(url: configuration.picUrl, coverShape: .rectangle, size: .medium)
-                Text("Id:\(String(configuration.id))")
-                    .foregroundColor(.secondTextColor)
-            }
+            NEUCoverView(url: configuration.picUrl, coverShape: .rectangle, size: .medium)
             VStack(alignment: .leading) {
                 Text(configuration.name)
                     .fontWeight(.bold)
