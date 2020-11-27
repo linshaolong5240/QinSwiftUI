@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var store: Store
-    @EnvironmentObject var player: Player
+    @EnvironmentObject private var store: Store
+    @EnvironmentObject private var player: Player
     
     private var playlists: AppState.Playlists {store.appState.playlist}
     private var album: AppState.Album {store.appState.album}
@@ -46,9 +46,9 @@ struct HomeView: View {
                                 LazyVStack {
                                     Spacer()
                                         .frame(height: 10)
-                                    PlaylistsView(title: "推荐的歌单", type: .recommendPlaylist)
-                                    PlaylistsView(title: "创建的歌单", type: .created)
-                                    PlaylistsView(title: "收藏的歌单", type: .subscribed)
+                                    RecommendPlaylistView()
+                                    CreatedPlaylistView()
+                                    SubedPlaylistView()
                                     AlbumSublistView()
                                     ArtistSublistView()
                                 }

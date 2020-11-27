@@ -63,11 +63,27 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 #endif
 
 struct PlaylistDetailView: View {
+    @EnvironmentObject private var store: Store
     @ObservedObject var playlist :Playlist
     
     var body: some View {
         VStack {
             DescriptionView(viewModel: playlist)
+            HStack {
+                Text("id:\(String(playlist.id))")
+                    .foregroundColor(.secondTextColor)
+                Spacer()
+                if playlist.id != 0 && playlist.userId != Store.shared.appState.settings.loginUser?.uid {
+                    Button(action: {
+                        let id = playlist.id
+                        let sub = !Store.shared.appState.playlist.userPlaylistIds.contains(id)
+                        Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
+                    }) {
+                        NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus")
+                    }
+                }
+            }
+            .padding(.horizontal)
             if let songs = playlist.songs {
                 if let songsId = playlist.songsId {
                     SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in

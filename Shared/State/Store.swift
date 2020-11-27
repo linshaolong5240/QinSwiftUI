@@ -515,8 +515,8 @@ class Store: ObservableObject {
             }
         case .userPlaylistDone(let result):
             switch result {
-            case .success:
-                break
+            case .success(let ids):
+                appState.playlist.userPlaylistIds = ids
             case .failure(let error):
                 appState.error = error
             }

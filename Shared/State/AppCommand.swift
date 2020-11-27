@@ -1087,7 +1087,7 @@ struct PlaylisSubscribeCommand: AppCommand {
 struct PlaylisSubscribeDoneCommand: AppCommand {
 
     func execute(in store: Store) {
-//        store.dispatch(.userPlaylist())
+        store.dispatch(.userPlaylist())
     }
 }
 
@@ -1380,10 +1380,10 @@ struct UserPlayListCommand: AppCommand {
                         let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
                         print(objects)
                         DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: objects)
+                        store.dispatch(.userPlaylistDone(result: .success(playlistModels.map{$0.id})))
                     }catch let error {
                         print("\(#function) \(error)")
                     }
-                    store.dispatch(.userPlaylistDone(result: .success(uid)))
                 }
             }else {
                 store.dispatch(.userPlaylistDone(result: .failure(.userPlaylistError)))

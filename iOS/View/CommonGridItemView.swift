@@ -68,7 +68,7 @@ struct CommonGridItemConfiguration {
     var name: String?
     var picUrl: String?
     var subscribed: Bool?
-    init(id: Int64, name: String, picUrl: String, subscribed: Bool) {
+    init(id: Int64, name: String, picUrl: String?, subscribed: Bool) {
         self.id = id
         self.name = name
         self.picUrl = picUrl

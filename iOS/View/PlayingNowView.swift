@@ -102,7 +102,7 @@ struct PlayingNowView: View {
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     if bottomType == .createdPlaylist {
-                    CreatedPlaylistView(showList: $showMore, bottomType: $bottomType)
+                        PlaylistTracksView(showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     }
@@ -254,7 +254,7 @@ struct PlayingNowStatusView: View {
     }
 }
 
-struct CreatedPlaylistView: View {
+struct PlaylistTracksView: View {
     @Binding var showList: Bool
     @Binding  var bottomType: PlayingNowBottomType
     
