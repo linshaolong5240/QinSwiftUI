@@ -406,10 +406,10 @@ struct ArtistSublistCommand: AppCommand {
                     let data = try JSONEncoder().encode(artistSublist)
                     let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
                     DataManager.shared.batchInsertAfterDeleteAll(entityName: "ArtistSub", objects: objects)
+                    store.dispatch(.artistSublistDone(result: .success(artistSublist.map{$0.id})))
                 }catch let err {
                     print("\(#function) \(err)")
                 }
-                store.dispatch(.artistSublistDone(result: .success(artistSublist.map{$0.id})))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"

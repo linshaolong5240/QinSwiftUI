@@ -78,6 +78,7 @@ extension AppState {
         var introductionRequesting: Bool = false
         var mvRequesting: Bool = false
         var artistSublistRequesting: Bool = false
+        var subedIds = [Int64]()
 
         var error: AppError?
     }

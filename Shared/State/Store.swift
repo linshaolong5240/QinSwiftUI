@@ -134,8 +134,8 @@ class Store: ObservableObject {
             appCommand = ArtistSublistCommand(limit: limit, offset: offset)
         case .artistSublistDone(let result):
             switch result {
-            case .success:
-                break
+            case .success(let ids):
+                appState.artist.subedIds = ids
             case .failure(let error):
                 appState.error = error
             }

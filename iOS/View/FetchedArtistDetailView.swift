@@ -66,12 +66,26 @@ struct ArtistDetailView: View {
     enum Selection {
         case album, hotSong, mv
     }
+    @EnvironmentObject private var store: Store
     @State private var selection: Selection = .hotSong
     @ObservedObject var artist: Artist
     
     var body: some View {
         VStack {
             DescriptionView(viewModel: artist)
+            HStack {
+                Text("id:\(String(artist.id))")
+                    .foregroundColor(.secondTextColor)
+                Spacer()
+                Button(action: {
+                    let id = artist.id
+                    let sub = !Store.shared.appState.artist.subedIds.contains(id)
+                    Store.shared.dispatch(.artistSub(id: id, sub: sub))
+                }) {
+                    NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "folder" : "folder.badge.plus")
+                }
+            }
+            .padding(.horizontal)
             Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
                 Text("热门歌曲50").tag(Selection.hotSong)
                 Text("专辑").tag(Selection.album)
