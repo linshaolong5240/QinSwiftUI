@@ -36,7 +36,7 @@ struct DescriptionView: View {
             VStack(alignment: .leading) {
                 Text(configuration.name)
                     .fontWeight(.bold)
-                    .lineLimit(showMoreDescription ? nil : 1)
+                    .lineLimit(showMoreDescription ? nil : 2)
                     .foregroundColor(.mainTextColor)
                 if showMoreDescription {
                     ScrollView {

@@ -24,6 +24,11 @@ struct AlbumCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 do {
+                    let albumDict = data!["album"] as! [String: Any]
+                    let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
+                    let songsDict = data!["songs"] as! [[String: Any]]
+                    let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
+                    let songsIds = songsJSONModel.map{$0.id}
                     let context = DataManager.shared.Context()
                     //clean relationship
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
@@ -31,42 +36,58 @@ struct AlbumCommand: AppCommand {
                     if let saved = try context.fetch(fetchRequest).first as? Album {
                         if let songs = saved.songs {
                             saved.removeFromSongs(songs)
-                            try context.save()
-                        }
-                    }
-                    let albumDict = data!["album"] as! [String: Any]
-                    let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
-                    let songsDict = data!["songs"] as! [[String: Any]]
-                    let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                    let album = albumJSONModel.toAlbumEntity(context: context)
-                    let songsIds = songsJSONModel.map{$0.id}
-                    album.songsId = songsIds
-                    for ar in albumJSONModel.artists {
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                        fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                        if let artist = try context.fetch(fetchRequest).first as? Artist {
-                            album.addToArtists(artist)
-                        }else {
-                            let artist = ar.toArtistEntity(context: context)
-                            album.addToArtists(artist)
-                        }
-                    }
-                    for songModel in songsJSONModel {
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
-                        fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
-                        if let song = try context.fetch(fetchRequest).first as? Song {
-                            album.addToSongs(song)
-                        }else {
-                            let song = songModel.toSongEntity(context: context)
-                            album.addToSongs(song)
-                            for ar in songModel.ar {
-                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                                fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                                if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                    artist.addToSongs(song)
+                            saved.songsId = songsIds
+                            for songModel in songsJSONModel {
+                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+                                fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
+                                if let song = try context.fetch(fetchRequest).first as? Song {
+                                    saved.addToSongs(song)
                                 }else {
-                                    let artist = ar.toArtistEntity(context: context)
-                                    artist.addToSongs(song)
+                                    let song = songModel.toSongEntity(context: context)
+                                    saved.addToSongs(song)
+                                    for ar in songModel.ar {
+                                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                                        fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
+                                        if let artist = try context.fetch(fetchRequest).first as? Artist {
+                                            artist.addToSongs(song)
+                                        }else {
+                                            let artist = ar.toArtistEntity(context: context)
+                                            artist.addToSongs(song)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }else {
+                        let album = albumJSONModel.toAlbumEntity(context: context)
+                        album.songsId = songsIds
+                        for ar in albumJSONModel.artists {
+                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                            fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
+                            if let artist = try context.fetch(fetchRequest).first as? Artist {
+                                album.addToArtists(artist)
+                            }else {
+                                let artist = ar.toArtistEntity(context: context)
+                                album.addToArtists(artist)
+                            }
+                        }
+                        for songModel in songsJSONModel {
+                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+                            fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
+                            if let song = try context.fetch(fetchRequest).first as? Song {
+                                album.addToSongs(song)
+                            }else {
+                                let song = songModel.toSongEntity(context: context)
+                                album.addToSongs(song)
+                                for ar in songModel.ar {
+                                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+                                    fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
+                                    if let artist = try context.fetch(fetchRequest).first as? Artist {
+                                        artist.addToSongs(song)
+                                    }else {
+                                        let artist = ar.toArtistEntity(context: context)
+                                        artist.addToSongs(song)
+                                    }
                                 }
                             }
                         }

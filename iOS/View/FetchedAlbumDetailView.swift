@@ -63,30 +63,34 @@ struct AlbumDetailView: View {
     @ObservedObject var album: Album
     
     var body: some View {
-        DescriptionView(viewModel: album)
-        HStack {
-            Text("id:\(String(album.id))")
-                .foregroundColor(.secondTextColor)
-            Spacer()
-            Button(action: {
-                let id = album.id
-                let sub = !Store.shared.appState.album.subedIds.contains(id)
-                Store.shared.dispatch(.albumSub(id: id, sub: sub))
-            }) {
-                NEUSFView(systemName: store.appState.album.subedIds.contains(album.id) ? "folder" : "folder.badge.plus")
+        VStack {
+            DescriptionView(viewModel: album)
+            HStack {
+                Text("id:\(String(album.id))")
+                    .foregroundColor(.secondTextColor)
+                Spacer()
+                Button(action: {
+                    let id = album.id
+                    let sub = !Store.shared.appState.album.subedIds.contains(id)
+                    Store.shared.dispatch(.albumSub(id: id, sub: sub))
+                }) {
+                    NEUSFView(systemName: store.appState.album.subedIds.contains(album.id) ? "folder" : "folder.badge.plus")
+                }
             }
-        }
-        .padding(.horizontal)
-        if let songs = album.songs {
-            if let songsId = album.songsId {
-                SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
-                    let lIndex = songsId.firstIndex(of: left.id)
-                    let rIndex = songsId.firstIndex(of: right.id)
-                    return lIndex ?? 0 > rIndex ?? 0 ? false : true
-                }))
+            .padding(.horizontal)
+            if let songs = album.songs {
+                if let songsId = album.songsId {
+                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
+                        let lIndex = songsId.firstIndex(of: left.id)
+                        let rIndex = songsId.firstIndex(of: right.id)
+                        return lIndex ?? 0 > rIndex ?? 0 ? false : true
+                    }))
+                }else {
+                    Spacer()
+                }
+            }else {
+                Spacer()
             }
-        }else {
-            Spacer()
         }
     }
 }
