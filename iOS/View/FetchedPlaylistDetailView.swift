@@ -63,30 +63,12 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 #endif
 
 struct PlaylistDetailView: View {
-    @EnvironmentObject private var store: Store
     @ObservedObject var playlist :Playlist
     
     var body: some View {
         VStack {
             DescriptionView(viewModel: playlist)
-            HStack {
-                Text("id:\(String(playlist.id))")
-                    .foregroundColor(.secondTextColor)
-                Spacer()
-                Button(action: {
-                    if playlist.userId != Store.shared.appState.settings.loginUser?.uid && playlist.id != 0 {
-                        let id = playlist.id
-                        let sub = !Store.shared.appState.playlist.userPlaylistIds.contains(id)
-                        Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
-                    }else {
-                        let id = playlist.id
-                        Store.shared.dispatch(.playlistDelete(pid: id))
-                    }
-                }) {
-                    NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus")
-                }
-            }
-            .padding(.horizontal)
+            PlaylistDetailActionView(playlist: playlist)
             if let songs = playlist.songs {
                 if let songsId = playlist.songsId {
                     SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
@@ -188,5 +170,32 @@ struct CommonNavigationBarView: View {
                 NEUNavigationBarTitleView(title)
             }
         )
+    }
+}
+
+struct PlaylistDetailActionView: View {
+    @EnvironmentObject private var store: Store
+    let playlist : Playlist
+    
+    var body: some View {
+        HStack {
+            Text("id:\(String(playlist.id))")
+                .foregroundColor(.secondTextColor)
+            Spacer()
+            Button(action: {
+                if playlist.userId != Store.shared.appState.settings.loginUser?.uid && playlist.id != 0 {
+                    let id = playlist.id
+                    let sub = !Store.shared.appState.playlist.userPlaylistIds.contains(id)
+                    Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
+                }else {
+                    let id = playlist.id
+                    Store.shared.dispatch(.playlistDelete(pid: id))
+                }
+            }) {
+                NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus")
+            }
+            .disabled(store.appState.playlist.detailRequesting)
+        }
+        .padding(.horizontal)
     }
 }
