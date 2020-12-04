@@ -11,10 +11,6 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
-    
-    private var playlists: AppState.Playlists {store.appState.playlist}
-    private var album: AppState.Album {store.appState.album}
-    private var artist: AppState.Artist {store.appState.artist}
 
     private var user: User? {store.appState.settings.loginUser}
     
