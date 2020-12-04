@@ -481,7 +481,7 @@ class Store: ObservableObject {
                 if appState.search.searchRequesting {
                     appState.search.songsId = songs.map{ $0.id }
                 }
-                appCommand = SongsDetailDoneCommand(songs: songs)
+                appCommand = SongsDetailDoneCommand(songsJSONModel: songs)
             case .failure(let error):
                 appState.error = error
             }

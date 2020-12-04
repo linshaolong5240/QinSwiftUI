@@ -76,6 +76,8 @@ struct PlaylistDetailView: View {
                         let rIndex = songsId.firstIndex(of: right.id)
                         return lIndex ?? 0 > rIndex ?? 0 ? false : true
                     }))
+                }else {
+                    Spacer()
                 }
             }else {
                 Spacer()

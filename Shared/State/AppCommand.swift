@@ -23,80 +23,15 @@ struct AlbumCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                do {
-                    let albumDict = data!["album"] as! [String: Any]
-                    let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
-                    let songsDict = data!["songs"] as! [[String: Any]]
-                    let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                    let songsIds = songsJSONModel.map{$0.id}
-                    let context = DataManager.shared.Context()
-                    //clean relationship
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-                    if let saved = try context.fetch(fetchRequest).first as? Album {
-                        if let songs = saved.songs {
-                            saved.removeFromSongs(songs)
-                            saved.songsId = songsIds
-                            for songModel in songsJSONModel {
-                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
-                                fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
-                                if let song = try context.fetch(fetchRequest).first as? Song {
-                                    saved.addToSongs(song)
-                                }else {
-                                    let song = songModel.toSongEntity(context: context)
-                                    saved.addToSongs(song)
-                                    for ar in songModel.ar {
-                                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                                        fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                                        if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                            artist.addToSongs(song)
-                                        }else {
-                                            let artist = ar.toArtistEntity(context: context)
-                                            artist.addToSongs(song)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }else {
-                        let album = albumJSONModel.toAlbumEntity(context: context)
-                        album.songsId = songsIds
-                        for ar in albumJSONModel.artists {
-                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                            fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                            if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                album.addToArtists(artist)
-                            }else {
-                                let artist = ar.toArtistEntity(context: context)
-                                album.addToArtists(artist)
-                            }
-                        }
-                        for songModel in songsJSONModel {
-                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
-                            fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
-                            if let song = try context.fetch(fetchRequest).first as? Song {
-                                album.addToSongs(song)
-                            }else {
-                                let song = songModel.toSongEntity(context: context)
-                                album.addToSongs(song)
-                                for ar in songModel.ar {
-                                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                                    fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                                    if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                        artist.addToSongs(song)
-                                    }else {
-                                        let artist = ar.toArtistEntity(context: context)
-                                        artist.addToSongs(song)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    try context.save()
-                    store.dispatch(.albumDone(result: .success(songsIds)))
-                }catch let err {
-                    print("\(#function) \(err)")
-                }
+                let albumDict = data!["album"] as! [String: Any]
+                let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
+                let songsDict = data!["songs"] as! [[String: Any]]
+                let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
+                let songsIds = songsJSONModel.map{$0.id}
+                DataManager.shared.updateAlbum(albumJSONModel: albumJSONModel)
+                DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
+                DataManager.shared.updateAlbumSongs(id: albumJSONModel.id, songsId: songsIds)
+                store.dispatch(.albumDone(result: .success(songsIds)))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -181,43 +116,14 @@ struct ArtistCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                do {
-                    let context = DataManager.shared.Context()
-                    //clean relationship
-//                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-//                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-//                    if let saved = try context.fetch(fetchRequest).first as? Artist {
-//                        if let songs = saved.songs {
-//                            saved.removeFromSongs(songs)
-//                            try context.save()
-//                        }
-//                    }
-                    let artistDict = data!["artist"] as! [String: Any]
-                    let artistJSONModel = artistDict.toData!.toModel(ArtistJSONModel.self)!
-                    
-                    let hotSongsDictArray = data!["hotSongs"] as! [[String: Any]]
-                    let songsJSONModel = hotSongsDictArray.map{$0.toData!.toModel(SongJSONModel.self)!}
-                    
-                    let artist = artistJSONModel.toArtistEntity(context: context)
-                    let songsIds = songsJSONModel.map{$0.id}
-                    artist.songsId = songsIds
-                    for songModel in songsJSONModel {
-                        let song = songModel.toSongEntity(context: context)
-                        artist.addToSongs(song)
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-                        fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.album.id)", "id")
-                        if let album = try context.fetch(fetchRequest).first as? Album {
-                            album.addToSongs(song)
-                        }else {
-                            let album = songModel.album.toAlbumEntity(context: context)
-                            album.addToSongs(song)
-                        }
-                    }
-                    try context.save()
-                    store.dispatch(.artistDone(result: .success(artistJSONModel)))
-                }catch let err {
-                    print("\(#function) \(err)")
-                }
+                let artistDict = data!["artist"] as! [String: Any]
+                let artistJSONModel = artistDict.toData!.toModel(ArtistJSONModel.self)!
+                let hotSongsDictArray = data!["hotSongs"] as! [[String: Any]]
+                let songsJSONModel = hotSongsDictArray.map{$0.toData!.toModel(SongJSONModel.self)!}
+                DataManager.shared.updateArtist(artistJSONModel: artistJSONModel)
+                DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
+                DataManager.shared.updateArtistSongs(id: artistJSONModel.id, songsId: songsJSONModel.map{ $0.id })
+                store.dispatch(.artistDone(result: .success(artistJSONModel)))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -256,7 +162,7 @@ struct ArtistAlbumCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 do {
-                    let context = DataManager.shared.Context()
+                    let context = DataManager.shared.context()
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
                     fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
                     if let artist = try context.fetch(fetchRequest).first as? Artist {
@@ -304,7 +210,7 @@ struct ArtistIntroductionCommand: AppCommand {
             if data?["code"] as? Int == 200 {
                 do {
                     var introduction: String?
-                    let context = DataManager.shared.Context()
+                    let context = DataManager.shared.context()
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
                     fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
                     if let aritst = try context.fetch(fetchRequest).first as? Artist {
@@ -343,7 +249,7 @@ struct ArtistMVCommand: AppCommand {
             }
             if data?["code"] as? Int == 200 {
                 do {
-                    let context = DataManager.shared.Context()
+                    let context = DataManager.shared.context()
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
                     fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
                     if let artist = try context.fetch(fetchRequest).first as? Artist {
@@ -977,6 +883,7 @@ struct PlaylistDetailCommand: AppCommand {
             if data!["code"] as! Int == 200 {
                 if let playlistDict = data?["playlist"] as? NeteaseCloudMusicApi.ResponseData {
                     let playlistJSONModel = playlistDict.toData!.toModel(PlaylistJSONModel.self)!
+                    DataManager.shared.updatePlaylist(playlistJSONModel: playlistJSONModel)
                     store.dispatch(.playlistDetailDone(result: .success(playlistJSONModel)))
                 }
             }else {
@@ -1005,49 +912,11 @@ struct PlaylistDetailSongsCommand: AppCommand {
                     return
                 }
                 if let songsDict = data?["songs"] as? [[String: Any]] {
-                    do {
-                        let context = DataManager.shared.Context()
-                        //clean relationship
-//                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-//                        fetchRequest.predicate = NSPredicate(format: "%K == \(playlistJSONModel.id)", "id")
-//                        if let saved = try context.fetch(fetchRequest).first as? Playlist {
-//                            if let songs = saved.songs {
-//                                saved.removeFromSongs(songs)
-//                                try context.save()
-//                            }
-//                        }
-                        let songsDetailJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                        let songsId = songsDetailJSONModel.map{$0.id}
-                        let playlist = playlistJSONModel.toPlaylistEntity(context: context)
-                        playlist.songsId = songsId
-                        for songModel in songsDetailJSONModel {
-                            let song = songModel.toSongEntity(context: context)
-                            playlist.addToSongs(song)
-                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-                            fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.al.id)", "id")
-                            if let album = try context.fetch(fetchRequest).first as? Album {
-                                album.addToSongs(song)
-                            } else {
-                                let album = songModel.al.toAlbumEntity(context: context)
-                                album.addToSongs(song)
-                            }
-                            for ar in songModel.ar {
-                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                                fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                                if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                    artist.addToSongs(song)
-                                } else {
-                                    let artist = ar.toArtistEntity(context: context)
-                                    artist.addToSongs(song)
-                                }
-                            }
-                        }
-                        try context.save()
-                        store.dispatch(.playlistDetailSongsDone(result: .success(songsId)))
-                    }catch let err {
-                        print("\(#function) \(err)")
-                    }
-
+                    let songsDetailJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
+                    let songsId = songsDetailJSONModel.map{$0.id}
+                    DataManager.shared.updateSongs(songsJSONModel: songsDetailJSONModel)
+                    DataManager.shared.updatePlaylistSongs(id: playlistJSONModel.id, songsId: songsId)
+                    store.dispatch(.playlistDetailSongsDone(result: .success(songsId)))
                 }else {
                     store.dispatch(.playlistDetailSongsDone(result: .failure(.songsDetailError)))
                 }
@@ -1182,7 +1051,7 @@ struct RecommendSongsCommand: AppCommand {
             if data!["code"] as! Int == 200 {
                 if let recommendSongDicts = data?["data"] as? NeteaseCloudMusicApi.ResponseData {
                     do {
-                        let context = DataManager.shared.Context()
+                        let context = DataManager.shared.context()
 //                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
 //                        fetchRequest.predicate = NSPredicate(format: "%K == 0", "id")
 //                        if let saved = try context.fetch(fetchRequest).first as? Playlist {
@@ -1299,10 +1168,10 @@ struct SongsDetailCommand: AppCommand {
 }
 
 struct SongsDetailDoneCommand: AppCommand {
-    let songs: [SongDetailJSONModel]
+    let songsJSONModel: [SongDetailJSONModel]
     
     func execute(in store: Store) {
-        DataManager.shared.updateSongs(songs: songs)
+        DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
 //        store.dispatch(.songsURL(ids: songs.map{$0.id}))
     }
 }

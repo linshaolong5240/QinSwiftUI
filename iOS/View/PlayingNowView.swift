@@ -122,7 +122,7 @@ struct PlayingView_Previews: PreviewProvider {
         PlayingNowView()
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
-            .environment(\.managedObjectContext, DataManager.shared.Context())
+            .environment(\.managedObjectContext, DataManager.shared.context())
             .environment(\.colorScheme, .dark)
     }
 }

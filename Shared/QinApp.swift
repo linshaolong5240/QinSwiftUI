@@ -11,7 +11,7 @@ import SwiftUI
 struct QinApp: App {
     @StateObject var store = Store.shared
     @StateObject var player = Player.shared
-    let context = DataManager.shared.Context()
+    let context = DataManager.shared.context()
 
     var body: some Scene {
         WindowGroup {
