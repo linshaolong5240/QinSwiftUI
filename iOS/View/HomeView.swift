@@ -12,7 +12,7 @@ struct HomeView: View {
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
 
-    private var user: User? {store.appState.settings.loginUser}
+    private var user: User? { store.appState.settings.loginUser }
     
     var body: some View {
         NavigationView {
@@ -68,6 +68,7 @@ struct HomeView: View {
     }
 }
 
+#if DEBUG
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
@@ -76,3 +77,4 @@ struct HomeView_Previews: PreviewProvider {
             .environment(\.colorScheme, .light)
     }
 }
+#endif
