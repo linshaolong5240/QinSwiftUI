@@ -28,8 +28,8 @@ class DataManager {
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return container
     }()
-    public func Context() -> NSManagedObjectContext {
-        return persistentContainer.viewContext
+    public func context() -> NSManagedObjectContext {
+        return self.persistentContainer.viewContext
     }
     public func newBackgroundUniqueContext() -> NSManagedObjectContext {
         let context = persistentContainer.newBackgroundContext()
@@ -38,7 +38,7 @@ class DataManager {
     }
     public func batchDelete(entityName: String, predicate: NSPredicate? = nil) {
         do {
-            let context = persistentContainer.viewContext
+            let context = self.context()
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
             request.predicate = predicate
             let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
@@ -50,7 +50,7 @@ class DataManager {
     }
     public func batchInsert(entityName: String, objects: [[String: Any]]) {
         do {
-            let context = persistentContainer.viewContext
+            let context = self.context()
             let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
             var insertResult : NSBatchInsertResult
             insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
@@ -62,7 +62,7 @@ class DataManager {
     public func batchInsertAfterDeleteAll(entityName: String, objects: [[String: Any]]) {
         do {
             self.batchDelete(entityName: entityName)
-            let context = persistentContainer.viewContext
+            let context = self.context()
             let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
             var insertResult : NSBatchInsertResult
             insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
@@ -73,7 +73,7 @@ class DataManager {
     }
     public func batchUpdate(entityName: String, propertiesToUpdate: [AnyHashable : Any], predicate: NSPredicate? = nil) {
         do {
-            let context = persistentContainer.viewContext
+            let context = self.context()
             let updateRequest = NSBatchUpdateRequest(entityName: entityName)
             updateRequest.propertiesToUpdate = propertiesToUpdate
             updateRequest.predicate = predicate
@@ -87,189 +87,204 @@ class DataManager {
     public func batchUpdateLike(ids: [Int]) {
         self.batchUpdate(entityName: "Song", propertiesToUpdate: ["like" : true], predicate: NSPredicate(format: "id IN %@", ids))
     }
-    public func getAlbum(id: Int64) -> Playlist? {
+    public func getAlbum(id: Int64) -> Album? {
+        var album: Album? = nil
         do {
-            let context = persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+            let context = self.context()
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
             fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-            let album = try context.fetch(fetchRequest).first as? Playlist
-            print("\(#function)")
-            return album
+            album = try context.fetch(fetchRequest).first as? Album
         }catch let error {
             print("\(#function):\(error)")
         }
-        return nil
+        return album
+    }
+    public func getArtist(id: Int64) -> Artist? {
+        var artist: Artist? = nil
+        let context = self.context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+        fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+        do {
+            artist = try context.fetch(fetchRequest).first as? Artist
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+        return artist
     }
     public func getPlaylist(id: Int64) -> Playlist? {
+        var playlist: Playlist? = nil
+        let context = self.context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+        fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
         do {
-            let context = persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-            fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-            let playlist = try context.fetch(fetchRequest).first as? Playlist
-            print("\(#function)")
-            return playlist
+            playlist = try context.fetch(fetchRequest).first as? Playlist
         }catch let error {
             print("\(#function):\(error)")
         }
-        return nil
+        return playlist
     }
     public func getSong(id: Int64) -> Song? {
+        var song: Song? = nil
+        let context = self.context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+        fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
         do {
-            let context = persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
-            fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-            let song = try context.fetch(fetchRequest).first as? Song
-            print("\(#function)")
-            return song
+            song = try context.fetch(fetchRequest).first as? Song
         }catch let error {
             print("\(#function):\(error)")
         }
-        return nil
+        return song
+    }
+    public func getSongs(ids: [Int64]) -> [Song]? {
+        var songs: [Song]? = nil
+        let context = self.context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
+        fetchRequest.predicate = NSPredicate(format: "%K IN %@", "id", ids)
+        do {
+            songs = try context.fetch(fetchRequest) as? [Song]
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+        return songs
+    }
+    public func getUser() -> User? {
+        var user: User? = nil
+        let context = self.context()
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AccountData")
+        do {
+            let accountDatas = try context.fetch(request)
+            if accountDatas.count > 0 {
+                user =  User(accountDatas[0] as! AccountData)
+            }
+        }catch let error {
+            print("DataManager getUser \(error)")
+        }
+        return user
+    }
+    public func save() {
+        do {
+            try self.context().save()
+        }catch let error {
+            print("\(#function) \(error)")
+        }
+    }
+    public func updateAlbum(albumJSONModel: AlbumJSONModel) {
+        let album = albumJSONModel.toAlbumEntity(context: self.context())
+        for ar in albumJSONModel.artists {
+            if let artist = self.getArtist(id: ar.id) {
+                album.addToArtists(artist)
+            }else {
+                let artist = ar.toArtistEntity(context: self.context())
+                album.addToArtists(artist)
+            }
+        }
+        self.save()
+    }
+    public func updateAlbumSongs(id: Int64, songsId: [Int64]) {
+        if let album = self.getAlbum(id: id) {
+            if let songs = album.songs {
+                album.removeFromSongs(songs)
+            }
+            album.songsId = songsId
+            if let songs = self.getSongs(ids: songsId) {
+                album.addToSongs(NSSet(array: songs))
+            }
+            self.save()
+        }
+    }
+    public func updateArtist(artistJSONModel: ArtistJSONModel) {
+        _ = artistJSONModel.toArtistEntity(context: self.context())
+        self.save()
+    }
+    public func updateArtistSongs(id: Int64, songsId: [Int64]) {
+        if let artist = self.getArtist(id: id) {
+            if let songs = artist.songs {
+                artist.removeFromSongs(songs)
+            }
+            artist.songsId = songsId
+            if let songs = self.getSongs(ids: songsId) {
+                artist.addToSongs(NSSet(array: songs))
+            }
+            self.save()
+        }
+    }
+    public func updatePlaylist(playlistJSONModel: PlaylistJSONModel) {
+        _ = playlistJSONModel.toPlaylistEntity(context: self.context())
+        self.save()
+    }
+    public func updatePlaylistSongs(id: Int64, songsId: [Int64]) {
+        if let playlist = self.getPlaylist(id: id) {
+            if let songs = playlist.songs {
+                playlist.removeFromSongs(songs)
+            }
+            playlist.songsId = songsId
+            if let songs = self.getSongs(ids: songsId) {
+                playlist.addToSongs(NSSet(array: songs))
+            }
+            self.save()
+        }
+    }
+    public func updateSongs(songsJSONModel: [SongJSONModel]) {
+        for songModel in songsJSONModel {
+            let song = songModel.toSongEntity(context: self.context())
+            if let album = self.getAlbum(id: songModel.album.id) {
+                album.addToSongs(song)
+            }else {
+                let album = songModel.album.toAlbumEntity(context: self.context())
+                album.addToSongs(song)
+            }
+            for ar in songModel.artists {
+                if let artist = self.getArtist(id: ar.id) {
+                    artist.addToSongs(song)
+                }else {
+                    let artist = ar.toArtistEntity(context: self.context())
+                    artist.addToSongs(song)
+                }
+            }
+        }
+        self.save()
+    }
+    public func updateSongs(songsJSONModel: [SongDetailJSONModel]) {
+        for songModel in songsJSONModel {
+            let song = songModel.toSongEntity(context: self.context())
+            if let album = self.getAlbum(id: songModel.al.id) {
+                album.addToSongs(song)
+            }else {
+                let album = songModel.al.toAlbumEntity(context: self.context())
+                album.addToSongs(song)
+            }
+            for ar in songModel.ar {
+                if let artist = self.getArtist(id: ar.id) {
+                    artist.addToSongs(song)
+                }else {
+                    let artist = ar.toArtistEntity(context: self.context())
+                    artist.addToSongs(song)
+                }
+            }
+        }
+        self.save()
     }
     public func userLogin(_ user: User) {
         userLogout()
-        let accountData = NSEntityDescription.insertNewObject(forEntityName: "AccountData", into: persistentContainer.viewContext) as! AccountData
+        let accountData = NSEntityDescription.insertNewObject(forEntityName: "AccountData", into: self.context()) as! AccountData
         do {
             accountData.userData = try JSONEncoder().encode(user)
         }catch let error {
             print(error)
         }
-        save()
+        self.save()
     }
     public func userLogout() {
+        let context = self.context()
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AccountData")
         do {
-            let accountDatas = try persistentContainer.viewContext.fetch(request)
+            let accountDatas = try self.context().fetch(request)
             for accountData in accountDatas {
                 persistentContainer.viewContext.delete(accountData as! NSManagedObject)
             }
-            save()
+            try context.save()
         }catch let error {
             print("DataManager userLogout \(error)")
-        }
-    }
-    public func getUser() -> User? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AccountData")
-        do {
-            let accountDatas = try persistentContainer.viewContext.fetch(request)
-            if accountDatas.count > 0 {
-                return User(accountDatas[0] as! AccountData)
-            }
-        }catch let error {
-            print("DataManager getUser \(error)")
-        }
-        return nil
-    }
-    public func save() {
-        do {
-            try persistentContainer.viewContext.save()
-        }catch let error {
-            print("DataManager save \(error)")
-        }
-    }
-    public func updateAlbum(albumJSONModel: AlbumJSONModel, songsJSONModel: [SongDetailJSONModel]) {
-        let context = persistentContainer.viewContext
-        do {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-            fetchRequest.predicate = NSPredicate(format: "%K == \(albumJSONModel.id)", "id")
-            let songsIds = songsJSONModel.map{$0.id}
-            if let saved = try context.fetch(fetchRequest).first as? Album {
-                if let songs = saved.songs {
-                    saved.removeFromSongs(songs)
-                    saved.songsId = songsIds
-                    for songModel in songsJSONModel {
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
-                        fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
-                        if let song = try context.fetch(fetchRequest).first as? Song {
-                            saved.addToSongs(song)
-                        }else {
-                            let song = songModel.toSongEntity(context: context)
-                            saved.addToSongs(song)
-                            for ar in songModel.ar {
-                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                                fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                                if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                    artist.addToSongs(song)
-                                }else {
-                                    let artist = ar.toArtistEntity(context: context)
-                                    artist.addToSongs(song)
-                                }
-                            }
-                        }
-                    }
-                }
-            }else {
-                let album = albumJSONModel.toAlbumEntity(context: context)
-                album.songsId = songsIds
-                for ar in albumJSONModel.artists {
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                    fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                    if let artist = try context.fetch(fetchRequest).first as? Artist {
-                        album.addToArtists(artist)
-                    }else {
-                        let artist = ar.toArtistEntity(context: context)
-                        album.addToArtists(artist)
-                    }
-                }
-                for songModel in songsJSONModel {
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
-                    fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
-                    if let song = try context.fetch(fetchRequest).first as? Song {
-                        album.addToSongs(song)
-                    }else {
-                        let song = songModel.toSongEntity(context: context)
-                        album.addToSongs(song)
-                        for ar in songModel.ar {
-                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                            fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                            if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                artist.addToSongs(song)
-                            }else {
-                                let artist = ar.toArtistEntity(context: context)
-                                artist.addToSongs(song)
-                            }
-                        }
-                    }
-                }
-            }
-            try context.save()
-        }catch let err {
-            print("\(#function) \(err)")
-        }
-    }
-    public func updateSongs(songs: [SongDetailJSONModel]) {
-        do {
-            let context = persistentContainer.viewContext
-            for songModel in songs {
-                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
-                fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.id)", "id")
-                if (try context.fetch(fetchRequest).first as? Song) != nil {
-                    
-                }else {
-                    let song = songModel.toSongEntity(context: context)
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-                    fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.al.id)", "id")
-                    if let album = try context.fetch(fetchRequest).first as? Album {
-                        album.addToSongs(song)
-                    }else {
-                        let album = songModel.al.toAlbumEntity(context: context)
-                        album.addToSongs(song)
-                    }
-                    for ar in songModel.ar {
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                        fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                        if let artist = try context.fetch(fetchRequest).first as? Artist {
-                            artist.addToSongs(song)
-                        }else {
-                            let artist = ar.toArtistEntity(context: context)
-                            artist.addToSongs(song)
-                        }
-                    }
-                }
-            }
-            try context.save()
-        }catch let err {
-            print("\(#function) \(err)")
         }
     }
 }

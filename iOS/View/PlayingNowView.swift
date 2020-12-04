@@ -122,7 +122,7 @@ struct PlayingView_Previews: PreviewProvider {
         PlayingNowView()
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
-            .environment(\.managedObjectContext, DataManager.shared.Context())
+            .environment(\.managedObjectContext, DataManager.shared.context())
             .environment(\.colorScheme, .dark)
     }
 }
@@ -285,28 +285,30 @@ struct PlaylistTracksView: View {
                 ScrollView {
                     LazyVStack{
                         ForEach(results){ (item: UserPlaylist) in
-                            Button(action: {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    if let songId = Store.shared.appState.playing.song?.id {
-                                        Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
+                            if item.userId == Store.shared.appState.settings.loginUser?.uid && item.id != Store.shared.appState.playlist.likedPlaylistId {
+                                Button(action: {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        if let songId = Store.shared.appState.playing.song?.id {
+                                            Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
+                                        }
                                     }
-                                }
-                                withAnimation(.default){
-                                    showList = false
-                                    bottomType = .playingStatus
-                                }
-                            }) {
-                                HStack {
-                                    NEUCoverView(url: item.coverImgUrl ?? "", coverShape: .rectangle, size: .little)
-                                    VStack(alignment: .leading) {
-                                        Text(item.name ?? "")
-                                            .foregroundColor(.mainTextColor)
-                                        Text("\(item.trackCount) songs")
-                                            .foregroundColor(.secondTextColor)
+                                    withAnimation(.default){
+                                        showList = false
+                                        bottomType = .playingStatus
                                     }
-                                    Spacer()
+                                }) {
+                                    HStack {
+                                        NEUCoverView(url: item.coverImgUrl ?? "", coverShape: .rectangle, size: .little)
+                                        VStack(alignment: .leading) {
+                                            Text(item.name ?? "")
+                                                .foregroundColor(.mainTextColor)
+                                            Text("\(item.trackCount) songs")
+                                                .foregroundColor(.secondTextColor)
+                                        }
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal)
                                 }
-                                .padding(.horizontal)
                             }
                         }
                     }
