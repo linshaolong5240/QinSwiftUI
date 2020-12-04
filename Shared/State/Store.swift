@@ -468,24 +468,21 @@ class Store: ObservableObject {
         case .searchSongDone(let result):
             switch result {
             case .success(let ids):
+                appState.search.songsId = ids
                 appCommand = SearchSongDoneCommand(ids: ids)
             case .failure(let error):
                 appState.error = error
-                appState.search.searchRequesting = false
             }
+            appState.search.searchRequesting = false
         case .songsDetail(let ids):
             appCommand = SongsDetailCommand(ids: ids)
         case .songsDetailDone(let result):
             switch result {
             case .success(let songs):
-                if appState.search.searchRequesting {
-                    appState.search.songsId = songs.map{ $0.id }
-                }
                 appCommand = SongsDetailDoneCommand(songsJSONModel: songs)
             case .failure(let error):
                 appState.error = error
             }
-            appState.search.searchRequesting = false
         case .songsOrderUpdate(let pid, let ids):
             appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
         case .songsOrderUpdateDone(let result):
@@ -505,7 +502,6 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-            appState.search.searchRequesting = false
         case .userPlaylist(let uid):
             appState.playlist.userPlaylistRequesting = true
             if let userId = uid {

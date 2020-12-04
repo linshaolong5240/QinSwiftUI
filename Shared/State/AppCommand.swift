@@ -1158,8 +1158,9 @@ struct SongsDetailCommand: AppCommand {
                 return
             }
             if let songsDict = data?["songs"] as? [[String: Any]] {
-                let songs = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                store.dispatch(.songsDetailDone(result: .success(songs)))
+                let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
+                DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
+                store.dispatch(.songsDetailDone(result: .success(songsJSONModel)))
             }else {
                 store.dispatch(.songsDetailDone(result: .failure(.songsDetailError)))
             }
