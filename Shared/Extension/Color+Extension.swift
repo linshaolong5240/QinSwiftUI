@@ -10,9 +10,6 @@ import Foundation
 import SwiftUI
 
 extension Color {
-    static var backgroundColor: Color {
-        return Color("backgroundColor")
-    }
     static var mainTextColor: Color {
         return Color("MainTextColor")
     }
