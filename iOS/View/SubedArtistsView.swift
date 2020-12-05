@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ArtistSublistView: View {
+struct SubedArtistsView: View {
     @FetchRequest(entity: ArtistSub.entity(), sortDescriptors: []) var results: FetchedResults<ArtistSub>
     @State private var artistId: Int64 = 0
     @State private var showArtistDetail: Bool = false
@@ -50,7 +50,7 @@ struct ArtistSublistView: View {
 #if DEBUG
 struct ArtistSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        ArtistSublistView()
+        SubedArtistsView()
     }
 }
 #endif

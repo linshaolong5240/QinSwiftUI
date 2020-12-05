@@ -45,8 +45,8 @@ struct HomeView: View {
                                     RecommendPlaylistView()
                                     CreatedPlaylistView()
                                     SubedPlaylistView()
-                                    AlbumSublistView()
-                                    ArtistSublistView()
+                                    SubedAlbumsView()
+                                    SubedArtistsView()
                                 }
                             }
                         }else {
