@@ -32,9 +32,6 @@ struct PlayingNowView: View {
                 NavigationLink(destination: FetchedArtistDetailView(id: artistId), isActive: $showArtist) {
                     EmptyView()
                 }
-                NavigationLink(destination: CommentView(id: playing.song?.id ?? 0), isActive: $showComment) {
-                    EmptyView()
-                }
                 if !showMore {
                     HStack {
                         NEUBackwardButton()
@@ -83,7 +80,7 @@ struct PlayingNowView: View {
                         .padding(.horizontal)
                         .transition(.move(edge: .top))
                     }
-                    PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType, showComment: $showComment)
+                    PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType)
                     HStack {
                         Spacer()
                         if !showMore {
@@ -340,7 +337,6 @@ struct PlayingNowCoverView: View {
     
     @Binding var showMore: Bool
     @Binding var bottomType: PlayingNowBottomType
-    @Binding var showComment: Bool
 
     var body: some View {
         let url = playing.song?.album?.picUrl
@@ -366,6 +362,7 @@ struct PlayingNowCoverView: View {
         }
     }
     func tapAction() {
+        self.hideKeyboard()
         withAnimation(.default) {
             showMore.toggle()
             if showMore {
@@ -373,9 +370,6 @@ struct PlayingNowCoverView: View {
             }else {
                 bottomType = .playingStatus
             }
-        }
-        if !showMore {
-            showComment = false
         }
     }
 }

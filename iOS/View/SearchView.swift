@@ -133,8 +133,8 @@ struct SearchSongResultView: View {
 
 struct SearchBarView: View {
     @EnvironmentObject var store: Store
-    private var search: AppState.Search {store.appState.search}
-    private var searchBinding: Binding<AppState.Search> {$store.appState.search}
+    private var search: AppState.Search { store.appState.search }
+    private var searchBinding: Binding<AppState.Search> { $store.appState.search }
     @State private var showSearch: Bool = false
     @State private var showCancel = false
 
@@ -160,7 +160,8 @@ struct SearchBarView: View {
                 .foregroundColor(.mainTextColor)
                 if showCancel {
                     Button(action: {
-                        hideKeyboard()
+                        Store.shared.appState.search.keyword = ""
+                        self.hideKeyboard()
                     }, label: {
                         Text("取消")
                     })

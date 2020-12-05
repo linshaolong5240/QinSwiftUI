@@ -58,6 +58,9 @@ struct HomeView: View {
                     LoginView()
                 }
             }
+            .onTapGesture {
+                self.hideKeyboard()
+            }
             .navigationBarHidden(true)
         }
         .navigationViewStyle(StackNavigationViewStyle())
