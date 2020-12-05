@@ -62,9 +62,9 @@ struct DescriptionConfiguration {
     var introduction: String
     var id: Int64
     var name: String
-    var picUrl: String
+    var picUrl: String?
 
-    init(picUrl: String, name: String, introduction: String, id: Int64) {
+    init(picUrl: String?, name: String, introduction: String, id: Int64) {
         self.id = id
         self.name = name
         self.introduction = introduction
@@ -75,20 +75,20 @@ struct DescriptionConfiguration {
         self.introduction = viewModel.introduction ?? ""
         self.id = viewModel.id
         self.name = viewModel.name ?? ""
-        self.picUrl = viewModel.picUrl ?? ""
+        self.picUrl = viewModel.picUrl
     }
     
     init(viewModel: Artist) {
         self.introduction = viewModel.introduction ?? ""
         self.id = viewModel.id
         self.name = viewModel.name ?? ""
-        self.picUrl = viewModel.img1v1Url ?? ""
+        self.picUrl = viewModel.img1v1Url
     }
     init(viewModel: Playlist) {
         self.introduction = viewModel.introduction ?? ""
         self.id = viewModel.id
         self.name = viewModel.name ?? ""
-        self.picUrl = viewModel.coverImgUrl ?? ""
+        self.picUrl = viewModel.coverImgUrl
     }
     init(viewModel: PlaylistViewModel) {
         self.introduction = viewModel.description

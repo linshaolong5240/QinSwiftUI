@@ -55,7 +55,7 @@ struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-            FetchedArtistDetailView(id: 0)
+            FetchedArtistDetailView(id: 12787752)
                 .environmentObject(Store.shared)
         }
     }
@@ -92,7 +92,7 @@ struct ArtistDetailView: View {
                 Text("MV").tag(Selection.mv)
             }/*@END_MENU_TOKEN@*/
             .pickerStyle(SegmentedPickerStyle())
-            .padding()
+            .padding(.horizontal)
             switch selection {
             case .album:
                 if let albums = artist.albums?.allObjects as? [Album] {

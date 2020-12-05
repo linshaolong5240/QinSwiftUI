@@ -10,7 +10,7 @@ import Foundation
 
 struct PlaylistViewModel: Identifiable {
     var count: Int = 0
-    var coverImgUrl: String = ""
+    var coverImgUrl: String? = nil
     var creator: String = ""
     var creatorId: Int = 0
     var description: String = ""
