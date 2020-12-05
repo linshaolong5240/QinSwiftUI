@@ -45,7 +45,7 @@ extension NEUSFView {
         var width: CGFloat {
             switch self {
             case .small:
-                return 40
+                return 35
             case .medium:
                 return 48
             case .big:
@@ -57,7 +57,7 @@ extension NEUSFView {
         var height: CGFloat {
             switch self {
             case .small:
-                return 40
+                return 35
             case .medium:
                 return 48
             case .big:
@@ -70,7 +70,7 @@ extension NEUSFView {
         var fontSize: CGFloat {
             switch self {
             case .small:
-                return 10
+                return 15
             case .medium:
                 return 15
             case .big:

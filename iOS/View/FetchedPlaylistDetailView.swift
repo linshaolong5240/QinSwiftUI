@@ -66,7 +66,7 @@ struct PlaylistDetailView: View {
     @ObservedObject var playlist :Playlist
     
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             DescriptionView(viewModel: playlist)
             PlaylistDetailActionView(playlist: playlist)
             if let songs = playlist.songs {
@@ -194,9 +194,10 @@ struct PlaylistDetailActionView: View {
                     Store.shared.dispatch(.playlistDelete(pid: id))
                 }
             }) {
-                NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus")
+                NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus",
+                          size: .small)
             }
-            .disabled(store.appState.playlist.detailRequesting)
+            .buttonStyle(NEUButtonStyle(shape: Circle()))
         }
         .padding(.horizontal)
     }

@@ -53,9 +53,14 @@ struct FetchedArtistDetailView: View {
 #if DEBUG
 struct ArtistView_Previews: PreviewProvider {
     static var previews: some View {
+//        ZStack {
+//            NEUBackgroundView()
+//            FetchedArtistDetailView(id: 12787752)
+//                .environmentObject(Store.shared)
+//        }
         ZStack {
             NEUBackgroundView()
-            FetchedArtistDetailView(id: 12787752)
+            ArtistDetailView(artist: Artist(context: DataManager.shared.context()))
                 .environmentObject(Store.shared)
         }
     }
@@ -71,7 +76,7 @@ struct ArtistDetailView: View {
     @ObservedObject var artist: Artist
     
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             DescriptionView(viewModel: artist)
             HStack {
                 Text("id:\(String(artist.id))")
@@ -82,8 +87,10 @@ struct ArtistDetailView: View {
                     let sub = !Store.shared.appState.artist.subedIds.contains(id)
                     Store.shared.dispatch(.artistSub(id: id, sub: sub))
                 }) {
-                    NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "folder" : "folder.badge.plus")
+                    NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "folder" : "folder.badge.plus",
+                              size: .small)
                 }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{
@@ -92,7 +99,8 @@ struct ArtistDetailView: View {
                 Text("MV").tag(Selection.mv)
             }/*@END_MENU_TOKEN@*/
             .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal)
+            .padding([.horizontal])
+//            SongListView(songs: [Song]())
             switch selection {
             case .album:
                 if let albums = artist.albums?.allObjects as? [Album] {

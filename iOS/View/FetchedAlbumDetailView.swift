@@ -63,7 +63,7 @@ struct AlbumDetailView: View {
     @ObservedObject var album: Album
     
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             DescriptionView(viewModel: album)
             HStack {
                 Text("id:\(String(album.id))")
@@ -74,8 +74,10 @@ struct AlbumDetailView: View {
                     let sub = !Store.shared.appState.album.subedIds.contains(id)
                     Store.shared.dispatch(.albumSub(id: id, sub: sub))
                 }) {
-                    NEUSFView(systemName: store.appState.album.subedIds.contains(album.id) ? "folder" : "folder.badge.plus")
+                    NEUSFView(systemName: store.appState.album.subedIds.contains(album.id) ? "folder" : "folder.badge.plus",
+                              size: .small)
                 }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             if let songs = album.songs {
