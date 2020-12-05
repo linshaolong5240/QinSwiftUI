@@ -146,7 +146,7 @@ struct NEULightImageView<S: Shape>: View {
                                height: size.width - innerPadding * 2)
                         .clipShape(innerShape)
                 }else {
-                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width, height: size.width)))])
+                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width * 2, height: size.width * 2)))])
                         .resizable()
                         .renderingMode(.original)
                         .aspectRatio(contentMode: .fill)
@@ -243,7 +243,7 @@ struct NEUDarkImageView<S: Shape>: View {
                                height: size.width - innerPadding * 2)
                         .clipShape(innerShape)
                 }else {
-                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width + 100, height: size.width + 100)))])
+                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width * 2, height: size.width * 2)))])
                         .resizable()
                         .renderingMode(.original)
                         .aspectRatio(contentMode: .fill)
