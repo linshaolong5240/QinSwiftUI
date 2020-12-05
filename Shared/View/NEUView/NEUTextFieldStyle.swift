@@ -42,13 +42,13 @@ struct NEULightTextFieldBackground: View {
         ZStack {
             Color.lightBackgourdStart
             LinearGradient(.lightOrangeEnd, .lightOrangeMiddle, .lightOrangeStart)
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .mask(RoundedRectangle(cornerRadius: 12))
                 .padding(5)
                 .shadow(color: Color.black.opacity(0.25), radius: 5, x: -5, y: -5)
                 .shadow(color: Color.white, radius: 5, x: 5, y: 5)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                .mask(RoundedRectangle(cornerRadius: 15))
         }
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .mask(RoundedRectangle(cornerRadius: 15))
     }
 }
 struct NEUDarkTextFieldBackground: View {
@@ -56,13 +56,13 @@ struct NEUDarkTextFieldBackground: View {
         ZStack {
             Color.darkBackgourdStart
             LinearGradient(.darkOrangeEnd, .darkOrangeMiddle, .darkOrangeStart)
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .mask(RoundedRectangle(cornerRadius: 12))
                 .padding(5)
                 .shadow(color: .darkBackgourdEnd, radius: 5, x: -5, y: -5)
                 .shadow(color: .darkBackgourdStart, radius: 5, x: 5, y: 5)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                .mask(RoundedRectangle(cornerRadius: 15))
         }
-        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        .mask(RoundedRectangle(cornerRadius: 15))
     }
 }
 struct NEUTextFieldBackground: View {
