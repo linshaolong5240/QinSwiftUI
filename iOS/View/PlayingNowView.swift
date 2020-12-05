@@ -352,7 +352,7 @@ struct PlayingNowCoverView: View {
     @Binding var showComment: Bool
 
     var body: some View {
-        let url = playing.song?.album?.picUrl ?? ""
+        let url = playing.song?.album?.picUrl
         switch settings.coverShape {
         case .circle:
             NEUImageView(url: url,

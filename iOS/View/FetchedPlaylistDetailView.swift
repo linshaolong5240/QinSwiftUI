@@ -58,6 +58,7 @@ struct PlaylistDetailView_Previews: PreviewProvider {
         }
         .environmentObject(Store.shared)
         .environmentObject(Player.shared)
+        .preferredColorScheme(.light)
     }
 }
 #endif
@@ -134,14 +135,12 @@ struct CommonNavigationBarView: View {
     enum CommonNavigationBarType {
         case album, artist, playlist
     }
-    @State private var showPlayingNow: Bool = false
     let id: Int64
     let title: String
     let type: CommonNavigationBarType
     
     var body: some View {
         HStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
             NEUBackwardButton()
             Spacer()
             Button(action: {
@@ -158,14 +157,9 @@ struct CommonNavigationBarView: View {
                     }
                 }
             }){
-                Image(systemName: "arrow.triangle.2.circlepath")
+                NEUSFView(systemName: "arrow.triangle.2.circlepath",inactiveColor: .accentColor)
             }
-            Button(action: {
-                showPlayingNow.toggle()
-            }){
-                NEUSFView(systemName: "music.quarternote.3")
-            }
-            .buttonStyle(NEUButtonStyle(shape: Circle()))
+            PlayingNowButtonView()
         }
         .overlay(
             HStack {

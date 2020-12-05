@@ -149,6 +149,7 @@
 		2BCCB32F24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB32A24DC7EF8004CAD67 /* PlaylistViewModel.swift */; };
 		2BCCB33024DC7EF9004CAD67 /* SongViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB32B24DC7EF8004CAD67 /* SongViewModel.swift */; };
 		2BCCB33124DC7EF9004CAD67 /* SongViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB32B24DC7EF8004CAD67 /* SongViewModel.swift */; };
+		2BD09855257BBDFB0062480F /* PlayingNowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD09854257BBDFB0062480F /* PlayingNowButtonView.swift */; };
 		2BD285B9252B1108000E4B9F /* SongJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285B8252B1108000E4B9F /* SongJSONModel.swift */; };
 		2BD285BA252B1108000E4B9F /* SongJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285B8252B1108000E4B9F /* SongJSONModel.swift */; };
 		2BD285BE252B119B000E4B9F /* AlbumJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */; };
@@ -255,6 +256,7 @@
 		2BCCB32924DC7EF8004CAD67 /* CommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		2BCCB32A24DC7EF8004CAD67 /* PlaylistViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewModel.swift; sourceTree = "<group>"; };
 		2BCCB32B24DC7EF8004CAD67 /* SongViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongViewModel.swift; sourceTree = "<group>"; };
+		2BD09854257BBDFB0062480F /* PlayingNowButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingNowButtonView.swift; sourceTree = "<group>"; };
 		2BD285B8252B1108000E4B9F /* SongJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongJSONModel.swift; sourceTree = "<group>"; };
 		2BD285BD252B119B000E4B9F /* AlbumJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumJSONModel.swift; sourceTree = "<group>"; };
 		2BD4D9CA251BC460006798ED /* LyricViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricViewModel.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				2BCCB28A24DC5A2A004CAD67 /* BottomBarView.swift */,
 				2B1FBF922568225A0003ADC4 /* CommentView.swift */,
 				2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */,
+				2BC8316825710ED4003D8D10 /* CreatedPlaylistView.swift */,
 				2B8F56E9252F8969008FFF8F /* DescriptionView.swift */,
 				2B41D86D25336D5F000B6FAC /* DiscoverPlaylistView.swift */,
 				2B066911253177EF0007053C /* DiscoverView.swift */,
@@ -387,6 +390,7 @@
 				2BCCB28F24DC5A2A004CAD67 /* HomeView.swift */,
 				2B1ABED225387E8800B9A15C /* LoginView.swift */,
 				2BED107F253439B4005A14AA /* LyricView.swift */,
+				2BD09854257BBDFB0062480F /* PlayingNowButtonView.swift */,
 				2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */,
 				2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */,
 				2B7BFCF525552EFE009DB692 /* RecommendSongsView.swift */,
@@ -394,11 +398,10 @@
 				2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */,
 				2B95469B25508F3500903B27 /* SongListView.swift */,
 				2BC664AA250C03F700A08BD7 /* SongRowView.swift */,
+				2BC8316C2571116A003D8D10 /* SubedPlaylistView.swift */,
 				2BCCB28824DC5A2A004CAD67 /* TestView.swift */,
 				2BCCB29724DC5A2B004CAD67 /* UserView.swift */,
 				2BCCB28924DC5A2A004CAD67 /* ViewModifier.swift */,
-				2BC8316825710ED4003D8D10 /* CreatedPlaylistView.swift */,
-				2BC8316C2571116A003D8D10 /* SubedPlaylistView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -644,6 +647,7 @@
 				2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */,
 				2BCCB33024DC7EF9004CAD67 /* SongViewModel.swift in Sources */,
 				2BE89B15250F7F5100E0F278 /* NEUButton.swift in Sources */,
+				2BD09855257BBDFB0062480F /* PlayingNowButtonView.swift in Sources */,
 				2B0668F42530586F0007053C /* ArtistSubJSONModel.swift in Sources */,
 				2B1ABEDF253DE09500B9A15C /* Published+Extension.swift in Sources */,
 				2BC4C2012549B22100121D3E /* PlaylistModel.swift in Sources */,
