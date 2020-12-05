@@ -70,7 +70,7 @@ extension NEUSFView {
         var fontSize: CGFloat {
             switch self {
             case .small:
-                return 15
+                return 10
             case .medium:
                 return 15
             case .big:
