@@ -161,34 +161,10 @@ struct ArtistAlbumCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                do {
-                    let context = DataManager.shared.context()
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-                    if let artist = try context.fetch(fetchRequest).first as? Artist {
-                        //clean albums relationship
-//                        if let albums = artist.albums {
-//                            artist.removeFromAlbums(albums)
-//                            try context.save()
-//                        }
-                        let albumsDict = data!["hotAlbums"] as! [[String: Any]]
-                        let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
-                        for albumModel in albumsJSONModel {
-                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-                            fetchRequest.predicate = NSPredicate(format: "%K == \(albumModel.id)", "id")
-                            if let album = try context.fetch(fetchRequest).first as? Album {
-                                artist.addToAlbums(album)
-                            }else {
-                                let album = albumModel.toAlbumEntity(context: context)
-                                artist.addToAlbums(album)
-                            }
-                        }
-                        try context.save()
-                        store.dispatch(.artistAlbumDone(result: .success(albumsJSONModel)))
-                    }
-                }catch let err {
-                    print("\(#function) \(err)")
-                }
+                let albumsDict = data!["hotAlbums"] as! [[String: Any]]
+                let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
+                DataManager.shared.updateArtistAlbums(id: id, albumsJSONModel: albumsJSONModel)
+                store.dispatch(.artistAlbumDone(result: .success(albumsJSONModel)))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"
@@ -208,20 +184,9 @@ struct ArtistIntroductionCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                do {
-                    var introduction: String?
-                    let context = DataManager.shared.context()
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-                    if let aritst = try context.fetch(fetchRequest).first as? Artist {
-                        introduction = data!["briefDesc"] as? String ?? nil
-                        aritst.introduction = introduction
-                        try context.save()
-                        store.dispatch(.artistIntroductionDone(result: .success(introduction)))
-                    }
-                }catch let err {
-                    print("\(#function) \(err)")
-                }
+                let introduction = data!["briefDesc"] as? String
+                DataManager.shared.updateArtistIntroduction(id: id, introduction: introduction)
+                store.dispatch(.artistIntroductionDone(result: .success(introduction)))
             }else {
                 let code = data?["code"] as? Int ?? -1
                 let message = data?["message"] as? String ?? "错误信息解码错误"

@@ -196,6 +196,28 @@ class DataManager {
         _ = artistJSONModel.toArtistEntity(context: self.context())
         self.save()
     }
+    public func updateArtistAlbums(id: Int64, albumsJSONModel: [AlbumJSONModel]) {
+        if let artist = self.getArtist(id: id) {
+            if let albums = artist.albums {
+                artist.removeFromSongs(albums)
+            }
+            for albumModel in albumsJSONModel {
+                if let album = self.getAlbum(id: albumModel.id) {
+                    artist.addToAlbums(album)
+                }else {
+                    let album = albumModel.toAlbumEntity(context: self.context())
+                    artist.addToAlbums(album)
+                }
+            }
+            self.save()
+        }
+    }
+    public func updateArtistIntroduction(id: Int64, introduction: String?) {
+        if let artist = self.getArtist(id: id) {
+            artist.introduction = introduction
+            self.save()
+        }
+    }
     public func updateArtistSongs(id: Int64, songsId: [Int64]) {
         if let artist = self.getArtist(id: id) {
             if let songs = artist.songs {
