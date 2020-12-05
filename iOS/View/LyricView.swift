@@ -42,6 +42,7 @@ struct LyricView: View {
                         }
                     })
                 }
+                .padding(.horizontal)
             }
         }
     }
