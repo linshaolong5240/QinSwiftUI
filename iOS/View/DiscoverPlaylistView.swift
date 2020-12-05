@@ -23,12 +23,7 @@ struct DiscoverPlaylistView: View {
                     Spacer()
                     NEUNavigationBarTitleView("发现歌单")
                     Spacer()
-                    Button(action: {
-                        showCategories.toggle()
-                    }, label: {
-                        NEUSFView(systemName: "square.grid.2x2")
-                    })
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    PlayingNowButtonView()
                 }
                 .padding(.horizontal)
                 .onAppear {
