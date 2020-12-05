@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct SubedPlaylistView: View {
-    @EnvironmentObject private var store: Store
     @FetchRequest(entity: UserPlaylist.entity(), sortDescriptors: []) private var results: FetchedResults<UserPlaylist>
     @State private var playlistDetailId: Int64 = 0
     @State private var showPlaylistDetail: Bool = false
-    
+    @State private var showPlaylistManage: Bool = false
+
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
@@ -24,16 +24,26 @@ struct SubedPlaylistView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
+                Text("(\(Store.shared.appState.playlist.subedPlaylistIds.count))")
+                    .foregroundColor(Color.mainTextColor)
                 Spacer()
-                Text("\(results.filter{$0.userId != Store.shared.appState.settings.loginUser?.uid}.count) 收藏的歌单")
-                    .foregroundColor(Color.secondTextColor)
+                Button(action: {
+                    showPlaylistManage.toggle()
+                }) {
+                    NEUSFView(systemName: "lineweight", size:  .small)
+                        .sheet(isPresented: $showPlaylistManage) {
+                            PlaylistManageView(showSheet: $showPlaylistManage)
+                                .environment(\.managedObjectContext, DataManager.shared.context())//sheet 需要传入父环境
+                        }
+                }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {
                 let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(results) { (item) in
-                        if item.userId != Store.shared.appState.settings.loginUser?.uid {
+                        if Store.shared.appState.playlist.subedPlaylistIds.contains(item.id) {
                             Button(action: {
                                 playlistDetailId = item.id
                                 showPlaylistDetail.toggle()

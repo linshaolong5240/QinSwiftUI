@@ -92,5 +92,5 @@ enum AppAction {
     case songsURL(ids: [Int64])
     case songsURLDone(result: Result<[SongURLJSONModel], AppError>)
     case userPlaylist(uid: Int64? = nil)
-    case userPlaylistDone(result: Result<[Int64], AppError>)
+    case userPlaylistDone(result: Result<(createdPlaylistId: [Int64], subedPlaylistIds: [Int64], userPlaylistIds: [Int64]), AppError>)
 }

@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct CreatedPlaylistView: View {
-    @EnvironmentObject private var store: Store
     @FetchRequest(entity: UserPlaylist.entity(), sortDescriptors: []) private var results: FetchedResults<UserPlaylist>
     @State private var playlistDetailId: Int64 = 0
     @State private var showPlaylistDetail: Bool = false
-    
+    @State private var showPlaylistCreate: Bool = false
+    @State private var showPlaylistManage: Bool = false
+
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
@@ -24,16 +25,35 @@ struct CreatedPlaylistView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
+                Text("(\(Store.shared.appState.playlist.createdPlaylistIds.count))")
+                    .foregroundColor(Color.mainTextColor)
                 Spacer()
-                Text("\(results.filter{$0.userId == Store.shared.appState.settings.loginUser?.uid}.count) 创建的歌单")
-                    .foregroundColor(Color.secondTextColor)
+                Button(action: {
+                    showPlaylistManage.toggle()
+                }) {
+                    NEUSFView(systemName: "lineweight", size:  .small)
+                        .sheet(isPresented: $showPlaylistManage) {
+                            PlaylistManageView(showSheet: $showPlaylistManage)
+                                .environment(\.managedObjectContext, DataManager.shared.context())//sheet 需要传入父环境
+                        }
+                }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                Button(action: {
+                    showPlaylistCreate.toggle()
+                }) {
+                    NEUSFView(systemName: "folder.badge.plus", size:  .small)
+                        .sheet(isPresented: $showPlaylistCreate) {
+                            PlaylistCreateView(showSheet: $showPlaylistCreate)
+                        }
+                }
+                .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {
                 let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(results) { (item) in
-                        if item.userId == Store.shared.appState.settings.loginUser?.uid {
+                        if Store.shared.appState.playlist.createdPlaylistIds.contains(item.id) {
                             Button(action: {
                                 playlistDetailId = item.id
                                 showPlaylistDetail.toggle()
@@ -57,28 +77,10 @@ struct CreatedPlaylistView_Previews: PreviewProvider {
 }
 #endif
 
-struct PlaylistRowView: View {
-    let viewModel: PlaylistViewModel
-    
-    var body: some View {
-        HStack(alignment: .top) {
-            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .little)
-            VStack(alignment: .leading) {
-                Text(viewModel.name)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
-                    .lineLimit(2)
-                Text("\(viewModel.count) songs")
-                    .foregroundColor(Color.secondTextColor)
-            }
-        }
-    }
-}
-
 struct PlaylistCreateView: View {
-    @EnvironmentObject var store: Store
+    @EnvironmentObject private var store: Store
     @Binding var showSheet: Bool
-    @State var name: String = ""
+    @State private var name: String = ""
     
     var body: some View {
         ZStack {
@@ -116,67 +118,5 @@ struct PlaylistCreateView: View {
                 Spacer()
             }
         }
-    }
-}
-
-struct PlaylistManageView: View {
-    @Binding var showSheet: Bool
-    @State var playlists: [PlaylistViewModel]
-    @State var isDeleted: Bool = false
-    @State var isMoved: Bool = false
-    
-    var body: some View {
-        ZStack {
-            NEUBackgroundView()
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        showSheet.toggle()
-                        if isMoved {
-//                            Store.shared.dispatch(.playlistOrderUpdate(ids: playlists.map{$0.id}, type: type))
-                        }
-                        if isDeleted || isMoved {
-                            Store.shared.dispatch(.userPlaylist())
-                        }
-                    }, label: {
-                        NEUSFView(systemName: "checkmark", size: .medium)
-                    })
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
-                }
-                .padding()
-                .overlay(
-                    Text("管理歌单")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.mainTextColor)
-                )
-                List {
-                    ForEach(playlists) { item in
-                        PlaylistRowView(viewModel: item)
-                    }
-                    .onDelete(perform: deleteAction)
-                    .onMove(perform: moveAction)
-                }
-                Spacer()
-            }
-        }
-    }
-    func deleteAction(from source: IndexSet) {
-        isDeleted = true
-//        if let index = source.first {
-//            let id = playlists[index].id
-//            playlists.remove(at: index)
-//            if type == .created {
-//                Store.shared.dispatch(.playlistDelete(pid: id))
-//            }
-//            if type == .subscribed {
-//                Store.shared.dispatch(.playlistSubscibe(id: id, sub: false))
-//            }
-//        }
-    }
-    func moveAction(from source: IndexSet, offset: Int) {
-        isMoved = true
-        playlists.move(fromOffsets: source, toOffset: offset)
     }
 }

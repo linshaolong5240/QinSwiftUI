@@ -898,7 +898,7 @@ struct PlaylistDetailSongsCommand: AppCommand {
 //}
 
 struct PlaylistOrderUpdateCommand: AppCommand {
-    let ids: [Int]
+    let ids: [Int64]
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.playlistOrderUpdate(ids: ids) { (data, error) in
@@ -1197,9 +1197,12 @@ struct UserPlayListCommand: AppCommand {
                     do {
                         let data = try JSONEncoder().encode(playlistModels)
                         let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
-                        print(objects)
+                        let createdPlaylistIds = playlistModels.filter { $0.userId == store.appState.settings.loginUser?.uid }.map{ $0.id }
+                        let subedPlaylistIds = playlistModels.filter { $0.userId != store.appState.settings.loginUser?.uid }.map{ $0.id }
+                        let userPlaylistIds = playlistModels.map{ $0.id }
+                        let result = (createdPlaylistId: createdPlaylistIds, subedPlaylistIds: subedPlaylistIds, userPlaylistIds: userPlaylistIds)
                         DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: objects)
-                        store.dispatch(.userPlaylistDone(result: .success(playlistModels.map{$0.id})))
+                        store.dispatch(.userPlaylistDone(result: .success(result)))
                     }catch let error {
                         print("\(#function) \(error)")
                     }

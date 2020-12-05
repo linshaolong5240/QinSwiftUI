@@ -285,7 +285,7 @@ struct PlaylistTracksView: View {
                 ScrollView {
                     LazyVStack{
                         ForEach(results){ (item: UserPlaylist) in
-                            if item.userId == Store.shared.appState.settings.loginUser?.uid && item.id != Store.shared.appState.playlist.likedPlaylistId {
+                            if Store.shared.appState.playlist.createdPlaylistIds.contains(item.id) && item.id != Store.shared.appState.playlist.likedPlaylistId {
                                 Button(action: {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                         if let songId = Store.shared.appState.playing.song?.id {
@@ -297,16 +297,7 @@ struct PlaylistTracksView: View {
                                         bottomType = .playingStatus
                                     }
                                 }) {
-                                    HStack {
-                                        NEUCoverView(url: item.coverImgUrl ?? "", coverShape: .rectangle, size: .little)
-                                        VStack(alignment: .leading) {
-                                            Text(item.name ?? "")
-                                                .foregroundColor(.mainTextColor)
-                                            Text("\(item.trackCount) songs")
-                                                .foregroundColor(.secondTextColor)
-                                        }
-                                        Spacer()
-                                    }
+                                    UserPlaylistRowView(playlist: item)
                                     .padding(.horizontal)
                                 }
                             }

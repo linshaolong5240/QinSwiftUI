@@ -29,7 +29,7 @@ struct UserView: View {
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
-                NEUCoverView(url: user?.profile.avatarUrl ?? "", coverShape: .rectangle, size: .medium)
+                NEUCoverView(url: user?.profile.avatarUrl, coverShape: .rectangle, size: .medium)
                 Text("uid: \(String(user?.uid ?? 0))")
                 Text("csrf: \(user?.csrf ?? "")")
                 Button(action: {

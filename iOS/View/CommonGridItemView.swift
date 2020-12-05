@@ -39,7 +39,7 @@ struct CommonGridItemView: View {
     }
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: configuration.picUrl ?? "", coverShape: .rectangle, size: .small)
+            NEUCoverView(url: configuration.picUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
                 Text(configuration.name ?? "")

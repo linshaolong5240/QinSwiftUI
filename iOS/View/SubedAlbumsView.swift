@@ -59,7 +59,7 @@ struct AlbumSubGridView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NEUCoverView(url: album.picUrl ?? "", coverShape: .rectangle, size: .small)
+            NEUCoverView(url: album.picUrl, coverShape: .rectangle, size: .small)
                 .padding()
             Group {
                 Text(album.name ?? "")
