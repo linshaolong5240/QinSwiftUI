@@ -1015,49 +1015,11 @@ struct RecommendSongsCommand: AppCommand {
             }
             if data!["code"] as! Int == 200 {
                 if let recommendSongDicts = data?["data"] as? NeteaseCloudMusicApi.ResponseData {
-                    do {
-                        let context = DataManager.shared.context()
-//                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-//                        fetchRequest.predicate = NSPredicate(format: "%K == 0", "id")
-//                        if let saved = try context.fetch(fetchRequest).first as? Playlist {
-//                            if let songs = saved.songs {
-//                                saved.removeFromSongs(songs)
-//                                try context.save()
-//                            }
-//                        }
-                        let recommendSongsJSONModel = recommendSongDicts.toData!.toModel(RecommendSongsJSONModel.self)!
-                        let playlist = Playlist(context: context)
-                        playlist.id = 0
-                        playlist.name = "每日推荐"
-                        playlist.introduction = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
-                        playlist.songsId = recommendSongsJSONModel.dailySongs.map{$0.id}
-                        for songModel in recommendSongsJSONModel.dailySongs {
-                            let song = songModel.toSongEntity(context: context)
-                            playlist.addToSongs(song)
-                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Album")
-                            fetchRequest.predicate = NSPredicate(format: "%K == \(songModel.al.id)", "id")
-                            if let album = try context.fetch(fetchRequest).first as? Album {
-                                album.addToSongs(song)
-                            } else {
-                                let album = songModel.al.toAlbumEntity(context: context)
-                                album.addToSongs(song)
-                            }
-                            for ar in songModel.ar {
-                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                                fetchRequest.predicate = NSPredicate(format: "%K == \(ar.id)", "id")
-                                if let artist = try context.fetch(fetchRequest).first as? Artist {
-                                    artist.addToSongs(song)
-                                } else {
-                                    let artist = ar.toArtistEntity(context: context)
-                                    artist.addToSongs(song)
-                                }
-                            }
-                        }
-                        try context.save()
-                        store.dispatch(.recommendSongsDone(result: .success(recommendSongsJSONModel)))
-                    } catch let err {
-                        print("\(#function) \(err)")
-                    }
+                    let recommendSongsJSONModel = recommendSongDicts.toData!.toModel(RecommendSongsJSONModel.self)!
+                    DataManager.shared.updateRecommendSongsPlaylist(recommendSongsJSONModel: recommendSongsJSONModel)
+                    DataManager.shared.updateSongs(songsJSONModel: recommendSongsJSONModel.dailySongs)
+                    DataManager.shared.updateRecommendSongsPlaylistSongs(ids: recommendSongsJSONModel.dailySongs.map{ $0.id })
+                    store.dispatch(.recommendSongsDone(result: .success(recommendSongsJSONModel)))
                 }
             }else {
                 store.dispatch(.recommendSongsDone(result: .failure(.playlistDetailError)))

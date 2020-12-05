@@ -246,6 +246,25 @@ class DataManager {
             self.save()
         }
     }
+    public func updateRecommendSongsPlaylist(recommendSongsJSONModel: RecommendSongsJSONModel) {
+        let playlist = Playlist(context: self.context())
+        playlist.id = 0
+        playlist.name = "每日推荐"
+        playlist.introduction = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
+        playlist.songsId = recommendSongsJSONModel.dailySongs.map{$0.id}
+        self.save()
+    }
+    public func updateRecommendSongsPlaylistSongs(ids: [Int64]) {
+        if let playlist = self.getPlaylist(id: 0) {
+            if let songs = playlist.songs {
+                playlist.removeFromSongs(songs)
+            }
+            if let songs = self.getSongs(ids: ids) {
+                playlist.addToSongs(NSSet(array: songs))
+            }
+        }
+        self.save()
+    }
     public func updateSongs(songsJSONModel: [SongJSONModel]) {
         for songModel in songsJSONModel {
             let song = songModel.toSongEntity(context: self.context())
