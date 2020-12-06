@@ -54,6 +54,7 @@ struct HomeView: View {
                         }
                         BottomBarView()
                     }
+                    .edgesIgnoringSafeArea(.bottom)
                 }else {
                     LoginView()
                 }
