@@ -393,6 +393,7 @@
 				2BD09854257BBDFB0062480F /* PlayingNowButtonView.swift */,
 				2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */,
 				2B01EFE0257BE6FC00BEBD54 /* PlaylistManageView.swift */,
+				2B1197FC257CA64100A67E56 /* PlaylistSongsManageView.swift */,
 				2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */,
 				2B2D517724E39C1C007B52A4 /* SearchView.swift */,
 				2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */,
@@ -404,7 +405,6 @@
 				2BCCB28824DC5A2A004CAD67 /* TestView.swift */,
 				2BCCB29724DC5A2B004CAD67 /* UserView.swift */,
 				2BCCB28924DC5A2A004CAD67 /* ViewModifier.swift */,
-				2B1197FC257CA64100A67E56 /* PlaylistSongsManageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

@@ -80,7 +80,7 @@ struct PlaylistDetailView: View {
                         let sub = !Store.shared.appState.playlist.subedPlaylistIds.contains(id)
                         Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
                     }) {
-                        NEUSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus",
+                        NEUSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(playlist.id) ? "heart.fill" : "heart",
                                   size: .small)
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
