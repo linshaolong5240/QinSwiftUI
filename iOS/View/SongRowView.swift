@@ -24,9 +24,9 @@ struct SongRowView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                     .lineLimit(1)
-                if let artists = song.artists {
+                if let artists = song.artists?.allObjects as? [Artist] {
                     HStack {
-                        ForEach(Array(artists as! Set<Artist>)) { item in
+                        ForEach(artists) { item in
                             Text(item.name ?? "")
                                 .foregroundColor(Color.secondTextColor)
                                 .lineLimit(1)

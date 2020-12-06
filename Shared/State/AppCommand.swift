@@ -959,7 +959,7 @@ struct PlaylistTracksCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                store.dispatch(.playlistTracksDone(result: .success(true)))
+                store.dispatch(.playlistTracksDone(result: .success(pid)))
             }else {
                 store.dispatch(.playlistTracksDone(result: .failure(.playlistTracksError(code: data!["code"] as! Int, message: data!["message"] as! String))))
             }
@@ -968,8 +968,10 @@ struct PlaylistTracksCommand: AppCommand {
 }
 
 struct PlaylistTracksDoneCommand: AppCommand {
+    let id: Int64
     
     func execute(in store: Store) {
+        store.dispatch(.playlistDetail(id: id))
         store.dispatch(.userPlaylist())
     }
 }
@@ -1124,10 +1126,10 @@ struct SongsOrderUpdateCommand: AppCommand {
 }
 
 struct SongsOrderUpdateDoneCommand: AppCommand {
-    let pid: Int64
+    let id: Int64
     
     func execute(in store: Store) {
-        store.dispatch(.playlistDelete(pid: pid))
+        store.dispatch(.playlistDetail(id: id))
     }
 }
 

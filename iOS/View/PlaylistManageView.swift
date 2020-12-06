@@ -32,10 +32,10 @@ struct PlaylistManageView: View {
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
-                .padding()
                 .overlay(
                     NEUNavigationBarTitleView("管理歌单")
                 )
+                .padding()
                 List {
                     ForEach(results) { (item: UserPlaylist) in
                         UserPlaylistRowView(playlist: item)

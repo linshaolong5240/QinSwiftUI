@@ -65,14 +65,42 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 
 struct PlaylistDetailView: View {
     @ObservedObject var playlist :Playlist
+    @State private var showPlaylistSongsManage: Bool = false
     
     var body: some View {
         VStack(spacing: 10) {
             DescriptionView(viewModel: playlist)
-            PlaylistDetailActionView(playlist: playlist)
-            if let songs = playlist.songs {
+            HStack {
+                Text("id:\(String(playlist.id))")
+                    .foregroundColor(.secondTextColor)
+                Spacer()
+                if !Store.shared.appState.playlist.createdPlaylistIds.contains(playlist.id) {
+                    Button(action: {
+                        let id = playlist.id
+                        let sub = !Store.shared.appState.playlist.subedPlaylistIds.contains(id)
+                        Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
+                    }) {
+                        NEUSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus",
+                                  size: .small)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                }else {
+                    Button(action: {
+                        showPlaylistSongsManage.toggle()
+                    }) {
+                        NEUSFView(systemName: "lineweight",
+                                  size: .small)
+                            .sheet(isPresented: $showPlaylistSongsManage) {
+                                PlaylistSongsManageView(showSheet: $showPlaylistSongsManage, playlist: playlist)
+                            }
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                }
+            }
+            .padding(.horizontal)
+            if let songs = playlist.songs?.allObjects as? [Song] {
                 if let songsId = playlist.songsId {
-                    SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
+                    SongListView(songs: songs.sorted(by: { (left, right) -> Bool in
                         let lIndex = songsId.firstIndex(of: left.id)
                         let rIndex = songsId.firstIndex(of: right.id)
                         return lIndex ?? 0 > rIndex ?? 0 ? false : true
@@ -85,50 +113,6 @@ struct PlaylistDetailView: View {
             }
         }
     }
-}
-
-struct PlaylistDetailEditSongsView: View {
-    @EnvironmentObject var store: Store
-    private var viewModel = PlaylistViewModel()
-    @Binding var isMoved: Bool
-    
-    var body: some View {
-        List {
-            ForEach(viewModel.songs) { item in
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(item.name)
-                            .font(.system(size: 20))
-                            .fontWeight(.bold)
-                            .foregroundColor(.mainTextColor )
-                            .lineLimit(1)
-                        HStack {
-//                            ForEach(item.artists) { item in
-//                                Text(item.name)
-//                                    .fontWeight(.bold)
-//                                    .foregroundColor(Color.secondTextColor)
-//                                    .lineLimit(1)
-//                            }
-                        }
-                    }
-                    Spacer()
-                }
-            }
-//            .onDelete(perform: deleteAction)
-//            .onMove(perform: moveAction)
-        }
-    }
-//    func deleteAction(from source: IndexSet) {
-//        if let index = source.first {
-//            viewModel.songs.remove(at: index)
-//            Store.shared.dispatch(.playlistTracks(pid: viewModel.id, op: false, ids: [viewModel.songsId[index]]))
-//        }
-//    }
-//    func moveAction(from source: IndexSet, to destination: Int) {
-//        isMoved = true
-//        viewModel.songsId.move(fromOffsets: source, toOffset: destination)
-//        viewModel.songs.move(fromOffsets: source, toOffset: destination)
-//    }
 }
 
 struct CommonNavigationBarView: View {
@@ -166,30 +150,5 @@ struct CommonNavigationBarView: View {
                 NEUNavigationBarTitleView(title)
             }
         )
-    }
-}
-
-struct PlaylistDetailActionView: View {
-    @EnvironmentObject private var store: Store
-    let playlist : Playlist
-    
-    var body: some View {
-        HStack {
-            Text("id:\(String(playlist.id))")
-                .foregroundColor(.secondTextColor)
-            Spacer()
-            if !Store.shared.appState.playlist.createdPlaylistIds.contains(playlist.id) {
-                Button(action: {
-                    let id = playlist.id
-                    let sub = !Store.shared.appState.playlist.subedPlaylistIds.contains(id)
-                    Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
-                }) {
-                    NEUSFView(systemName: store.appState.playlist.userPlaylistIds.contains(playlist.id) ? "folder" : "folder.badge.plus",
-                              size: .small)
-                }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
-            }
-        }
-        .padding(.horizontal)
     }
 }

@@ -409,11 +409,13 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistTracks(let pid, let op, let ids):
-            appCommand = PlaylistTracksCommand(pid: pid, op: op, ids: ids)
+            if ids.count > 0 {
+                appCommand = PlaylistTracksCommand(pid: pid, op: op, ids: ids)
+            }
         case .playlistTracksDone(let result):
             switch result {
-            case .success:
-                appCommand = PlaylistTracksDoneCommand()
+            case .success(let id):
+                appCommand = PlaylistTracksDoneCommand(id: id)
             case .failure(let error):
                 appState.error = error
             }
@@ -479,8 +481,8 @@ class Store: ObservableObject {
             appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
         case .songsOrderUpdateDone(let result):
             switch result {
-            case .success:
-//                appCommand = SongsOrderUpdateDoneCommand(pid: pid)
+            case .success(let id):
+                appCommand = SongsOrderUpdateDoneCommand(id: id)
             break
             case .failure(let error):
                 appState.error = error
