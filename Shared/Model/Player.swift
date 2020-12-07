@@ -164,20 +164,21 @@ class Player: AVPlayer, ObservableObject {
 //        info[MPNowPlayingInfoPropertyIsLiveStream] = 1.0
         info[MPNowPlayingInfoPropertyPlaybackRate] = Player.shared.rate//播放速率
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
-        if let url = URL(string: Store.shared.appState.playing.song?.album?.picUrl ?? "") {
-            let _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 130, height: 130)))]) { (result) in
-                switch result {
-                case .success(let value):
-                            info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: value.image.size, requestHandler: { (size) -> UIImage in
-                                    return value.image
-                                })//显示的图片
-                    MPNowPlayingInfoCenter.default().nowPlayingInfo = info
-                case .failure(_):
-                    break
+        if let picUrl = Store.shared.appState.playing.song?.album?.picUrl {
+            if let url = URL(string: picUrl) {
+                let _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: NEUImageSize.medium.width * 2, height: NEUImageSize.medium.width * 2)))]) { (result) in
+                    switch result {
+                    case .success(let value):
+                                info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: value.image.size, requestHandler: { (size) -> UIImage in
+                                        return value.image
+                                    })//显示的图片
+                        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+                    case .failure(_):
+                        break
+                    }
                 }
             }
         }
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         #endif
 //        #if os(macOS)
 //        MPNowPlayingInfoCenter.default().playbackState = Player.shared.isPlaying ? .playing : .paused
