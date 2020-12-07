@@ -39,15 +39,13 @@ struct HomeView: View {
                         Divider()
                         if store.appState.initRequestingCount == 0 {
                             ScrollView {
-                                LazyVStack {
-                                    Spacer()
-                                        .frame(height: 10)
-                                    RecommendPlaylistView()
-                                    CreatedPlaylistView()
-                                    SubedPlaylistView()
-                                    SubedAlbumsView()
-                                    SubedArtistsView()
-                                }
+                                Spacer()
+                                    .frame(height: 10)
+                                RecommendPlaylistView()
+                                CreatedPlaylistView()
+                                SubedPlaylistView()
+                                SubedAlbumsView()
+                                SubedArtistsView()
                             }
                         }else {
                             Spacer()
