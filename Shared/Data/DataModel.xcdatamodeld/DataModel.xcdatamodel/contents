@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountData" representedClassName="AccountData" syncable="YES" codeGenerationType="class">
         <attribute name="userData" optional="YES" attributeType="Binary"/>
     </entity>
@@ -60,6 +60,7 @@
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="imgurl" optional="YES" attributeType="String"/>
         <attribute name="imgurl16v9" optional="YES" attributeType="String"/>
+        <attribute name="introduction" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="playCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="publishTime" optional="YES" attributeType="String"/>
@@ -133,7 +134,7 @@
         <element name="AlbumSub" positionX="-1270.00390625" positionY="-1128.484375" width="128" height="88"/>
         <element name="Artist" positionX="-1911.62109375" positionY="-758.921875" width="128" height="178"/>
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>
-        <element name="MV" positionX="-1539" positionY="-891" width="128" height="208"/>
+        <element name="MV" positionX="-1539" positionY="-891" width="128" height="209"/>
         <element name="Playlist" positionX="-2153.5625" positionY="-1122.75" width="128" height="163"/>
         <element name="RecommendPlaylist" positionX="-1683.046875" positionY="-1134.73046875" width="128" height="88"/>
         <element name="Song" positionX="-2152.6953125" positionY="-921.55859375" width="128" height="119"/>

@@ -1,40 +1,52 @@
 //
-//  MV.swift
+//  MVJSONModel.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/7.
+//  Created by 林少龙 on 2020/12/7.
 //
 
 import Foundation
 import CoreData
 
 struct MVJSONModel: Codable, Identifiable {
-    var artist: ArtistJSONModel
+    struct Artist: Codable {
+        var followed: Bool
+        var id: Int64
+        var img1v1Url: String
+        var name: String
+    }
+    struct BitRate: Codable {
+        var br: Int
+        var point: Int
+        var size: Int
+    }
+    var artistId: Int64
     var artistName: String
-    var duration: Int64
+    var artists: [Artist]
+    var briefDesc: String
+    var brs: [BitRate]
+    var commentCount: Int
+    var commentThreadId: String
+    var cover: String
+    var coverId: Int64
+    var coverId_str: String
+    var desc: String
+    var duration: Int
     var id: Int64
-    var imgurl: String
-    var imgurl16v9: String
+    var nType: Int
     var name: String
-    var playCount: Int64
+    var playCount: Int
+//    var price: Any?
     var publishTime: String
-    var status: Int64
-    var subed: Bool
+    var shareCount: Int
+    var subCount: Int
+//    var videoGroup = [Any]
 }
 
 extension MVJSONModel {
-    public func toMVEntity(context: NSManagedObjectContext) -> MV {
-        let entity = MV(context: context)
-        entity.artistName = self.artistName
-        entity.duration = self.duration
-        entity.id = self.id
-        entity.imgurl = self.imgurl
-        entity.imgurl16v9 = self.imgurl16v9
-        entity.name = self.name
-        entity.playCount = self.playCount
-        entity.publishTime = self.publishTime
-        entity.status = self.status
-        entity.subed = self.subed
-        return entity
+    func toEntity(context: NSManagedObjectContext) -> MV {
+        let mv = MV(context: context)
+        mv.id = self.id
+        return mv
     }
 }

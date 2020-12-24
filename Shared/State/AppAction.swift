@@ -22,7 +22,7 @@ enum AppAction {
     case artistIntroduction(id: Int64)
     case artistIntroductionDone(result: Result<String?, AppError>)
     case artistMV(id: Int64,limit: Int = 100, offset: Int = 0)
-    case artistMVDone(result: Result<[MVJSONModel], AppError>)
+    case artistMVDone(result: Result<[ArtistMVJSONModel], AppError>)
     case artistSub(id: Int64, sub: Bool)
     case artistSubDone(result: Result<Bool, AppError>)
     case artistSublist(limit: Int = 30, offset: Int = 0)
@@ -46,6 +46,10 @@ enum AppAction {
     case logout
     case lyric(id: Int64)
     case lyricDone(result: Result<String?, AppError>)
+    case mvDetail(id: Int64)
+    case mvDetaillDone(result: Result<MVJSONModel, AppError>)
+    case mvUrl(id: Int64)
+//    case mvUrlDone(result: Result<String, AppError>)
     case PlayerPause
     case PlayerPlay
     case PlayerPlayBackward

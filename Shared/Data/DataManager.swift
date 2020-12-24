@@ -111,6 +111,30 @@ class DataManager {
         }
         return artist
     }
+    public func getMV(id: Int64) -> MV? {
+        var mv: MV? = nil
+        let context = self.context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MV")
+        fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
+        do {
+            mv = try context.fetch(fetchRequest).first as? MV
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+        return mv
+    }
+    public func getMVs(ids: [Int64]) -> [MV]? {
+        var mvs: [MV]? = nil
+        let context = self.context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MV")
+        fetchRequest.predicate = NSPredicate(format: "%K IN %@", "id", ids)
+        do {
+            mvs = try context.fetch(fetchRequest) as? [MV]
+        }catch let error {
+            print("\(#function):\(error)")
+        }
+        return mvs
+    }
     public func getPlaylist(id: Int64) -> Playlist? {
         var playlist: Playlist? = nil
         let context = self.context()
@@ -218,6 +242,17 @@ class DataManager {
             self.save()
         }
     }
+    public func updateArtistMVs(id: Int64, mvIds: [Int64]) {
+        if let artist = self.getArtist(id: id) {
+            if let mvs = artist.mvs {
+                artist.removeFromMvs(mvs)
+            }
+            if let mvs = self.getMVs(ids: mvIds) {
+                artist.addToMvs(NSSet(array: mvs))
+            }
+            self.save()
+        }
+    }
     public func updateArtistSongs(id: Int64, songsId: [Int64]) {
         if let artist = self.getArtist(id: id) {
             if let songs = artist.songs {
@@ -229,6 +264,18 @@ class DataManager {
             }
             self.save()
         }
+    }
+    public func updateMvs(mvsJSONModel: [ArtistMVJSONModel]) {
+        for mvJSONModel in mvsJSONModel {
+            let mv = mvJSONModel.toMVEntity(context: self.context())
+            if let artist = self.getArtist(id: mvJSONModel.artist.id) {
+                artist.addToMvs(mv)
+            }else {
+                let artist = mvJSONModel.artist.toArtistEntity(context: self.context())
+                artist.addToMvs(mv)
+            }
+        }
+        self.save()
     }
     public func updatePlaylist(playlistJSONModel: PlaylistJSONModel) {
         _ = playlistJSONModel.toPlaylistEntity(context: self.context())

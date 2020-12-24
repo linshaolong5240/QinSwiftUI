@@ -140,6 +140,7 @@ extension AppState {
         var playingError: AppError?
         var song: Song? = nil
         var songUrl: String?
+        var mvUrl: String?
     }
     
     struct Search {

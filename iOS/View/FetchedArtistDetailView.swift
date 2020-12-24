@@ -131,7 +131,14 @@ struct ArtistDetailView: View {
                     VGridView(mvs.sorted(by: { (left, right) -> Bool in
                         return left.publishTime ?? "" > right.publishTime ?? "" ? true : false
                     }), gridColumns: 3) { item in
-                        CommonGridItemView(item)
+                        Button(action: {
+                            Store.shared.dispatch(.mvDetail(id: item.id))
+                        }) {
+                            NavigationLink(destination: FetchedMVDetailView(id: item.id)) {
+                                CommonGridItemView(item)
+                            }
+                        }
+
                     }
                 }else {
                     Spacer()

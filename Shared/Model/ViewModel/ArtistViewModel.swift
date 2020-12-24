@@ -18,7 +18,7 @@ class ArtistViewModel: ObservableObject, Identifiable {
     
     var albums = [AlbumViewModel]()
     var hotSongs = [SongViewModel]()
-    var mvs = [MVJSONModel]()
+    var mvs = [ArtistMVJSONModel]()
     
     init() {
     }

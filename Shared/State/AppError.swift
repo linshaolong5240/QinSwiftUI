@@ -26,6 +26,7 @@ enum AppError: Error, Identifiable {
     case loginError(code: Int, message: String)
     case loginRefresh(code: Int, message: String)
     case lyricError
+    case mvDetailError(code: Int, message: String)
     case playlist(code: Int, message: String)
     case playlistCategories(code: Int, message: String)
     case playlistCreateError
@@ -79,6 +80,8 @@ extension AppError {
             return errorFormat(error: "刷新登录状态错误", code: code, message: message)
         case .lyricError:
             return "获取歌词错误"
+        case .mvDetailError(let code, let message):
+            return errorFormat(error: "获取MV详情错误", code: code, message: message)
         case .playlist(let code, let message):
             return errorFormat(error: "获取热门歌单错误", code: code, message: message)
         case .playlistCategories(let code, let message):

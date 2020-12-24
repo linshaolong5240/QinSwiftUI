@@ -257,6 +257,17 @@ class Store: ObservableObject {
         case .logout:
             appState.settings.loginUser = nil
             appCommand = LogoutCommand()
+        case .mvDetail(id: let id):
+            appCommand = MVDetailCommand(id: id)
+        case .mvDetaillDone(let result):
+            switch result {
+            case .success(_):
+                break
+            case .failure(let error):
+                appState.error = error
+            }
+        case .mvUrl(let id):
+            appCommand = MVUrlCommand(id: id)
         case .PlayerPause:
             Player.shared.pause()
             appState.lyric.lyric?.stopTimer()

@@ -48,13 +48,11 @@ class Player: AVPlayer, ObservableObject {
         self.addPeriodicTimeObserver()
         self.updateMPNowPlayingInfo()
     }
-    func playWithURL(url: String) {
+    func playWithURL(url: URL) {
         self.removePeriodicTimeObserver()
-        prepareToPlay(urlStr: url)
+        prepareToPlay(url: url)
     }
-    func prepareToPlay(urlStr: String) {
-        let url = URL(string: urlStr)!
-        
+    func prepareToPlay(url: URL) {
         // Create asset to be played
         let asset = AVAsset(url: url)
         

@@ -215,38 +215,17 @@ struct ArtistMVCommand: AppCommand {
                 return
             }
             if data?["code"] as? Int == 200 {
-                do {
-                    let context = DataManager.shared.context()
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-                    fetchRequest.predicate = NSPredicate(format: "%K == \(id)", "id")
-                    if let artist = try context.fetch(fetchRequest).first as? Artist {
-                        //clean albums relationship
-//                        if let albums = artist.albums {
-//                            artist.removeFromAlbums(albums)
-//                            try context.save()
-//                        }
-                        let mvsDict = data!["mvs"] as! [[String: Any]]
-                        let mvsJSONModel = mvsDict.map{$0.toData!.toModel(MVJSONModel.self)!}
-                        for mvModel in mvsJSONModel {
-                            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "MV")
-                            fetchRequest.predicate = NSPredicate(format: "%K == \(mvModel.id)", "id")
-                            if let mv = try context.fetch(fetchRequest).first as? MV {
-                                artist.addToMvs(mv)
-                            }else {
-                                let mv = mvModel.toMVEntity(context: context)
-                                artist.addToMvs(mv)
-                            }
-                        }
-                        try context.save()
-                        store.dispatch(.artistMVDone(result: .success(mvsJSONModel)))
-                    }
-                }catch let err {
-                    print("\(#function) \(err)")
+                if let mvsDict = data?["mvs"] as? [[String: Any]] {
+                    let mvsJSONModel = mvsDict.map{$0.toData!.toModel(ArtistMVJSONModel.self)!}
+                    DataManager.shared.updateMvs(mvsJSONModel: mvsJSONModel)
+                    DataManager.shared.updateArtistMVs(id: id, mvIds: mvsJSONModel.map{ $0.id })
+                    store.dispatch(.artistMVDone(result: .success(mvsJSONModel)))
                 }
             }else {
-                let code = data?["code"] as? Int ?? -1
-                let message = data?["message"] as? String ?? "错误信息解码错误"
-                store.dispatch(.artistMVDone(result: .failure(.artistMV(code: code, message: message))))
+                if let data = data {
+                    let (code,message) = NeteaseCloudMusicApi.parseErrorMessage(data)
+                    store.dispatch(.artistMVDone(result: .failure(.artistMV(code: code, message: message))))
+                }
             }
         }
     }
@@ -604,6 +583,84 @@ struct LogoutCommand: AppCommand {
     }
 }
 
+struct MVDetailCommand: AppCommand {
+    let id: Int64
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.mvDetail(id: id) { (data, error) in
+            guard error == nil else {
+                if let err = error {
+                    store.dispatch(.mvDetaillDone(result: .failure(err)))
+                }
+                return
+            }
+            if data?["code"] as? Int == 200 {
+                if let mvDict = data?["data"] as? [String: Any] {
+                    if let mvJSONModel = mvDict.toData?.toModel(MVJSONModel.self) {
+                        store.dispatch(.mvDetaillDone(result: .success(mvJSONModel)))
+                    }
+                }
+            }else if let data = data {
+                let (code, message) = NeteaseCloudMusicApi.parseErrorMessage(data)
+                store.dispatch(.mvDetaillDone(result: .failure(.mvDetailError(code: code, message: message))))
+            }
+        }
+    }
+}
+
+struct MVDetailDoneCommand: AppCommand {
+    let id: Int64
+    
+    func execute(in store: Store) {
+//        NeteaseCloudMusicApi.shared.mvDetail(id: id) { (data, error) in
+//            guard error == nil else {
+//                if let err = error {
+//                    store.dispatch(.mvDetaillDone(result: .failure(err)))
+//                }
+//                return
+//            }
+//            if data?["code"] as? Int == 200 {
+//                if let mvDict = data?["data"] as? [String: Any] {
+//                    if let mvJSONModel = mvDict.toData?.toModel(MVJSONModel.self) {
+//                        print(mvJSONModel)
+//                        store.dispatch(.mvDetaillDone(result: .success(mvJSONModel)))
+//                    }
+//                }
+//            }else if let data = data {
+//                let (code, message) = NeteaseCloudMusicApi.parseErrorMessage(data)
+//                store.dispatch(.mvDetaillDone(result: .failure(.mvDetailError(code: code, message: message))))
+//            }
+//        }
+    }
+}
+
+struct MVUrlCommand: AppCommand {
+    let id: Int64
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.mvUrl(id: id) { (data, error) in
+            print(data)
+//            guard error == nil else {
+//                if let err = error {
+//                    store.dispatch(.mvDetaillDone(result: .failure(err)))
+//                }
+//                return
+//            }
+//            if data?["code"] as? Int == 200 {
+//                if let mvDict = data?["data"] as? [String: Any] {
+//                    if let mvJSONModel = mvDict.toData?.toModel(MVJSONModel.self) {
+//                        print(mvJSONModel)
+//                        store.dispatch(.mvDetaillDone(result: .success(mvJSONModel)))
+//                    }
+//                }
+//            }else if let data = data {
+//                let (code, message) = NeteaseCloudMusicApi.parseErrorMessage(data)
+//                store.dispatch(.mvDetaillDone(result: .failure(.mvDetailError(code: code, message: message))))
+//            }
+        }
+    }
+}
+
 struct PlayerPlayBackwardCommand: AppCommand {
     
     func execute(in store: Store) {
@@ -690,8 +747,10 @@ struct PlayerPlayRequestDoneCommand: AppCommand {
     func execute(in store: Store) {
         let index = store.appState.playing.index
         let songId = store.appState.playing.playinglist[index]
-        Player.shared.playWithURL(url: url)
         store.dispatch(.lyric(id: songId))
+        if let url = URL(string: url) {
+            Player.shared.playWithURL(url: url)
+        }
     }
 }
 

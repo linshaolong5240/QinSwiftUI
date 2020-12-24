@@ -117,7 +117,7 @@ struct PlaylistDetailView: View {
 
 struct CommonNavigationBarView: View {
     enum CommonNavigationBarType {
-        case album, artist, playlist
+        case album, artist, mv, playlist
     }
     let id: Int64
     let title: String
@@ -133,6 +133,8 @@ struct CommonNavigationBarView: View {
                     Store.shared.dispatch(.album(id: id))
                 case .artist:
                     Store.shared.dispatch(.artist(id: id))
+                case .mv:
+                    Store.shared.dispatch(.mvDetail(id: id))
                 case .playlist:
                     if id == 0 {
                         Store.shared.dispatch(.recommendSongs)

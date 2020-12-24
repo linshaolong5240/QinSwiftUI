@@ -28,6 +28,55 @@ class NeteaseCloudMusicApi {
     }
 }
 
+extension String {
+    func plusSymbolToPercent() -> String {
+        return self.replacingOccurrences(of: "+", with: "%2B")
+    }
+}
+
+
+extension NeteaseCloudMusicApi {
+    enum SearchType: Int {
+        case song = 1
+        case album = 10
+        case artist = 100
+        case playlist = 1000
+        case user = 1002
+        case mv = 1004
+        case lyric = 1006
+        case fm = 1009
+        case vedio = 1014
+    }
+    enum CommentType: String {
+        case song = "R_SO_4_"//  歌曲
+        case mv = "R_MV_5_"//  MV
+        case playlist = "A_PL_0_"//  歌单
+        case album = "R_AL_3_"//  专辑
+        case dj = "A_DJ_1_"//  电台
+        case vedio = "R_VI_62_"//  视频
+        case event = "A_EV_2_"//  动态
+    }
+    enum CommentAction: String {
+        case add = "add"
+        case delete = "delete"
+        case reply = "reply"
+    }
+}
+
+extension NeteaseCloudMusicApi {
+    public static func parseErrorMessage(_ data: [String: Any]) -> (code: Int, message: String) {
+        var code: Int = -1
+        var message: String = "no message"
+        if let c = data["code"] as? Int {
+            code = c
+        }
+        if let m = data["message"] as? String {
+            message = m
+        }
+        return (code,message)
+    }
+}
+
 extension NeteaseCloudMusicApi {
     // 专辑内容
     func album(id: Int64, complete: @escaping CompletionBlock) {
@@ -204,6 +253,21 @@ extension NeteaseCloudMusicApi {
                     "kv": -1,
                     "tv": -1,
         ]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    //MV详情
+    func mvDetail(id: Int64 ,complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/v1/mv/detail"
+        
+        let data = ["id": id]
+        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+    }
+    //MV链接
+    func mvUrl(id: Int64 ,complete: @escaping CompletionBlock) {
+        let url = "https://music.163.com/weapi/song/enhance/play/mv/url"
+        
+        let data:[String: Any] = ["id": id,
+                                  "r": 1080]
         cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //获取分类歌单
@@ -477,39 +541,5 @@ extension NeteaseCloudMusicApi {
                 }
         }
         return cancel
-    }
-}
-
-extension String {
-    func plusSymbolToPercent() -> String {
-        return self.replacingOccurrences(of: "+", with: "%2B")
-    }
-}
-
-extension NeteaseCloudMusicApi {
-    enum SearchType: Int {
-        case song = 1
-        case album = 10
-        case artist = 100
-        case playlist = 1000
-        case user = 1002
-        case mv = 1004
-        case lyric = 1006
-        case fm = 1009
-        case vedio = 1014
-    }
-    enum CommentType: String {
-        case song = "R_SO_4_"//  歌曲
-        case mv = "R_MV_5_"//  MV
-        case playlist = "A_PL_0_"//  歌单
-        case album = "R_AL_3_"//  专辑
-        case dj = "A_DJ_1_"//  电台
-        case vedio = "R_VI_62_"//  视频
-        case event = "A_EV_2_"//  动态
-    }
-    enum CommentAction: String {
-        case add = "add"
-        case delete = "delete"
-        case reply = "reply"
     }
 }
