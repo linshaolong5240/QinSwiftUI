@@ -639,7 +639,7 @@ struct MVUrlCommand: AppCommand {
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.mvUrl(id: id) { (data, error) in
-            print(data)
+//            print(data)
 //            guard error == nil else {
 //                if let err = error {
 //                    store.dispatch(.mvDetaillDone(result: .failure(err)))
@@ -1013,7 +1013,7 @@ struct PlaylisSubscribeCommand: AppCommand {
                 return
             }
             if data!["code"] as! Int == 200 {
-                store.dispatch(.playlistSubscibeDone(result: .success(sub)))
+                store.dispatch(.playlistSubscibeDone(result: .success(id)))
             }else {
                 store.dispatch(.playlistSubscibeDone(result: .failure(.playlistSubscribeError)))
             }
@@ -1022,8 +1022,10 @@ struct PlaylisSubscribeCommand: AppCommand {
 }
 
 struct PlaylisSubscribeDoneCommand: AppCommand {
-
+    let id: Int64
+    
     func execute(in store: Store) {
+        store.dispatch(.playlistDetail(id: id))
         store.dispatch(.userPlaylist())
     }
 }

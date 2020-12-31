@@ -414,8 +414,8 @@ class Store: ObservableObject {
             appCommand = PlaylisSubscribeCommand(id: id, sub: sub)
         case .playlistSubscibeDone(let result):
             switch result {
-            case .success:
-                appCommand = PlaylisSubscribeDoneCommand()
+            case .success(let id):
+                appCommand = PlaylisSubscribeDoneCommand(id: id)
             case .failure(let error):
                 appState.error = error
             }

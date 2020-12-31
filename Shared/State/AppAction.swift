@@ -79,7 +79,7 @@ enum AppAction {
     case playlistOrderUpdate(ids: [Int64])
     case playlistOrderUpdateDone(result: Result<Bool, AppError>)
     case playlistSubscibe(id: Int64, sub: Bool)
-    case playlistSubscibeDone(result: Result<Bool, AppError>)
+    case playlistSubscibeDone(result: Result<Int64, AppError>)
     case playlistTracks(pid: Int64, op: Bool, ids: [Int64])
     case playlistTracksDone(result: Result<Int64, AppError>)
     case recommendPlaylist
