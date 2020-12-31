@@ -87,7 +87,7 @@ struct ArtistDetailView: View {
                     let sub = !Store.shared.appState.artist.subedIds.contains(id)
                     Store.shared.dispatch(.artistSub(id: id, sub: sub))
                 }) {
-                    NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "folder" : "folder.badge.plus",
+                    NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "heart.fill" : "heart",
                               size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
