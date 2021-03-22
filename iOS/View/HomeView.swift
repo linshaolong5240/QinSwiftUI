@@ -39,9 +39,8 @@ struct HomeView: View {
                         Divider()
                         if store.appState.initRequestingCount == 0 {
                             ScrollView {
-                                Spacer()
-                                    .frame(height: 10)
                                 RecommendPlaylistView()
+                                    .padding(.top, 10)
                                 CreatedPlaylistView()
                                 SubedPlaylistView()
                                 SubedAlbumsView()

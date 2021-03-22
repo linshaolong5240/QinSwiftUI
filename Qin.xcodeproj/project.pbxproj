@@ -937,7 +937,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.Qin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.qin;
 				PRODUCT_NAME = Qin;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
@@ -959,7 +959,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.Qin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.qin;
 				PRODUCT_NAME = Qin;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;

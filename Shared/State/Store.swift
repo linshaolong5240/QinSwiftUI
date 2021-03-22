@@ -302,7 +302,9 @@ class Store: ObservableObject {
                 break
             }
         case .PlayerPlayOrPause:
-            appCommand = TooglePlayCommand()
+            if appState.playing.song != nil {
+                appCommand = TooglePlayCommand()
+            }
         case .PlayerPlayToendAction:
             appCommand = PlayerPlayToEndActionCommand()
         case .playerReplay:
