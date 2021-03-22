@@ -103,14 +103,14 @@ struct PlaylistCreateView: View {
                         .foregroundColor(.mainTextColor)
                 )
                 TextField("歌单名", text: $name)
-                    .textFieldStyle(NEUTextFieldStyle(label: Text("name:").padding()))
+                    .textFieldStyle(NEUTextFieldStyle(label: Image(systemName: "folder.badge.plus").padding()))
                     .padding()
                 Button(action: {
                     showSheet.toggle()
                     Store.shared.dispatch(.playlistCreate(name: name))
                 }){
                     HStack(spacing: 0.0) {
-                        NEUSFView(systemName: "rectangle.stack.badge.plus", size: .medium)
+                        NEUSFView(systemName: "folder.badge.plus", size: .medium)
                             .padding(.horizontal)
                     }
                 }
