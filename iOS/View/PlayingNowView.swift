@@ -349,6 +349,7 @@ struct PlayingNowCoverView: View {
                          innerPadding: showMore ? 6 : 12,
                          shadowReverse: true,
                          isOrigin: false)
+                .contentShape(Circle())
                 .onTapGesture(perform: tapAction)
         case .rectangle:
             NEUImageView(url: url,
@@ -358,6 +359,7 @@ struct PlayingNowCoverView: View {
                          innerPadding: showMore ? 10 : 20,
                          shadowReverse: false,
                          isOrigin: false)
+                .contentShape(Circle())
                 .onTapGesture(perform: tapAction)
         }
     }
