@@ -15,7 +15,7 @@ class NeteaseCloudMusicApi {
     
     //    var cancel = AnyCancellable({})
     var cancelDict = [String: AnyCancellable]()
-    var cancellAbleSet = Set<AnyCancellable>()
+    var cancellableSet = Set<AnyCancellable>()
 
     //crypto
     let nonce = "0CoJUm6Qyw8W8jud"
@@ -538,6 +538,6 @@ extension NeteaseCloudMusicApi {
                         }
                     }
                 }
-            }.store(in: &cancellAbleSet)
+            }.store(in: &cancellableSet)
     }
 }
