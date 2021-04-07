@@ -87,21 +87,23 @@ struct MVDetailView: View {
     }
     
     func fetchMVURL() {
-        NeteaseCloudMusicApi.shared.mvUrl(id: mv.id) { (data, error) in
-            guard error == nil else {
-                return
-            }
-            guard data?["code"] as? Int == 200 else {
-                return
-            }
-            guard let mvURLDict = data?["data"] as? [String: Any] else {
-                return
-            }
-            if let mvURLJSONModel = mvURLDict.toData?.toModel(MVURLJSONModel.self) {
-                if let url = URL(string: mvURLJSONModel.url) {
-                    self.mvURL = url
-                    self.showPlayer = true
+        NeteaseCloudMusicApi.shared.mvUrl(id: mv.id) { result in
+            switch result {
+            case .success(let json):
+                guard json["code"] as? Int == 200 else {
+                    return
                 }
+                guard let mvURLDict = json["data"] as? [String: Any] else {
+                    return
+                }
+                if let mvURLJSONModel = mvURLDict.toData?.toModel(MVURLJSONModel.self) {
+                    if let url = URL(string: mvURLJSONModel.url) {
+                        self.mvURL = url
+                        self.showPlayer = true
+                    }
+                }
+            case .failure:
+                break
             }
         }
     }

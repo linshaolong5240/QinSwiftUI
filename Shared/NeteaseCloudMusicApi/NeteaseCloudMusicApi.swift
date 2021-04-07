@@ -486,7 +486,7 @@ extension NeteaseCloudMusicApi {
 //httprequest
 extension NeteaseCloudMusicApi {
     typealias ResponseData = Dictionary<String, Any>
-    typealias CompletionBlock = (_ data: ResponseData?, _ error: AppError?) -> Void
+    typealias CompletionBlock = (_ result: Result<ResponseData, AppError>) -> Void
     
     enum HttpMethod: String {
         case GET = "GET"
@@ -516,8 +516,7 @@ extension NeteaseCloudMusicApi {
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { finished in
                 if case .failure(let error) = finished {
-                    print(error)
-                    complete(nil, .httpRequestError(error: error))
+                    complete(.failure(.httpRequestError(error: error)))
                 }
             }) { (data, response) in
                 #if DEBUG
@@ -533,10 +532,8 @@ extension NeteaseCloudMusicApi {
                     if httpURLResponse.statusCode == 200 {
                         if let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) {
                             let jsonDict = json as! ResponseData
-                            complete(jsonDict, nil)
+                            complete(.success(jsonDict))
                         }
-                    }else {
-                        complete(nil, nil)
                     }
                 }
         }
