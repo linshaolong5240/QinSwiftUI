@@ -15,6 +15,8 @@ class NeteaseCloudMusicApi {
     
     //    var cancel = AnyCancellable({})
     var cancelDict = [String: AnyCancellable]()
+    var cancellAbleSet = Set<AnyCancellable>()
+
     //crypto
     let nonce = "0CoJUm6Qyw8W8jud"
     let iv = "0102030405060708"
@@ -82,13 +84,13 @@ extension NeteaseCloudMusicApi {
     func album(id: Int64, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/album/\(id)"
         let data = [String: Any]()
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 数字专辑详情
     func albumDetail(id: Int64, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/vipmall/albumproduct/detail"
         let data = ["id": id]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 收藏与取消收藏专辑
     func albumSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
@@ -97,7 +99,7 @@ extension NeteaseCloudMusicApi {
         let data = [
             "id": id,
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 专辑收藏列表
     func albumSublist(limit: Int, offset: Int, complete: @escaping CompletionBlock) {
@@ -107,7 +109,7 @@ extension NeteaseCloudMusicApi {
             "offset": offset * limit,
             "total": true
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 歌手专辑
     func artistAlbum(id: Int64, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
@@ -117,7 +119,7 @@ extension NeteaseCloudMusicApi {
             "offset": offset * limit,
             "total": true
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 歌手MV
     func artistMV(id: Int64, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
@@ -128,7 +130,7 @@ extension NeteaseCloudMusicApi {
             "offset": offset * limit,
             "total": true
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 收藏与取消收藏歌手
     func artistSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
@@ -138,7 +140,7 @@ extension NeteaseCloudMusicApi {
             "artistId": id,
             "artistIds": "[\(id)]"
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 歌手收藏列表
     func artistSublist(limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
@@ -148,19 +150,19 @@ extension NeteaseCloudMusicApi {
             "offset": offset * limit,
             "total": true
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 歌手单曲
     func artists(id: Int64, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/\(id)"
         let data = ResponseData()
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌手介绍
     func artistIntroduction(id: Int64, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/introduction"
         let data = ["id": id]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 发送与删除评论
     func comment(id: Int64, cid: Int64, content: String = "", type: CommentType, action: CommentAction, complete: @escaping CompletionBlock) {
@@ -178,7 +180,7 @@ extension NeteaseCloudMusicApi {
             data["commentId"] = cid
             data["content"] = content
         }
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     // 点赞与取消点赞评论
     // 动态点赞不需要传入 id 参数，需要传入动态的 threadId 参数
@@ -191,7 +193,7 @@ extension NeteaseCloudMusicApi {
         if type == .event {
             data["threadId"] = id
         }
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌曲评论
 //    说明 : 调用此接口 , 传入音乐 id 和 limit 参数 , 可获得该音乐的所有评论 ( 不需要 登录 )
@@ -206,7 +208,7 @@ extension NeteaseCloudMusicApi {
                     "offset": offset * limit,
                     "beforeTime": beforeTime
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //喜欢或取消喜欢歌曲
     func like(id: Int64, like: Bool, complete: @escaping CompletionBlock) {
@@ -214,14 +216,14 @@ extension NeteaseCloudMusicApi {
         
         let data = ["trackId": id,
                     "like": like] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //喜欢音乐列表
     func likeList(uid: Int64, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/song/like/get"
         
         let data = ["uid": uid] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //登陆
     func login(email: String, password: String, complete: @escaping CompletionBlock) {
@@ -231,19 +233,19 @@ extension NeteaseCloudMusicApi {
                     "password": password.md5(),
                     "rememberLogin": "true"
         ]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     func loginRefresh(complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/login/token/refresh"
         
         let data = [String: Any]()
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     func logout(_ complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/logout"
         
         let data = ResponseData()
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     func lyric(id: Int64 ,complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/song/lyric"
@@ -253,14 +255,14 @@ extension NeteaseCloudMusicApi {
                     "kv": -1,
                     "tv": -1,
         ]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //MV详情
     func mvDetail(id: Int64 ,complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/mv/detail"
         
         let data = ["id": id]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //MV链接
     func mvUrl(id: Int64 ,complete: @escaping CompletionBlock) {
@@ -268,7 +270,7 @@ extension NeteaseCloudMusicApi {
         
         let data:[String: Any] = ["id": id,
                                   "r": 1080]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //获取分类歌单
     func playlist(cat: String, hot: Bool, limit: Int, offset: Int, complete: @escaping CompletionBlock) {
@@ -282,13 +284,13 @@ extension NeteaseCloudMusicApi {
             "offset": limit * offset,
             "total": true,
           ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌单分类
     func playlistCategories(complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/playlist/catalogue"
         let data = [String : Any]()
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //新建歌单
     func playlistCreate(name: String, privacy: Int = 0, complete: @escaping CompletionBlock) {
@@ -297,7 +299,7 @@ extension NeteaseCloudMusicApi {
             "name": name,
             "privacy": privacy,//0 为普通歌单，10 为隐私歌单
             ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //删除歌单
     func playlistDelete(pid: Int64, complete: @escaping CompletionBlock) {
@@ -305,7 +307,7 @@ extension NeteaseCloudMusicApi {
         let data = [
             "pid": pid,
             ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌单详情
     func playlistDetail(id: Int64, complete: @escaping CompletionBlock) {
@@ -315,7 +317,7 @@ extension NeteaseCloudMusicApi {
             "n": 100000,
             "s": 8
         ]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌单顺序
     func playlistOrderUpdate(ids: [Int64], complete: @escaping CompletionBlock) {
@@ -323,7 +325,7 @@ extension NeteaseCloudMusicApi {
         let data = [
             "ids": ids
         ]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌单收藏
     func playlistSubscribe(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
@@ -332,7 +334,7 @@ extension NeteaseCloudMusicApi {
         let data = [
             "id": id
         ]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //对歌单添加或删除歌曲
     func playlistTracks(pid: Int64, op: Bool, ids: [Int64], complete: @escaping CompletionBlock) {
@@ -343,19 +345,19 @@ extension NeteaseCloudMusicApi {
             "trackIds": "[" + ids.map(String.init).joined(separator: ",") + "]"
             ] as [String : Any]
         let url = "https://music.163.com/weapi/playlist/manipulate/tracks"
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //推荐歌单( 需要登录 )
     func recommendResource(complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/discovery/recommend/resource"
         let data = ResponseData()
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //推荐歌曲( 需要登录 )
     func recommendSongs(complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v3/discovery/recommend/songs"
         let data = ResponseData()
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌曲链接 // 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频
     func search(keyword: String, type: SearchType = .song, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
@@ -366,7 +368,7 @@ extension NeteaseCloudMusicApi {
             "limit": limit,
             "offset": offset
         ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌曲顺序
     func songsOrderUpdate(pid: Int64, ids: [Int64], complete: @escaping CompletionBlock) {
@@ -376,7 +378,7 @@ extension NeteaseCloudMusicApi {
             "trackIds": ids,
             "op": "update"
             ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌曲详情
     func songsDetail(ids: [Int64], complete: @escaping CompletionBlock) {
@@ -386,7 +388,7 @@ extension NeteaseCloudMusicApi {
             "c": "[" + c + "]",
             "ids": "[" + ids.map(String.init).joined(separator: ",") + "]"
         ]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //歌曲链接
     func songsURL(_ ids: [Int64], complete: @escaping CompletionBlock) {
@@ -395,7 +397,7 @@ extension NeteaseCloudMusicApi {
             "ids": "[" + ids.map(String.init).joined(separator: ",") + "]",
             "br": 999000
             ] as [String : Any]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //用户歌单
     func userPlayList(_ uid: Int64, complete: @escaping CompletionBlock) {
@@ -405,7 +407,7 @@ extension NeteaseCloudMusicApi {
             "limit": 1000,
             "offset": 0
         ]
-        cancelDict["\(#function)"] = httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
+        httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
 }
 
@@ -492,7 +494,7 @@ extension NeteaseCloudMusicApi {
         case GET = "GET"
         case POST = "POST"
     }
-    func httpRequest(method: HttpMethod, url: String, data: String?, complete: @escaping CompletionBlock) -> AnyCancellable {
+    func httpRequest(method: HttpMethod, url: String, data: String?, complete: @escaping CompletionBlock) {
         
         let httpHeader = [ //"Accept": "*/*",
             //"Accept-Encoding": "gzip,deflate,sdch",
@@ -511,7 +513,7 @@ extension NeteaseCloudMusicApi {
             request.httpBody = data?.plusSymbolToPercent().data(using: .utf8)
         }
         
-        let cancel = URLSession.shared
+        URLSession.shared
             .dataTaskPublisher(for: request)
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { finished in
@@ -536,7 +538,6 @@ extension NeteaseCloudMusicApi {
                         }
                     }
                 }
-        }
-        return cancel
+            }.store(in: &cancellAbleSet)
     }
 }
