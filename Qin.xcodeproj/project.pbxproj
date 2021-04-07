@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B019C4C261DCE4100E1E9D6 /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B019C4B261DCE4100E1E9D6 /* UINavigationController+Extension.swift */; };
 		2B01EFE1257BE6FC00BEBD54 /* PlaylistManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01EFE0257BE6FC00BEBD54 /* PlaylistManageView.swift */; };
 		2B0668EB253057660007053C /* AlbumSubJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0668EA253057660007053C /* AlbumSubJSONModel.swift */; };
 		2B0668EC253057660007053C /* AlbumSubJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0668EA253057660007053C /* AlbumSubJSONModel.swift */; };
@@ -176,6 +177,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B019C4B261DCE4100E1E9D6 /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		2B01EFE0257BE6FC00BEBD54 /* PlaylistManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistManageView.swift; sourceTree = "<group>"; };
 		2B0668EA253057660007053C /* AlbumSubJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSubJSONModel.swift; sourceTree = "<group>"; };
 		2B0668F32530586F0007053C /* ArtistSubJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSubJSONModel.swift; sourceTree = "<group>"; };
@@ -300,6 +302,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B019C4A261DCDDD00E1E9D6 /* IOS */ = {
+			isa = PBXGroup;
+			children = (
+				2B019C4B261DCE4100E1E9D6 /* UINavigationController+Extension.swift */,
+			);
+			path = IOS;
+			sourceTree = "<group>";
+		};
 		2B09CF3424F0FC0000E03A12 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -428,6 +438,7 @@
 		2BCCB2D024DC79AB004CAD67 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				2B019C4A261DCDDD00E1E9D6 /* IOS */,
 				2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */,
 				2B1E4B302518176900D71F4A /* CaseIterable+Extension.swift */,
 				2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */,
@@ -637,6 +648,7 @@
 			files = (
 				2B62FB7B2507A28F00097D5B /* NEUButtonStyle.swift in Sources */,
 				2B62FB7C2507A28F00097D5B /* NEUSFView.swift in Sources */,
+				2B019C4C261DCE4100E1E9D6 /* UINavigationController+Extension.swift in Sources */,
 				2B62FB7D2507A28F00097D5B /* NEUImageView.swift in Sources */,
 				2B62FB7E2507A28F00097D5B /* NEUView.swift in Sources */,
 				2BB8558324E63CC800D600BB /* ThemeViewModel.swift in Sources */,
