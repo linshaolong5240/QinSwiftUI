@@ -26,7 +26,12 @@ class NeteaseCloudMusicApi {
                                              .value: "pc",
                                              .domain: ".music.163.com",
                                              .path: "/"])
+        let cookie2 = HTTPCookie(properties: [.name : "appver",
+                                             .value: "2.7.1.198277",
+                                             .domain: ".music.163.com",
+                                             .path: "/"])
         HTTPCookieStorage.shared.setCookie(cookie!)
+        HTTPCookieStorage.shared.setCookie(cookie2!)
     }
 }
 
@@ -212,10 +217,12 @@ extension NeteaseCloudMusicApi {
     }
     //喜欢或取消喜欢歌曲
     func like(id: Int64, like: Bool, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/radio/like?alg=itembased&trackId=\(id)&time=25"
+        let url = "https://music.163.com/weapi/radio/like"
         
-        let data = ["trackId": id,
-                    "like": like] as [String : Any]
+        let data: [String : Any] = ["alg": "itembased",
+                                    "trackId": id,
+                                    "like": like,
+                                    "time": 3]
         httpRequest(method: .POST, url: url, data: encrypt(text: data.json), complete: complete)
     }
     //喜欢音乐列表
