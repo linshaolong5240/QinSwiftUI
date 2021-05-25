@@ -170,8 +170,8 @@
 		2BED108725343E5D005A14AA /* DiscoverPlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BED108525343E5D005A14AA /* DiscoverPlaylistViewModel.swift */; };
 		2BF59EF625616637004863D5 /* SearchPlaylistJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF59EF525616637004863D5 /* SearchPlaylistJSONModel.swift */; };
 		2BF59EF725616637004863D5 /* SearchPlaylistJSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF59EF525616637004863D5 /* SearchPlaylistJSONModel.swift */; };
-		EF3890D3262D803D00C39649 /* JSONHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3890D2262D803D00C39649 /* JSONHelp.swift */; };
-		EF3890D4262D803D00C39649 /* JSONHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3890D2262D803D00C39649 /* JSONHelp.swift */; };
+		EF3890D3262D803D00C39649 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3890D2262D803D00C39649 /* JSONHelper.swift */; };
+		EF3890D4262D803D00C39649 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3890D2262D803D00C39649 /* JSONHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -274,7 +274,7 @@
 		2BED107F253439B4005A14AA /* LyricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricView.swift; sourceTree = "<group>"; };
 		2BED108525343E5D005A14AA /* DiscoverPlaylistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverPlaylistViewModel.swift; sourceTree = "<group>"; };
 		2BF59EF525616637004863D5 /* SearchPlaylistJSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaylistJSONModel.swift; sourceTree = "<group>"; };
-		EF3890D2262D803D00C39649 /* JSONHelp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelp.swift; sourceTree = "<group>"; };
+		EF3890D2262D803D00C39649 /* JSONHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -442,7 +442,7 @@
 				2B1ABEDE253DE09500B9A15C /* Published+Extension.swift */,
 				2B41D87125336E3D000B6FAC /* SwiftUI+Extension.swift */,
 				2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */,
-				EF3890D2262D803D00C39649 /* JSONHelp.swift */,
+				EF3890D2262D803D00C39649 /* JSONHelper.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -717,7 +717,7 @@
 				2B1E4B312518176900D71F4A /* CaseIterable+Extension.swift in Sources */,
 				2B1ABED725387F5D00B9A15C /* NEUNavigationBarTitleView.swift in Sources */,
 				2B9BE026251A132F000AFB6A /* BidirectionalCollection+Extension.swift in Sources */,
-				EF3890D3262D803D00C39649 /* JSONHelp.swift in Sources */,
+				EF3890D3262D803D00C39649 /* JSONHelper.swift in Sources */,
 				2BCCB2A324DC5A2C004CAD67 /* SettingsView.swift in Sources */,
 				2B549B4B2509483900EA37B5 /* NEUTextFieldStyle.swift in Sources */,
 				2BCCB32624DC7BCD004CAD67 /* Store.swift in Sources */,
@@ -784,7 +784,7 @@
 				2BCCB2F324DC7A62004CAD67 /* CommentJSONModel.swift in Sources */,
 				2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
 				2B691739252F556E00F05DB9 /* CreatorJSONModel.swift in Sources */,
-				EF3890D4262D803D00C39649 /* JSONHelp.swift in Sources */,
+				EF3890D4262D803D00C39649 /* JSONHelper.swift in Sources */,
 				2BC4C210254A3FBE00121D3E /* RecommendSongsJSONModel.swift in Sources */,
 				2BD285BF252B119B000E4B9F /* AlbumJSONModel.swift in Sources */,
 				2BCCB32F24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,
