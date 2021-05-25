@@ -9,15 +9,7 @@ import Foundation
 
 extension Data {
     func toModel<T: Decodable>(_ type: T.Type) -> T? {
-        do {
-            return try JSONDecoder().decode(type, from: self)
-        }catch let error {
-            #if DEBUG
-            fatalError("Data TO Model Error:\(error)")
-            #else
-            return nil
-            #endif
-        }
+        return try? JSONDecoder().decode(type, from: self)
     }
 }
 
@@ -29,29 +21,13 @@ extension Dictionary {
         return String(data: data, encoding: .utf8) ?? ""
     }
     var toData: Data? {
-        do {
-            return try JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
-        }catch let error {
-            #if DEBUG
-            fatalError("Dictionary TO Data Error:\(error)")
-            #else
-            return nil
-            #endif
-        }
+        return try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
     }
 }
 
 extension Encodable {
     var toData: Data? {
-        do {
-            return try JSONEncoder().encode(self)
-        }catch let error {
-            #if DEBUG
-            fatalError("Encodable TO Data Error:\(error)")
-            #else
-            return nil
-            #endif
-        }
+        return try? JSONEncoder().encode(self)
     }
     var toJSONString: String? {
         guard let data = try? JSONEncoder().encode(self) else {
@@ -76,13 +52,13 @@ extension Encodable {
 }
 
 extension String {
-    func toModel<T: Decodable>(_ type: T.Type) -> T? {
+    func jsonToModel<T: Decodable>(_ type: T.Type) -> T? {
         guard let data =  self.data(using: .utf8) else {
             return nil
         }
         return try? JSONDecoder().decode(type, from: data)
     }
-    var toDictionary: [String: Any]? {
+    var jsonToDictionary: [String: Any]? {
         guard let data = self.data(using: .utf8) else {
             return nil
         }
