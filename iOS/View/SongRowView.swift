@@ -37,7 +37,7 @@ struct SongRowView: View {
             Spacer()
             Button(action: {
                 let like = !Store.shared.appState.playlist.likedIds.contains(song.id)
-                Store.shared.dispatch(.like(id: song.id, like: like))
+                Store.shared.dispatch(.likeRequest(id: song.id, like: like))
             }, label: {
                 Image(systemName: store.appState.playlist.likedIds.contains(song.id) ? "heart.fill" : "heart")
                     .foregroundColor(Color.mainTextColor)
@@ -45,9 +45,9 @@ struct SongRowView: View {
             })
             Button(action: {
                 if playing.song?.id == song.id {
-                    Store.shared.dispatch(.PlayerPlayOrPause)
+                    Store.shared.dispatch(.playerPlayOrPause)
                 }else {
-                    Store.shared.dispatch(.PlayinglistInsert(id: song.id))
+                    Store.shared.dispatch(.playinglistInsert(id: song.id))
                 }
             }) {
                 NEUSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",

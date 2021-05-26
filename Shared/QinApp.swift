@@ -17,7 +17,7 @@ struct QinApp: App {
         WindowGroup {
             ContentView()
                 .onAppear {
-                    store.dispatch(.loginRefresh)
+                    store.dispatch(.loginRefreshRequest)
                 }
                 .environmentObject(store)
                 .environmentObject(player)

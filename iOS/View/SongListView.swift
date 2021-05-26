@@ -28,7 +28,7 @@ struct SongListView: View {
                     }else {
                         Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{$0.id}, index: 0))
                     }
-                    Store.shared.dispatch(.PlayerPlayByIndex(index: 0))
+                    Store.shared.dispatch(.playerPlayByIndex(index: 0))
                 }) {
                     Text(showLike ? "播放喜欢" : "播放全部")
                         .fontWeight(.bold)

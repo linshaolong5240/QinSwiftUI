@@ -116,7 +116,7 @@ struct AVPlayerView: UIViewControllerRepresentable {
         if url != nil {
             uiViewController.player = AVPlayer(url: url!)
             uiViewController.player?.play()
-            Store.shared.dispatch(.PlayerPause)
+            Store.shared.dispatch(.playerPause)
         }
     }
     

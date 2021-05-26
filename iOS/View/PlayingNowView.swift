@@ -63,7 +63,7 @@ struct PlayingNowView: View {
                             Button(action: {
                                 if let id = Store.shared.appState.playing.song?.id {
                                     let like = !Store.shared.appState.playlist.likedIds.contains(id)
-                                    Store.shared.dispatch(.like(id: id, like: like))
+                                    Store.shared.dispatch(.likeRequest(id: id, like: like))
                                 }
                             }) {
                                 NEUSFView(systemName: store.appState.playlist.likedIds.contains(playing.song?.id ?? 0) ? "heart.fill" : "heart", size: .medium)
@@ -217,7 +217,7 @@ struct PlayingNowStatusView: View {
                 Text(String(format: "%02d:%02d", Int(player.loadTime/60),Int(player.loadTime)%60))
                     .frame(width: 50, alignment: Alignment.leading)
                 Slider(value: $player.loadTime, in: 0...(player.totalTime > 0 ? player.totalTime : 1.0), onEditingChanged: { (isEdit) in
-                    Store.shared.dispatch(.PlayerSeek(isSeeking: isEdit, time: player.loadTime)
+                    Store.shared.dispatch(.playerSeek(isSeeking: isEdit, time: player.loadTime)
                     )
                 })
                 .modifier(NEUShadow())
@@ -228,7 +228,7 @@ struct PlayingNowStatusView: View {
             .foregroundColor(Color.secondTextColor)
             HStack(spacing: 20) {
                 Button(action: {
-                    Store.shared.dispatch(.PlayerPlayBackward)
+                    Store.shared.dispatch(.playerPlayBackward)
                 }) {
                     NEUSFView(systemName: "backward.fill", size: .big)
                 }
@@ -239,11 +239,11 @@ struct PlayingNowStatusView: View {
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
                     )
                     .onTapGesture {
-                        Store.shared.dispatch(.PlayerPlayOrPause)
+                        Store.shared.dispatch(.playerPlayOrPause)
                     }
                 
                 Button(action: {
-                    Store.shared.dispatch(.PlayerPlayForward)
+                    Store.shared.dispatch(.playerPlayForward)
                 }) {
                     NEUSFView(systemName: "forward.fill", size: .big)
                 }
@@ -321,7 +321,7 @@ struct PlayingExtensionControllView: View {
             }
             
             Button(action: {
-                Store.shared.dispatch(.PlayerPlayMode)
+                Store.shared.dispatch(.playerPlayMode)
             }) {
                 NEUSFView(systemName: settings.playMode.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }

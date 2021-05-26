@@ -34,7 +34,7 @@ struct LoginView: View {
                     .autocapitalization(.none)
                     .keyboardType(.asciiCapable)
                 Button(action: {
-                    self.store.dispatch(.login(email: self.email, password: self.password))
+                    self.store.dispatch(.loginRequest(email: self.email, password: self.password))
                 }) {
                     Text("登录")
                         .padding()

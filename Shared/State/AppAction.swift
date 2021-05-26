@@ -25,8 +25,8 @@ enum AppAction {
     case artistMVDone(result: Result<[ArtistMVJSONModel], AppError>)
     case artistSub(id: Int64, sub: Bool)
     case artistSubDone(result: Result<Bool, AppError>)
-    case artistSublist(limit: Int = 30, offset: Int = 0)
-    case artistSublistDone(result: Result<[Int64], AppError>)
+    case artistSublistRequest(limit: Int = 30, offset: Int = 0)
+    case artistSublistRequestDone(result: Result<[Int64], AppError>)
     case comment(id: Int64 = 0, cid: Int64 = 0, content: String = "", type: NeteaseCloudMusicApi.CommentType, action: NeteaseCloudMusicApi.CommentAction)
     case commentDone(result: Result<(id: Int64, cid: Int64, type: NeteaseCloudMusicApi.CommentType, action: NeteaseCloudMusicApi.CommentAction), AppError>)
     case commentLike(id: Int64, cid: Int64, like: Bool, type: NeteaseCloudMusicApi.CommentType)
@@ -35,34 +35,34 @@ enum AppAction {
     case commentMusicLoadMore
     case coverShape
     case initAction
-    case like(id: Int64, like: Bool)
-    case likeDone(result: Result<Bool, AppError>)
-    case likelist(uid: Int64? = nil)
-    case likelistDone(result: Result<[Int64], AppError>)
-    case login(email: String, password: String)
-    case loginDone(result: Result<User, AppError>)
-    case loginRefresh
-    case loginRefreshDone(result: Result<Bool, AppError>)
+    case likeRequest(id: Int64, like: Bool)
+    case likeRequestDone(result: Result<Bool, AppError>)
+    case likelistRequest(uid: Int64? = nil)
+    case likelistRequestDone(result: Result<[Int64], AppError>)
+    case loginRequest(email: String, password: String)
+    case loginRequestDone(result: Result<User, AppError>)
+    case loginRefreshRequest
+    case loginRefreshRequestDone(result: Result<Bool, AppError>)
     case logout
-    case lyric(id: Int64)
-    case lyricDone(result: Result<String?, AppError>)
-    case mvDetail(id: Int64)
-    case mvDetaillDone(result: Result<MVJSONModel, AppError>)
+    case lyricRequest(id: Int64)
+    case lyricRequestDone(result: Result<String?, AppError>)
+    case mvDetailRequest(id: Int64)
+    case mvDetaillRequestDone(result: Result<MVJSONModel, AppError>)
     case mvUrl(id: Int64)
 //    case mvUrlDone(result: Result<String, AppError>)
-    case PlayerPause
-    case PlayerPlay
-    case PlayerPlayBackward
-    case PlayerPlayByIndex(index: Int)
-    case PlayerPlayForward
-    case PlayerPlayMode
-    case PlayerPlayRequest(id: Int64)
-    case PlayerPlayRequestDone(result: Result<SongURLJSONModel, AppError>)
-    case PlayerPlayOrPause
+    case playerPause
+    case playerPlay
+    case playerPlayBackward
+    case playerPlayByIndex(index: Int)
+    case playerPlayForward
+    case playerPlayMode
+    case playerPlayRequest(id: Int64)
+    case playerPlayRequestDone(result: Result<SongURLJSONModel, AppError>)
+    case playerPlayOrPause
     case PlayerPlayToendAction
     case playerReplay
-    case PlayerSeek(isSeeking: Bool, time: Double)
-    case PlayinglistInsert(id: Int64)
+    case playerSeek(isSeeking: Bool, time: Double)
+    case playinglistInsert(id: Int64)
     case PlayinglistSet(playinglist: [Int64], index: Int)
     case playlist(category: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
     case playlistDone(result: Result<(playlists: [PlaylistViewModel], category: String, total: Int , more: Bool), AppError>)

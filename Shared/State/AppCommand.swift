@@ -256,11 +256,11 @@ struct ArtistSubCommand: AppCommand {
 struct ArtistSubDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        store.dispatch(.artistSublist())
+        store.dispatch(.artistSublistRequest())
     }
 }
 
-struct ArtistSublistCommand: AppCommand {
+struct ArtistSublistRequestCommand: AppCommand {
     let limit: Int
     let offset: Int
     
@@ -273,7 +273,7 @@ struct ArtistSublistCommand: AppCommand {
         NeteaseCloudMusicApi.shared.requestPublisher(action: ArtistSublistAction(parameters: .init(limit: limit, offset: offset)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.artistSublistDone(result: .failure(AppError.artistSublistRequest(error: error))))
+                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest(error: error))))
                 }
             } receiveValue: { artistSublistResponse in
                 let artistSublist = artistSublistResponse.data.map(\.dataModel)
@@ -281,9 +281,9 @@ struct ArtistSublistCommand: AppCommand {
                     let data = try JSONEncoder().encode(artistSublist)
                     let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
                     DataManager.shared.batchInsertAfterDeleteAll(entityName: "ArtistSub", objects: objects)
-                    store.dispatch(.artistSublistDone(result: .success(artistSublist.map{$0.id})))
+                    store.dispatch(.artistSublistRequestDone(result: .success(artistSublist.map{$0.id})))
                 }catch let error {
-                    store.dispatch(.artistSublistDone(result: .failure(AppError.artistSublistRequest(error: error))))
+                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest(error: error))))
                 }
             }.store(in: &store.cancellableSet)
     }
@@ -400,10 +400,10 @@ struct InitAcionCommand: AppCommand {
         store.dispatch(.albumSublistRequest())
         
         store.appState.initRequestingCount += 1
-        store.dispatch(.artistSublist())
+        store.dispatch(.artistSublistRequest())
         
         store.appState.initRequestingCount += 1
-        store.dispatch(.likelist())
+        store.dispatch(.likelistRequest())
         
         store.appState.initRequestingCount += 1
         store.dispatch(.playlistCategories)
@@ -419,7 +419,7 @@ struct InitAcionCommand: AppCommand {
     }
 }
 
-struct LikeCommand: AppCommand {
+struct LikeRequestCommand: AppCommand {
     let id: Int64
     let like: Bool
     
@@ -428,27 +428,27 @@ struct LikeCommand: AppCommand {
             switch result {
             case .success(let json):
                 if json["code"] as! Int == 200 {
-                    store.dispatch(.likeDone(result: .success(like)))
+                    store.dispatch(.likeRequestDone(result: .success(like)))
                 }else {
-                    store.dispatch(.likeDone(result: .failure(.like)))
+                    store.dispatch(.likeRequestDone(result: .failure(.like)))
                 }
             case .failure(let error):
-                store.dispatch(.likeDone(result: .failure(error)))
+                store.dispatch(.likeRequestDone(result: .failure(error)))
             }
         }
     }
 }
 
-struct LikeDoneCommand: AppCommand {
+struct LikeRequestDoneCommand: AppCommand {
 
     func execute(in store: Store) {
         if let uid = store.appState.settings.loginUser?.uid {
-        store.dispatch(.likelist(uid: uid))
+        store.dispatch(.likelistRequest(uid: uid))
         }
     }
 }
 
-struct LikeListCommand: AppCommand {
+struct LikeListRequestCommand: AppCommand {
     let uid: Int64
     
     func execute(in store: Store) {
@@ -458,18 +458,18 @@ struct LikeListCommand: AppCommand {
                 if json["code"] as! Int == 200 {
                     let likelist = json["ids"] as! [Int64]
                     
-                    store.dispatch(.likelistDone(result: .success(likelist)))
+                    store.dispatch(.likelistRequestDone(result: .success(likelist)))
                 }else {
-                    store.dispatch(.likelistDone(result: .failure(.likelist)))
+                    store.dispatch(.likelistRequestDone(result: .failure(.likelist)))
                 }
             case .failure(let error):
-                store.dispatch(.likelistDone(result: .failure(error)))
+                store.dispatch(.likelistRequestDone(result: .failure(error)))
             }
         }
     }
 }
 
-struct LyricCommand: AppCommand {
+struct LyricRequestCommand: AppCommand {
     let id: Int64
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.lyric(id: id) { result in
@@ -478,22 +478,22 @@ struct LyricCommand: AppCommand {
                 if json["code"] as! Int == 200 {
                     if let lrc = json["lrc"] as? NeteaseCloudMusicApi.ResponseData {
                         let lyric = lrc["lyric"] as! String
-                        store.dispatch(.lyricDone(result: .success(lyric)))
+                        store.dispatch(.lyricRequestDone(result: .success(lyric)))
                     }else {
-                        store.dispatch(.lyricDone(result: .success(nil)))
+                        store.dispatch(.lyricRequestDone(result: .success(nil)))
                     }
                 }else {
-                    store.dispatch(.lyricDone(result: .failure(.lyricError)))
+                    store.dispatch(.lyricRequestDone(result: .failure(.lyricError)))
                 }
             case .failure(let error):
-                store.dispatch(.lyricDone(result: .failure(error)))
+                store.dispatch(.lyricRequestDone(result: .failure(error)))
             }
         }
     }
 
 }
 
-struct LoginCommand: AppCommand {
+struct LoginRequestCommand: AppCommand {
     let email: String
     let password: String
 
@@ -512,19 +512,19 @@ struct LoginCommand: AppCommand {
                         user.profile = profile.toData!.toModel(Profile.self)!
                         user.uid = profile["userId"] as! Int64
                     }
-                    store.dispatch(.loginDone(result: .success(user)))
+                    store.dispatch(.loginRequestDone(result: .success(user)))
                 }else {
-                    store.dispatch(.loginDone(result: .failure(.loginError(code: json["code"] as! Int, message: json["message"] as! String))))
+                    store.dispatch(.loginRequestDone(result: .failure(.loginError(code: json["code"] as! Int, message: json["message"] as! String))))
                 }
             case .failure(let error):
-                store.dispatch(.loginDone(result: .failure(error)))
+                store.dispatch(.loginRequestDone(result: .failure(error)))
             }
 
         }
     }
 }
 
-struct LoginDoneCommand: AppCommand {
+struct LoginRequestDoneCommand: AppCommand {
     let user: User
     
     func execute(in store: Store) {
@@ -533,19 +533,19 @@ struct LoginDoneCommand: AppCommand {
     }
 }
 
-struct LoginRefreshCommand: AppCommand {
+struct LoginRefreshRequestCommand: AppCommand {
 
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.loginRefresh{ result in
             switch result {
             case .success(let json):
                 if json["code"] as? Int == 200 {
-                    store.dispatch(.loginRefreshDone(result: .success(true)))
+                    store.dispatch(.loginRefreshRequestDone(result: .success(true)))
                 }else {
-                    store.dispatch(.loginRefreshDone(result: .success(false)))
+                    store.dispatch(.loginRefreshRequestDone(result: .success(false)))
                 }
             case .failure(let error):
-                store.dispatch(.loginRefreshDone(result: .failure(error)))
+                store.dispatch(.loginRefreshRequestDone(result: .failure(error)))
             }
         }
     }
@@ -581,7 +581,7 @@ struct LogoutCommand: AppCommand {
     }
 }
 
-struct MVDetailCommand: AppCommand {
+struct MVDetailRequestCommand: AppCommand {
     let id: Int64
     
     func execute(in store: Store) {
@@ -590,11 +590,11 @@ struct MVDetailCommand: AppCommand {
             case .success(let json):
                 if let mvDict = json["data"] as? [String: Any] {
                     if let mvJSONModel = mvDict.toData?.toModel(MVJSONModel.self) {
-                        store.dispatch(.mvDetaillDone(result: .success(mvJSONModel)))
+                        store.dispatch(.mvDetaillRequestDone(result: .success(mvJSONModel)))
                     }
                 }
             case .failure(let error):
-                store.dispatch(.mvDetaillDone(result: .failure(error)))
+                store.dispatch(.mvDetaillRequestDone(result: .failure(error)))
             }
         }
     }
@@ -665,7 +665,7 @@ struct PlayerPlayBackwardCommand: AppCommand {
             }else {
                 index = (index - 1) % count
             }
-            store.dispatch(.PlayerPlayByIndex(index: index))
+            store.dispatch(.playerPlayByIndex(index: index))
         }else if count == 1 {
             store.dispatch(.playerReplay)
         }else {
@@ -684,7 +684,7 @@ struct PlayerPlayForwardCommand: AppCommand {
         if count > 1 {
             var index = store.appState.playing.index
             index = (index + 1) % count
-            store.dispatch(.PlayerPlayByIndex(index: index))
+            store.dispatch(.playerPlayByIndex(index: index))
         }else if count == 1 {
             store.dispatch(.playerReplay)
         }else {
@@ -722,13 +722,13 @@ struct PlayerPlayRequestCommand: AppCommand {
             case .success(let json):
                 if let songsURLDict = json["data"] as? [NeteaseCloudMusicApi.ResponseData] {
                     if songsURLDict.count > 0 {
-                        store.dispatch(.PlayerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURLJSONModel.self)!)))
+                        store.dispatch(.playerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURLJSONModel.self)!)))
                     }
                 }else {
-                    store.dispatch(.PlayerPlayRequestDone(result: .failure(.songsURLError)))
+                    store.dispatch(.playerPlayRequestDone(result: .failure(.songsURLError)))
                 }
             case .failure(let error):
-                store.dispatch(.PlayerPlayRequestDone(result: .failure(error)))
+                store.dispatch(.playerPlayRequestDone(result: .failure(error)))
             }
         }
     }
@@ -740,7 +740,7 @@ struct PlayerPlayRequestDoneCommand: AppCommand {
     func execute(in store: Store) {
         let index = store.appState.playing.index
         let songId = store.appState.playing.playinglist[index]
-        store.dispatch(.lyric(id: songId))
+        store.dispatch(.lyricRequest(id: songId))
         if let url = URL(string: url) {
             Player.shared.playWithURL(url: url)
         }
@@ -752,7 +752,7 @@ struct PlayerPlayToEndActionCommand: AppCommand {
     func execute(in store: Store) {
         switch store.appState.settings.playMode {
         case .playlist:
-            store.dispatch(.PlayerPlayForward)
+            store.dispatch(.playerPlayForward)
         case .relplay:
             store.dispatch(.playerReplay)
             break
@@ -764,7 +764,7 @@ struct PlayinglistInsertCommand: AppCommand {
     let index: Int
     
     func execute(in store: Store) {
-        store.dispatch(.PlayerPlayByIndex(index: index))
+        store.dispatch(.playerPlayByIndex(index: index))
     }
 }
 
@@ -1258,13 +1258,13 @@ struct TooglePlayCommand: AppCommand {
 
     func execute(in store: Store) {
         guard store.appState.playing.songUrl != nil else {
-            store.dispatch(.PlayerPlayByIndex(index: store.appState.playing.index))
+            store.dispatch(.playerPlayByIndex(index: store.appState.playing.index))
             return
         }
         if Player.shared.isPlaying {
-            store.dispatch(.PlayerPause)
+            store.dispatch(.playerPause)
         }else {
-            store.dispatch(.PlayerPlay)
+            store.dispatch(.playerPlay)
         }
     }
 }

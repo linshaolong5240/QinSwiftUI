@@ -185,19 +185,19 @@ class Player: AVPlayer, ObservableObject {
     func initMPRemoteCommand() {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.PlayerPlay)
+            Store.shared.dispatch(.playerPlay)
             return .success
         }
         commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.PlayerPause)
+            Store.shared.dispatch(.playerPause)
             return .success
         }
         commandCenter.nextTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.PlayerPlayForward)
+            Store.shared.dispatch(.playerPlayForward)
             return .success
         }
         commandCenter.previousTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.PlayerPlayBackward)
+            Store.shared.dispatch(.playerPlayBackward)
             return .success
         }
     }

@@ -23,7 +23,7 @@ struct BottomBarView: View {
                         .padding()
                         .frame(width: 90, height: 90)
                     Button(action: {
-                        Store.shared.dispatch(.PlayerPlayOrPause)
+                        Store.shared.dispatch(.playerPlayOrPause)
                     }) {
                         NEUSFView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
                     }.buttonStyle(NEUButtonToggleStyle(isHighlighted: true, shadow: false, shape: Circle()))
@@ -53,7 +53,7 @@ struct BottomBarView: View {
                     }
                 }
                 Button(action: {
-                    Store.shared.dispatch(.PlayerPlayForward)
+                    Store.shared.dispatch(.playerPlayForward)
                 }) {
                     NEUSFView(systemName: "forward.fill", size: .medium)
                 }

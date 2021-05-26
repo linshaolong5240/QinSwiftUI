@@ -131,10 +131,10 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .artistSublist(let limit, let offset):
+        case .artistSublistRequest(let limit, let offset):
             appState.artist.artistSublistRequesting = true
-            appCommand = ArtistSublistCommand(limit: limit, offset: offset)
-        case .artistSublistDone(let result):
+            appCommand = ArtistSublistRequestCommand(limit: limit, offset: offset)
+        case .artistSublistRequestDone(let result):
             switch result {
             case .success(let ids):
                 appState.artist.subedIds = ids
@@ -194,22 +194,22 @@ class Store: ObservableObject {
                 appState.playing.song = DataManager.shared.getSong(id: songId)
             }
             appCommand = InitAcionCommand()
-        case .like(let id, let like):
-            appCommand = LikeCommand(id: id, like: like)
-        case .likeDone(let result):
+        case .likeRequest(let id, let like):
+            appCommand = LikeRequestCommand(id: id, like: like)
+        case .likeRequestDone(let result):
             switch result {
             case .success:
-                appCommand = LikeDoneCommand()
+                appCommand = LikeRequestDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
-        case .likelist(let uid):
+        case .likelistRequest(let uid):
             if let userId = uid {
-                appCommand = LikeListCommand(uid: userId)
+                appCommand = LikeListRequestCommand(uid: userId)
             }else if let userId = appState.settings.loginUser?.uid {
-                appCommand = LikeListCommand(uid: userId)
+                appCommand = LikeListRequestCommand(uid: userId)
             }
-        case .likelistDone(let result):
+        case .likelistRequestDone(let result):
             switch result {
             case .success(let ids):
                 appState.playlist.likedIds = ids
@@ -219,10 +219,10 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .lyric(let id):
+        case .lyricRequest(let id):
             appState.lyric.getLyricRequesting = true
-            appCommand = LyricCommand(id: id)
-        case .lyricDone(result: let result):
+            appCommand = LyricRequestCommand(id: id)
+        case .lyricRequestDone(result: let result):
             switch result {
             case .success(let lyric):
                 if lyric != nil {
@@ -235,21 +235,21 @@ class Store: ObservableObject {
                 appState.lyric.getlyricError = error
             }
             appState.lyric.getLyricRequesting = false
-        case .login(let email, let password):
+        case .loginRequest(let email, let password):
             appState.settings.loginRequesting = true
-            appCommand = LoginCommand(email: email, password: password)
-        case .loginDone(result: let result):
+            appCommand = LoginRequestCommand(email: email, password: password)
+        case .loginRequestDone(result: let result):
             appState.settings.loginRequesting = false
             switch result {
             case .success(let user):
                 appState.settings.loginUser = user
-                appCommand = LoginDoneCommand(user: user)
+                appCommand = LoginRequestDoneCommand(user: user)
             case .failure(let error):
                 appState.settings.loginError = error
             }
-        case .loginRefresh:
-            appCommand = LoginRefreshCommand()
-        case .loginRefreshDone(let result):
+        case .loginRefreshRequest:
+            appCommand = LoginRefreshRequestCommand()
+        case .loginRefreshRequestDone(let result):
             switch result {
             case .success(let result):
                 appCommand = LoginRefreshDoneCommand(success: result)
@@ -259,9 +259,9 @@ class Store: ObservableObject {
         case .logout:
             appState.settings.loginUser = nil
             appCommand = LogoutCommand()
-        case .mvDetail(id: let id):
-            appCommand = MVDetailCommand(id: id)
-        case .mvDetaillDone(let result):
+        case .mvDetailRequest(id: let id):
+            appCommand = MVDetailRequestCommand(id: id)
+        case .mvDetaillRequestDone(let result):
             switch result {
             case .success(_):
                 break
@@ -270,26 +270,26 @@ class Store: ObservableObject {
             }
         case .mvUrl(let id):
             appCommand = MVUrlCommand(id: id)
-        case .PlayerPause:
+        case .playerPause:
             Player.shared.pause()
             appState.lyric.lyric?.stopTimer()
-        case .PlayerPlay:
+        case .playerPlay:
             Player.shared.play()
             appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
-        case .PlayerPlayBackward:
+        case .playerPlayBackward:
             appCommand = PlayerPlayBackwardCommand()
-        case .PlayerPlayByIndex(let index):
+        case .playerPlayByIndex(let index):
             appState.playing.index = index
             let id = appState.playing.playinglist[index]
             appState.playing.song = DataManager.shared.getSong(id: id)
             appCommand = PlayerPlayRequestCommand(id: id)
-        case .PlayerPlayForward:
+        case .playerPlayForward:
             appCommand = PlayerPlayForwardCommand()
-        case .PlayerPlayMode:
+        case .playerPlayMode:
             appState.settings.playMode = appState.settings.playMode.next()
-        case .PlayerPlayRequest(let id):
+        case .playerPlayRequest(let id):
             appCommand = PlayerPlayRequestCommand(id: id)
-        case .PlayerPlayRequestDone(let result):
+        case .playerPlayRequestDone(let result):
             switch result {
             case .success(let songURL):
                 appState.playing.songUrl = songURL.url
@@ -303,7 +303,7 @@ class Store: ObservableObject {
                 appState.error = error
                 break
             }
-        case .PlayerPlayOrPause:
+        case .playerPlayOrPause:
             if appState.playing.song != nil {
                 appCommand = TooglePlayCommand()
             }
@@ -311,12 +311,12 @@ class Store: ObservableObject {
             appCommand = PlayerPlayToEndActionCommand()
         case .playerReplay:
             appCommand = RePlayCommand()
-        case .PlayerSeek(let isSeeking, let time):
+        case .playerSeek(let isSeeking, let time):
             appState.playing.isSeeking = isSeeking
             if isSeeking == false {
                 appCommand = SeeKCommand(time: time)
             }
-        case .PlayinglistInsert(let id):
+        case .playinglistInsert(let id):
             var index: Int = 0
             if appState.playing.playinglist.count > 0 {
                 if let i = appState.playing.playinglist.firstIndex(of: id) {
