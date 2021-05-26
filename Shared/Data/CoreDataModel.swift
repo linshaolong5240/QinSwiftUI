@@ -16,3 +16,14 @@ extension AlbumSublistResponse.Album {
         AlbumSubModel(id: Int64(id), name: name, picUrl: picUrl)
     }
 }
+
+extension ArtistSublistResponse.Artist {
+    struct ArtistSubModel: Codable, Identifiable {
+        var id: Int64
+        var name: String
+        var img1v1Url: String?
+    }
+    var dataModel: ArtistSubModel {
+        ArtistSubModel(id: Int64(id), name: name, img1v1Url: img1v1Url)
+    }
+}

@@ -176,6 +176,8 @@
 		EF6EF0F2265E467300F164B5 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6EF0F0265E467300F164B5 /* String+Extension.swift */; };
 		EF6EF0F4265E4D0200F164B5 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6EF0F3265E4D0200F164B5 /* CoreDataModel.swift */; };
 		EF6EF0F5265E4D0200F164B5 /* CoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6EF0F3265E4D0200F164B5 /* CoreDataModel.swift */; };
+		EF6EF0F7265E5A1600F164B5 /* NeteaseCloudMusicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6EF0F6265E5A1600F164B5 /* NeteaseCloudMusicAction.swift */; };
+		EF6EF0F8265E5A1600F164B5 /* NeteaseCloudMusicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6EF0F6265E5A1600F164B5 /* NeteaseCloudMusicAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -281,6 +283,7 @@
 		EF3890D2262D803D00C39649 /* JSONHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		EF6EF0F0265E467300F164B5 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		EF6EF0F3265E4D0200F164B5 /* CoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
+		EF6EF0F6265E5A1600F164B5 /* NeteaseCloudMusicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeteaseCloudMusicAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -495,6 +498,7 @@
 			isa = PBXGroup;
 			children = (
 				2BCCB2EB24DC7A61004CAD67 /* Account.swift */,
+				EF6EF0F6265E5A1600F164B5 /* NeteaseCloudMusicAction.swift */,
 				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */,
 				EF1A6F4A265E20A10069BDCD /* NeteaseCloudMusicResponse.swift */,
 			);
@@ -739,6 +743,7 @@
 				2B0668FB25305AE40007053C /* SubedAlbumsView.swift in Sources */,
 				2BCCB29D24DC5A2B004CAD67 /* ViewModifier.swift in Sources */,
 				2BCCB31E24DC7BCC004CAD67 /* AppState.swift in Sources */,
+				EF6EF0F7265E5A1600F164B5 /* NeteaseCloudMusicAction.swift in Sources */,
 				2BD4D9CB251BC460006798ED /* LyricViewModel.swift in Sources */,
 				2BE2607124F6C2860039A39E /* SearchSongJSONModel.swift in Sources */,
 				2BCCB2E224DC7A17004CAD67 /* Player.swift in Sources */,
@@ -796,6 +801,7 @@
 				2BCCB2F324DC7A62004CAD67 /* CommentJSONModel.swift in Sources */,
 				2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
 				2B691739252F556E00F05DB9 /* CreatorJSONModel.swift in Sources */,
+				EF6EF0F8265E5A1600F164B5 /* NeteaseCloudMusicAction.swift in Sources */,
 				EF3890D4262D803D00C39649 /* JSONHelper.swift in Sources */,
 				2BC4C210254A3FBE00121D3E /* RecommendSongsJSONModel.swift in Sources */,
 				2BD285BF252B119B000E4B9F /* AlbumJSONModel.swift in Sources */,

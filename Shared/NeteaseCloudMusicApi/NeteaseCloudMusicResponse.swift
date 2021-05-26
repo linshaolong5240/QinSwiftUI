@@ -42,3 +42,22 @@ public struct AlbumSublistResponse: Codable {
     public let hasMore: Bool
     public let paidCount: Int
 }
+
+public struct ArtistSublistResponse: Codable {
+    public struct Artist: Codable {
+        public let albumSize: Int
+        public let alias: [String]
+        public let id: Int
+        public let img1v1Url: String
+        public let info: String
+        public let mvSize: Int
+        public let name: String
+        public let picId: Int
+        public let picUrl: String
+        public let trans: String?
+    }
+    public let code: Int
+    public let count: Int
+    public let data: [Artist]
+    public let hasMore: Bool
+}

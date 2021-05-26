@@ -105,16 +105,16 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    // 专辑收藏列表
-    func albumSublist(limit: Int, offset: Int, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/album/sublist"
-        let data = [
-            "limit": limit,
-            "offset": offset * limit,
-            "total": true
-        ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    // 专辑收藏列表
+//    func albumSublist(limit: Int, offset: Int, complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/album/sublist"
+//        let data = [
+//            "limit": limit,
+//            "offset": offset * limit,
+//            "total": true
+//        ] as [String : Any]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
     // 歌手专辑
     func artistAlbum(id: Int64, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/albums/\(id)"
@@ -544,7 +544,7 @@ extension NeteaseCloudMusicApi {
                     print("statusCode: \(httpURLResponse.statusCode)")
                     #endif
                     if httpURLResponse.statusCode == 200 {
-                        if let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) {
+                        if let json = try? JSONSerialization.jsonObject(with: data) {
                             let jsonDict = json as! ResponseData
                             complete(.success(jsonDict))
                         }
@@ -553,8 +553,9 @@ extension NeteaseCloudMusicApi {
             }.store(in: &cancellableSet)
     }
     
-    func httpRequest2<Parameters: Encodable>(method: HttpMethod, url: String, parameters: Parameters? = nil) -> AnyPublisher<(data: Data, response: URLResponse), URLError> {
-        
+    func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.ResponseType, Error> {
+        let url: String =  host + action.uri
+
         let httpHeader = [ //"Accept": "*/*",
             //"Accept-Encoding": "gzip,deflate,sdch",
             //"Connection": "keep-alive",
@@ -568,40 +569,16 @@ extension NeteaseCloudMusicApi {
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = httpHeader
         request.timeoutInterval = 10
-        if let data = try? JSONEncoder().encode(parameters) {
+        if let data = try? JSONEncoder().encode(action.parameters) {
             if let str = String(data: data, encoding: .utf8) {
                 request.httpBody = encrypto(text: str).data(using: .utf8)
             }
         }
         return URLSession.shared
             .dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: action.responseType, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
-    }
-    
-    func request<Action: NeteaseCloudActionParameters>(action: Action) -> AnyPublisher<(data: Data, response: URLResponse), URLError> {
-        let url: String =  host + action.uri
-        return httpRequest2(method: .POST, url: url, parameters: action.parameters)
-    }
-}
-
-protocol NeteaseCloudActionParameters {
-    associatedtype Parameters: Encodable
-    var uri: String { get }
-    var parameters: Parameters { get }
-}
-
-
-struct NeteaseCloudAction {
-    struct AlbumSublistAction: NeteaseCloudActionParameters {
-        struct AlbumSublistParameters: Encodable {
-            var limit: Int
-            var offset: Int
-            var total: Bool
-        }
-        typealias Parameters = AlbumSublistParameters
-
-        let uri: String = "/weapi/album/sublist"
-        var parameters: AlbumSublistParameters
     }
 }

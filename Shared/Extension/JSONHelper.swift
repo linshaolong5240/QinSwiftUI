@@ -8,9 +8,8 @@
 import Foundation
 
 extension Data {
-    func toModel<T: Decodable>(_ type: T.Type) -> T? {
-        return try? JSONDecoder().decode(type, from: self)
-    }
+    func toString(encoding: String.Encoding = .utf8) -> String? { String(data: self, encoding: encoding) }
+    func toModel<T: Decodable>(_ type: T.Type) -> T? { try? JSONDecoder().decode(type, from: self) }
 }
 
 extension Dictionary {
@@ -20,9 +19,7 @@ extension Dictionary {
         }
         return String(data: data, encoding: .utf8) ?? ""
     }
-    var toData: Data? {
-        return try? JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted, .sortedKeys])
-    }
+    var toData: Data? { try? JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted, .sortedKeys]) }
 }
 
 extension Encodable {

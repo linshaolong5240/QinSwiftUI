@@ -87,56 +87,22 @@ struct AlbumSublistRequestCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi
             .shared
-            .request(action: NeteaseCloudAction.AlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset, total: true)))
-            .map({ $0.data })
-            .decode(type: AlbumSublistResponse.self, decoder: JSONDecoder())
+            .requestPublisher(action: AlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset)))
             .sink { completion in
             if case .failure(let error) = completion {
-                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.httpRequestError(error: error))))
+                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.albumSublistRequest(error: error))))
             }
         } receiveValue: { albumSublistResponse in
-            let albumSublist = albumSublistResponse.data.map({ $0.dataModel })//sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
+            let albumSublist = albumSublistResponse.data.map(\.dataModel)
             do {
                 let data = try JSONEncoder().encode(albumSublist)
                 let objects = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
                 DataManager.shared.batchInsertAfterDeleteAll(entityName: "AlbumSub", objects: objects)
                 store.dispatch(.albumSublistRequestDone(result: .success(albumSublist.map{ Int64($0.id) })))
             } catch let error {
-                #if DEBUG
-                print("AlbumSublistCommand:\n\(error)")
-                #endif
+                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.albumSublistRequest(error: error))))
             }
-
-        }.store(in: &NeteaseCloudMusicApi
-                    .shared.cancellableSet)
-
-
-//        NeteaseCloudMusicApi.shared.albumSublist(limit: limit, offset: offset) { result in
-//            switch result {
-//            case .success(let json):
-//                print(json.toJSONString)
-//                if json["code"] as? Int == 200 {
-//                    let sublistDict = json["data"] as! [[String: Any]]
-//                    let albumSublist = sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
-//                    do {
-//                        let data = try JSONEncoder().encode(albumSublist)
-//                        let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
-//                        DataManager.shared.batchInsertAfterDeleteAll(entityName: "AlbumSub", objects: objects)
-//                        store.dispatch(.albumSublistRequestDone(result: .success(albumSublist.map{$0.id})))
-//                    } catch let error {
-//                        #if DEBUG
-//                        print("AlbumSublistCommand:\n\(error)")
-//                        #endif
-//                    }
-//                }else {
-//                    let code = json["code"] as? Int ?? -1
-//                    let message = json["message"] as? String ?? "错误信息解码错误"
-//                    store.dispatch(.albumSublistRequestDone(result: .failure(.albumSublist(code: code, message: message))))
-//                }
-//            case .failure(let error):
-//                store.dispatch(.albumSublistRequestDone(result: .failure(error)))
-//            }
-//        }
+        }.store(in: &store.cancellableSet)
     }
 }
 
@@ -298,34 +264,28 @@ struct ArtistSublistCommand: AppCommand {
     let limit: Int
     let offset: Int
     
-    init(limit: Int = 30, offset: Int = 0) {
+    init(limit: Int, offset: Int = 0) {
         self.limit = limit
         self.offset = offset
     }
+    
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.artistSublist(limit: limit, offset: offset) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    let artistSublistDict = json["data"] as! [NeteaseCloudMusicApi.ResponseData]
-                    let artistSublist = artistSublistDict.map{$0.toData!.toModel(ArtistSubModel.self)!}
-                    do {
-                        let data = try JSONEncoder().encode(artistSublist)
-                        let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
-                        DataManager.shared.batchInsertAfterDeleteAll(entityName: "ArtistSub", objects: objects)
-                        store.dispatch(.artistSublistDone(result: .success(artistSublist.map{$0.id})))
-                    }catch let err {
-                        print("\(#function) \(err)")
-                    }
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistSublistDone(result: .failure(.artistSublist(code: code, message: message))))
+        NeteaseCloudMusicApi.shared.requestPublisher(action: ArtistSublistAction(parameters: .init(limit: limit, offset: offset)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.artistSublistDone(result: .failure(AppError.artistSublistRequest(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.artistSublistDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { artistSublistResponse in
+                let artistSublist = artistSublistResponse.data.map(\.dataModel)
+                do {
+                    let data = try JSONEncoder().encode(artistSublist)
+                    let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
+                    DataManager.shared.batchInsertAfterDeleteAll(entityName: "ArtistSub", objects: objects)
+                    store.dispatch(.artistSublistDone(result: .success(artistSublist.map{$0.id})))
+                }catch let error {
+                    store.dispatch(.artistSublistDone(result: .failure(AppError.artistSublistRequest(error: error))))
+                }
+            }.store(in: &store.cancellableSet)
     }
 }
 
