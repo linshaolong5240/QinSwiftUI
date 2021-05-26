@@ -76,40 +76,81 @@ struct AlbumSubCommand: AppCommand {
 struct AlbumSubDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        store.dispatch(.albumSublist())
+        store.dispatch(.albumSublistRequest())
     }
 }
 
-struct AlbumSublistCommand: AppCommand {
+struct AlbumSublistRequestCommand: AppCommand {
     let limit: Int
     let offset: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.albumSublist(limit: limit, offset: offset) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    let sublistDict = json["data"] as! [[String: Any]]
-                    let albumSublist = sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
-                    do {
-                        let data = try JSONEncoder().encode(albumSublist)
-                        let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
-                        DataManager.shared.batchInsertAfterDeleteAll(entityName: "AlbumSub", objects: objects)
-                        store.dispatch(.albumSublistDone(result: .success(albumSublist.map{$0.id})))
-                    } catch let error {
-                        #if DEBUG
-                        print("AlbumSublistCommand:\n\(error)")
-                        #endif
-                    }
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.albumSublistDone(result: .failure(.albumSublist(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.albumSublistDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .request(action: NeteaseCloudAction.AlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset, total: true)))
+            .print("AlbumSublistRequestCommand")
+            .map({ $0.data })
+            .decode(type: AlbumSublistResponse.self, decoder: JSONDecoder())
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.httpRequestError(error: error))))
             }
-        }
+        } receiveValue: { albumSublistResponse in
+//            guard let json = try? JSONSerialization.jsonObject(with: albumSublistResponse.data) as? [String : Any] else {
+//                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.jsonObject(message: "albumSublistDone"))))
+//                return
+//            }
+//            print("json:\(json.toJSONString)")
+//
+//            guard let code = json["code"] as? Int, code == 200, let sublistDict = json["data"] as? [[String: Any]] else {
+//                let code = json["code"] as? Int
+//                let message = json["message"] as? String
+//                store.dispatch(.albumSublistRequestDone(result: .failure(.neteaseCloudMusic(code: code, message: message))))
+//                return
+//            }
+
+            let albumSublist = albumSublistResponse.data//sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
+            do {
+                let data = try JSONEncoder().encode(albumSublist)
+                let objects = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
+                DataManager.shared.batchInsertAfterDeleteAll(entityName: "AlbumSub", objects: objects)
+                store.dispatch(.albumSublistRequestDone(result: .success(albumSublist.map{ Int64($0.id) })))
+            } catch let error {
+                #if DEBUG
+                print("AlbumSublistCommand:\n\(error)")
+                #endif
+            }
+
+        }.store(in: &NeteaseCloudMusicApi
+                    .shared.cancellableSet)
+
+
+//        NeteaseCloudMusicApi.shared.albumSublist(limit: limit, offset: offset) { result in
+//            switch result {
+//            case .success(let json):
+//                print(json.toJSONString)
+//                if json["code"] as? Int == 200 {
+//                    let sublistDict = json["data"] as! [[String: Any]]
+//                    let albumSublist = sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
+//                    do {
+//                        let data = try JSONEncoder().encode(albumSublist)
+//                        let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
+//                        DataManager.shared.batchInsertAfterDeleteAll(entityName: "AlbumSub", objects: objects)
+//                        store.dispatch(.albumSublistRequestDone(result: .success(albumSublist.map{$0.id})))
+//                    } catch let error {
+//                        #if DEBUG
+//                        print("AlbumSublistCommand:\n\(error)")
+//                        #endif
+//                    }
+//                }else {
+//                    let code = json["code"] as? Int ?? -1
+//                    let message = json["message"] as? String ?? "错误信息解码错误"
+//                    store.dispatch(.albumSublistRequestDone(result: .failure(.albumSublist(code: code, message: message))))
+//                }
+//            case .failure(let error):
+//                store.dispatch(.albumSublistRequestDone(result: .failure(error)))
+//            }
+//        }
     }
 }
 
@@ -410,7 +451,7 @@ struct CommentMusicCommand: AppCommand {
 struct InitAcionCommand: AppCommand {
     func execute(in store: Store) {
         store.appState.initRequestingCount += 1
-        store.dispatch(.albumSublist())
+        store.dispatch(.albumSublistRequest())
         
         store.appState.initRequestingCount += 1
         store.dispatch(.artistSublist())

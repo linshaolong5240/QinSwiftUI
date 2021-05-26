@@ -21,12 +21,15 @@ enum AppError: Error, Identifiable {
     case artistSublist(code: Int, message: String)
     case comment(code: Int, message: String)
     case commentMusic
+    case httpRequest
+    case jsonObject(message: String? = nil)
     case like
     case likelist
     case loginError(code: Int, message: String)
     case loginRefresh(code: Int, message: String)
     case lyricError
     case mvDetailError(code: Int, message: String)
+    case neteaseCloudMusic(code: Int?, message: String?)
     case playlist(code: Int, message: String)
     case playlistCategories(code: Int, message: String)
     case playlistCreateError
@@ -41,7 +44,7 @@ enum AppError: Error, Identifiable {
     case songsOrderUpdate(code: Int, message: String)
     case songsURLError
     case userPlaylistError
-    case httpRequestError(error: URLError)
+    case httpRequestError(error: Error)
     case playingError(message: String)
 }
 
@@ -70,6 +73,10 @@ extension AppError {
             return errorFormat(error: "发送评论错误", code: code, message: message)
         case .commentMusic:
             return "获取评论错误"
+        case .httpRequest:
+            return "网络请求错误"
+        case .jsonObject(let message):
+            return "jsonObject error: \(message ?? "")"
         case .like:
             return "喜欢或取消喜欢歌曲错误"
         case .likelist:
@@ -82,6 +89,8 @@ extension AppError {
             return "获取歌词错误"
         case .mvDetailError(let code, let message):
             return errorFormat(error: "获取MV详情错误", code: code, message: message)
+        case .neteaseCloudMusic(let code, let message):
+            return errorFormat(error: "neteaseCloudMusic", code: code ?? -1, message: message ?? "")
         case .playlist(let code, let message):
             return errorFormat(error: "获取热门歌单错误", code: code, message: message)
         case .playlistCategories(let code, let message):

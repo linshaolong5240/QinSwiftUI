@@ -10,8 +10,10 @@ import Foundation
 import Combine
 
 class Store: ObservableObject {
-    static let shared = Store()
+    public static let shared = Store()
     
+    var cancellableSet = Set<AnyCancellable>()
+
     @Published var appState = AppState()
     func dispatch(_ action: AppAction) {
         #if DEBUG
@@ -53,10 +55,10 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .albumSublist(let limit, let offset):
+        case .albumSublistRequest(let limit, let offset):
             appState.album.sublistRequesting = true
-            appCommand = AlbumSublistCommand(limit: limit, offset: offset)
-        case .albumSublistDone(let result):
+            appCommand = AlbumSublistRequestCommand(limit: limit, offset: offset)
+        case .albumSublistRequestDone(let result):
             switch result {
             case .success(let ids):
                 appState.album.subedIds = ids
@@ -295,7 +297,7 @@ class Store: ObservableObject {
                     appCommand = PlayerPlayRequestDoneCommand(url: url)
                 }else {
                     appCommand = PlayerPlayForwardCommand()
-                    appState.error = .songsURLError
+                    appState.error = AppError.songsURLError
                 }
             case .failure(let error):
                 appState.error = error

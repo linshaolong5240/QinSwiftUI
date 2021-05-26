@@ -15,13 +15,13 @@ extension Data {
 
 extension Dictionary {
     var toJSONString: String {
-        guard let data = try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted) else {
+        guard let data = try? JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted, .sortedKeys]) else {
             return ""
         }
         return String(data: data, encoding: .utf8) ?? ""
     }
     var toData: Data? {
-        return try? JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
+        return try? JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted, .sortedKeys])
     }
 }
 
