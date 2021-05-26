@@ -88,7 +88,6 @@ struct AlbumSublistRequestCommand: AppCommand {
         NeteaseCloudMusicApi
             .shared
             .request(action: NeteaseCloudAction.AlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset, total: true)))
-            .print("AlbumSublistRequestCommand")
             .map({ $0.data })
             .decode(type: AlbumSublistResponse.self, decoder: JSONDecoder())
             .sink { completion in
@@ -96,20 +95,7 @@ struct AlbumSublistRequestCommand: AppCommand {
                 store.dispatch(.albumSublistRequestDone(result: .failure(AppError.httpRequestError(error: error))))
             }
         } receiveValue: { albumSublistResponse in
-//            guard let json = try? JSONSerialization.jsonObject(with: albumSublistResponse.data) as? [String : Any] else {
-//                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.jsonObject(message: "albumSublistDone"))))
-//                return
-//            }
-//            print("json:\(json.toJSONString)")
-//
-//            guard let code = json["code"] as? Int, code == 200, let sublistDict = json["data"] as? [[String: Any]] else {
-//                let code = json["code"] as? Int
-//                let message = json["message"] as? String
-//                store.dispatch(.albumSublistRequestDone(result: .failure(.neteaseCloudMusic(code: code, message: message))))
-//                return
-//            }
-
-            let albumSublist = albumSublistResponse.data//sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
+            let albumSublist = albumSublistResponse.data.map({ $0.dataModel })//sublistDict.map{$0.toData!.toModel(AlbumSubModel.self)!}
             do {
                 let data = try JSONEncoder().encode(albumSublist)
                 let objects = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]

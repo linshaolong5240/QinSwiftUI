@@ -43,7 +43,7 @@ class DataManager {
             request.predicate = predicate
             let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
             let deleteResult = try context.execute(batchDelete)
-            print("\(#function)", deleteResult)
+            print("\(#function) \(deleteResult.description)")
         }catch let error {
             print("\(#function):\(error)")
         }
@@ -52,9 +52,8 @@ class DataManager {
         do {
             let context = self.context()
             let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
-            var insertResult : NSBatchInsertResult
-            insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
-            print("insertResult",insertResult)
+            let insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
+            print("\(#function) \(insertResult.description)")
         }catch let error {
             print("\(#function):\(error)")
         }
@@ -64,11 +63,10 @@ class DataManager {
             self.batchDelete(entityName: entityName)
             let context = self.context()
             let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
-            var insertResult : NSBatchInsertResult
-            insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
-            print("insertResult",insertResult)
+            let insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
+            print("\(#function) \(insertResult.description)")
         }catch let error {
-            print("\(#function):\(error)")
+            print("\(#function):\nentityName:\(entityName)\nerror:\(error)")
         }
     }
     public func batchUpdate(entityName: String, propertiesToUpdate: [AnyHashable : Any], predicate: NSPredicate? = nil) {
