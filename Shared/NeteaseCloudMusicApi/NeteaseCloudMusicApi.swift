@@ -17,11 +17,6 @@ class NeteaseCloudMusicApi {
         case POST = "POST"
     }
     
-    struct Response {
-        let data: Data
-        let response: HTTPURLResponse
-    }
-    
     public static let shared = NeteaseCloudMusicApi()
     public var cancellableSet = Set<AnyCancellable>()
     
