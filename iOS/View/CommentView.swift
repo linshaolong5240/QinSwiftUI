@@ -67,7 +67,7 @@ struct CommentListView: View {
                 }
                 Button(action: {
                     hideKeyboard()
-                    Store.shared.dispatch(.comment(id: id, content: editComment, type: .song, action: .add))
+                    Store.shared.dispatch(.commentRequest(id: id, content: editComment, type: .song, action: .add))
                     editComment = ""
                 }) {
                     NEUSFView(systemName: "arrow.up.message.fill", size: .small)
@@ -77,7 +77,7 @@ struct CommentListView: View {
             .padding()
             .onAppear {
                 if Store.shared.appState.comment.id != id {
-                    Store.shared.dispatch(.commentMusic(id: id))
+                    Store.shared.dispatch(.commentMusicRequest(id: id))
                 }
             }
             if comment.commentMusicRequesting {
@@ -141,7 +141,7 @@ struct CommentRowView: View {
                     Spacer()
                     Text(String(viewModel.likedCount))
                     Button(action: {
-                        Store.shared.dispatch(.commentLike(id: id, cid:viewModel.commentId, like: viewModel.liked ? false : true, type: type))
+                        Store.shared.dispatch(.commentLikeRequest(id: id, cid:viewModel.commentId, like: viewModel.liked ? false : true, type: type))
                         viewModel.liked.toggle()
                     }, label: {
                         Image(systemName: viewModel.liked ? "hand.thumbsup.fill" : "hand.thumbsup")
@@ -164,7 +164,7 @@ struct CommentRowView: View {
                     Spacer()
                     if viewModel.userId == user?.uid {
                         Button(action: {
-                            Store.shared.dispatch(.comment(id: id, cid: viewModel.commentId, type: type, action: .delete))
+                            Store.shared.dispatch(.commentRequest(id: id, cid: viewModel.commentId, type: type, action: .delete))
                         }, label: {
                             Text("删除")
                         })

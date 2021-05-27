@@ -72,7 +72,7 @@ struct AlbumDetailView: View {
                 Button(action: {
                     let id = album.id
                     let sub = !Store.shared.appState.album.subedIds.contains(id)
-                    Store.shared.dispatch(.albumSub(id: id, sub: sub))
+                    Store.shared.dispatch(.albumSubRequest(id: id, sub: sub))
                 }) {
                     NEUSFView(systemName: store.appState.album.subedIds.contains(album.id) ? "heart.fill" : "heart",
                               size: .small)

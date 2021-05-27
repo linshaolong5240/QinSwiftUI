@@ -43,13 +43,13 @@ struct AlbumSubCommand: AppCommand {
             .requestPublisher(action: AlbumSubAction(parameters: .init(id: id), sub: sub))
             .sink { completion in
             if case .failure(let error) = completion {
-                store.dispatch(.albumSubDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                store.dispatch(.albumSubRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
         } receiveValue: { albumSubResponse in
             if albumSubResponse.code == 200 {
-                store.dispatch(.albumSubDone(result: .success(sub)))
+                store.dispatch(.albumSubRequestDone(result: .success(sub)))
             }else {
-                store.dispatch(.albumSubDone(result: .failure(.albumSub)))
+                store.dispatch(.albumSubRequestDone(result: .failure(.albumSub)))
             }
         }.store(in: &store.cancellableSet)
     }
@@ -103,14 +103,14 @@ struct ArtistCommand: AppCommand {
                     DataManager.shared.updateArtist(artistJSONModel: artistJSONModel)
                     DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
                     DataManager.shared.updateArtistSongs(id: artistJSONModel.id, songsId: songsJSONModel.map{ $0.id })
-                    store.dispatch(.artistDone(result: .success(artistJSONModel)))
+                    store.dispatch(.artistRequestDone(result: .success(artistJSONModel)))
                 }else {
                     let code = json["code"] as? Int ?? -1
                     let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistDone(result: .failure(.comment(code: code, message: message))))
+                    store.dispatch(.artistRequestDone(result: .failure(.comment(code: code, message: message))))
                 }
             case .failure(let error):
-                store.dispatch(.artistDone(result: .failure(error)))
+                store.dispatch(.artistRequestDone(result: .failure(error)))
             }
         }
     }
@@ -121,9 +121,9 @@ struct ArtistDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         let id = artist.id
-        store.dispatch(.artistAlbum(id: id))
-        store.dispatch(.artistIntroduction(id: id))
-        store.dispatch(.artistMV(id: id))
+        store.dispatch(.artistAlbumRequest(id: id))
+        store.dispatch(.artistIntroductionRequest(id: id))
+        store.dispatch(.artistMvRequest(id: id))
     }
 }
 
@@ -145,14 +145,14 @@ struct ArtistAlbumCommand: AppCommand {
                     let albumsDict = json["hotAlbums"] as! [[String: Any]]
                     let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
                     DataManager.shared.updateArtistAlbums(id: id, albumsJSONModel: albumsJSONModel)
-                    store.dispatch(.artistAlbumDone(result: .success(albumsJSONModel)))
+                    store.dispatch(.artistAlbumRequestDone(result: .success(albumsJSONModel)))
                 }else {
                     let code = json["code"] as? Int ?? -1
                     let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistAlbumDone(result: .failure(.artistAlbum(code: code, message: message))))
+                    store.dispatch(.artistAlbumRequestDone(result: .failure(.artistAlbum(code: code, message: message))))
                 }
             case .failure(let error):
-                store.dispatch(.artistAlbumDone(result: .failure(error)))
+                store.dispatch(.artistAlbumRequestDone(result: .failure(error)))
             }
         }
     }
@@ -168,14 +168,14 @@ struct ArtistIntroductionCommand: AppCommand {
                 if json["code"] as? Int == 200 {
                     let introduction = json["briefDesc"] as? String
                     DataManager.shared.updateArtistIntroduction(id: id, introduction: introduction)
-                    store.dispatch(.artistIntroductionDone(result: .success(introduction)))
+                    store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
                 }else {
                     let code = json["code"] as? Int ?? -1
                     let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistIntroductionDone(result: .failure(.comment(code: code, message: message))))
+                    store.dispatch(.artistIntroductionRequestDone(result: .failure(.comment(code: code, message: message))))
                 }
             case .failure(let error):
-                store.dispatch(.artistIntroductionDone(result: .failure(error)))
+                store.dispatch(.artistIntroductionRequestDone(result: .failure(error)))
             }
         }
     }
@@ -200,14 +200,14 @@ struct ArtistMVCommand: AppCommand {
                         let mvsJSONModel = mvsDict.map{$0.toData!.toModel(ArtistMVJSONModel.self)!}
                         DataManager.shared.updateMvs(mvsJSONModel: mvsJSONModel)
                         DataManager.shared.updateArtistMVs(id: id, mvIds: mvsJSONModel.map{ $0.id })
-                        store.dispatch(.artistMVDone(result: .success(mvsJSONModel)))
+                        store.dispatch(.artistMvRequestDone(result: .success(mvsJSONModel)))
                     }
                 }else {
                     let (code,message) = NeteaseCloudMusicApi.parseErrorMessage(json)
-                    store.dispatch(.artistMVDone(result: .failure(.artistMV(code: code, message: message))))
+                    store.dispatch(.artistMvRequestDone(result: .failure(.artistMV(code: code, message: message))))
                 }
             case .failure(let error):
-                store.dispatch(.artistMVDone(result: .failure(error)))
+                store.dispatch(.artistMvRequestDone(result: .failure(error)))
             }
         }
     }
@@ -222,14 +222,14 @@ struct ArtistSubCommand: AppCommand {
             switch result {
             case .success(let json):
                 if json["code"] as? Int == 200 {
-                    store.dispatch(.artistSubDone(result: .success(true)))
+                    store.dispatch(.artistSubRequestDone(result: .success(true)))
                 }else {
                     let code = json["code"] as? Int ?? -1
                     let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistSubDone(result: .failure(.artistSub(code: code, message: message))))
+                    store.dispatch(.artistSubRequestDone(result: .failure(.artistSub(code: code, message: message))))
                 }
             case .failure(let error):
-                store.dispatch(.artistSubDone(result: .failure(error)))
+                store.dispatch(.artistSubRequestDone(result: .failure(error)))
             }
         }
     }
@@ -284,10 +284,10 @@ struct CommentCommand: AppCommand {
             case .success(let json):
                 if json["code"] as! Int == 200 {
                     let args = (id, cid, type , action)
-                    store.dispatch(.commentDone(result: .success(args)))
+                    store.dispatch(.commentDoneRequest(result: .success(args)))
                 }
             case .failure(let error):
-                store.dispatch(.commentDone(result: .failure(error)))
+                store.dispatch(.commentDoneRequest(result: .failure(error)))
             }
         }
     }
@@ -301,7 +301,7 @@ struct CommentDoneCommand: AppCommand {
     func execute(in store: Store) {
         if type == .song {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                store.dispatch(.commentMusic(id: id))
+                store.dispatch(.commentMusicRequest(id: id))
             }
         }
     }
@@ -365,12 +365,12 @@ struct CommentMusicCommand: AppCommand {
                         comments = commentsArray.map({$0.toData!.toModel(CommentJSONModel.self)!})
                     }
                     let total = json["total"] as! Int
-                    store.dispatch(.commentMusicDone(result: .success((hotComments,comments,total))))
+                    store.dispatch(.commentMusicRequestDone(result: .success((hotComments,comments,total))))
                 }else {
-                    store.dispatch(.commentMusicDone(result: .failure(.commentMusic)))
+                    store.dispatch(.commentMusicRequestDone(result: .failure(.commentMusic)))
                 }
             case .failure(let error):
-                store.dispatch(.commentMusicDone(result: .failure(error)))
+                store.dispatch(.commentMusicRequestDone(result: .failure(error)))
             }
         }
     }

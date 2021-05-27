@@ -29,13 +29,13 @@ struct FetchedArtistDetailView: View {
                             ArtistDetailView(artist: artist)
                                 .onAppear {
                                     if results.first?.introduction == nil {
-                                        Store.shared.dispatch(.artist(id: id))
+                                        Store.shared.dispatch(.artistRequest(id: id))
                                     }
                                 }
                         }else {
                             Text("Loading...")
                                 .onAppear {
-                                    Store.shared.dispatch(.artist(id: id))
+                                    Store.shared.dispatch(.artistRequest(id: id))
                                 }
                             Spacer()
                         }
@@ -85,7 +85,7 @@ struct ArtistDetailView: View {
                 Button(action: {
                     let id = artist.id
                     let sub = !Store.shared.appState.artist.subedIds.contains(id)
-                    Store.shared.dispatch(.artistSub(id: id, sub: sub))
+                    Store.shared.dispatch(.artistSubRequest(id: id, sub: sub))
                 }) {
                     NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "heart.fill" : "heart",
                               size: .small)
