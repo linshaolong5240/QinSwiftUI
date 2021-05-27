@@ -27,7 +27,7 @@ extension AppState {
         enum AccountBehavior: CaseIterable {
             case login, logout
         }
-        enum PlayMode: Int, CaseIterable {
+        enum PlayMode: Int, CaseIterable, Codable {
             case playlist = 0, relplay
             var systemName: String {
                 switch self {
@@ -42,25 +42,11 @@ extension AppState {
             case dark, light, system
         }
         var accountBehavior = AccountBehavior.login
-        var coverShape: NEUCoverShape {
-            get {
-                NEUCoverShape(rawValue: UserDefaults.standard.integer(forKey: "coverShape"))!
-            }
-            set {
-                UserDefaults.standard.set(newValue.rawValue, forKey: "coverShape")
-            }
-        }
+        @UserDefault(key: "coverShape") var coverShape: NEUCoverShape = .circle
         var loginRequesting = false
         var loginUser: User? = DataManager.shared.getUser()
         var loginError: AppError?
-        var playMode: PlayMode {
-            get {
-                PlayMode(rawValue: UserDefaults.standard.integer(forKey: "playMode"))!
-            }
-            set {
-                UserDefaults.standard.set(newValue.rawValue, forKey: "playMode")
-            }
-        }
+        @UserDefault(key: "playMode") var playMode: PlayMode = .playlist
         var theme: Theme = .light
     }
     
@@ -118,23 +104,9 @@ extension AppState {
     }
     
     struct Playing {
-        var index: Int {
-            get {
-                UserDefaults.standard.integer(forKey: "playingIndex")
-            }
-            set {
-                UserDefaults.standard.set(newValue, forKey: "playingIndex")
-            }
-        }
+        @UserDefault(key: "index") var index: Int = 0
         var isSeeking: Bool = false
-        var playinglist: [Int64] {
-            get {
-                return UserDefaults.standard.array(forKey: "playinglist") as? [Int64] ?? [Int64]()
-            }
-            set {
-                UserDefaults.standard.set(newValue, forKey: "playinglist")
-            }
-        }
+        @UserDefault(key: "playinglist") var playinglist = [Int64]()
         var playingError: AppError?
         var song: Song? = nil
         var songUrl: String?
@@ -146,5 +118,26 @@ extension AppState {
         var searchRequesting: Bool = false
         var songsId = [Int64]()
         var playlists = [PlaylistViewModel]()
+    }
+}
+
+@propertyWrapper
+struct UserDefault<T: Codable> {
+    private let key: String
+    private let defaultValue: T
+    public var wrappedValue: T {
+        set {
+            UserDefaults.standard.set(try? JSONEncoder().encode(newValue) , forKey: key)
+            UserDefaults.standard.synchronize()
+        }
+        get {
+            guard let data = UserDefaults.standard.data(forKey: key) else { return defaultValue }
+            return (try? JSONDecoder().decode(T.self, from: data)) ?? defaultValue
+        }
+    }
+    
+    init(wrappedValue: T, key: String) {
+        self.key = key
+        self.defaultValue = wrappedValue
     }
 }
