@@ -137,6 +137,7 @@ struct ArtistAlbumCommand: AppCommand {
         NeteaseCloudMusicApi.shared.artistAlbum(id: id, limit: limit, offset: offset) { result in
             switch result {
             case .success(let json):
+                print(json.toJSONString)
                 if json["code"] as? Int == 200 {
                     let albumsDict = json["hotAlbums"] as! [[String: Any]]
                     let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}

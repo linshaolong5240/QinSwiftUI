@@ -6,7 +6,7 @@
 //
 
 import Foundation
-//Album
+
 public struct AlbumArtist: Codable {
     public let albumSize: Int
     public let alias: [String]

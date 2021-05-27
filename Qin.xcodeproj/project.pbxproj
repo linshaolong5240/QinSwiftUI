@@ -180,6 +180,8 @@
 		EF6EF0F8265E5A1600F164B5 /* NeteaseCloudMusicAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6EF0F6265E5A1600F164B5 /* NeteaseCloudMusicAction.swift */; };
 		EFDB8B4C265FA673005C3AEE /* AlbumSubResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDB8B4B265FA673005C3AEE /* AlbumSubResponse.swift */; };
 		EFDB8B4D265FA673005C3AEE /* AlbumSubResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDB8B4B265FA673005C3AEE /* AlbumSubResponse.swift */; };
+		EFDB8B4F265FB635005C3AEE /* ArtistAlbumsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDB8B4E265FB635005C3AEE /* ArtistAlbumsResponse.swift */; };
+		EFDB8B50265FB635005C3AEE /* ArtistAlbumsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDB8B4E265FB635005C3AEE /* ArtistAlbumsResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -287,6 +289,7 @@
 		EF6EF0F3265E4D0200F164B5 /* CoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModel.swift; sourceTree = "<group>"; };
 		EF6EF0F6265E5A1600F164B5 /* NeteaseCloudMusicAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeteaseCloudMusicAction.swift; sourceTree = "<group>"; };
 		EFDB8B4B265FA673005C3AEE /* AlbumSubResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumSubResponse.swift; sourceTree = "<group>"; };
+		EFDB8B4E265FB635005C3AEE /* ArtistAlbumsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistAlbumsResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -504,7 +507,6 @@
 				2BCCB2EB24DC7A61004CAD67 /* Account.swift */,
 				EF6EF0F6265E5A1600F164B5 /* NeteaseCloudMusicAction.swift */,
 				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */,
-				EF1A6F4A265E20A10069BDCD /* NeteaseCloudMusicResponse.swift */,
 			);
 			path = NeteaseCloudMusicApi;
 			sourceTree = "<group>";
@@ -551,8 +553,10 @@
 		EF399B36265F4F4A00783BAE /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				EF1A6F4A265E20A10069BDCD /* NeteaseCloudMusicResponse.swift */,
 				EF399B37265F4F6F00783BAE /* AlbumResponse.swift */,
 				EFDB8B4B265FA673005C3AEE /* AlbumSubResponse.swift */,
+				EFDB8B4E265FB635005C3AEE /* ArtistAlbumsResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -669,6 +673,7 @@
 				2B62FB7B2507A28F00097D5B /* NEUButtonStyle.swift in Sources */,
 				2B62FB7C2507A28F00097D5B /* NEUSFView.swift in Sources */,
 				2B019C4C261DCE4100E1E9D6 /* UINavigationController+Extension.swift in Sources */,
+				EFDB8B4F265FB635005C3AEE /* ArtistAlbumsResponse.swift in Sources */,
 				2B62FB7D2507A28F00097D5B /* NEUImageView.swift in Sources */,
 				2B62FB7E2507A28F00097D5B /* NEUView.swift in Sources */,
 				2BB8558324E63CC800D600BB /* ThemeViewModel.swift in Sources */,
@@ -776,6 +781,7 @@
 				2B69171F252D84AA00F05DB9 /* SongURLJSONModel.swift in Sources */,
 				EF6EF0F5265E4D0200F164B5 /* CoreDataModel.swift in Sources */,
 				2B691716252D621100F05DB9 /* AlbumViewModel.swift in Sources */,
+				EFDB8B50265FB635005C3AEE /* ArtistAlbumsResponse.swift in Sources */,
 				2B18A4D42594841000AD344A /* MVURLJSONModel.swift in Sources */,
 				EF399B39265F4F6F00783BAE /* AlbumResponse.swift in Sources */,
 				2B09CF3524F0FC3400E03A12 /* NEUView.swift in Sources */,
