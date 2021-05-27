@@ -33,32 +33,25 @@ struct AlbumRequestCommand: AppCommand {
     }
 }
 
-struct AlbumDoneCommand: AppCommand {
-    let ids: [Int64]
-    
-    func execute(in store: Store) {
-    }
-}
-
 struct AlbumSubCommand: AppCommand {
-    let id: Int64
+    let id: Int
     let sub: Bool
-    
+
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.albumSub(id: id, sub: sub) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    store.dispatch(.albumSubDone(result: .success(sub)))
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.albumSubDone(result: .failure(.albumSub(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.albumSubDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: AlbumSubAction(parameters: .init(id: id), sub: sub))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.albumSubDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { albumSubResponse in
+            if albumSubResponse.code == 200 {
+                store.dispatch(.albumSubDone(result: .success(sub)))
+            }else {
+                store.dispatch(.albumSubDone(result: .failure(.albumSub)))
+            }
+        }.store(in: &store.cancellableSet)
     }
 }
 

@@ -47,7 +47,7 @@ class Store: ObservableObject {
             }
             appState.album.detailRequesting = false
         case .albumSub(let id, let sub):
-            appCommand = AlbumSubCommand(id: id, sub: sub)
+            appCommand = AlbumSubCommand(id: Int(id), sub: sub)
         case .albumSubDone(let result):
             switch result {
             case .success:

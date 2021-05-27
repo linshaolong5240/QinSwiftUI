@@ -7,6 +7,7 @@
 
 import Foundation
 
+//专辑内容
 public struct AlbumAction: NeteaseCloudMusicAction {
     public struct AlbumParameters: Encodable {
         var id: Int
@@ -19,6 +20,22 @@ public struct AlbumAction: NeteaseCloudMusicAction {
     public let responseType = ResponseType.self
 }
 
+//收藏与取消收藏专辑
+public struct AlbumSubAction: NeteaseCloudMusicAction {
+    public struct AlbumSubParameters: Encodable {
+        var id: Int
+    }
+    public typealias Parameters = AlbumSubParameters
+    public typealias ResponseType = AlbumSubResponse
+    
+    public var uri: String { "/weapi/album/\(sub ? "sub" : "unsub")"}
+    public let parameters: Parameters
+    public let responseType = ResponseType.self
+    
+    public let sub: Bool
+}
+
+//专辑收藏列表
 public struct AlbumSublistAction: NeteaseCloudMusicAction {
     public struct AlbumSublistParameters: Encodable {
         public var limit: Int
@@ -32,7 +49,7 @@ public struct AlbumSublistAction: NeteaseCloudMusicAction {
     public let parameters: Parameters
     public let responseType = ResponseType.self
 }
-
+//歌手收藏列表
 public struct ArtistSublistAction: NeteaseCloudMusicAction {
     public struct ArtistSublistParameters: Encodable {
         public var limit: Int

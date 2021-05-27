@@ -182,27 +182,27 @@ extension NeteaseCloudMusicApi {
 }
 
 extension NeteaseCloudMusicApi {
-    // 专辑内容
-    func album(id: Int64, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/v1/album/\(id)"
-        let data = [String: Any]()
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    // 数字专辑详情
-    func albumDetail(id: Int64, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/vipmall/albumproduct/detail"
-        let data = ["id": id]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    // 专辑内容
+//    func album(id: Int64, complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/v1/album/\(id)"
+//        let data = [String: Any]()
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
+//    // 数字专辑详情
+//    func albumDetail(id: Int64, complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/vipmall/albumproduct/detail"
+//        let data = ["id": id]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
     // 收藏与取消收藏专辑
-    func albumSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
-        let action = sub ? "sub" : "unsub"
-        let url = "https://music.163.com/weapi/album/\(action)"
-        let data = [
-            "id": id,
-        ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    func albumSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
+//        let action = sub ? "sub" : "unsub"
+//        let url = "https://music.163.com/weapi/album/\(action)"
+//        let data = [
+//            "id": id,
+//        ] as [String : Any]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
 //    // 专辑收藏列表
 //    func albumSublist(limit: Int, offset: Int, complete: @escaping CompletionBlock) {
 //        let url = "https://music.163.com/weapi/album/sublist"
