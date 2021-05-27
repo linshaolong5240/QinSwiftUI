@@ -10,13 +10,13 @@ import Foundation
 //专辑内容
 public struct AlbumAction: NeteaseCloudMusicAction {
     public struct AlbumParameters: Encodable {
-        var id: Int
     }
     public typealias Parameters = AlbumParameters
     public typealias ResponseType = AlbumResponse
-
-    public var uri: String { "/weapi/v1/album/\(parameters.id)"}
-    public let parameters: Parameters
+    
+    public let id: Int
+    public var uri: String { "/weapi/v1/album/\(id)"}
+    public let parameters = Parameters()
     public let responseType = ResponseType.self
 }
 
