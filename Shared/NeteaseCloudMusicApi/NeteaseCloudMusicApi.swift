@@ -11,15 +11,22 @@ import Security
 import Combine
 
 class NeteaseCloudMusicApi {
-    static let shared = NeteaseCloudMusicApi()
     
-    var cancellableSet = Set<AnyCancellable>()
+    enum HttpMethod: String {
+        case GET = "GET"
+        case POST = "POST"
+    }
+    
+    struct Response {
+        let data: Data
+        let response: HTTPURLResponse
+    }
+    
+    public static let shared = NeteaseCloudMusicApi()
+    public var cancellableSet = Set<AnyCancellable>()
     
     private let host: String = "https://music.163.com"
-    //crypto
-    let nonce = "0CoJUm6Qyw8W8jud"
-    let iv = "0102030405060708"
-    let pubKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDgtQn2JZ34ZC28NWYpAUd98iZ37BUrX/aKzmFbt7clFSs6sXqHauqKWqdtLkF2KexO40H1YTX8z2lSgBBOAxLsvaklV8k4cBFK9snQXE9/DDaFt6Rr7iVZMldczhC0JNgTz+SHXT6CBHuX3e9SdB1Ua44oncaTWz7OBGLbCiK45wIDAQAB"
+    
     init() {
         let cookie = HTTPCookie(properties: [.name : "os",
                                              .value: "pc",
@@ -31,6 +38,97 @@ class NeteaseCloudMusicApi {
                                              .path: "/"])
         HTTPCookieStorage.shared.setCookie(cookie!)
         HTTPCookieStorage.shared.setCookie(cookie2!)
+    }
+    
+    
+    public func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.ResponseType, Error> {
+        let url: String =  host + action.uri
+
+        let httpHeader = [ //"Accept": "*/*",
+            //"Accept-Encoding": "gzip,deflate,sdch",
+            //"Connection": "keep-alive",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Host": "music.163.com",
+            "Referer": "https://music.163.com",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4"
+        ]
+
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = method.rawValue
+        request.allHTTPHeaderFields = httpHeader
+        request.timeoutInterval = 10
+        if let data = try? JSONEncoder().encode(action.parameters) {
+            if let str = String(data: data, encoding: .utf8) {
+                request.httpBody = encrypto(text: str).data(using: .utf8)
+            }
+        }
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: action.responseType, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+    
+    private func encrypto(text: String) -> String {
+        func generateSecretKey(size: Int) -> String {
+            let base62 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            
+            var key = ""
+            for _ in 1...size {
+                key.append(base62.randomElement()!)
+            }
+            return key
+        }
+        func aesEncrypt(text: String, key: String, iv: String) -> String? {
+            do {
+                let aes = try AES(key: Array<UInt8>(key.utf8), blockMode: CBC(iv: Array<UInt8>(iv.utf8)))
+                let bytes = try aes.encrypt(Array(text.utf8))
+                let data = Data(bytes: bytes, count: bytes.count)
+                return data.base64EncodedString()
+            }catch {
+                print("erro: aesEncrypt")
+            }
+            return nil
+        }
+        func rsaEncrypt(text: String, pubKey: String) -> String {
+            //        let keyString = pubKey.replacingOccurrences(of: "-----BEGIN RSA PUBLIC KEY-----\n", with: "").replacingOccurrences(of: "\n-----END RSA PUBLIC KEY-----", with: "")
+            let keyData = Data(base64Encoded: pubKey)
+            
+            var attributes: CFDictionary {
+                return [kSecAttrKeyType         : kSecAttrKeyTypeRSA,
+                        kSecAttrKeyClass        : kSecAttrKeyClassPublic,
+                        kSecAttrKeySizeInBits   : 1024,
+                        kSecReturnPersistentRef : kCFBooleanTrue!] as CFDictionary
+            }
+            
+            var error: Unmanaged<CFError>?
+            let secKey = SecKeyCreateWithData(keyData! as CFData, attributes, &error)
+            
+            let encryptData = SecKeyCreateEncryptedData(secKey!,
+                                                        SecKeyAlgorithm.rsaEncryptionRaw,
+                                                        text.data(using: .utf8)! as CFData,
+                                                        &error)
+            if encryptData == nil {
+                print("SecKeyCreateEncryptedData nil")
+            }
+            let data = encryptData! as Data
+            
+            if error != nil {
+                print(error!)
+            }
+            return data.toHexString()
+        }
+        //crypto
+        let pubKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDgtQn2JZ34ZC28NWYpAUd98iZ37BUrX/aKzmFbt7clFSs6sXqHauqKWqdtLkF2KexO40H1YTX8z2lSgBBOAxLsvaklV8k4cBFK9snQXE9/DDaFt6Rr7iVZMldczhC0JNgTz+SHXT6CBHuX3e9SdB1Ua44oncaTWz7OBGLbCiK45wIDAQAB"
+
+        let nonce = "0CoJUm6Qyw8W8jud"
+        let iv = "0102030405060708"
+
+        let secKey = generateSecretKey(size: 16)
+        let encText = aesEncrypt(text: aesEncrypt(text: text, key: nonce, iv: iv)!, key: secKey, iv: iv)
+        let encSecKey = rsaEncrypt(text: String(secKey.reversed()), pubKey: pubKey)
+        return "params=\(encText!)&encSecKey=\(encSecKey)".plusSymbolToPercent()
     }
 }
 
@@ -430,81 +528,11 @@ extension NeteaseCloudMusicApi {
         return ""
     }
 }
-//crypto
-extension NeteaseCloudMusicApi {
-    func encrypto(text: String) -> String {
-        let secKey = generateSecretKey(size: 16)
-        let encText = aesEncrypt(text: aesEncrypt(text: text, key: nonce, iv: iv)!, key: secKey, iv: iv)
-        let encSecKey = rsaEncrypt(text: String(secKey.reversed()), pubKey: self.pubKey)
-        return "params=\(encText!)&encSecKey=\(encSecKey)".plusSymbolToPercent()
-    }
-    
-    func aesEncrypt(text: String, key: String, iv: String) -> String? {
-        do {
-            let aes = try AES(key: Array<UInt8>(key.utf8), blockMode: CBC(iv: Array<UInt8>(iv.utf8)))
-            let bytes = try aes.encrypt(Array(text.utf8))
-            let data = Data(bytes: bytes, count: bytes.count)
-            return data.base64EncodedString()
-        }catch {
-            print("erro: aesEncrypt")
-        }
-        return nil
-    }
-    
-    func rsaEncrypt(text: String, pubKey: String) -> String {
-        //        let keyString = pubKey.replacingOccurrences(of: "-----BEGIN RSA PUBLIC KEY-----\n", with: "").replacingOccurrences(of: "\n-----END RSA PUBLIC KEY-----", with: "")
-        let keyData = Data(base64Encoded: pubKey)
-        
-        var attributes: CFDictionary {
-            return [kSecAttrKeyType         : kSecAttrKeyTypeRSA,
-                    kSecAttrKeyClass        : kSecAttrKeyClassPublic,
-                    kSecAttrKeySizeInBits   : 1024,
-                    kSecReturnPersistentRef : kCFBooleanTrue!] as CFDictionary
-        }
-        
-        var error: Unmanaged<CFError>?
-        let secKey = SecKeyCreateWithData(keyData! as CFData, attributes, &error)
-        
-        let encryptData = SecKeyCreateEncryptedData(secKey!,
-                                                    SecKeyAlgorithm.rsaEncryptionRaw,
-                                                    text.data(using: .utf8)! as CFData,
-                                                    &error)
-        if encryptData == nil {
-            print("SecKeyCreateEncryptedData nil")
-        }
-        let data = encryptData! as Data
-        
-        if error != nil {
-            print(error!)
-        }
-        return data.toHexString()
-    }
-    
-    func generateSecretKey(size: Int) -> String {
-        let base62 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        
-        var key = ""
-        for _ in 1...size {
-            key.append(base62.randomElement()!)
-        }
-        return key
-    }
-}
 
 //httprequest
 extension NeteaseCloudMusicApi {
     typealias ResponseData = Dictionary<String, Any>
     typealias CompletionBlock = (_ result: Result<ResponseData, AppError>) -> Void
-    
-    enum HttpMethod: String {
-        case GET = "GET"
-        case POST = "POST"
-    }
-    
-    struct Response {
-        let data: Data
-        let response: HTTPURLResponse
-    }
     
     func httpRequest(method: HttpMethod, url: String, data: String?, complete: @escaping CompletionBlock) {
         
@@ -551,34 +579,5 @@ extension NeteaseCloudMusicApi {
                     }
                 }
             }.store(in: &cancellableSet)
-    }
-    
-    func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.ResponseType, Error> {
-        let url: String =  host + action.uri
-
-        let httpHeader = [ //"Accept": "*/*",
-            //"Accept-Encoding": "gzip,deflate,sdch",
-            //"Connection": "keep-alive",
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Host": "music.163.com",
-            "Referer": "https://music.163.com",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4"
-        ]
-
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = method.rawValue
-        request.allHTTPHeaderFields = httpHeader
-        request.timeoutInterval = 10
-        if let data = try? JSONEncoder().encode(action.parameters) {
-            if let str = String(data: data, encoding: .utf8) {
-                request.httpBody = encrypto(text: str).data(using: .utf8)
-            }
-        }
-        return URLSession.shared
-            .dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: action.responseType, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
     }
 }
