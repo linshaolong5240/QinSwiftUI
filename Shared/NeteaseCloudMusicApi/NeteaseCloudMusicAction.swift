@@ -7,13 +7,16 @@
 
 import Foundation
 
-public protocol NeteaseCloudMusicAction {
-    associatedtype Parameters: Encodable
-    associatedtype ResponseType: Decodable
-    
-    var uri: String { get }
-    var parameters: Parameters { get }
-    var responseType: ResponseType.Type { get }
+public struct AlbumAction: NeteaseCloudMusicAction {
+    public struct AlbumParameters: Encodable {
+        var id: Int
+    }
+    public typealias Parameters = AlbumParameters
+    public typealias ResponseType = AlbumResponse
+
+    public var uri: String { "/weapi/v1/album/\(parameters.id)"}
+    public let parameters: Parameters
+    public let responseType = ResponseType.self
 }
 
 public struct AlbumSublistAction: NeteaseCloudMusicAction {

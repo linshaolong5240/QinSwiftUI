@@ -130,7 +130,7 @@ struct CommonNavigationBarView: View {
             Button(action: {
                 switch type {
                 case .album:
-                    Store.shared.dispatch(.album(id: id))
+                    Store.shared.dispatch(.albumRequest(id: Int(id)))
                 case .artist:
                     Store.shared.dispatch(.artist(id: id))
                 case .mv:

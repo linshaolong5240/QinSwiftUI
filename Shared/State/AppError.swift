@@ -10,15 +10,12 @@ import Foundation
 
 enum AppError: Error, Identifiable {
     var id: String { localizedDescription }
-    case album(code: Int, message: String)
     case albumSub(code: Int, message: String)
-    case albumSublistRequest(error: Error)
     case artist(code: Int, message: String)
     case artistAlbum(code: Int, message: String)
     case artistIntroduction(code: Int, message: String)
     case artistMV(code: Int, message: String)
     case artistSub(code: Int, message: String)
-    case artistSublistRequest(error: Error)
     case comment(code: Int, message: String)
     case commentMusic
     case httpRequest
@@ -29,7 +26,7 @@ enum AppError: Error, Identifiable {
     case loginRefresh(code: Int, message: String)
     case lyricError
     case mvDetailError(code: Int, message: String)
-    case neteaseCloudMusic(code: Int?, message: String?)
+    case neteaseCloudMusic(error: Error)
     case playlist(code: Int, message: String)
     case playlistCategories(code: Int, message: String)
     case playlistCreateError
@@ -51,15 +48,12 @@ enum AppError: Error, Identifiable {
 extension AppError {
     var localizedDescription: String {
         switch self {
-        case .album(let code, let message): return errorFormat(error: "获取专辑详情错误", code: code, message: message)
         case .albumSub(let code, let message): return errorFormat(error: "收藏或取消收藏专辑错误", code: code, message: message)
-        case .albumSublistRequest(let error): return "获取收藏的专辑列表错误: \(error)"
         case .artist(let code, let message): return errorFormat(error: "获取歌手信息错误", code: code, message: message)
         case .artistAlbum(let code, let message): return errorFormat(error: "获取歌手专辑错误", code: code, message: message)
         case .artistIntroduction(let code, let message): return errorFormat(error: "获取歌手描述错误", code: code, message: message)
         case .artistMV(let code, let message): return errorFormat(error: "获取歌手MV错误", code: code, message: message)
         case .artistSub(let code, let message): return errorFormat(error: "收藏或取消收藏歌手错误", code: code, message: message)
-        case .artistSublistRequest(let error): return "获取歌手关注列表错误: \(error)"
         case .comment(let code, let message): return errorFormat(error: "发送评论错误", code: code, message: message)
         case .commentMusic: return "获取评论错误"
         case .httpRequest: return "网络请求错误"
@@ -70,7 +64,7 @@ extension AppError {
         case .loginRefresh(let code, let message): return errorFormat(error: "刷新登录状态错误", code: code, message: message)
         case .lyricError: return "获取歌词错误"
         case .mvDetailError(let code, let message): return errorFormat(error: "获取MV详情错误", code: code, message: message)
-        case .neteaseCloudMusic(let code, let message): return errorFormat(error: "neteaseCloudMusic", code: code ?? -1, message: message ?? "")
+        case .neteaseCloudMusic(let error): return "NeteaseCloudMusic:\n\(error)"
         case .playlist(let code, let message): return errorFormat(error: "获取热门歌单错误", code: code, message: message)
         case .playlistCategories(let code, let message): return errorFormat(error: "获取歌单分类错误", code: code, message: message)
         case .playlistCreateError: return "新建歌单错误"

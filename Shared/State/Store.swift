@@ -34,10 +34,10 @@ class Store: ObservableObject {
         var appCommand: AppCommand? = nil
         
         switch action {
-        case .album(let id):
+        case .albumRequest(let id):
                 appState.album.detailRequesting = true
-                appCommand = AlbumCommand(id: id)
-        case .albumDone(let result):
+            appCommand = AlbumRequestCommand(id: Int(id))
+        case .albumRequestDone(let result):
             switch result {
             case .success:
                 break

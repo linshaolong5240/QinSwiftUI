@@ -10,6 +10,15 @@ import CryptoSwift
 import Security
 import Combine
 
+public protocol NeteaseCloudMusicAction {
+    associatedtype Parameters: Encodable
+    associatedtype ResponseType: Decodable
+    
+    var uri: String { get }
+    var parameters: Parameters { get }
+    var responseType: ResponseType.Type { get }
+}
+
 class NeteaseCloudMusicApi {
     
     enum HttpMethod: String {
@@ -51,9 +60,11 @@ class NeteaseCloudMusicApi {
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = httpHeader
         request.timeoutInterval = 10
-        if let data = try? JSONEncoder().encode(action.parameters) {
-            if let str = String(data: data, encoding: .utf8) {
-                request.httpBody = encrypto(text: str).data(using: .utf8)
+        if method == .POST {
+            if let data = try? JSONEncoder().encode(action.parameters) {
+                if let str = String(data: data, encoding: .utf8) {
+                    request.httpBody = encrypto(text: str).data(using: .utf8)
+                }
             }
         }
         return URLSession.shared

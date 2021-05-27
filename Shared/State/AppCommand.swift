@@ -15,32 +15,21 @@ protocol AppCommand {
     func execute(in store: Store)
 }
 
-struct AlbumCommand: AppCommand {
-    let id: Int64
+struct AlbumRequestCommand: AppCommand {
+    let id: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.album(id: id) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    let albumDict = json["album"] as! [String: Any]
-                    let albumJSONModel = albumDict.toData!.toModel(AlbumJSONModel.self)!
-                    let songsDict = json["songs"] as! [[String: Any]]
-                    let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-                    let songsIds = songsJSONModel.map{$0.id}
-                    DataManager.shared.updateAlbum(albumJSONModel: albumJSONModel)
-                    DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
-                    DataManager.shared.updateAlbumSongs(id: albumJSONModel.id, songsId: songsIds)
-                    store.dispatch(.albumDone(result: .success(songsIds)))
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.albumDone(result: .failure(.album(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.albumDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: AlbumAction(parameters: .init(id: id)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.albumRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+            } receiveValue: { albumResponse in
+                DataManager.shared.updateAlbum(model: albumResponse)
+                store.dispatch(.albumRequestDone(result: .success(albumResponse.songs.map({ $0.id }))))
+            }.store(in: &store.cancellableSet)
     }
 }
 
@@ -90,7 +79,7 @@ struct AlbumSublistRequestCommand: AppCommand {
             .requestPublisher(action: AlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset)))
             .sink { completion in
             if case .failure(let error) = completion {
-                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.albumSublistRequest(error: error))))
+                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
         } receiveValue: { albumSublistResponse in
             let albumSublist = albumSublistResponse.data.map(\.dataModel)
@@ -100,7 +89,7 @@ struct AlbumSublistRequestCommand: AppCommand {
                 DataManager.shared.batchInsertAfterDeleteAll(entityName: "AlbumSub", objects: objects)
                 store.dispatch(.albumSublistRequestDone(result: .success(albumSublist.map{ Int64($0.id) })))
             } catch let error {
-                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.albumSublistRequest(error: error))))
+                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
         }.store(in: &store.cancellableSet)
     }
@@ -273,7 +262,7 @@ struct ArtistSublistRequestCommand: AppCommand {
         NeteaseCloudMusicApi.shared.requestPublisher(action: ArtistSublistAction(parameters: .init(limit: limit, offset: offset)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest(error: error))))
+                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { artistSublistResponse in
                 let artistSublist = artistSublistResponse.data.map(\.dataModel)
@@ -283,7 +272,7 @@ struct ArtistSublistRequestCommand: AppCommand {
                     DataManager.shared.batchInsertAfterDeleteAll(entityName: "ArtistSub", objects: objects)
                     store.dispatch(.artistSublistRequestDone(result: .success(artistSublist.map{$0.id})))
                 }catch let error {
-                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest(error: error))))
+                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             }.store(in: &store.cancellableSet)
     }

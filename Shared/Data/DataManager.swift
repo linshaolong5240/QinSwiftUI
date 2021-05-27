@@ -185,9 +185,11 @@ class DataManager {
     }
     public func save() {
         do {
-            try self.context().save()
+            try context().save()
         }catch let error {
-            print("\(#function) \(error)")
+            #if DEBUG
+            print("\(type(of: self)) \(#function) \(error)")
+            #endif
         }
     }
     public func updateAlbum(albumJSONModel: AlbumJSONModel) {
@@ -201,6 +203,32 @@ class DataManager {
             }
         }
         self.save()
+    }
+    public func updateAlbum(model: AlbumResponse) {
+        defer { save() }
+        
+        let album = model.album.entity(context: context())
+        album.songsId = model.songs.map({ Int64($0.id) })
+        model.album.artists.forEach { item in
+            if let artist = getArtist(id: Int64(item.id)) {
+                album.addToArtists(artist)
+            }else {
+                let artist = item.entity(context: context())
+                album.addToArtists(artist)
+            }
+        }
+        model.songs.forEach { item in
+            let song = item.entity(context: context())
+            album.addToSongs(song)
+            item.ar.forEach { item in
+                if let artist = getArtist(id: Int64(item.id)) {
+                    song.addToArtists(artist)
+                }else {
+                    let artist = item.entity(context: context())
+                    song.addToArtists(artist)
+                }
+            }
+        }
     }
     public func updateAlbumSongs(id: Int64, songsId: [Int64]) {
         if let album = self.getAlbum(id: id) {

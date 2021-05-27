@@ -6,24 +6,68 @@
 //
 
 import Foundation
+import CoreData
+
+struct AlbumSubModel: Codable, Identifiable {
+    var id: Int64
+    var name: String
+    var picUrl: String
+}
+
 extension AlbumSublistResponse.Album {
-    struct AlbumSubModel: Codable, Identifiable {
-        var id: Int64
-        var name: String
-        var picUrl: String
-    }
-    var dataModel: AlbumSubModel {
-        AlbumSubModel(id: Int64(id), name: name, picUrl: picUrl)
-    }
+    var dataModel: AlbumSubModel { AlbumSubModel(id: Int64(id), name: name, picUrl: picUrl) }
+}
+
+struct ArtistSubModel: Codable, Identifiable {
+    var id: Int64
+    var name: String
+    var img1v1Url: String?
 }
 
 extension ArtistSublistResponse.Artist {
-    struct ArtistSubModel: Codable, Identifiable {
-        var id: Int64
-        var name: String
-        var img1v1Url: String?
+    var dataModel: ArtistSubModel { ArtistSubModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
+}
+
+extension AlbumArtist {
+    func entity(context: NSManagedObjectContext) -> Artist {
+        let entity = Artist(context: context)
+        entity.followed = followed
+        entity.id = Int64(id)
+        entity.img1v1Url = img1v1Url
+        entity.introduction = briefDesc
+        entity.name = name
+        return entity
     }
-    var dataModel: ArtistSubModel {
-        ArtistSubModel(id: Int64(id), name: name, img1v1Url: img1v1Url)
+}
+
+extension AlbumResponse.AlbumDetail {
+    func entity(context: NSManagedObjectContext) -> Album {
+        let entity = Album(context: context)
+        entity.id = Int64(id)
+        entity.introduction = description
+        entity.name = name
+        entity.picUrl = picUrl
+        entity.publishTime = Int64(publishTime)
+        entity.songsId = songs.map({ Int64($0.id) })
+        return entity
+    }
+}
+
+extension AlbumResponse.AlbumSong {
+    func entity(context: NSManagedObjectContext) -> Song {
+        let entity = Song(context: context)
+        entity.durationTime = Int64(dt)
+        entity.id = Int64(id)
+        entity.name = name
+        return entity
+    }
+}
+
+extension AlbumResponse.AlbumSong.AlbumSongArtist {
+    func entity(context: NSManagedObjectContext) -> Artist {
+        let entity = Artist(context: context)
+        entity.id = Int64(id)
+        entity.name = name
+        return entity
     }
 }

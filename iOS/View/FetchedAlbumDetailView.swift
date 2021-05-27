@@ -29,13 +29,13 @@ struct  FetchedAlbumDetailView: View {
                             AlbumDetailView(album: album)
                                 .onAppear {
                                     if album.songsId == nil {
-                                        Store.shared.dispatch(.album(id: id))
+                                        Store.shared.dispatch(.albumRequest(id: Int(id)))
                                     }
                                 }
                         }else {
                             Text("正在加载")
                                 .onAppear {
-                                    Store.shared.dispatch(.album(id: id))
+                                    Store.shared.dispatch(.albumRequest(id: Int(id)))
                                 }
                             Spacer()
                         }
