@@ -87,9 +87,8 @@ class NeteaseCloudMusicApi {
                 let data = Data(bytes: bytes, count: bytes.count)
                 return data.base64EncodedString()
             }catch {
-                print("erro: aesEncrypt")
+                return nil
             }
-            return nil
         }
         func rsaEncrypt(text: String, pubKey: String) -> String {
             //        let keyString = pubKey.replacingOccurrences(of: "-----BEGIN RSA PUBLIC KEY-----\n", with: "").replacingOccurrences(of: "\n-----END RSA PUBLIC KEY-----", with: "")
