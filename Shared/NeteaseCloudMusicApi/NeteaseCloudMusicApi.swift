@@ -35,7 +35,6 @@ class NeteaseCloudMusicApi {
         HTTPCookieStorage.shared.setCookie(cookie2!)
     }
     
-    
     public func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.ResponseType, Error> {
         let url: String =  host + action.uri
 
@@ -103,14 +102,10 @@ class NeteaseCloudMusicApi {
                                                         SecKeyAlgorithm.rsaEncryptionRaw,
                                                         text.data(using: .utf8)! as CFData,
                                                         &error)
-            if encryptData == nil {
-                print("SecKeyCreateEncryptedData nil")
-            }
             let data = encryptData! as Data
-            
-            if error != nil {
-                print(error!)
-            }
+            #if DEBUG
+            print(error ?? "")
+            #endif
             return data.toHexString()
         }
         //crypto
