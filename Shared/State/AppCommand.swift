@@ -46,11 +46,7 @@ struct AlbumSubCommand: AppCommand {
                 store.dispatch(.albumSubRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
         } receiveValue: { albumSubResponse in
-            if albumSubResponse.code == 200 {
-                store.dispatch(.albumSubRequestDone(result: .success(sub)))
-            }else {
-                store.dispatch(.albumSubRequestDone(result: .failure(.albumSub)))
-            }
+            store.dispatch(.albumSubRequestDone(result: .success(sub)))
         }.store(in: &store.cancellableSet)
     }
 }
