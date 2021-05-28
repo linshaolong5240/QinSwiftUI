@@ -351,7 +351,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.playlist.discoverPlaylist.playlistRequesting = false
-        case .playlistCategories:
+        case .playlistCategoriesRequest:
             appState.playlist.discoverPlaylist.categoriesRequesting = true
             appCommand = PlaylistCategoriesCommand()
         case .playlistCategoriesDone(let result):
@@ -436,7 +436,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .recommendPlaylist:
+        case .recommendPlaylistRequest:
             appState.playlist.recommendPlaylistRequesting = true
             appCommand = RecommendPlaylistCommand()
         case .recommendPlaylistDone(let result):
@@ -451,7 +451,7 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .recommendSongs:
+        case .recommendSongsRequest:
             appState.playlist.detailRequesting = true
             appCommand = RecommendSongsCommand()
         case .recommendSongsDone(let result):
@@ -513,7 +513,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .userPlaylist(let uid):
+        case .userPlaylistRequest(let uid):
             appState.playlist.userPlaylistRequesting = true
             if let userId = uid {
                 appCommand = UserPlayListCommand(uid: Int(userId))

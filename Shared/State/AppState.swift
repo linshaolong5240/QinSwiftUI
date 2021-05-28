@@ -142,3 +142,31 @@ struct UserDefault<T: Codable> {
         self.defaultValue = wrappedValue
     }
 }
+
+@propertyWrapper
+struct UserDefaultPublisher<T: Codable> {
+    private let key: String
+    private let defaultValue: T
+    public let projectedValue: CurrentValueSubject<T, Never>
+    public var wrappedValue: T {
+        set {
+            UserDefaults.standard.set(try? JSONEncoder().encode(newValue) , forKey: key)
+            UserDefaults.standard.synchronize()
+            projectedValue.send(newValue)
+        }
+        get {
+            guard let data = UserDefaults.standard.data(forKey: key) else { return defaultValue }
+            return (try? JSONDecoder().decode(T.self, from: data)) ?? defaultValue
+        }
+    }
+    
+    init(wrappedValue: T, key: String) {
+        self.key = key
+        self.defaultValue = wrappedValue
+        if let data = UserDefaults.standard.data(forKey: key) {
+            projectedValue = .init((try? JSONDecoder().decode(T.self, from: data)) ?? wrappedValue)
+        }else {
+            projectedValue = .init(wrappedValue)
+        }
+    }
+}

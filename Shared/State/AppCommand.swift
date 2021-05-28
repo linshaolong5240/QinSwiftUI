@@ -15,6 +15,30 @@ import struct CoreGraphics.CGSize
 protocol AppCommand {
     func execute(in store: Store)
 }
+struct InitAcionCommand: AppCommand {
+    func execute(in store: Store) {
+        store.appState.initRequestingCount += 1
+        store.dispatch(.albumSublistRequest())
+        
+        store.appState.initRequestingCount += 1
+        store.dispatch(.artistSublistRequest())
+        
+        store.appState.initRequestingCount += 1
+        store.dispatch(.likelistRequest())
+        
+        store.appState.initRequestingCount += 1
+        store.dispatch(.playlistCategoriesRequest)
+        
+        store.appState.initRequestingCount += 1
+        store.dispatch(.recommendPlaylistRequest)
+        
+        store.appState.initRequestingCount += 1
+        store.dispatch(.recommendSongsRequest)
+        
+        store.appState.initRequestingCount += 1
+        store.dispatch(.userPlaylistRequest())
+    }
+}
 
 struct AlbumRequestCommand: AppCommand {
     let id: Int
@@ -103,69 +127,6 @@ struct ArtistRequestCommand: AppCommand {
                 DataManager.shared.updateArtistHotSongs(to: id, songsId: artistHotSongsResponse.hotSongs.map({ $0.id }))
                 store.dispatch(.artistRequestDone(result: .success(artistHotSongsResponse.hotSongs.map({ $0.id }))))
             }.store(in: &store.cancellableSet)
-
-//        NeteaseCloudMusicApi
-//            .shared
-//            .requestPublisher(action: ArtistHotSongsAction(id: id))
-//            .sink { completion in
-//                if case .failure(let error) = completion {
-//                    store.dispatch(.artistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
-//                }
-//            } receiveValue: { artistHotSongsResponse in
-//                DataManager.shared.updateArtist(model: artistHotSongsResponse.artist)
-//                store.dispatch(.artistRequestDone(result: .success(artistHotSongsResponse.hotSongs.map({ $0.id }))))
-//            }.store(in: &store.cancellableSet)
-        //        NeteaseCloudMusicApi.shared.artists(id: id) { result in
-        //            switch result {
-        //            case .success(let json):
-        //                print(json.toJSONString)
-        //                if json["code"] as? Int == 200 {
-        //                    let artistDict = json["artist"] as! [String: Any]
-        //                    let artistJSONModel = artistDict.toData!.toModel(ArtistJSONModel.self)!
-        //                    let hotSongsDictArray = json["hotSongs"] as! [[String: Any]]
-        //                    let songsJSONModel = hotSongsDictArray.map{$0.toData!.toModel(SongJSONModel.self)!}
-        //                    DataManager.shared.updateArtist(artistJSONModel: artistJSONModel)
-        //                    DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
-        //                    DataManager.shared.updateArtistSongs(id: artistJSONModel.id, songsId: songsJSONModel.map{ $0.id })
-        //                    store.dispatch(.artistRequestDone(result: .success(artistJSONModel)))
-        //                }else {
-        //                    let code = json["code"] as? Int ?? -1
-        //                    let message = json["message"] as? String ?? "错误信息解码错误"
-        //                    store.dispatch(.artistRequestDone(result: .failure(.comment(code: code, message: message))))
-        //                }
-        //            case .failure(let error):
-        //                store.dispatch(.artistRequestDone(result: .failure(error)))
-        //            }
-        //        }
-//        NeteaseCloudMusicApi
-//            .shared
-//            .requestPublisher(action: ArtistIntroductionAction(parameters: .init(id: id)))
-//            .sink { completion in
-//                if case .failure(let error) = completion {
-//                    store.dispatch(.artistIntroductionRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
-//                }
-//            } receiveValue: { artistIntroductionResponse in
-//                let introduction = artistIntroductionResponse.desc
-//                DataManager.shared.updateArtistIntroduction(id: Int64(id), introduction: introduction)
-//                store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
-//            }.store(in: &store.cancellableSet)
-//        NeteaseCloudMusicApi.shared.artistIntroduction(id: Int64(id)) { result in
-//            switch result {
-//            case .success(let json):
-//                print(json.toJSONString)
-//                if json["code"] as? Int == 200 {
-//                    let introduction = json["briefDesc"] as? String
-//                    DataManager.shared.updateArtistIntroduction(id: Int64(id), introduction: introduction)
-//                    store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
-//                }else {
-//                    let code = json["code"] as? Int ?? -1
-//                    let message = json["message"] as? String ?? "错误信息解码错误"
-//                    store.dispatch(.artistIntroductionRequestDone(result: .failure(.comment(code: code, message: message))))
-//                }
-//            case .failure(let error):
-//                store.dispatch(.artistIntroductionRequestDone(result: .failure(error)))
-//            }
-//        }
     }
 }
 
@@ -418,31 +379,6 @@ struct CommentMusicCommand: AppCommand {
     }
 }
 
-struct InitAcionCommand: AppCommand {
-    func execute(in store: Store) {
-        store.appState.initRequestingCount += 1
-        store.dispatch(.albumSublistRequest())
-        
-        store.appState.initRequestingCount += 1
-        store.dispatch(.artistSublistRequest())
-        
-        store.appState.initRequestingCount += 1
-        store.dispatch(.likelistRequest())
-        
-        store.appState.initRequestingCount += 1
-        store.dispatch(.playlistCategories)
-        
-        store.appState.initRequestingCount += 1
-        store.dispatch(.recommendPlaylist)
-        
-        store.appState.initRequestingCount += 1
-        store.dispatch(.recommendSongs)
-        
-        store.appState.initRequestingCount += 1
-        store.dispatch(.userPlaylist())
-    }
-}
-
 struct LikeRequestCommand: AppCommand {
     let id: Int64
     let like: Bool
@@ -532,30 +468,6 @@ struct LoginRequestCommand: AppCommand {
             } receiveValue: { loginResponse in
                 store.dispatch(.loginRequestDone(result: .success(loginResponse)))
             }.store(in: &store.cancellableSet)
-//        NeteaseCloudMusicApi.shared.login(email: email, password: password) { result in
-//            switch result {
-//            case .success(let json):
-//                print(json.toJSONString)
-//                if json["code"] as? Int == 200 {
-//                    var user = User()
-//                    if let accountDict = json["account"] as? NeteaseCloudMusicApi.ResponseData {
-//                        user.account = accountDict.toData!.toModel(Account.self)!
-//                    }
-//                    user.csrf = NeteaseCloudMusicApi.shared.getCSRFToken()
-//                    user.loginType = json["loginType"] as! Int
-//                    if let profile = json["profile"] as? NeteaseCloudMusicApi.ResponseData {
-//                        user.profile = profile.toData!.toModel(Profile.self)!
-//                        user.uid = profile["userId"] as! Int64
-//                    }
-//                    store.dispatch(.loginRequestDone(result: .success(user)))
-//                }else {
-//                    store.dispatch(.loginRequestDone(result: .failure(.loginError(code: json["code"] as! Int, message: json["message"] as! String))))
-//                }
-//            case .failure(let error):
-//                store.dispatch(.loginRequestDone(result: .failure(error)))
-//            }
-//
-//        }
     }
 }
 
@@ -909,7 +821,7 @@ struct PlaylistCreateCommand: AppCommand {
 struct PlaylistCreateDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        store.dispatch(.userPlaylist())
+        store.dispatch(.userPlaylistRequest())
     }
 }
 
@@ -935,7 +847,7 @@ struct PlaylistDeleteCommand: AppCommand {
 struct PlaylistDeleteDoneCommand: AppCommand {
     
     func execute(in store: Store) {
-        store.dispatch(.userPlaylist())
+        store.dispatch(.userPlaylistRequest())
     }
 }
 
@@ -1023,7 +935,7 @@ struct PlaylistOrderUpdateCommand: AppCommand {
 
 struct PlaylistOrderUpdateDoneCommand: AppCommand {
     func execute(in store: Store) {
-        store.dispatch(.userPlaylist())
+        store.dispatch(.userPlaylistRequest())
     }
 }
 
@@ -1052,7 +964,7 @@ struct PlaylisSubscribeDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         store.dispatch(.playlistDetail(id: id))
-        store.dispatch(.userPlaylist())
+        store.dispatch(.userPlaylistRequest())
     }
 }
 
@@ -1082,7 +994,7 @@ struct PlaylistTracksDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         store.dispatch(.playlistDetail(id: id))
-        store.dispatch(.userPlaylist())
+        store.dispatch(.userPlaylistRequest())
     }
 }
 

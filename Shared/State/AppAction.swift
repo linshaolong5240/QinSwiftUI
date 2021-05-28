@@ -67,7 +67,7 @@ enum AppAction {
     case PlayinglistSet(playinglist: [Int64], index: Int)
     case playlist(category: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
     case playlistDone(result: Result<(playlists: [PlaylistViewModel], category: String, total: Int , more: Bool), AppError>)
-    case playlistCategories
+    case playlistCategoriesRequest
     case playlistCategoriesDone(result: Result<[PlaylistCategoryViewModel], AppError>)
     case playlistCreate(name: String, privacy: Int = 0)
     case playlistCreateDone(result: Result<Bool, AppError>)
@@ -83,9 +83,9 @@ enum AppAction {
     case playlistSubscibeDone(result: Result<Int64, AppError>)
     case playlistTracks(pid: Int64, op: Bool, ids: [Int64])
     case playlistTracksDone(result: Result<Int64, AppError>)
-    case recommendPlaylist
+    case recommendPlaylistRequest
     case recommendPlaylistDone(result: Result<[Int64], AppError>)
-    case recommendSongs
+    case recommendSongsRequest
     case recommendSongsDone(result: Result<RecommendSongsJSONModel, AppError>)
     case search(keyword: String, type: NeteaseCloudMusicApi.SearchType = .song, limit: Int = 30, offset: Int = 0)
     case searchSongDone(result: Result<[Int64], AppError>)
@@ -96,6 +96,6 @@ enum AppAction {
     case songsOrderUpdateDone(result: Result<Int64, AppError>)
     case songsURL(ids: [Int64])
     case songsURLDone(result: Result<[SongURLJSONModel], AppError>)
-    case userPlaylist(uid: Int64? = nil)
+    case userPlaylistRequest(uid: Int64? = nil)
     case userPlaylistDone(result: Result<(createdPlaylistId: [Int64], subedPlaylistIds: [Int64], userPlaylistIds: [Int64]), AppError>)
 }
