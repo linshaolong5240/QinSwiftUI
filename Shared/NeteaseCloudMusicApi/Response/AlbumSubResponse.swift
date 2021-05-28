@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AlbumSubResponse: Codable {
+public struct AlbumSubResponse: NeteaseCloudMusicResponse {
     public let code: Int
     public let time: Int
 }

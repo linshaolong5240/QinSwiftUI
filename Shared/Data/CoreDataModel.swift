@@ -8,27 +8,25 @@
 import Foundation
 import CoreData
 
-struct AlbumSubModel: Codable, Identifiable {
-    var id: Int64
-    var name: String
-    var picUrl: String
-}
-
 extension AlbumSublistResponse.Album {
-    var dataModel: AlbumSubModel { AlbumSubModel(id: Int64(id), name: name, picUrl: picUrl) }
-}
-
-struct ArtistSubModel: Codable, Identifiable {
-    var id: Int64
-    var name: String
-    var img1v1Url: String?
+    struct AlbumSubDataModel: Codable, Identifiable {
+        var id: Int64
+        var name: String
+        var picUrl: String
+    }
+    var dataModel: AlbumSubDataModel { AlbumSubDataModel(id: Int64(id), name: name, picUrl: picUrl) }
 }
 
 extension ArtistSublistResponse.Artist {
-    var dataModel: ArtistSubModel { ArtistSubModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
+    struct ArtistSubDataModel: Codable, Identifiable {
+        var id: Int64
+        var name: String
+        var img1v1Url: String?
+    }
+    var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
-extension AlbumArtist {
+extension CommonArtist {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.followed = followed

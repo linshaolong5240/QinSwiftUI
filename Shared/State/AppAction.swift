@@ -16,7 +16,7 @@ enum AppAction {
     case albumSublistRequest(limit: Int = 100, offset: Int = 0)
     case albumSublistRequestDone(result: Result<[Int64], AppError>)
     case artistRequest(id: Int64)
-    case artistRequestDone(result: Result<ArtistJSONModel, AppError>)
+    case artistRequestDone(result: Result<[Int], AppError>)
     case artistAlbumRequest(id: Int64,limit: Int = 999, offset: Int = 0)
     case artistAlbumRequestDone(result: Result<[Int], AppError>)
     case artistIntroductionRequest(id: Int64)

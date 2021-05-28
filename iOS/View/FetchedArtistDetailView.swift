@@ -115,8 +115,8 @@ struct ArtistDetailView: View {
                     Spacer()
                 }
             case .hotSong:
-                if let songsId = artist.songsId {
-                    if let songs = artist.songs {
+                if let songsId = artist.hotSongsId {
+                    if let songs = artist.hotSongs {
                         SongListView(songs: Array(songs as! Set<Song>).sorted(by: { (left, right) -> Bool in
                             let lIndex = songsId.firstIndex(of: left.id)
                             let rIndex = songsId.firstIndex(of: right.id)

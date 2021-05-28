@@ -47,7 +47,7 @@ class Store: ObservableObject {
             }
             appState.album.detailRequesting = false
         case .albumSubRequest(let id, let sub):
-            appCommand = AlbumSubCommand(id: Int(id), sub: sub)
+            appCommand = AlbumSubRequestCommand(id: Int(id), sub: sub)
         case .albumSubRequestDone(let result):
             switch result {
             case .success:
@@ -70,12 +70,13 @@ class Store: ObservableObject {
                 appState.initRequestingCount -= 1
             }
         case .artistRequest(let id):
-                appState.artist.detailRequesting = true
-                appCommand = ArtistCommand(id: id)
+            appState.artist.detailRequesting = true
+            appCommand = ArtistRequestCommand(id: Int(id))
         case .artistRequestDone(let result):
             switch result {
-            case .success(let artist):
-                appCommand = ArtistDoneCommand(artist: artist)
+            case .success:
+                break
+//                appCommand = ArtistDoneCommand(artist: artist)
             case .failure(let error):
                 appState.artist.error = error
                 appState.artist.detailRequesting = false
@@ -96,7 +97,7 @@ class Store: ObservableObject {
             }
         case .artistIntroductionRequest(let id):
             appState.artist.introductionRequesting = true
-            appCommand = ArtistIntroductionCommand(id: id)
+            appCommand = ArtistIntroductionRequestCommand(id: id)
         case .artistIntroductionRequestDone(let result):
             switch result {
             case .success:

@@ -61,7 +61,7 @@ public struct ArtistSublistAction: NeteaseCloudMusicAction {
     public let parameters: Parameters
     public let responseType = ResponseType.self
 }
-//歌手专辑列表
+//歌手专辑
 public struct ArtistAlbumsAction: NeteaseCloudMusicAction {
     public struct ArtistAlbumsParameters: Encodable {
         public var limit: Int
@@ -73,6 +73,28 @@ public struct ArtistAlbumsAction: NeteaseCloudMusicAction {
 
     public let id: Int
     public var uri: String { "/weapi/artist/albums/\(id)" }
+    public let parameters: Parameters
+    public let responseType = ResponseType.self
+}
+//歌手热门歌曲
+public struct ArtistHotSongsAction: NeteaseCloudMusicAction {
+    public typealias Parameters = EmptyParameters
+    public typealias ResponseType = ArtistHotSongsResponse
+
+    public let id: Int
+    public var uri: String { "/weapi/artist/\(id)" }
+    public let parameters = Parameters()
+    public let responseType = ResponseType.self
+}
+//歌手介绍
+public struct ArtistIntroductionAction: NeteaseCloudMusicAction {
+    public struct ArtisIntroductionParameters: Encodable {
+        public var id: Int
+    }
+    public typealias Parameters = ArtisIntroductionParameters
+    public typealias ResponseType = ArtistIntroductionResponse
+
+    public var uri: String { "/weapi/artist/introduction" }
     public let parameters: Parameters
     public let responseType = ResponseType.self
 }

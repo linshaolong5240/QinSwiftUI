@@ -157,7 +157,7 @@ class DataManager {
         }
         return song
     }
-    public func getSongs(ids: [Int64]) -> [Song]? {
+    public func getSongs(ids: [Int]) -> [Song]? {
         var songs: [Song]? = nil
         let context = self.context()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")
@@ -230,12 +230,12 @@ class DataManager {
             }
         }
     }
-    public func updateAlbumSongs(id: Int64, songsId: [Int64]) {
-        if let album = self.getAlbum(id: Int(id)) {
+    public func updateAlbumSongs(id: Int, songsId: [Int]) {
+        if let album = self.getAlbum(id: id) {
             if let songs = album.songs {
                 album.removeFromSongs(songs)
             }
-            album.songsId = songsId
+            album.songsId = songsId.map({ Int64($0) })
             if let songs = self.getSongs(ids: songsId) {
                 album.addToSongs(NSSet(array: songs))
             }
@@ -245,6 +245,15 @@ class DataManager {
     public func updateArtist(artistJSONModel: ArtistJSONModel) {
         _ = artistJSONModel.toArtistEntity(context: self.context())
         self.save()
+    }
+    public func updateArtist(model: CommonArtist) {
+        defer { save() }
+        _ = model.entity(context: context())
+    }
+    public func updateArtist(artistModel: CommonArtist, introduction: String) {
+        defer { save() }
+        let artist = artistModel.entity(context: context())
+        artist.introduction = introduction
     }
     public func updateArtistAlbums(id: Int, model: ArtistAlbumsResponse) {
         defer { save() }
@@ -262,7 +271,7 @@ class DataManager {
             }
         }
     }
-    public func updateArtistIntroduction(id: Int64, introduction: String?) {
+    public func updateArtistIntroduction(id: Int, introduction: String?) {
         if let artist = self.getArtist(id: Int(id)) {
             artist.introduction = introduction
             self.save()
@@ -279,16 +288,15 @@ class DataManager {
             self.save()
         }
     }
-    public func updateArtistSongs(id: Int64, songsId: [Int64]) {
-        if let artist = self.getArtist(id: Int(id)) {
-            if let songs = artist.songs {
-                artist.removeFromSongs(songs)
-            }
-            artist.songsId = songsId
-            if let songs = self.getSongs(ids: songsId) {
-                artist.addToSongs(NSSet(array: songs))
-            }
-            self.save()
+    public func updateArtistHotSongs(to id: Int, songsId: [Int]) {
+        defer { save() }
+        guard let artist = getArtist(id: id) else { return }
+        if let songs = artist.hotSongs {
+            artist.removeFromHotSongs(songs)
+        }
+        artist.hotSongsId = songsId.map({ Int64($0) })
+        if let songs = getSongs(ids: songsId) {
+            artist.addToHotSongs(NSSet(array: songs))
         }
     }
     public func updateMvs(mvsJSONModel: [ArtistMVJSONModel]) {
@@ -307,12 +315,12 @@ class DataManager {
         _ = playlistJSONModel.toPlaylistEntity(context: self.context())
         self.save()
     }
-    public func updatePlaylistSongs(id: Int64, songsId: [Int64]) {
-        if let playlist = self.getPlaylist(id: id) {
+    public func updatePlaylistSongs(id: Int, songsId: [Int]) {
+        if let playlist = self.getPlaylist(id: Int64(id)) {
             if let songs = playlist.songs {
                 playlist.removeFromSongs(songs)
             }
-            playlist.songsId = songsId
+            playlist.songsId = songsId.map({Int64($0) })
             if let songs = self.getSongs(ids: songsId) {
                 playlist.addToSongs(NSSet(array: songs))
             }
@@ -327,7 +335,7 @@ class DataManager {
         playlist.songsId = recommendSongsJSONModel.dailySongs.map{$0.id}
         self.save()
     }
-    public func updateRecommendSongsPlaylistSongs(ids: [Int64]) {
+    public func updateRecommendSongsPlaylistSongs(ids: [Int]) {
         if let playlist = self.getPlaylist(id: 0) {
             if let songs = playlist.songs {
                 playlist.removeFromSongs(songs)
