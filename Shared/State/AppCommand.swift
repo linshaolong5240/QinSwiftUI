@@ -98,7 +98,7 @@ struct ArtistRequestCommand: AppCommand {
                 }
             } receiveValue: { artistHotSongsResponse, artistIntroductionResponse in
                 let introduction = artistIntroductionResponse.desc
-                DataManager.shared.updateArtistIntroduction(id: id, introduction: introduction)
+                DataManager.shared.updateArtist(artistModel: artistHotSongsResponse.artist, introduction: introduction)
                 store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
                 DataManager.shared.updateArtistHotSongs(to: id, songsId: artistHotSongsResponse.hotSongs.map({ $0.id }))
                 store.dispatch(.artistRequestDone(result: .success(artistHotSongsResponse.hotSongs.map({ $0.id }))))
@@ -204,22 +204,22 @@ struct ArtistIntroductionRequestCommand: AppCommand {
     let id: Int64
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.artistIntroduction(id: id) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    let introduction = json["briefDesc"] as? String
-                    DataManager.shared.updateArtistIntroduction(id: Int(id), introduction: introduction)
-                    store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistIntroductionRequestDone(result: .failure(.comment(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.artistIntroductionRequestDone(result: .failure(error)))
-            }
-        }
+//        NeteaseCloudMusicApi.shared.artistIntroduction(id: id) { result in
+//            switch result {
+//            case .success(let json):
+//                if json["code"] as? Int == 200 {
+//                    let introduction = json["briefDesc"] as? String
+//                    DataManager.shared.updateArtistIntroduction(id: Int(id), introduction: introduction)
+//                    store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
+//                }else {
+//                    let code = json["code"] as? Int ?? -1
+//                    let message = json["message"] as? String ?? "错误信息解码错误"
+//                    store.dispatch(.artistIntroductionRequestDone(result: .failure(.comment(code: code, message: message))))
+//                }
+//            case .failure(let error):
+//                store.dispatch(.artistIntroductionRequestDone(result: .failure(error)))
+//            }
+//        }
     }
 }
 

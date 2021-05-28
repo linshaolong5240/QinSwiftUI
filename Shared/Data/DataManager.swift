@@ -271,12 +271,6 @@ class DataManager {
             }
         }
     }
-    public func updateArtistIntroduction(id: Int, introduction: String?) {
-        if let artist = self.getArtist(id: Int(id)) {
-            artist.introduction = introduction
-            self.save()
-        }
-    }
     public func updateArtistMVs(id: Int64, mvIds: [Int64]) {
         if let artist = self.getArtist(id: Int(id)) {
             if let mvs = artist.mvs {

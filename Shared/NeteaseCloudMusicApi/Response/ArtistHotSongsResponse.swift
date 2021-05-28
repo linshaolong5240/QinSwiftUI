@@ -13,7 +13,7 @@ public struct ArtistHotSongsResponse: NeteaseCloudMusicResponse {
             public let alias: [String]
             public let artist: CommonArtist
             public let artists: [CommonArtist]
-            public let blurPicUrl: String
+            public let blurPicUrl: String?
             public let briefDesc: String
             public let commentThreadId: String
             public let company: String?
