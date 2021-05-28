@@ -9,6 +9,8 @@
 import Foundation
 import Combine
 
+typealias User = LoginResponse
+
 struct AppState {
     var initRequestingCount: Int = 0
     var album = Album()
@@ -44,8 +46,7 @@ extension AppState {
         var accountBehavior = AccountBehavior.login
         @UserDefault(key: "coverShape") var coverShape: NEUCoverShape = .circle
         var loginRequesting = false
-        var loginUser: User? = DataManager.shared.getUser()
-        var loginError: AppError?
+        @UserDefault(key: "loginUser") var loginUser: User? = nil
         @UserDefault(key: "playMode") var playMode: PlayMode = .playlist
         var theme: Theme = .light
     }

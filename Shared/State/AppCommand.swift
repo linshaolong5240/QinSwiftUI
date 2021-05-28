@@ -466,14 +466,14 @@ struct LikeRequestCommand: AppCommand {
 struct LikeRequestDoneCommand: AppCommand {
 
     func execute(in store: Store) {
-        if let uid = store.appState.settings.loginUser?.uid {
-        store.dispatch(.likelistRequest(uid: uid))
+        if let uid = store.appState.settings.loginUser?.profile.userId {
+            store.dispatch(.likelistRequest(uid: Int64(uid)))
         }
     }
 }
 
 struct LikeListRequestCommand: AppCommand {
-    let uid: Int64
+    let uid: Int
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.likeList(uid: uid) { result in
@@ -522,29 +522,40 @@ struct LoginRequestCommand: AppCommand {
     let password: String
 
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.login(email: email, password: password) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    var user = User()
-                    if let accountDict = json["account"] as? NeteaseCloudMusicApi.ResponseData {
-                        user.account = accountDict.toData!.toModel(Account.self)!
-                    }
-                    user.csrf = NeteaseCloudMusicApi.shared.getCSRFToken()
-                    user.loginType = json["loginType"] as! Int
-                    if let profile = json["profile"] as? NeteaseCloudMusicApi.ResponseData {
-                        user.profile = profile.toData!.toModel(Profile.self)!
-                        user.uid = profile["userId"] as! Int64
-                    }
-                    store.dispatch(.loginRequestDone(result: .success(user)))
-                }else {
-                    store.dispatch(.loginRequestDone(result: .failure(.loginError(code: json["code"] as! Int, message: json["message"] as! String))))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: LoginAction(parameters: .init(email: email, password: password)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.loginRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.loginRequestDone(result: .failure(error)))
-            }
-
-        }
+            } receiveValue: { loginResponse in
+                store.dispatch(.loginRequestDone(result: .success(loginResponse)))
+            }.store(in: &store.cancellableSet)
+//        NeteaseCloudMusicApi.shared.login(email: email, password: password) { result in
+//            switch result {
+//            case .success(let json):
+//                print(json.toJSONString)
+//                if json["code"] as? Int == 200 {
+//                    var user = User()
+//                    if let accountDict = json["account"] as? NeteaseCloudMusicApi.ResponseData {
+//                        user.account = accountDict.toData!.toModel(Account.self)!
+//                    }
+//                    user.csrf = NeteaseCloudMusicApi.shared.getCSRFToken()
+//                    user.loginType = json["loginType"] as! Int
+//                    if let profile = json["profile"] as? NeteaseCloudMusicApi.ResponseData {
+//                        user.profile = profile.toData!.toModel(Profile.self)!
+//                        user.uid = profile["userId"] as! Int64
+//                    }
+//                    store.dispatch(.loginRequestDone(result: .success(user)))
+//                }else {
+//                    store.dispatch(.loginRequestDone(result: .failure(.loginError(code: json["code"] as! Int, message: json["message"] as! String))))
+//                }
+//            case .failure(let error):
+//                store.dispatch(.loginRequestDone(result: .failure(error)))
+//            }
+//
+//        }
     }
 }
 
@@ -552,7 +563,6 @@ struct LoginRequestDoneCommand: AppCommand {
     let user: User
     
     func execute(in store: Store) {
-        DataManager.shared.userLogin(user)
         store.dispatch(.initAction)
     }
 }
@@ -582,26 +592,23 @@ struct LoginRefreshDoneCommand: AppCommand {
         if success {
             store.dispatch(.initAction)
         }else {
-            store.dispatch(.logout)
+            store.dispatch(.logoutRequest)
         }
     }
 }
 
-struct LogoutCommand: AppCommand {
-
+struct LogoutRequestCommand: AppCommand {
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.logout { result in
-            
-        }
-        DataManager.shared.userLogout()
-        
-//        if let cookies = HTTPCookieStorage.shared.cookies {
-//            for cookie in cookies {
-//                if cookie.name != "os" {
-//                    HTTPCookieStorage.shared.deleteCookie(cookie)
-//                }
-//            }
-//        }
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: LogoutAction())
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.logoutRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                }
+            } receiveValue: { logoutResponse in
+                store.dispatch(.logoutRequestDone(result: .success(logoutResponse.code)))
+            }.store(in: &store.cancellableSet)
     }
 }
 
@@ -1294,7 +1301,7 @@ struct TooglePlayCommand: AppCommand {
 }
 
 struct UserPlayListCommand: AppCommand {
-    let uid: Int64
+    let uid: Int
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.userPlayList(uid) { result in
@@ -1306,8 +1313,8 @@ struct UserPlayListCommand: AppCommand {
                         do {
                             let data = try JSONEncoder().encode(playlistModels)
                             let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
-                            let createdPlaylistIds = playlistModels.filter { $0.userId == store.appState.settings.loginUser?.uid }.map{ $0.id }
-                            let subedPlaylistIds = playlistModels.filter { $0.userId != store.appState.settings.loginUser?.uid }.map{ $0.id }
+                            let createdPlaylistIds = playlistModels.filter { $0.userId == uid }.map { $0.id }
+                            let subedPlaylistIds = playlistModels.filter { $0.userId != uid }.map { $0.id }
                             let userPlaylistIds = playlistModels.map{ $0.id }
                             let result = (createdPlaylistId: createdPlaylistIds, subedPlaylistIds: subedPlaylistIds, userPlaylistIds: userPlaylistIds)
                             DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: objects)

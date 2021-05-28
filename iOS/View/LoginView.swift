@@ -43,9 +43,6 @@ struct LoginView: View {
                 if store.appState.settings.loginRequesting {
                     Text("正在登录...")
                 }
-                if (store.appState.settings.loginError != nil) {
-                    Text("\(store.appState.settings.loginError!.localizedDescription)")
-                }
                 Spacer()
             }
             .padding(.horizontal)

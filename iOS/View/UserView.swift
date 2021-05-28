@@ -30,10 +30,11 @@ struct UserView: View {
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 NEUCoverView(url: user?.profile.avatarUrl, coverShape: .rectangle, size: .medium)
-                Text("uid: \(String(user?.uid ?? 0))")
-                Text("csrf: \(user?.csrf ?? "")")
+                if let uid = user?.profile.userId {
+                    Text("uid: \(uid)")
+                }
                 Button(action: {
-                    Store.shared.dispatch(.logout)
+                    Store.shared.dispatch(.logoutRequest)
                 }) {
                     Text("退出登录")
                         .padding()

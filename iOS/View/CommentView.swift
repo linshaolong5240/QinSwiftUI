@@ -162,7 +162,7 @@ struct CommentRowView: View {
                         })
                     }
                     Spacer()
-                    if viewModel.userId == user?.uid {
+                    if viewModel.userId == user?.userId ?? 0 {
                         Button(action: {
                             Store.shared.dispatch(.commentRequest(id: id, cid: viewModel.commentId, type: type, action: .delete))
                         }, label: {

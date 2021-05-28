@@ -40,10 +40,11 @@ enum AppAction {
     case likelistRequest(uid: Int64? = nil)
     case likelistRequestDone(result: Result<[Int64], AppError>)
     case loginRequest(email: String, password: String)
-    case loginRequestDone(result: Result<User, AppError>)
+    case loginRequestDone(result: Result<LoginResponse, AppError>)
     case loginRefreshRequest
     case loginRefreshRequestDone(result: Result<Bool, AppError>)
-    case logout
+    case logoutRequest
+    case logoutRequestDone(result: Result<Int, AppError>)
     case lyricRequest(id: Int64)
     case lyricRequestDone(result: Result<String?, AppError>)
     case mvDetailRequest(id: Int64)

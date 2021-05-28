@@ -335,34 +335,34 @@ extension NeteaseCloudMusicApi {
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
     //喜欢音乐列表
-    func likeList(uid: Int64, complete: @escaping CompletionBlock) {
+    func likeList(uid: Int, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/song/like/get"
         
         let data = ["uid": uid] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //登陆
-    func login(email: String, password: String, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/login"
-        
-        let data = ["username": email,
-                    "password": password.md5(),
-                    "rememberLogin": "true"
-        ]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    //登陆
+//    func login(email: String, password: String, complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/login"
+//
+//        let data = ["username": email,
+//                    "password": password.md5(),
+//                    "rememberLogin": "true"
+//        ]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
     func loginRefresh(complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/login/token/refresh"
         
         let data = [String: Any]()
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    func logout(_ complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/logout"
-        
-        let data = ResponseData()
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    func logout(_ complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/logout"
+//        
+//        let data = ResponseData()
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
     func lyric(id: Int64 ,complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/song/lyric"
         
@@ -516,7 +516,7 @@ extension NeteaseCloudMusicApi {
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
     //用户歌单
-    func userPlayList(_ uid: Int64, complete: @escaping CompletionBlock) {
+    func userPlayList(_ uid: Int, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/user/playlist"
         let data = [
             "uid": uid,

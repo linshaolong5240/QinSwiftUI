@@ -169,20 +169,6 @@ class DataManager {
         }
         return songs
     }
-    public func getUser() -> User? {
-        var user: User? = nil
-        let context = self.context()
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AccountData")
-        do {
-            let accountDatas = try context.fetch(request)
-            if accountDatas.count > 0 {
-                user =  User(accountDatas[0] as! AccountData)
-            }
-        }catch let error {
-            print("DataManager getUser \(error)")
-        }
-        return user
-    }
     public func save() {
         do {
             try context().save()
@@ -379,28 +365,5 @@ class DataManager {
             }
         }
         self.save()
-    }
-    public func userLogin(_ user: User) {
-        userLogout()
-        let accountData = NSEntityDescription.insertNewObject(forEntityName: "AccountData", into: self.context()) as! AccountData
-        do {
-            accountData.userData = try JSONEncoder().encode(user)
-        }catch let error {
-            print(error)
-        }
-        self.save()
-    }
-    public func userLogout() {
-        let context = self.context()
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AccountData")
-        do {
-            let accountDatas = try self.context().fetch(request)
-            for accountData in accountDatas {
-                persistentContainer.viewContext.delete(accountData as! NSManagedObject)
-            }
-            try context.save()
-        }catch let error {
-            print("DataManager userLogout \(error)")
-        }
     }
 }

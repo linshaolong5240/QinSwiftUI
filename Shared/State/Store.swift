@@ -206,8 +206,8 @@ class Store: ObservableObject {
             }
         case .likelistRequest(let uid):
             if let userId = uid {
-                appCommand = LikeListRequestCommand(uid: userId)
-            }else if let userId = appState.settings.loginUser?.uid {
+                appCommand = LikeListRequestCommand(uid: Int(userId))
+            }else if let userId = appState.settings.loginUser?.profile.userId {
                 appCommand = LikeListRequestCommand(uid: userId)
             }
         case .likelistRequestDone(let result):
@@ -246,7 +246,7 @@ class Store: ObservableObject {
                 appState.settings.loginUser = user
                 appCommand = LoginRequestDoneCommand(user: user)
             case .failure(let error):
-                appState.settings.loginError = error
+                appState.error = error
             }
         case .loginRefreshRequest:
             appCommand = LoginRefreshRequestCommand()
@@ -257,9 +257,10 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .logout:
+        case .logoutRequest:
+            appCommand = LogoutRequestCommand()
+        case .logoutRequestDone:
             appState.settings.loginUser = nil
-            appCommand = LogoutCommand()
         case .mvDetailRequest(id: let id):
             appCommand = MVDetailRequestCommand(id: id)
         case .mvDetaillRequestDone(let result):
@@ -515,8 +516,8 @@ class Store: ObservableObject {
         case .userPlaylist(let uid):
             appState.playlist.userPlaylistRequesting = true
             if let userId = uid {
-                appCommand = UserPlayListCommand(uid: userId)
-            }else if let userId = appState.settings.loginUser?.uid {
+                appCommand = UserPlayListCommand(uid: Int(userId))
+            }else if let userId = appState.settings.loginUser?.profile.userId {
                 appCommand = UserPlayListCommand(uid: userId)
             }
         case .userPlaylistDone(let result):
