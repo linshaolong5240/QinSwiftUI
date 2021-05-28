@@ -65,7 +65,7 @@ public struct AlbumResponse: Codable {
         public let picUrl: String
         public let publishTime: Int
         public let size: Int
-        public let songs: [AlbumSong]
+//        public let songs: [Any]
         public let status: Int
         public let subType: String
         public let tags: String

@@ -48,7 +48,6 @@ extension AlbumResponse.AlbumDetail {
         entity.name = name
         entity.picUrl = picUrl
         entity.publishTime = Int64(publishTime)
-        entity.songsId = songs.map({ Int64($0.id) })
         return entity
     }
 }
@@ -68,6 +67,18 @@ extension AlbumResponse.AlbumSong.AlbumSongArtist {
         let entity = Artist(context: context)
         entity.id = Int64(id)
         entity.name = name
+        return entity
+    }
+}
+
+extension ArtistAlbumsResponse.ArtistAlbum {
+    func entity(context: NSManagedObjectContext) -> Album {
+        let entity = Album(context: context)
+        entity.id = Int64(id)
+        entity.introduction = description
+        entity.name = name
+        entity.picUrl = picUrl
+        entity.publishTime = Int64(publishTime)
         return entity
     }
 }

@@ -82,7 +82,7 @@ class Store: ObservableObject {
             }
         case .artistAlbumRequest(let id, let limit, let offset):
             appState.artist.albumRequesting = true
-            appCommand = ArtistAlbumCommand(id: id, limit: limit, offset: offset)
+            appCommand = ArtistAlbumsRequestCommand(id: Int(id), limit: limit, offset: offset)
         case .artistAlbumRequestDone(let result):
             switch result {
             case .success:

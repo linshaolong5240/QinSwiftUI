@@ -123,35 +123,42 @@ struct ArtistDoneCommand: AppCommand {
     }
 }
 
-struct ArtistAlbumCommand: AppCommand {
-    let id: Int64
+struct ArtistAlbumsRequestCommand: AppCommand {
+    let id: Int
     let limit: Int
     let offset: Int
     
-    init(id: Int64, limit: Int = 30, offset: Int = 0) {
-        self.id = id
-        self.limit = limit
-        self.offset = offset
-    }
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.artistAlbum(id: id, limit: limit, offset: offset) { result in
-            switch result {
-            case .success(let json):
-                print(json.toJSONString)
-                if json["code"] as? Int == 200 {
-                    let albumsDict = json["hotAlbums"] as! [[String: Any]]
-                    let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
-                    DataManager.shared.updateArtistAlbums(id: id, albumsJSONModel: albumsJSONModel)
-                    store.dispatch(.artistAlbumRequestDone(result: .success(albumsJSONModel)))
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistAlbumRequestDone(result: .failure(.artistAlbum(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.artistAlbumRequestDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: ArtistAlbumsAction(id: id, parameters: .init(limit: limit, offset: offset * limit)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.albumSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { artistAlbumResponse in
+            DataManager.shared.updateArtistAlbums(id: id, model: artistAlbumResponse)
+            store.dispatch(.artistAlbumRequestDone(result: .success(artistAlbumResponse.hotAlbums.map({ $0.id }))))
+        }.store(in: &store.cancellableSet)
+
+//        NeteaseCloudMusicApi.shared.artistAlbum(id: id, limit: limit, offset: offset) { result in
+//            switch result {
+//            case .success(let json):
+//                print(json.toJSONString)
+//                if json["code"] as? Int == 200 {
+//                    let albumsDict = json["hotAlbums"] as! [[String: Any]]
+//                    let albumsJSONModel = albumsDict.map{$0.toData!.toModel(AlbumJSONModel.self)!}
+//                    DataManager.shared.updateArtistAlbums(id: id, albumsJSONModel: albumsJSONModel)
+//                    store.dispatch(.artistAlbumRequestDone(result: .success(albumsJSONModel)))
+//                }else {
+//                    let code = json["code"] as? Int ?? -1
+//                    let message = json["message"] as? String ?? "错误信息解码错误"
+//                    store.dispatch(.artistAlbumRequestDone(result: .failure(.artistAlbum(code: code, message: message))))
+//                }
+//            case .failure(let error):
+//                store.dispatch(.artistAlbumRequestDone(result: .failure(error)))
+//            }
+//        }
     }
 }
 

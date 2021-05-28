@@ -85,7 +85,7 @@ class DataManager {
     public func batchUpdateLike(ids: [Int]) {
         self.batchUpdate(entityName: "Song", propertiesToUpdate: ["like" : true], predicate: NSPredicate(format: "id IN %@", ids))
     }
-    public func getAlbum(id: Int64) -> Album? {
+    public func getAlbum(id: Int) -> Album? {
         var album: Album? = nil
         do {
             let context = self.context()
@@ -97,7 +97,7 @@ class DataManager {
         }
         return album
     }
-    public func getArtist(id: Int64) -> Artist? {
+    public func getArtist(id: Int) -> Artist? {
         var artist: Artist? = nil
         let context = self.context()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
@@ -195,7 +195,7 @@ class DataManager {
     public func updateAlbum(albumJSONModel: AlbumJSONModel) {
         let album = albumJSONModel.toAlbumEntity(context: self.context())
         for ar in albumJSONModel.artists {
-            if let artist = self.getArtist(id: ar.id) {
+            if let artist = self.getArtist(id: Int(ar.id)) {
                 album.addToArtists(artist)
             }else {
                 let artist = ar.toArtistEntity(context: self.context())
@@ -210,7 +210,7 @@ class DataManager {
         let album = model.album.entity(context: context())
         album.songsId = model.songs.map({ Int64($0.id) })
         model.album.artists.forEach { item in
-            if let artist = getArtist(id: Int64(item.id)) {
+            if let artist = getArtist(id: item.id) {
                 album.addToArtists(artist)
             }else {
                 let artist = item.entity(context: context())
@@ -221,7 +221,7 @@ class DataManager {
             let song = item.entity(context: context())
             album.addToSongs(song)
             item.ar.forEach { item in
-                if let artist = getArtist(id: Int64(item.id)) {
+                if let artist = getArtist(id: item.id) {
                     song.addToArtists(artist)
                 }else {
                     let artist = item.entity(context: context())
@@ -231,7 +231,7 @@ class DataManager {
         }
     }
     public func updateAlbumSongs(id: Int64, songsId: [Int64]) {
-        if let album = self.getAlbum(id: id) {
+        if let album = self.getAlbum(id: Int(id)) {
             if let songs = album.songs {
                 album.removeFromSongs(songs)
             }
@@ -246,30 +246,30 @@ class DataManager {
         _ = artistJSONModel.toArtistEntity(context: self.context())
         self.save()
     }
-    public func updateArtistAlbums(id: Int64, albumsJSONModel: [AlbumJSONModel]) {
-        if let artist = self.getArtist(id: id) {
+    public func updateArtistAlbums(id: Int, model: ArtistAlbumsResponse) {
+        defer { save() }
+        if let artist = getArtist(id: id) {
             if let albums = artist.albums {
-                artist.removeFromSongs(albums)
+                artist.removeFromAlbums(albums)
             }
-            for albumModel in albumsJSONModel {
-                if let album = self.getAlbum(id: albumModel.id) {
-                    artist.addToAlbums(album)
+            model.hotAlbums.forEach { item in
+                if let album = getAlbum(id: item.id) {
+                    album.addToArtists(artist)
                 }else {
-                    let album = albumModel.toAlbumEntity(context: self.context())
-                    artist.addToAlbums(album)
+                    let album = item.entity(context: context())
+                    album.addToArtists(artist)
                 }
             }
-            self.save()
         }
     }
     public func updateArtistIntroduction(id: Int64, introduction: String?) {
-        if let artist = self.getArtist(id: id) {
+        if let artist = self.getArtist(id: Int(id)) {
             artist.introduction = introduction
             self.save()
         }
     }
     public func updateArtistMVs(id: Int64, mvIds: [Int64]) {
-        if let artist = self.getArtist(id: id) {
+        if let artist = self.getArtist(id: Int(id)) {
             if let mvs = artist.mvs {
                 artist.removeFromMvs(mvs)
             }
@@ -280,7 +280,7 @@ class DataManager {
         }
     }
     public func updateArtistSongs(id: Int64, songsId: [Int64]) {
-        if let artist = self.getArtist(id: id) {
+        if let artist = self.getArtist(id: Int(id)) {
             if let songs = artist.songs {
                 artist.removeFromSongs(songs)
             }
@@ -294,7 +294,7 @@ class DataManager {
     public func updateMvs(mvsJSONModel: [ArtistMVJSONModel]) {
         for mvJSONModel in mvsJSONModel {
             let mv = mvJSONModel.toMVEntity(context: self.context())
-            if let artist = self.getArtist(id: mvJSONModel.artist.id) {
+            if let artist = self.getArtist(id: Int(mvJSONModel.artist.id)) {
                 artist.addToMvs(mv)
             }else {
                 let artist = mvJSONModel.artist.toArtistEntity(context: self.context())
@@ -341,14 +341,14 @@ class DataManager {
     public func updateSongs(songsJSONModel: [SongJSONModel]) {
         for songModel in songsJSONModel {
             let song = songModel.toSongEntity(context: self.context())
-            if let album = self.getAlbum(id: songModel.album.id) {
+            if let album = self.getAlbum(id: Int(songModel.album.id)) {
                 album.addToSongs(song)
             }else {
                 let album = songModel.album.toAlbumEntity(context: self.context())
                 album.addToSongs(song)
             }
             for ar in songModel.artists {
-                if let artist = self.getArtist(id: ar.id) {
+                if let artist = self.getArtist(id: Int(ar.id)) {
                     artist.addToSongs(song)
                 }else {
                     let artist = ar.toArtistEntity(context: self.context())
@@ -361,14 +361,14 @@ class DataManager {
     public func updateSongs(songsJSONModel: [SongDetailJSONModel]) {
         for songModel in songsJSONModel {
             let song = songModel.toSongEntity(context: self.context())
-            if let album = self.getAlbum(id: songModel.al.id) {
+            if let album = self.getAlbum(id: Int(songModel.al.id)) {
                 album.addToSongs(song)
             }else {
                 let album = songModel.al.toAlbumEntity(context: self.context())
                 album.addToSongs(song)
             }
             for ar in songModel.ar {
-                if let artist = self.getArtist(id: ar.id) {
+                if let artist = self.getArtist(id: Int(ar.id)) {
                     artist.addToSongs(song)
                 }else {
                     let artist = ar.toArtistEntity(context: self.context())

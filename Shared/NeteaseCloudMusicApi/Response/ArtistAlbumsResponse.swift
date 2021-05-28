@@ -13,11 +13,11 @@ public struct ArtistAlbumsResponse: Codable {
         public let artist: AlbumArtist
         public let artists: [AlbumArtist]
         public let blurPicUrl: String
-        public let briefDesc: String
+        public let briefDesc: String?
         public let commentThreadId: String
         public let company: String?
         public let companyId: Int
-        public let description: String
+        public let description: String?
         public let id: Int
         public let isSub: Bool
         public let mark: Int
@@ -26,7 +26,7 @@ public struct ArtistAlbumsResponse: Codable {
         public let paid: Bool
         public let pic: Int
         public let picId: Int
-        public let picId_str: String
+        public let picId_str: String?
         public let picUrl: String
         public let publishTime: Int
         public let size: Int
