@@ -9,33 +9,6 @@ import Foundation
 
 public struct ArtistHotSongsResponse: NeteaseCloudMusicResponse {
     public struct HotSong: Codable {
-        public struct HotSongAlbum: Codable {
-            public let alias: [String]
-            public let artist: CommonArtist
-            public let artists: [CommonArtist]
-            public let blurPicUrl: String?
-            public let briefDesc: String
-            public let commentThreadId: String
-            public let company: String?
-            public let companyId: Int
-            public let copyrightId: Int
-            public let description: String
-            public let id: Int
-            public let mark: Int
-            public let name: String
-            public let onSale: Bool
-            public let paid: Bool
-            public let pic: Int
-            public let picId: Int
-            public let picUrl: String
-            public let publishTime: Int
-            public let size: Int
-//            public let songs:[Any]
-            public let status: Int
-            public let subType: String?
-            public let tags: String
-            public let type: String?
-        }
         public struct Quality: Codable {
             public let bitrate: Int
             public let dfsId: Int
@@ -47,7 +20,7 @@ public struct ArtistHotSongsResponse: NeteaseCloudMusicResponse {
             public let sr: Int
             public let volumeDelta: Double
         }
-        public let album: HotSongAlbum
+        public let album: CommonAlbum
         public let alias: [String]
         public let artists: [CommonArtist]
 //        public let audition: Any?

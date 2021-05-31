@@ -366,4 +366,24 @@ class DataManager {
         }
         self.save()
     }
+    public func updateSongs(model: ArtistHotSongsResponse) {
+        defer { save() }
+        model.hotSongs.forEach { item in
+            let song = item.entity(context: self.context())
+            if let album = getAlbum(id: item.album.id) {
+                album.addToSongs(song)
+            }else {
+                let album = item.album.entity(context: self.context())
+                album.addToSongs(song)
+            }
+            for ar in item.artists {
+                if let artist = getArtist(id: Int(ar.id)) {
+                    artist.addToSongs(song)
+                }else {
+                    let artist = ar.entity(context: context())
+                    artist.addToSongs(song)
+                }
+            }
+        }
+    }
 }

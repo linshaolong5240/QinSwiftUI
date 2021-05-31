@@ -123,8 +123,9 @@ struct ArtistRequestCommand: AppCommand {
             } receiveValue: { artistHotSongsResponse, artistIntroductionResponse in
                 let introduction = artistIntroductionResponse.desc
                 DataManager.shared.updateArtist(artistModel: artistHotSongsResponse.artist, introduction: introduction)
-                store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
+                DataManager.shared.updateSongs(model: artistHotSongsResponse)
                 DataManager.shared.updateArtistHotSongs(to: id, songsId: artistHotSongsResponse.hotSongs.map({ $0.id }))
+                store.dispatch(.artistIntroductionRequestDone(result: .success(introduction)))
                 store.dispatch(.artistRequestDone(result: .success(artistHotSongsResponse.hotSongs.map({ $0.id }))))
             }.store(in: &store.cancellableSet)
     }

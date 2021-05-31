@@ -145,5 +145,15 @@ struct ArtistDetailView: View {
                 }
             }
         }
+        .onChange(of: selection, perform: { value in
+            switch value {
+            case .album:
+                if artist.albums?.count == 0 {
+                    Store.shared.dispatch(.artistAlbumRequest(id: artist.id, limit: 999, offset: 0))
+                }
+            case .mv: break
+            case .hotSong: break
+            }
+        })
     }
 }

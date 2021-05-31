@@ -235,12 +235,12 @@ extension NeteaseCloudMusicApi {
 //        ] as [String : Any]
 //        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
 //    }
-    // 歌手单曲
-    func artists(id: Int64, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/artist/\(id)"
-        let data = ResponseData()
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    // 歌手单曲
+//    func artists(id: Int64, complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/artist/\(id)"
+//        let data = ResponseData()
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
     // 歌手MV
     func artistMV(id: Int64, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/artist/mvs"

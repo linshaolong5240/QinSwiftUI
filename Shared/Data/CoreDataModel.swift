@@ -8,6 +8,10 @@
 import Foundation
 import CoreData
 
+protocol CoreDataMangable {
+    associatedtype Entity: NSManagedObject
+    func entity(context: NSManagedObjectContext) -> Entity
+}
 extension AlbumSublistResponse.Album {
     struct AlbumSubDataModel: Codable, Identifiable {
         var id: Int64
@@ -26,6 +30,18 @@ extension ArtistSublistResponse.Artist {
     var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
+extension CommonAlbum {
+    func entity(context: NSManagedObjectContext) -> Album {
+        let entity = Album(context: context)
+        entity.id = Int64(id)
+        entity.introduction = description
+        entity.name = name
+        entity.picUrl = picUrl
+        entity.publishTime = Int64(publishTime)
+        return entity
+    }
+}
+
 extension CommonArtist {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
@@ -38,17 +54,6 @@ extension CommonArtist {
     }
 }
 
-extension AlbumResponse.AlbumDetail {
-    func entity(context: NSManagedObjectContext) -> Album {
-        let entity = Album(context: context)
-        entity.id = Int64(id)
-        entity.introduction = description
-        entity.name = name
-        entity.picUrl = picUrl
-        entity.publishTime = Int64(publishTime)
-        return entity
-    }
-}
 
 extension AlbumResponse.AlbumSong {
     func entity(context: NSManagedObjectContext) -> Song {
@@ -77,6 +82,16 @@ extension ArtistAlbumsResponse.ArtistAlbum {
         entity.name = name
         entity.picUrl = picUrl
         entity.publishTime = Int64(publishTime)
+        return entity
+    }
+}
+
+extension ArtistHotSongsResponse.HotSong: CoreDataMangable {
+    func entity(context: NSManagedObjectContext) -> Song {
+        let entity = Song(context: context)
+        entity.durationTime = Int64(duration)
+        entity.id = Int64(id)
+        entity.name = name
         return entity
     }
 }
