@@ -74,13 +74,11 @@ class Store: ObservableObject {
             appCommand = ArtistRequestCommand(id: Int(id))
         case .artistRequestDone(let result):
             switch result {
-            case .success:
-                break
-//                appCommand = ArtistDoneCommand(artist: artist)
+            case .success: break
             case .failure(let error):
                 appState.artist.error = error
-                appState.artist.detailRequesting = false
             }
+            appState.artist.detailRequesting = false
         case .artistAlbumRequest(let id, let limit, let offset):
             appState.artist.albumRequesting = true
             appCommand = ArtistAlbumsRequestCommand(id: Int(id), limit: limit, offset: offset)
@@ -92,20 +90,6 @@ class Store: ObservableObject {
                 appState.artist.error = error
             }
             appState.artist.albumRequesting = false
-            if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
-                appState.artist.detailRequesting = false
-            }
-        case .artistIntroductionRequest(let id):
-            appState.artist.introductionRequesting = true
-            appCommand = ArtistIntroductionRequestCommand(id: id)
-        case .artistIntroductionRequestDone(let result):
-            switch result {
-            case .success:
-                break
-            case .failure(let error):
-                appState.artist.error = error
-            }
-            appState.artist.introductionRequesting = false
             if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
                 appState.artist.detailRequesting = false
             }

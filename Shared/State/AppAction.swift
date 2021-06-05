@@ -19,8 +19,6 @@ enum AppAction {
     case artistRequestDone(result: Result<[Int], AppError>)
     case artistAlbumRequest(id: Int64,limit: Int = 999, offset: Int = 0)
     case artistAlbumRequestDone(result: Result<[Int], AppError>)
-    case artistIntroductionRequest(id: Int64)
-    case artistIntroductionRequestDone(result: Result<String?, AppError>)
     case artistMvRequest(id: Int, limit: Int = 999, offset: Int = 0, total: Bool = true)
     case artistMvRequestDone(result: Result<[Int], AppError>)
     case artistSubRequest(id: Int, sub: Bool)
