@@ -176,7 +176,7 @@ class Store: ObservableObject {
             if appState.playing.playinglist.count > 0 {
                 let index = appState.playing.index
                 let songId = appState.playing.playinglist[index]
-                appState.playing.song = DataManager.shared.getSong(id: songId)
+                appState.playing.song = DataManager.shared.getSong(id: Int(songId))
             }
             appCommand = InitAcionCommand()
         case .loginRequest(let email, let password):
@@ -226,19 +226,19 @@ class Store: ObservableObject {
         case .playerPlayByIndex(let index):
             appState.playing.index = index
             let id = appState.playing.playinglist[index]
-            appState.playing.song = DataManager.shared.getSong(id: id)
-            appCommand = PlayerPlayRequestCommand(id: id)
+            appState.playing.song = DataManager.shared.getSong(id: Int(id))
+            appCommand = PlayerPlayRequestCommand(id: Int(id))
         case .playerPlayForward:
             appCommand = PlayerPlayForwardCommand()
         case .playerPlayMode:
             appState.settings.playMode = appState.settings.playMode.next()
         case .playerPlayRequest(let id):
-            appCommand = PlayerPlayRequestCommand(id: id)
+            appCommand = PlayerPlayRequestCommand(id: Int(id))
         case .playerPlayRequestDone(let result):
             switch result {
             case .success(let songURL):
-                appState.playing.songUrl = songURL.url
-                if let url = songURL.url {
+                appState.playing.songUrl = songURL
+                if let url = songURL {
                     appCommand = PlayerPlayRequestDoneCommand(url: url)
                 }else {
                     appCommand = PlayerPlayForwardCommand()
@@ -488,9 +488,9 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .songsURL(let ids):
-            appCommand = SongsURLCommand(ids: ids)
-        case .songsURLDone(let result):
+        case .songsURLRequest(let ids):
+            appCommand = SongsURLRequestCommand(ids: ids)
+        case .songsURLRequestDone(let result):
             switch result {
             case .success:
                 break

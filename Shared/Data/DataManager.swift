@@ -145,7 +145,7 @@ class DataManager {
         }
         return playlist
     }
-    public func getSong(id: Int64) -> Song? {
+    public func getSong(id: Int) -> Song? {
         var song: Song? = nil
         let context = self.context()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Song")

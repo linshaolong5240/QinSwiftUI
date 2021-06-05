@@ -50,7 +50,7 @@ enum AppAction {
     case playerPlayForward
     case playerPlayMode
     case playerPlayRequest(id: Int64)
-    case playerPlayRequestDone(result: Result<SongURLJSONModel, AppError>)
+    case playerPlayRequestDone(result: Result<String?, AppError>)
     case playerPlayOrPause
     case PlayerPlayToendAction
     case playerReplay
@@ -92,8 +92,8 @@ enum AppAction {
     case songLyricRequestDone(result: Result<String?, AppError>)
     case songsOrderUpdate(pid: Int64, ids: [Int64])
     case songsOrderUpdateDone(result: Result<Int64, AppError>)
-    case songsURL(ids: [Int64])
-    case songsURLDone(result: Result<[SongURLJSONModel], AppError>)
+    case songsURLRequest(ids: [Int])
+    case songsURLRequestDone(result: Result<[SongURLJSONModel], AppError>)
     case userPlaylistRequest(uid: Int? = nil, limit: Int = 999, offset: Int = 0)
     case userPlaylistDone(result: Result<(createdPlaylistId: [Int], subedPlaylistIds: [Int], userPlaylistIds: [Int]), AppError>)
 }

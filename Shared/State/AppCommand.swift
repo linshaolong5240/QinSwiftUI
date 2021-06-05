@@ -533,7 +533,7 @@ struct PlayerPlayForwardCommand: AppCommand {
 }
 
 struct PlayerPlayRequestCommand: AppCommand {
-    let id: Int64
+    let id: Int
     
     func execute(in store: Store) {
         if let picUrl =  DataManager.shared.getSong(id: id)?.album?.picUrl {//预先下载播放器专辑图片，避免点击专辑图片动画过渡不自然
@@ -556,20 +556,16 @@ struct PlayerPlayRequestCommand: AppCommand {
                 }
             }
         }
-        NeteaseCloudMusicApi.shared.songsURL([id]) { result in
-            switch result {
-            case .success(let json):
-                if let songsURLDict = json["data"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    if songsURLDict.count > 0 {
-                        store.dispatch(.playerPlayRequestDone(result: .success(songsURLDict[0].toData!.toModel(SongURLJSONModel.self)!)))
-                    }
-                }else {
-                    store.dispatch(.playerPlayRequestDone(result: .failure(.songsURLError)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: SongURLAction(parameters: .init(ids: [id])))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.playerPlayRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.playerPlayRequestDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { songURLResponse in
+                store.dispatch(.playerPlayRequestDone(result: .success(songURLResponse.data.first?.url)))
+            }.store(in: &store.cancellableSet)
     }
 }
 
@@ -1100,8 +1096,8 @@ struct SongsOrderUpdateDoneCommand: AppCommand {
     }
 }
 
-struct SongsURLCommand: AppCommand {
-    let ids: [Int64]
+struct SongsURLRequestCommand: AppCommand {
+    let ids: [Int]
     
     func execute(in store: Store) {
         NeteaseCloudMusicApi.shared.songsURL(ids) { result in
@@ -1109,13 +1105,13 @@ struct SongsURLCommand: AppCommand {
             case .success(let json):
                 if let songsURLDict = json["data"] as? [NeteaseCloudMusicApi.ResponseData] {
                     if songsURLDict.count > 0 {
-                        store.dispatch(.songsURLDone(result: .success(songsURLDict.map{$0.toData!.toModel(SongURLJSONModel.self)!})))
+                        store.dispatch(.songsURLRequestDone(result: .success(songsURLDict.map{$0.toData!.toModel(SongURLJSONModel.self)!})))
                     }
                 }else {
-                    store.dispatch(.songsURLDone(result: .failure(.songsURLError)))
+                    store.dispatch(.songsURLRequestDone(result: .failure(.songsURLError)))
                 }
             case .failure(let error):
-                store.dispatch(.songsURLDone(result: .failure(error)))
+                store.dispatch(.songsURLRequestDone(result: .failure(error)))
             }
         }
     }
