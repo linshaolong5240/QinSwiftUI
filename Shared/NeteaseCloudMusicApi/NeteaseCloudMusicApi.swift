@@ -194,90 +194,6 @@ extension NeteaseCloudMusicApi {
 }
 
 extension NeteaseCloudMusicApi {
-//    // 专辑内容
-//    func album(id: Int64, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/v1/album/\(id)"
-//        let data = [String: Any]()
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    // 数字专辑详情
-//    func albumDetail(id: Int64, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/vipmall/albumproduct/detail"
-//        let data = ["id": id]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-    // 收藏与取消收藏专辑
-//    func albumSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
-//        let action = sub ? "sub" : "unsub"
-//        let url = "https://music.163.com/weapi/album/\(action)"
-//        let data = [
-//            "id": id,
-//        ] as [String : Any]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    // 专辑收藏列表
-//    func albumSublist(limit: Int, offset: Int, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/album/sublist"
-//        let data = [
-//            "limit": limit,
-//            "offset": offset * limit,
-//            "total": true
-//        ] as [String : Any]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    // 歌手专辑
-//    func artistAlbum(id: Int64, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/artist/albums/\(id)"
-//        let data = [
-//            "limit": limit,
-//            "offset": offset * limit,
-//            "total": true
-//        ] as [String : Any]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    // 歌手单曲
-//    func artists(id: Int64, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/artist/\(id)"
-//        let data = ResponseData()
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-    // 歌手MV
-//    func artistMV(id: Int64, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/artist/mvs"
-//        let data = [
-//            "artistId": id,
-//            "limit": limit,
-//            "offset": offset * limit,
-//            "total": true
-//        ] as [String : Any]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    // 收藏与取消收藏歌手
-//    func artistSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
-//        let action = sub ? "sub" : "unsub"
-//        let url = "https://music.163.com/weapi/artist/\(action)"
-//        let data = [
-//            "artistId": id,
-//            "artistIds": "[\(id)]"
-//        ] as [String : Any]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    // 歌手收藏列表
-//    func artistSublist(limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/artist/sublist"
-//        let data = [
-//            "limit": limit,
-//            "offset": offset * limit,
-//            "total": true
-//        ] as [String : Any]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    //歌手介绍
-//    func artistIntroduction(id: Int64, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/artist/introduction"
-//        let data = ["id": id]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
     // 发送与删除评论
     func comment(id: Int64, cid: Int64, content: String = "", type: CommentType, action: CommentAction, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/resource/comments/\(action.rawValue)"
@@ -324,38 +240,6 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-//    //登陆
-//    func login(email: String, password: String, complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/login"
-//
-//        let data = ["username": email,
-//                    "password": password.md5(),
-//                    "rememberLogin": "true"
-//        ]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    func loginRefresh(complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/login/token/refresh"
-//
-//        let data = [String: Any]()
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    func logout(_ complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/logout"
-//        
-//        let data = ResponseData()
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
-//    func lyric(id: Int64 ,complete: @escaping CompletionBlock) {
-//        let url = "https://music.163.com/weapi/song/lyric"
-//        
-//        let data = ["id": id,
-//                    "lv": -1,
-//                    "kv": -1,
-//                    "tv": -1,
-//        ]
-//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-//    }
     //MV详情
     func mvDetail(id: Int64 ,complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/mv/detail"
@@ -496,16 +380,6 @@ extension NeteaseCloudMusicApi {
             "ids": "[" + ids.map(String.init).joined(separator: ",") + "]",
             "br": 999000
             ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //用户歌单
-    func userPlayList(_ uid: Int, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/user/playlist"
-        let data = [
-            "uid": uid,
-            "limit": 1000,
-            "offset": 0
-        ]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
 }

@@ -1154,33 +1154,24 @@ struct TooglePlayCommand: AppCommand {
 
 struct UserPlayListCommand: AppCommand {
     let uid: Int
+    let limit: Int
+    let offset: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.userPlayList(uid) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    if let playlistDicts = json["playlist"] as? [NeteaseCloudMusicApi.ResponseData] {
-                        let playlistModels = playlistDicts.map{$0.toData!.toModel(UserPlaylistModel.self)!}
-                        do {
-                            let data = try JSONEncoder().encode(playlistModels)
-                            let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
-                            let createdPlaylistIds = playlistModels.filter { $0.userId == uid }.map { $0.id }
-                            let subedPlaylistIds = playlistModels.filter { $0.userId != uid }.map { $0.id }
-                            let userPlaylistIds = playlistModels.map{ $0.id }
-                            let result = (createdPlaylistId: createdPlaylistIds, subedPlaylistIds: subedPlaylistIds, userPlaylistIds: userPlaylistIds)
-                            DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: objects)
-                            store.dispatch(.userPlaylistDone(result: .success(result)))
-                        }catch let error {
-                            print("\(#function) \(error)")
-                        }
-                    }
-                }else {
-                    store.dispatch(.userPlaylistDone(result: .failure(.userPlaylistError)))
-                }
-            case .failure(let error):
-                store.dispatch(.userPlaylistDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: UserPlaylistAction(parameters: .init(uid: uid, limit: limit, offset: offset)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.userPlaylistDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { userPlaylistResponse in
+            let createdPlaylistIds = userPlaylistResponse.playlist.filter { $0.userId == uid }.map { $0.id }
+            let subedPlaylistIds =  userPlaylistResponse.playlist.filter { $0.userId != uid }.map { $0.id }
+            let userPlaylistIds =  userPlaylistResponse.playlist.map{ $0.id }
+            let result = (createdPlaylistId: createdPlaylistIds, subedPlaylistIds: subedPlaylistIds, userPlaylistIds: userPlaylistIds)
+            DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: userPlaylistResponse.playlist.map({ $0.dataModel.dictionary }))
+            store.dispatch(.userPlaylistDone(result: .success(result)))
+        }.store(in: &store.cancellableSet)
     }
 }

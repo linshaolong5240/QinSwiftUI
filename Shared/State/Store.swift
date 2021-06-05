@@ -497,22 +497,22 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .userPlaylistRequest(let uid):
+        case .userPlaylistRequest(let uid, let limit, let offset):
             appState.playlist.userPlaylistRequesting = true
             if let userId = uid {
-                appCommand = UserPlayListCommand(uid: Int(userId))
+                appCommand = UserPlayListCommand(uid: userId, limit: limit, offset: offset)
             }else if let userId = appState.settings.loginUser?.profile.userId {
-                appCommand = UserPlayListCommand(uid: userId)
+                appCommand = UserPlayListCommand(uid: userId, limit: limit, offset: offset)
             }
         case .userPlaylistDone(let result):
             switch result {
             case .success(let result):
                 if let id = result.userPlaylistIds.first {
-                    appState.playlist.likedPlaylistId = id
+                    appState.playlist.likedPlaylistId = Int64(id)
                 }
-                appState.playlist.createdPlaylistIds = result.createdPlaylistId
-                appState.playlist.subedPlaylistIds = result.subedPlaylistIds
-                appState.playlist.userPlaylistIds = result.userPlaylistIds
+                appState.playlist.createdPlaylistIds = result.createdPlaylistId.map({ Int64($0) })
+                appState.playlist.subedPlaylistIds = result.subedPlaylistIds.map({ Int64($0) })
+                appState.playlist.userPlaylistIds = result.userPlaylistIds.map({ Int64($0) })
             case .failure(let error):
                 appState.error = error
             }

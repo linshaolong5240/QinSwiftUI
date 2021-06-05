@@ -30,6 +30,19 @@ extension ArtistSublistResponse.Artist {
     var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
+extension UserPlaylistResponse.Playlist {
+    struct UserPlaylistDataModel: Codable {
+        var coverImgUrl: String?
+        var id: Int64
+        var name: String
+        var subscribed: Bool
+        var trackCount: Int64
+        var userId: Int64
+    }
+    
+    var dataModel: UserPlaylistDataModel { UserPlaylistDataModel(coverImgUrl: coverImgUrl, id: Int64(id), name: name, subscribed: subscribed, trackCount: Int64(trackCount), userId: Int64(userId)) }
+}
+
 extension CommonAlbum {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
