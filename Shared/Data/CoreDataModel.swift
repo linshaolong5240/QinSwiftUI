@@ -13,7 +13,7 @@ protocol CoreDataMangable {
     func entity(context: NSManagedObjectContext) -> Entity
 }
 extension AlbumSublistResponse.Album {
-    struct AlbumSubDataModel: Codable, Identifiable {
+    struct AlbumSubDataModel: Codable {
         var id: Int64
         var name: String
         var picUrl: String
@@ -22,7 +22,7 @@ extension AlbumSublistResponse.Album {
 }
 
 extension ArtistSublistResponse.Artist {
-    struct ArtistSubDataModel: Codable, Identifiable {
+    struct ArtistSubDataModel: Codable {
         var id: Int64
         var name: String
         var img1v1Url: String?
@@ -66,7 +66,6 @@ extension CommonArtistResponse {
         return entity
     }
 }
-
 
 extension AlbumResponse.AlbumSong {
     func entity(context: NSManagedObjectContext) -> Song {
