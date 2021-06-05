@@ -33,8 +33,6 @@ enum AppAction {
     case commentMusicLoadMore
     case coverShape
     case initAction
-    case likeSonglistRequest(uid: Int? = nil)
-    case likeSonglistRequestDone(result: Result<[Int64], AppError>)
     case loginRequest(email: String, password: String)
     case loginRequestDone(result: Result<LoginResponse, AppError>)
     case loginRefreshRequest
@@ -88,6 +86,8 @@ enum AppAction {
     case searchPlaylistDone(result: Result<[PlaylistViewModel], AppError>)
     case songLikeRequest(id: Int, like: Bool)
     case songLikeRequestDone(result: Result<Bool, AppError>)
+    case songLikeListRequest(uid: Int? = nil)
+    case songLikeListRequestDone(result: Result<[Int], AppError>)
     case songsDetail(ids: [Int64])
     case songsDetailDone(result: Result<[SongDetailJSONModel], AppError>)
     case songsOrderUpdate(pid: Int64, ids: [Int64])

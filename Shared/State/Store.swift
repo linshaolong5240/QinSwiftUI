@@ -179,31 +179,6 @@ class Store: ObservableObject {
                 appState.playing.song = DataManager.shared.getSong(id: songId)
             }
             appCommand = InitAcionCommand()
-        case .songLikeRequest(let id, let like):
-            appCommand = SongLikeRequestCommand(id: id, like: like)
-        case .songLikeRequestDone(let result):
-            switch result {
-            case .success:
-                appCommand = LikeRequestDoneCommand()
-            case .failure(let error):
-                appState.error = error
-            }
-        case .likeSonglistRequest(let uid):
-            if let userId = uid {
-                appCommand = LikeListRequestCommand(uid: userId)
-            }else if let userId = appState.settings.loginUser?.profile.userId {
-                appCommand = LikeListRequestCommand(uid: userId)
-            }
-        case .likeSonglistRequestDone(let result):
-            switch result {
-            case .success(let ids):
-                appState.playlist.likedIds = ids
-            case .failure(let error):
-                appState.error = error
-            }
-            if appState.initRequestingCount > 0 {
-                appState.initRequestingCount -= 1
-            }
         case .lyricRequest(let id):
             appState.lyric.getLyricRequesting = true
             appCommand = LyricRequestCommand(id: id)
@@ -478,6 +453,32 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
+        case .songLikeRequest(let id, let like):
+            appCommand = SongLikeRequestCommand(id: id, like: like)
+        case .songLikeRequestDone(let result):
+            switch result {
+            case .success:
+                appCommand = SongLikeRequestDoneCommand()
+            case .failure(let error):
+                appState.error = error
+            }
+        case .songLikeListRequest(let uid):
+            if let userId = uid {
+                appCommand = SongLikeListRequestCommand(uid: userId)
+            }else if let userId = appState.settings.loginUser?.profile.userId {
+                appCommand = SongLikeListRequestCommand(uid: userId)
+            }
+        case .songLikeListRequestDone(let result):
+            switch result {
+            case .success(let ids):
+                appState.playlist.likedIds = ids.map({ Int64($0) })
+            case .failure(let error):
+                appState.error = error
+            }
+            if appState.initRequestingCount > 0 {
+                appState.initRequestingCount -= 1
+            }
+
         case .songsOrderUpdate(let pid, let ids):
             appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
         case .songsOrderUpdateDone(let result):

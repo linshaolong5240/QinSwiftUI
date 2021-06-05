@@ -324,13 +324,6 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //喜欢音乐列表
-    func likeList(uid: Int, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/song/like/get"
-        
-        let data = ["uid": uid] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
 //    //登陆
 //    func login(email: String, password: String, complete: @escaping CompletionBlock) {
 //        let url = "https://music.163.com/weapi/login"

@@ -24,7 +24,7 @@ struct InitAcionCommand: AppCommand {
         store.dispatch(.artistSublistRequest())
         
         store.appState.initRequestingCount += 1
-        store.dispatch(.likeSonglistRequest())
+        store.dispatch(.songLikeListRequest())
         
         store.appState.initRequestingCount += 1
         store.dispatch(.playlistCategoriesRequest)
@@ -330,33 +330,20 @@ struct CommentMusicCommand: AppCommand {
     }
 }
 
-struct LikeRequestDoneCommand: AppCommand {
-
-    func execute(in store: Store) {
-        if let uid = store.appState.settings.loginUser?.profile.userId {
-            store.dispatch(.likeSonglistRequest(uid: uid))
-        }
-    }
-}
-
-struct LikeListRequestCommand: AppCommand {
+struct SongLikeListRequestCommand: AppCommand {
     let uid: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.likeList(uid: uid) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    let likelist = json["ids"] as! [Int64]
-                    
-                    store.dispatch(.likeSonglistRequestDone(result: .success(likelist)))
-                }else {
-                    store.dispatch(.likeSonglistRequestDone(result: .failure(.likelist)))
-                }
-            case .failure(let error):
-                store.dispatch(.likeSonglistRequestDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: SongLikeListAction(parameters: .init(uid: uid)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.songLikeListRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { songLikeListResponse in
+            store.dispatch(.songLikeListRequestDone(result: .success(songLikeListResponse.ids)))
+        }.store(in: &store.cancellableSet)
     }
 }
 
@@ -1070,7 +1057,7 @@ struct SongLikeRequestCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi
             .shared
-            .requestPublisher(action: LikeSongAction(parameters: .init(trackId: id, like: like)))
+            .requestPublisher(action: SongLikeAction(parameters: .init(trackId: id, like: like)))
             .sink { completion in
             if case .failure(let error) = completion {
                 store.dispatch(.songLikeRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
@@ -1078,6 +1065,15 @@ struct SongLikeRequestCommand: AppCommand {
         } receiveValue: { likeSongResponse in
             store.dispatch(.songLikeRequestDone(result: .success(like)))
         }.store(in: &store.cancellableSet)
+    }
+}
+
+struct SongLikeRequestDoneCommand: AppCommand {
+
+    func execute(in store: Store) {
+        if let uid = store.appState.settings.loginUser?.profile.userId {
+            store.dispatch(.songLikeListRequest(uid: uid))
+        }
     }
 }
 
