@@ -8,6 +8,7 @@
 import Foundation
 
 protocol NeteaseCloudMusicResponse: Codable {
+    var code: Int { get }
 }
 
 public struct CommonAlbum: Codable {
@@ -47,8 +48,8 @@ public struct CommonAlbum: Codable {
         public let threadId: String
     }
     public let alias: [String]
-    public let artist: CommonArtist
-    public let artists: [CommonArtist]
+    public let artist: CommonArtistResponse
+    public let artists: [CommonArtistResponse]
     public let blurPicUrl: String?
     public let briefDesc: String?
     public let commentThreadId: String
@@ -75,7 +76,7 @@ public struct CommonAlbum: Codable {
     public let type: String?
 }
 
-public struct CommonArtist: NeteaseCloudMusicResponse {
+public struct CommonArtistResponse: Codable {
     public let accountId: Int?
     public let albumSize: Int
     public let alias: [String]

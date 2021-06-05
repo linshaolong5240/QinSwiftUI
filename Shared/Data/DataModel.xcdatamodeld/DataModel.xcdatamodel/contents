@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountData" representedClassName="AccountData" syncable="YES" codeGenerationType="class">
         <attribute name="userData" optional="YES" attributeType="Binary"/>
     </entity>
@@ -29,7 +29,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Artist" representedClassName="Artist" syncable="YES" codeGenerationType="class">
-        <attribute name="followed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="followed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="hotSongsId" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="img1v1Url" optional="YES" attributeType="String"/>
@@ -134,7 +134,7 @@
         <element name="AccountData" positionX="-931.87890625" positionY="-1111.08984375" width="128" height="58"/>
         <element name="Album" positionX="-2135.127197265625" positionY="-1406.215469360352" width="128" height="149"/>
         <element name="AlbumSub" positionX="-1656.499755859375" positionY="-1526.816360473633" width="128" height="88"/>
-        <element name="Artist" positionX="-2508.3388671875" positionY="-1063.632385253906" width="128" height="193"/>
+        <element name="Artist" positionX="-2508.3388671875" positionY="-1063.632385253906" width="128" height="179"/>
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>
         <element name="MV" positionX="-2301.01611328125" positionY="-1528.080322265625" width="128" height="223"/>
         <element name="Playlist" positionX="-1930.801025390625" positionY="-1642.122100830078" width="128" height="163"/>

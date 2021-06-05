@@ -138,7 +138,7 @@ struct ArtistDoneCommand: AppCommand {
         let id = artist.id
         store.dispatch(.artistAlbumRequest(id: id))
         store.dispatch(.artistIntroductionRequest(id: id))
-        store.dispatch(.artistMvRequest(id: id))
+        store.dispatch(.artistMvRequest(id: Int(id)))
     }
 }
 
@@ -186,56 +186,41 @@ struct ArtistIntroductionRequestCommand: AppCommand {
 }
 
 struct ArtistMVCommand: AppCommand {
-    let id: Int64
+    let id: Int
     let limit: Int
     let offset: Int
+    let total: Bool
     
-    init(id: Int64, limit: Int = 30, offset: Int = 0) {
-        self.id = id
-        self.limit = limit
-        self.offset = offset
-    }
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.artistMV(id: id, limit: limit, offset: offset) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    if let mvsDict = json["mvs"] as? [[String: Any]] {
-                        let mvsJSONModel = mvsDict.map{$0.toData!.toModel(ArtistMVJSONModel.self)!}
-                        DataManager.shared.updateMvs(mvsJSONModel: mvsJSONModel)
-                        DataManager.shared.updateArtistMVs(id: id, mvIds: mvsJSONModel.map{ $0.id })
-                        store.dispatch(.artistMvRequestDone(result: .success(mvsJSONModel)))
-                    }
-                }else {
-                    let (code,message) = NeteaseCloudMusicApi.parseErrorMessage(json)
-                    store.dispatch(.artistMvRequestDone(result: .failure(.artistMV(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.artistMvRequestDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: ArtistMVAction(parameters: .init(artistId: id, limit: limit, offset: offset * limit, total: total)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.artistMvRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { artistMVResponse in
+            DataManager.shared.updateMV(model: artistMVResponse)
+            store.dispatch(.artistMvRequestDone(result: .success(artistMVResponse.mvs.map({ $0.id }))))
+        }.store(in: &store.cancellableSet)
     }
 }
 
 struct ArtistSubCommand: AppCommand {
-    let id: Int64
+    let id: Int
     let sub: Bool
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.artistSub(id: id, sub: sub) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    store.dispatch(.artistSubRequestDone(result: .success(true)))
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "错误信息解码错误"
-                    store.dispatch(.artistSubRequestDone(result: .failure(.artistSub(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.artistSubRequestDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: ArtistSubAction(sub: sub, parameters: .init(artistId: id, artistIds: [id])))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.artistSubRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { artistSubResponse in
+            store.dispatch(.artistSubRequestDone(result: .success(sub)))
+        }.store(in: &store.cancellableSet)
     }
 }
 
@@ -404,7 +389,7 @@ struct LikeRequestDoneCommand: AppCommand {
 
     func execute(in store: Store) {
         if let uid = store.appState.settings.loginUser?.profile.userId {
-            store.dispatch(.likelistRequest(uid: Int64(uid)))
+            store.dispatch(.likelistRequest(uid: uid))
         }
     }
 }

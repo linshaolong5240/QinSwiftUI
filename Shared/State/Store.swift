@@ -109,9 +109,9 @@ class Store: ObservableObject {
             if !appState.artist.albumRequesting && !appState.artist.introductionRequesting && !appState.artist.mvRequesting {
                 appState.artist.detailRequesting = false
             }
-        case .artistMvRequest(let id, let limit, let offset):
+        case .artistMvRequest(let id, let limit, let offset, let total):
             appState.artist.mvRequesting = true
-            appCommand = ArtistMVCommand(id: id, limit: limit, offset: offset)
+            appCommand = ArtistMVCommand(id: id, limit: limit, offset: offset, total: total)
         case .artistMvRequestDone(let result):
             switch result {
             case .success:
@@ -206,7 +206,7 @@ class Store: ObservableObject {
             }
         case .likelistRequest(let uid):
             if let userId = uid {
-                appCommand = LikeListRequestCommand(uid: Int(userId))
+                appCommand = LikeListRequestCommand(uid: userId)
             }else if let userId = appState.settings.loginUser?.profile.userId {
                 appCommand = LikeListRequestCommand(uid: userId)
             }

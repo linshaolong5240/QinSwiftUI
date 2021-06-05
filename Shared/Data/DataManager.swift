@@ -232,11 +232,11 @@ class DataManager {
         _ = artistJSONModel.toArtistEntity(context: self.context())
         self.save()
     }
-    public func updateArtist(model: CommonArtist) {
+    public func updateArtist(model: CommonArtistResponse) {
         defer { save() }
         _ = model.entity(context: context())
     }
-    public func updateArtist(artistModel: CommonArtist, introduction: String) {
+    public func updateArtist(artistModel: CommonArtistResponse, introduction: String) {
         defer { save() }
         let artist = artistModel.entity(context: context())
         artist.introduction = introduction
@@ -279,17 +279,18 @@ class DataManager {
             artist.addToHotSongs(NSSet(array: songs))
         }
     }
-    public func updateMvs(mvsJSONModel: [ArtistMVJSONModel]) {
-        for mvJSONModel in mvsJSONModel {
-            let mv = mvJSONModel.toMVEntity(context: self.context())
-            if let artist = self.getArtist(id: Int(mvJSONModel.artist.id)) {
+    
+    public func updateMV(model: ArtistMVResponse) {
+        defer { save() }
+        model.mvs.forEach { item in
+            let mv = item.entity(context: context())
+            if let artist = getArtist(id: item.artist.id) {
                 artist.addToMvs(mv)
             }else {
-                let artist = mvJSONModel.artist.toArtistEntity(context: self.context())
+                let artist = item.artist.entity(context: context())
                 artist.addToMvs(mv)
             }
         }
-        self.save()
     }
     public func updatePlaylist(playlistJSONModel: PlaylistJSONModel) {
         _ = playlistJSONModel.toPlaylistEntity(context: self.context())

@@ -42,7 +42,7 @@ extension CommonAlbum {
     }
 }
 
-extension CommonArtist {
+extension CommonArtistResponse {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.followed = followed
@@ -90,6 +90,28 @@ extension ArtistHotSongsResponse.HotSong: CoreDataMangable {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(duration)
+        entity.id = Int64(id)
+        entity.name = name
+        return entity
+    }
+}
+
+extension ArtistMVResponse.MV.Artist: CoreDataMangable {
+    func entity(context: NSManagedObjectContext) -> Artist {
+        let entity = Artist(context: context)
+        entity.followed = false
+        entity.id = Int64(id)
+        entity.img1v1Url = img1v1Url
+        entity.introduction = briefDesc
+        entity.name = name
+        return entity
+    }
+}
+
+extension ArtistMVResponse.MV: CoreDataMangable {
+    func entity(context: NSManagedObjectContext) -> MV {
+        let entity = MV(context: context)
+        entity.duration = Int64(duration)
         entity.id = Int64(id)
         entity.name = name
         return entity

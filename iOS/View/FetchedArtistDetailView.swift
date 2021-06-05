@@ -85,7 +85,7 @@ struct ArtistDetailView: View {
                 Button(action: {
                     let id = artist.id
                     let sub = !Store.shared.appState.artist.subedIds.contains(id)
-                    Store.shared.dispatch(.artistSubRequest(id: id, sub: sub))
+                    Store.shared.dispatch(.artistSubRequest(id: Int(id), sub: sub))
                 }) {
                     NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "heart.fill" : "heart",
                               size: .small)
@@ -151,7 +151,10 @@ struct ArtistDetailView: View {
                 if artist.albums?.count == 0 {
                     Store.shared.dispatch(.artistAlbumRequest(id: artist.id, limit: 999, offset: 0))
                 }
-            case .mv: break
+            case .mv:
+                if artist.mvs?.count == 0 {
+                    Store.shared.dispatch(.artistMvRequest(id: Int(artist.id)))
+                }
             case .hotSong: break
             }
         })
