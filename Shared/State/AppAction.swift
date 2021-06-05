@@ -39,8 +39,6 @@ enum AppAction {
     case loginRefreshRequestDone(result: Result<Bool, AppError>)
     case logoutRequest
     case logoutRequestDone(result: Result<Int, AppError>)
-    case lyricRequest(id: Int64)
-    case lyricRequestDone(result: Result<String?, AppError>)
     case mvDetailRequest(id: Int64)
     case mvDetaillRequestDone(result: Result<MVJSONModel, AppError>)
     case mvUrl(id: Int64)
@@ -90,6 +88,8 @@ enum AppAction {
     case songLikeListRequestDone(result: Result<[Int], AppError>)
     case songsDetail(ids: [Int64])
     case songsDetailDone(result: Result<[SongDetailJSONModel], AppError>)
+    case songLyricRequest(id: Int)
+    case songLyricRequestDone(result: Result<String?, AppError>)
     case songsOrderUpdate(pid: Int64, ids: [Int64])
     case songsOrderUpdateDone(result: Result<Int64, AppError>)
     case songsURL(ids: [Int64])

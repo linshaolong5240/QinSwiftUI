@@ -179,22 +179,6 @@ class Store: ObservableObject {
                 appState.playing.song = DataManager.shared.getSong(id: songId)
             }
             appCommand = InitAcionCommand()
-        case .lyricRequest(let id):
-            appState.lyric.getLyricRequesting = true
-            appCommand = LyricRequestCommand(id: id)
-        case .lyricRequestDone(result: let result):
-            switch result {
-            case .success(let lyric):
-                if lyric != nil {
-                    appState.lyric.lyric = LyricViewModel(lyric: lyric!)
-                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
-                }else {
-                    appState.lyric.lyric = nil
-                }
-            case .failure(let error):
-                appState.lyric.getlyricError = error
-            }
-            appState.lyric.getLyricRequesting = false
         case .loginRequest(let email, let password):
             appState.settings.loginRequesting = true
             appCommand = LoginRequestCommand(email: email, password: password)
@@ -478,7 +462,22 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-
+        case .songLyricRequest(let id):
+            appState.lyric.requesting = true
+            appCommand = SongLyricRequestCommand(id: id)
+        case .songLyricRequestDone(result: let result):
+            switch result {
+            case .success(let lyric):
+                if lyric != nil {
+                    appState.lyric.lyric = LyricViewModel(lyric: lyric!)
+                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
+                }else {
+                    appState.lyric.lyric = nil
+                }
+            case .failure(let error):
+                appState.lyric.getlyricError = error
+            }
+            appState.lyric.requesting = false
         case .songsOrderUpdate(let pid, let ids):
             appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
         case .songsOrderUpdateDone(let result):

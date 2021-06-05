@@ -89,6 +89,14 @@
 		2B8EFEC5266BFDA800FF42EF /* SongLikeListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEC3266BFDA800FF42EF /* SongLikeListResponse.swift */; };
 		2B8EFEC7266BFDE600FF42EF /* SongLikeListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEC6266BFDE600FF42EF /* SongLikeListAction.swift */; };
 		2B8EFEC8266BFDE600FF42EF /* SongLikeListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEC6266BFDE600FF42EF /* SongLikeListAction.swift */; };
+		2B8EFECA266C009E00FF42EF /* LoginRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEC9266C009E00FF42EF /* LoginRefreshResponse.swift */; };
+		2B8EFECB266C009E00FF42EF /* LoginRefreshResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEC9266C009E00FF42EF /* LoginRefreshResponse.swift */; };
+		2B8EFECD266C00FC00FF42EF /* LoginRefreshAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFECC266C00FC00FF42EF /* LoginRefreshAction.swift */; };
+		2B8EFECE266C00FC00FF42EF /* LoginRefreshAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFECC266C00FC00FF42EF /* LoginRefreshAction.swift */; };
+		2B8EFED0266C027D00FF42EF /* SongLyricResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFECF266C027D00FF42EF /* SongLyricResponse.swift */; };
+		2B8EFED1266C027D00FF42EF /* SongLyricResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFECF266C027D00FF42EF /* SongLyricResponse.swift */; };
+		2B8EFED3266C035900FF42EF /* SongLyricAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFED2266C035900FF42EF /* SongLyricAction.swift */; };
+		2B8EFED4266C035900FF42EF /* SongLyricAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFED2266C035900FF42EF /* SongLyricAction.swift */; };
 		2B8F56EA252F8969008FFF8F /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F56E9252F8969008FFF8F /* DescriptionView.swift */; };
 		2B8F56EB252F8969008FFF8F /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F56E9252F8969008FFF8F /* DescriptionView.swift */; };
 		2B95469C25508F3500903B27 /* SongListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95469B25508F3500903B27 /* SongListView.swift */; };
@@ -260,6 +268,10 @@
 		2B8EFEC0266BF99C00FF42EF /* SongLikeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongLikeAction.swift; sourceTree = "<group>"; };
 		2B8EFEC3266BFDA800FF42EF /* SongLikeListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongLikeListResponse.swift; sourceTree = "<group>"; };
 		2B8EFEC6266BFDE600FF42EF /* SongLikeListAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongLikeListAction.swift; sourceTree = "<group>"; };
+		2B8EFEC9266C009E00FF42EF /* LoginRefreshResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRefreshResponse.swift; sourceTree = "<group>"; };
+		2B8EFECC266C00FC00FF42EF /* LoginRefreshAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRefreshAction.swift; sourceTree = "<group>"; };
+		2B8EFECF266C027D00FF42EF /* SongLyricResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongLyricResponse.swift; sourceTree = "<group>"; };
+		2B8EFED2266C035900FF42EF /* SongLyricAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongLyricAction.swift; sourceTree = "<group>"; };
 		2B8F56E9252F8969008FFF8F /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		2B95469B25508F3500903B27 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidirectionalCollection+Extension.swift"; sourceTree = "<group>"; };
@@ -609,8 +621,10 @@
 				EF474B192660E5480021F3D1 /* ArtistIntroductionResponse.swift */,
 				EF474B1C2660EECE0021F3D1 /* LogoutResponse.swift */,
 				EF474B232660F2A80021F3D1 /* LoginResponse.swift */,
+				2B8EFEC9266C009E00FF42EF /* LoginRefreshResponse.swift */,
 				2B8EFEBD266BF92000FF42EF /* SongLikeResponse.swift */,
 				2B8EFEC3266BFDA800FF42EF /* SongLikeListResponse.swift */,
+				2B8EFECF266C027D00FF42EF /* SongLyricResponse.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -623,8 +637,10 @@
 				2B8EFEBA266BF3D800FF42EF /* ArtistSubAction.swift */,
 				EF474B202660EF440021F3D1 /* LogoutAction.swift */,
 				EF474B262660F4670021F3D1 /* LoginAction.swift */,
+				2B8EFECC266C00FC00FF42EF /* LoginRefreshAction.swift */,
 				2B8EFEC0266BF99C00FF42EF /* SongLikeAction.swift */,
 				2B8EFEC6266BFDE600FF42EF /* SongLikeListAction.swift */,
+				2B8EFED2266C035900FF42EF /* SongLyricAction.swift */,
 			);
 			path = Action;
 			sourceTree = "<group>";
@@ -754,6 +770,7 @@
 				2B20BBFE2525DAB000679D0D /* ArtistViewModel.swift in Sources */,
 				EF474B242660F2A80021F3D1 /* LoginResponse.swift in Sources */,
 				EFDB8B4C265FA673005C3AEE /* AlbumSubResponse.swift in Sources */,
+				2B8EFED0266C027D00FF42EF /* SongLyricResponse.swift in Sources */,
 				2BCCB29B24DC5A2B004CAD67 /* TestView.swift in Sources */,
 				EFDB8B5526609C72005C3AEE /* AlbumSublistResponse.swift in Sources */,
 				EFDB8B5226609BB0005C3AEE /* ArtistHotSongsResponse.swift in Sources */,
@@ -773,6 +790,7 @@
 				2B8EFEBE266BF92000FF42EF /* SongLikeResponse.swift in Sources */,
 				2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */,
 				2BCCB33024DC7EF9004CAD67 /* SongViewModel.swift in Sources */,
+				2B8EFED3266C035900FF42EF /* SongLyricAction.swift in Sources */,
 				EFDB8B5826609C89005C3AEE /* ArtistSublistResponse.swift in Sources */,
 				2B01EFE1257BE6FC00BEBD54 /* PlaylistManageView.swift in Sources */,
 				2BE89B15250F7F5100E0F278 /* NEUButton.swift in Sources */,
@@ -828,6 +846,7 @@
 				2B8EFEB2266BD15900FF42EF /* ArtistMVResponse.swift in Sources */,
 				2B1E4B312518176900D71F4A /* CaseIterable+Extension.swift in Sources */,
 				2B1ABED725387F5D00B9A15C /* NEUNavigationBarTitleView.swift in Sources */,
+				2B8EFECA266C009E00FF42EF /* LoginRefreshResponse.swift in Sources */,
 				2B9BE026251A132F000AFB6A /* BidirectionalCollection+Extension.swift in Sources */,
 				EF3890D3262D803D00C39649 /* JSONHelper.swift in Sources */,
 				2BCCB2A324DC5A2C004CAD67 /* SettingsView.swift in Sources */,
@@ -850,6 +869,7 @@
 				2BCCB2E224DC7A17004CAD67 /* Player.swift in Sources */,
 				2BC4C20F254A3FBE00121D3E /* RecommendSongsJSONModel.swift in Sources */,
 				2B8EFEB5266BDB0D00FF42EF /* ArtistMVAction.swift in Sources */,
+				2B8EFECD266C00FC00FF42EF /* LoginRefreshAction.swift in Sources */,
 				2B41D86E25336D5F000B6FAC /* DiscoverPlaylistView.swift in Sources */,
 				2BCCB26124DC5671004CAD67 /* QinApp.swift in Sources */,
 			);
@@ -881,6 +901,7 @@
 				2B20BBF82525D86A00679D0D /* ArtistJSONModel.swift in Sources */,
 				2BCCB33124DC7EF9004CAD67 /* SongViewModel.swift in Sources */,
 				EF474B252660F2A80021F3D1 /* LoginResponse.swift in Sources */,
+				2B8EFED4266C035900FF42EF /* SongLyricAction.swift in Sources */,
 				2BCCB32724DC7BCD004CAD67 /* Store.swift in Sources */,
 				2B0668F52530586F0007053C /* ArtistSubJSONModel.swift in Sources */,
 				2B549B4C2509483900EA37B5 /* NEUTextFieldStyle.swift in Sources */,
@@ -914,9 +935,12 @@
 				2B691739252F556E00F05DB9 /* CreatorJSONModel.swift in Sources */,
 				EF6EF0F8265E5A1600F164B5 /* NeteaseCloudMusicAction.swift in Sources */,
 				EF3890D4262D803D00C39649 /* JSONHelper.swift in Sources */,
+				2B8EFECE266C00FC00FF42EF /* LoginRefreshAction.swift in Sources */,
 				2BC4C210254A3FBE00121D3E /* RecommendSongsJSONModel.swift in Sources */,
 				2BD285BF252B119B000E4B9F /* AlbumJSONModel.swift in Sources */,
 				2B8EFEBC266BF3D800FF42EF /* ArtistSubAction.swift in Sources */,
+				2B8EFED1266C027D00FF42EF /* SongLyricResponse.swift in Sources */,
+				2B8EFECB266C009E00FF42EF /* LoginRefreshResponse.swift in Sources */,
 				EF474B282660F4670021F3D1 /* LoginAction.swift in Sources */,
 				2BCCB32F24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,
 				2BCCB32D24DC7EF9004CAD67 /* CommentViewModel.swift in Sources */,

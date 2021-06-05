@@ -347,26 +347,38 @@ struct SongLikeListRequestCommand: AppCommand {
     }
 }
 
-struct LyricRequestCommand: AppCommand {
-    let id: Int64
+struct SongLyricRequestCommand: AppCommand {
+    let id: Int
+    
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.lyric(id: id) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    if let lrc = json["lrc"] as? NeteaseCloudMusicApi.ResponseData {
-                        let lyric = lrc["lyric"] as! String
-                        store.dispatch(.lyricRequestDone(result: .success(lyric)))
-                    }else {
-                        store.dispatch(.lyricRequestDone(result: .success(nil)))
-                    }
-                }else {
-                    store.dispatch(.lyricRequestDone(result: .failure(.lyricError)))
-                }
-            case .failure(let error):
-                store.dispatch(.lyricRequestDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: SongLyricAction(parameters: .init(id: id)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.songLyricRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { songLyricResponse in
+            store.dispatch(.songLyricRequestDone(result: .success(songLyricResponse.lrc.lyric)))
+        }.store(in: &store.cancellableSet)
+//        NeteaseCloudMusicApi.shared.lyric(id: id) { result in
+//            switch result {
+//            case .success(let json):
+//                print(json.toJSONString)
+//                if json["code"] as! Int == 200 {
+//                    if let lrc = json["lrc"] as? NeteaseCloudMusicApi.ResponseData {
+//                        let lyric = lrc["lyric"] as! String
+//                        store.dispatch(.lyricRequestDone(result: .success(lyric)))
+//                    }else {
+//                        store.dispatch(.lyricRequestDone(result: .success(nil)))
+//                    }
+//                }else {
+//                    store.dispatch(.lyricRequestDone(result: .failure(.lyricError)))
+//                }
+//            case .failure(let error):
+//                store.dispatch(.lyricRequestDone(result: .failure(error)))
+//            }
+//        }
     }
 
 }
@@ -400,18 +412,20 @@ struct LoginRequestDoneCommand: AppCommand {
 struct LoginRefreshRequestCommand: AppCommand {
 
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.loginRefresh{ result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    store.dispatch(.loginRefreshRequestDone(result: .success(true)))
-                }else {
-                    store.dispatch(.loginRefreshRequestDone(result: .success(false)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: LoginRefreshAction())
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.loginRefreshRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.loginRefreshRequestDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { loginRefreshResponse in
+                guard loginRefreshResponse.code == 200 else {
+                    store.dispatch(.loginRefreshRequestDone(result: .success(false)))
+                    return
+                }
+                store.dispatch(.loginRefreshRequestDone(result: .success(true)))
+            }.store(in: &store.cancellableSet)
     }
 }
 
@@ -601,7 +615,7 @@ struct PlayerPlayRequestDoneCommand: AppCommand {
     func execute(in store: Store) {
         let index = store.appState.playing.index
         let songId = store.appState.playing.playinglist[index]
-        store.dispatch(.lyricRequest(id: songId))
+        store.dispatch(.songLyricRequest(id: Int(songId)))
         if let url = URL(string: url) {
             Player.shared.playWithURL(url: url)
         }

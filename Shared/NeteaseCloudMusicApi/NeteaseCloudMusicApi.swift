@@ -334,28 +334,28 @@ extension NeteaseCloudMusicApi {
 //        ]
 //        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
 //    }
-    func loginRefresh(complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/login/token/refresh"
-        
-        let data = [String: Any]()
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    func loginRefresh(complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/login/token/refresh"
+//
+//        let data = [String: Any]()
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
 //    func logout(_ complete: @escaping CompletionBlock) {
 //        let url = "https://music.163.com/weapi/logout"
 //        
 //        let data = ResponseData()
 //        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
 //    }
-    func lyric(id: Int64 ,complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/song/lyric"
-        
-        let data = ["id": id,
-                    "lv": -1,
-                    "kv": -1,
-                    "tv": -1,
-        ]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    func lyric(id: Int64 ,complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/song/lyric"
+//        
+//        let data = ["id": id,
+//                    "lv": -1,
+//                    "kv": -1,
+//                    "tv": -1,
+//        ]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
     //MV详情
     func mvDetail(id: Int64 ,complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/mv/detail"
