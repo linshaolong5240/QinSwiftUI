@@ -179,22 +179,22 @@ class Store: ObservableObject {
                 appState.playing.song = DataManager.shared.getSong(id: songId)
             }
             appCommand = InitAcionCommand()
-        case .likeRequest(let id, let like):
-            appCommand = LikeRequestCommand(id: id, like: like)
-        case .likeRequestDone(let result):
+        case .songLikeRequest(let id, let like):
+            appCommand = SongLikeRequestCommand(id: id, like: like)
+        case .songLikeRequestDone(let result):
             switch result {
             case .success:
                 appCommand = LikeRequestDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
-        case .likelistRequest(let uid):
+        case .likeSonglistRequest(let uid):
             if let userId = uid {
                 appCommand = LikeListRequestCommand(uid: userId)
             }else if let userId = appState.settings.loginUser?.profile.userId {
                 appCommand = LikeListRequestCommand(uid: userId)
             }
-        case .likelistRequestDone(let result):
+        case .likeSonglistRequestDone(let result):
             switch result {
             case .success(let ids):
                 appState.playlist.likedIds = ids

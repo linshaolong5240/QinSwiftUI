@@ -63,7 +63,7 @@ struct PlayingNowView: View {
                             Button(action: {
                                 if let id = Store.shared.appState.playing.song?.id {
                                     let like = !Store.shared.appState.playlist.likedIds.contains(id)
-                                    Store.shared.dispatch(.likeRequest(id: id, like: like))
+                                    Store.shared.dispatch(.songLikeRequest(id: Int(id), like: like))
                                 }
                             }) {
                                 NEUSFView(systemName: store.appState.playlist.likedIds.contains(playing.song?.id ?? 0) ? "heart.fill" : "heart", size: .medium)

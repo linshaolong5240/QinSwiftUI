@@ -81,6 +81,10 @@
 		2B8EFEB9266BF38B00FF42EF /* ArtistSubResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEB7266BF38B00FF42EF /* ArtistSubResponse.swift */; };
 		2B8EFEBB266BF3D800FF42EF /* ArtistSubAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEBA266BF3D800FF42EF /* ArtistSubAction.swift */; };
 		2B8EFEBC266BF3D800FF42EF /* ArtistSubAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEBA266BF3D800FF42EF /* ArtistSubAction.swift */; };
+		2B8EFEBE266BF92000FF42EF /* LikeSongResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEBD266BF92000FF42EF /* LikeSongResponse.swift */; };
+		2B8EFEBF266BF92000FF42EF /* LikeSongResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEBD266BF92000FF42EF /* LikeSongResponse.swift */; };
+		2B8EFEC1266BF99C00FF42EF /* LikeSongAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEC0266BF99C00FF42EF /* LikeSongAction.swift */; };
+		2B8EFEC2266BF99C00FF42EF /* LikeSongAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEC0266BF99C00FF42EF /* LikeSongAction.swift */; };
 		2B8F56EA252F8969008FFF8F /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F56E9252F8969008FFF8F /* DescriptionView.swift */; };
 		2B8F56EB252F8969008FFF8F /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8F56E9252F8969008FFF8F /* DescriptionView.swift */; };
 		2B95469C25508F3500903B27 /* SongListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95469B25508F3500903B27 /* SongListView.swift */; };
@@ -248,6 +252,8 @@
 		2B8EFEB4266BDB0D00FF42EF /* ArtistMVAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMVAction.swift; sourceTree = "<group>"; };
 		2B8EFEB7266BF38B00FF42EF /* ArtistSubResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSubResponse.swift; sourceTree = "<group>"; };
 		2B8EFEBA266BF3D800FF42EF /* ArtistSubAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSubAction.swift; sourceTree = "<group>"; };
+		2B8EFEBD266BF92000FF42EF /* LikeSongResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeSongResponse.swift; sourceTree = "<group>"; };
+		2B8EFEC0266BF99C00FF42EF /* LikeSongAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeSongAction.swift; sourceTree = "<group>"; };
 		2B8F56E9252F8969008FFF8F /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		2B95469B25508F3500903B27 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidirectionalCollection+Extension.swift"; sourceTree = "<group>"; };
@@ -595,6 +601,7 @@
 				EFDB8B5426609C72005C3AEE /* AlbumSublistResponse.swift */,
 				EFDB8B5726609C89005C3AEE /* ArtistSublistResponse.swift */,
 				EF474B192660E5480021F3D1 /* ArtistIntroductionResponse.swift */,
+				2B8EFEBD266BF92000FF42EF /* LikeSongResponse.swift */,
 				EF474B1C2660EECE0021F3D1 /* LogoutResponse.swift */,
 				EF474B232660F2A80021F3D1 /* LoginResponse.swift */,
 			);
@@ -609,6 +616,7 @@
 				2B8EFEBA266BF3D800FF42EF /* ArtistSubAction.swift */,
 				EF474B202660EF440021F3D1 /* LogoutAction.swift */,
 				EF474B262660F4670021F3D1 /* LoginAction.swift */,
+				2B8EFEC0266BF99C00FF42EF /* LikeSongAction.swift */,
 			);
 			path = Action;
 			sourceTree = "<group>";
@@ -731,6 +739,7 @@
 				2BB8558324E63CC800D600BB /* ThemeViewModel.swift in Sources */,
 				2B69171E252D84AA00F05DB9 /* SongURLJSONModel.swift in Sources */,
 				2BC664A8250BFA3700A08BD7 /* NEUListStyle.swift in Sources */,
+				2B8EFEC1266BF99C00FF42EF /* LikeSongAction.swift in Sources */,
 				2BC8316D2571116A003D8D10 /* SubedPlaylistView.swift in Sources */,
 				2BCCB2DB24DC79DC004CAD67 /* Color+Extension.swift in Sources */,
 				2B20BBFE2525DAB000679D0D /* ArtistViewModel.swift in Sources */,
@@ -752,6 +761,7 @@
 				2BCCB32424DC7BCD004CAD67 /* AppAction.swift in Sources */,
 				2B1FBF8C2567BDBA0003ADC4 /* DataModel.xcdatamodeld in Sources */,
 				2B8F56EA252F8969008FFF8F /* DescriptionView.swift in Sources */,
+				2B8EFEBE266BF92000FF42EF /* LikeSongResponse.swift in Sources */,
 				2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */,
 				2BCCB33024DC7EF9004CAD67 /* SongViewModel.swift in Sources */,
 				EFDB8B5826609C89005C3AEE /* ArtistSublistResponse.swift in Sources */,
@@ -884,6 +894,7 @@
 				2B47BE4E250BC22600848354 /* NEUDivider.swift in Sources */,
 				2BCCB31F24DC7BCC004CAD67 /* AppState.swift in Sources */,
 				2BCCB2D824DC79DC004CAD67 /* View+Extension.swift in Sources */,
+				2B8EFEC2266BF99C00FF42EF /* LikeSongAction.swift in Sources */,
 				2B89DA4C254C3F4700FFD1BF /* UserPlaylistModel.swift in Sources */,
 				2BD285BA252B1108000E4B9F /* SongJSONModel.swift in Sources */,
 				2BCCB2F324DC7A62004CAD67 /* CommentJSONModel.swift in Sources */,
@@ -900,6 +911,7 @@
 				2BCCB32124DC7BCC004CAD67 /* AppCommand.swift in Sources */,
 				2BD4D9CC251BC460006798ED /* LyricViewModel.swift in Sources */,
 				2BCCB2E324DC7A17004CAD67 /* Player.swift in Sources */,
+				2B8EFEBF266BF92000FF42EF /* LikeSongResponse.swift in Sources */,
 				2B8F56EB252F8969008FFF8F /* DescriptionView.swift in Sources */,
 				2B41D87325336E3D000B6FAC /* SwiftUI+Extension.swift in Sources */,
 				2B81DCBC250961810036EF0B /* NEUMenuStyle.swift in Sources */,

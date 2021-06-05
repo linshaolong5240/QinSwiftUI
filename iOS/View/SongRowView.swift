@@ -37,7 +37,7 @@ struct SongRowView: View {
             Spacer()
             Button(action: {
                 let like = !Store.shared.appState.playlist.likedIds.contains(song.id)
-                Store.shared.dispatch(.likeRequest(id: song.id, like: like))
+                Store.shared.dispatch(.songLikeRequest(id: Int(song.id), like: like))
             }, label: {
                 Image(systemName: store.appState.playlist.likedIds.contains(song.id) ? "heart.fill" : "heart")
                     .foregroundColor(Color.mainTextColor)

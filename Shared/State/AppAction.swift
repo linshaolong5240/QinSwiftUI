@@ -33,10 +33,8 @@ enum AppAction {
     case commentMusicLoadMore
     case coverShape
     case initAction
-    case likeRequest(id: Int64, like: Bool)
-    case likeRequestDone(result: Result<Bool, AppError>)
-    case likelistRequest(uid: Int? = nil)
-    case likelistRequestDone(result: Result<[Int64], AppError>)
+    case likeSonglistRequest(uid: Int? = nil)
+    case likeSonglistRequestDone(result: Result<[Int64], AppError>)
     case loginRequest(email: String, password: String)
     case loginRequestDone(result: Result<LoginResponse, AppError>)
     case loginRefreshRequest
@@ -88,6 +86,8 @@ enum AppAction {
     case search(keyword: String, type: NeteaseCloudMusicApi.SearchType = .song, limit: Int = 30, offset: Int = 0)
     case searchSongDone(result: Result<[Int64], AppError>)
     case searchPlaylistDone(result: Result<[PlaylistViewModel], AppError>)
+    case songLikeRequest(id: Int, like: Bool)
+    case songLikeRequestDone(result: Result<Bool, AppError>)
     case songsDetail(ids: [Int64])
     case songsDetailDone(result: Result<[SongDetailJSONModel], AppError>)
     case songsOrderUpdate(pid: Int64, ids: [Int64])

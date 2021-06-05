@@ -252,32 +252,32 @@ extension NeteaseCloudMusicApi {
 //        ] as [String : Any]
 //        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
 //    }
-    // 收藏与取消收藏歌手
-    func artistSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
-        let action = sub ? "sub" : "unsub"
-        let url = "https://music.163.com/weapi/artist/\(action)"
-        let data = [
-            "artistId": id,
-            "artistIds": "[\(id)]"
-        ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    // 歌手收藏列表
-    func artistSublist(limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/artist/sublist"
-        let data = [
-            "limit": limit,
-            "offset": offset * limit,
-            "total": true
-        ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //歌手介绍
-    func artistIntroduction(id: Int64, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/artist/introduction"
-        let data = ["id": id]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
+//    // 收藏与取消收藏歌手
+//    func artistSub(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
+//        let action = sub ? "sub" : "unsub"
+//        let url = "https://music.163.com/weapi/artist/\(action)"
+//        let data = [
+//            "artistId": id,
+//            "artistIds": "[\(id)]"
+//        ] as [String : Any]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
+//    // 歌手收藏列表
+//    func artistSublist(limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/artist/sublist"
+//        let data = [
+//            "limit": limit,
+//            "offset": offset * limit,
+//            "total": true
+//        ] as [String : Any]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
+//    //歌手介绍
+//    func artistIntroduction(id: Int64, complete: @escaping CompletionBlock) {
+//        let url = "https://music.163.com/weapi/artist/introduction"
+//        let data = ["id": id]
+//        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
+//    }
     // 发送与删除评论
     func comment(id: Int64, cid: Int64, content: String = "", type: CommentType, action: CommentAction, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/resource/comments/\(action.rawValue)"
@@ -322,16 +322,6 @@ extension NeteaseCloudMusicApi {
                     "offset": offset * limit,
                     "beforeTime": beforeTime
         ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //喜欢或取消喜欢歌曲
-    func like(id: Int64, like: Bool, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/radio/like"
-        
-        let data: [String : Any] = ["alg": "itembased",
-                                    "trackId": id,
-                                    "like": like,
-                                    "time": 3]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
     //喜欢音乐列表
