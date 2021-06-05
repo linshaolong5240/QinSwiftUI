@@ -347,42 +347,6 @@ struct SongLikeListRequestCommand: AppCommand {
     }
 }
 
-struct SongLyricRequestCommand: AppCommand {
-    let id: Int
-    
-    func execute(in store: Store) {
-        NeteaseCloudMusicApi
-            .shared
-            .requestPublisher(action: SongLyricAction(parameters: .init(id: id)))
-            .sink { completion in
-            if case .failure(let error) = completion {
-                store.dispatch(.songLyricRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
-            }
-        } receiveValue: { songLyricResponse in
-            store.dispatch(.songLyricRequestDone(result: .success(songLyricResponse.lrc.lyric)))
-        }.store(in: &store.cancellableSet)
-//        NeteaseCloudMusicApi.shared.lyric(id: id) { result in
-//            switch result {
-//            case .success(let json):
-//                print(json.toJSONString)
-//                if json["code"] as! Int == 200 {
-//                    if let lrc = json["lrc"] as? NeteaseCloudMusicApi.ResponseData {
-//                        let lyric = lrc["lyric"] as! String
-//                        store.dispatch(.lyricRequestDone(result: .success(lyric)))
-//                    }else {
-//                        store.dispatch(.lyricRequestDone(result: .success(nil)))
-//                    }
-//                }else {
-//                    store.dispatch(.lyricRequestDone(result: .failure(.lyricError)))
-//                }
-//            case .failure(let error):
-//                store.dispatch(.lyricRequestDone(result: .failure(error)))
-//            }
-//        }
-    }
-
-}
-
 struct LoginRequestCommand: AppCommand {
     let email: String
     let password: String
@@ -1088,6 +1052,23 @@ struct SongLikeRequestDoneCommand: AppCommand {
         if let uid = store.appState.settings.loginUser?.profile.userId {
             store.dispatch(.songLikeListRequest(uid: uid))
         }
+    }
+}
+
+struct SongLyricRequestCommand: AppCommand {
+    let id: Int
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: SongLyricAction(parameters: .init(id: id)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.songLyricRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+            }
+        } receiveValue: { songLyricResponse in
+            store.dispatch(.songLyricRequestDone(result: .success(songLyricResponse.lrc.lyric)))
+        }.store(in: &store.cancellableSet)
     }
 }
 
