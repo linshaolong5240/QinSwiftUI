@@ -39,8 +39,8 @@ enum AppAction {
     case loginRefreshRequestDone(result: Result<Bool, AppError>)
     case logoutRequest
     case logoutRequestDone(result: Result<Int, AppError>)
-    case mvDetailRequest(id: Int64)
-    case mvDetaillRequestDone(result: Result<MVJSONModel, AppError>)
+    case mvDetailRequest(id: Int)
+    case mvDetaillRequestDone(result: Result<Int, AppError>)
     case mvUrl(id: Int64)
 //    case mvUrlDone(result: Result<String, AppError>)
     case playerPause

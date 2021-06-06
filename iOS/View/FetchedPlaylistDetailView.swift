@@ -134,7 +134,7 @@ struct CommonNavigationBarView: View {
                 case .artist:
                     Store.shared.dispatch(.artistRequest(id: id))
                 case .mv:
-                    Store.shared.dispatch(.mvDetailRequest(id: id))
+                    Store.shared.dispatch(.mvDetailRequest(id: Int(id)))
                 case .playlist:
                     if id == 0 {
                         Store.shared.dispatch(.recommendSongsRequest)

@@ -132,7 +132,7 @@ struct ArtistDetailView: View {
                         return left.publishTime ?? "" > right.publishTime ?? "" ? true : false
                     }), gridColumns: 3) { item in
                         Button(action: {
-                            Store.shared.dispatch(.mvDetailRequest(id: item.id))
+                            Store.shared.dispatch(.mvDetailRequest(id: Int(item.id)))
                         }) {
                             NavigationLink(destination: FetchedMVDetailView(id: item.id)) {
                                 CommonGridItemView(item)

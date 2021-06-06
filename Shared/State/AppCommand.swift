@@ -421,21 +421,19 @@ struct LogoutRequestCommand: AppCommand {
 }
 
 struct MVDetailRequestCommand: AppCommand {
-    let id: Int64
+    let id: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.mvDetail(id: id) { result in
-            switch result {
-            case .success(let json):
-                if let mvDict = json["data"] as? [String: Any] {
-                    if let mvJSONModel = mvDict.toData?.toModel(MVJSONModel.self) {
-                        store.dispatch(.mvDetaillRequestDone(result: .success(mvJSONModel)))
-                    }
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: LogoutAction())
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.mvDetaillRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.mvDetaillRequestDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { mvDetailResponse in
+                store.dispatch(.mvDetaillRequestDone(result: .success(id)))
+            }.store(in: &store.cancellableSet)
     }
 }
 
@@ -1100,20 +1098,20 @@ struct SongsURLRequestCommand: AppCommand {
     let ids: [Int]
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.songsURL(ids) { result in
-            switch result {
-            case .success(let json):
-                if let songsURLDict = json["data"] as? [NeteaseCloudMusicApi.ResponseData] {
-                    if songsURLDict.count > 0 {
-                        store.dispatch(.songsURLRequestDone(result: .success(songsURLDict.map{$0.toData!.toModel(SongURLJSONModel.self)!})))
-                    }
-                }else {
-                    store.dispatch(.songsURLRequestDone(result: .failure(.songsURLError)))
-                }
-            case .failure(let error):
-                store.dispatch(.songsURLRequestDone(result: .failure(error)))
-            }
-        }
+//        NeteaseCloudMusicApi.shared.songsURL(ids) { result in
+//            switch result {
+//            case .success(let json):
+//                if let songsURLDict = json["data"] as? [NeteaseCloudMusicApi.ResponseData] {
+//                    if songsURLDict.count > 0 {
+//                        store.dispatch(.songsURLRequestDone(result: .success(songsURLDict.map{$0.toData!.toModel(SongURLJSONModel.self)!})))
+//                    }
+//                }else {
+//                    store.dispatch(.songsURLRequestDone(result: .failure(.songsURLError)))
+//                }
+//            case .failure(let error):
+//                store.dispatch(.songsURLRequestDone(result: .failure(error)))
+//            }
+//        }
     }
 }
 
