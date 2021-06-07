@@ -44,7 +44,7 @@ class DataManager {
     }
     public func batchDelete<T: NSManagedObject>(type: T.Type, predicate: NSPredicate? = nil) {
         #if DEBUG
-//        print("\(#function): \(entityName)")
+        print("\(#function): \(type)")
         #endif
         defer { save() }
         let context = context()
@@ -53,49 +53,32 @@ class DataManager {
         fetchRequest.predicate = predicate
         let result = try? context.fetch(fetchRequest) as? [NSManagedObject]
         result?.forEach(context.delete)
-//        do {
-//            let context = context()
-//            let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-//            request.predicate = predicate
-//            let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
-//            let deleteResult = try context.execute(batchDelete)
-//            print("\(#function) \(deleteResult.description)")
-//        }catch let error {
-//            print("\(#function):\(error)")
-//        }
     }
     public func batchDelete(entityName: String, predicate: NSPredicate? = nil) {
         #if DEBUG
         print("\(#function): \(entityName)")
         #endif
         defer { save() }
-        let context = context()
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fetchRequest.predicate = predicate
-        let result = try? context.fetch(fetchRequest) as? [NSManagedObject]
-        result?.forEach(context.delete)
-//        do {
-//            let context = context()
-//            let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-//            request.predicate = predicate
-//            let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
-//            let deleteResult = try context.execute(batchDelete)
-//            print("\(#function) \(deleteResult.description)")
-//        }catch let error {
-//            print("\(#function):\(error)")
-//        }
+        do {
+            let context = context()
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+            request.predicate = predicate
+            let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
+            let deleteResult = try context.execute(batchDelete)
+            print("\(#function) \(deleteResult.description)")
+        }catch let error {
+            print("\(#function):\(error)")
+        }
     }
-//    public func batchInsert<T: NSManagedObject, MODEL: CoreDataMangable>(type: T.Type, models: [MODEL]) {
-//        defer { save() }
-//        do {
-//            let context = context()
-//            let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
-//            let insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
-//            print("\(#function) \(insertResult.description)")
-//        }catch let error {
-//            print("\(#function):\(error)")
-//        }
-//    }
+    public func batchInsert<T: NSManagedObject, Element: CoreDataMangable>(type: T.Type, models: [Element]) {
+        #if DEBUG
+        print("\(#function): \(type)")
+        #endif
+        defer { save() }
+        models.forEach { item in
+            _ = item.entity(context: context())
+        }
+    }
     public func batchInsert(entityName: String, objects: [[String: Any]]) {
         defer { save() }
         do {

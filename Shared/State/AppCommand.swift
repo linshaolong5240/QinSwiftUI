@@ -1093,8 +1093,7 @@ struct UserPlayListCommand: AppCommand {
             let result = (createdPlaylistId: createdPlaylistIds, subedPlaylistIds: subedPlaylistIds, userPlaylistIds: userPlaylistIds)
 //            DataManager.shared.batchDelete(entityName: "UserPlaylist")
             DataManager.shared.batchDelete(type: UserPlaylist.self)
-            DataManager.shared.updateUserPlaylist(model: userPlaylistResponse)
-//            DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: userPlaylistResponse.playlist.map(\.dataModel.dictionary))
+            DataManager.shared.batchInsert(type: UserPlaylist.self, models: userPlaylistResponse.playlist)
             store.dispatch(.userPlaylistDone(result: .success(result)))
         }.store(in: &store.cancellableSet)
     }
