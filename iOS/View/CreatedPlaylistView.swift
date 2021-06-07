@@ -107,7 +107,7 @@ struct PlaylistCreateView: View {
                     .padding()
                 Button(action: {
                     showSheet.toggle()
-                    Store.shared.dispatch(.playlistCreate(name: name))
+                    Store.shared.dispatch(.playlistCreateRequest(name: name))
                 }){
                     HStack(spacing: 0.0) {
                         NEUSFView(systemName: "folder.badge.plus", size: .medium)

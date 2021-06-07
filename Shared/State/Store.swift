@@ -294,12 +294,11 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .playlistCreate(let name, let privacy):
+        case .playlistCreateRequest(let name, let privacy):
             appCommand = PlaylistCreateCommand(name: name, privacy: privacy)
-        case .playlistCreateDone(let result):
+        case .playlistCreateRequestDone(let result):
             switch result {
             case .success:
-                //                appState.playlists.userPlaylists.append(PlaylistViewModel(playlist))
                 appCommand = PlaylistCreateDoneCommand()
             case .failure(let error):
                 appState.error = error

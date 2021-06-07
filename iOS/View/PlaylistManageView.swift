@@ -51,7 +51,7 @@ struct PlaylistManageView: View {
         }
         .alert(isPresented: $isDeleted) {
             Alert(title: Text("删除歌单"), message: Text("确定删除歌单"), primaryButton: Alert.Button.cancel(Text("取消")), secondaryButton: Alert.Button.destructive(Text("删除"),action: {
-                Store.shared.dispatch(.playlistDelete(pid: deleteId))
+                Store.shared.dispatch(.playlistDelete(pid: Int(deleteId)))
             }))
         }
     }

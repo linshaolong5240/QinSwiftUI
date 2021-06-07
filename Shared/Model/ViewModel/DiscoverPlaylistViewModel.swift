@@ -13,7 +13,7 @@ struct PlaylistCatalogue: Identifiable {
     public let subs: [String]
 }
 
-extension CommonPlaylist: Identifiable {
+extension PlaylistResponse: Identifiable {
     
 }
 
@@ -22,7 +22,7 @@ class DiscoverPlaylistViewModel: ObservableObject {
         
     @Published var requesting = false
     var catalogue: [PlaylistCatalogue]
-    @Published var playlists = [CommonPlaylist]()
+    @Published var playlists = [PlaylistResponse]()
     
     init(catalogue: [PlaylistCatalogue]) {
         self.catalogue = catalogue

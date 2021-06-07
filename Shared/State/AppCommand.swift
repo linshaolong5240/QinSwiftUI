@@ -621,21 +621,19 @@ struct PlaylistCategoriesCommand: AppCommand {
 
 struct PlaylistCreateCommand: AppCommand {
     let name: String
-    let privacy: Int
+    let privacy: PlaylistCreateAction.Privacy
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistCreate(name: name, privacy: privacy) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    store.dispatch(.playlistCreateDone(result: .success(true)))
-                }else {
-                    store.dispatch(.playlistCreateDone(result: .failure(.playlistCreateError)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: PlaylistCreateAction(parameters: .init(name: name, privacy: privacy)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.playlistCreateRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.playlistCreateDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { playlistCreateResponse in
+                store.dispatch(.playlistCreateRequestDone(result: .success(playlistCreateResponse.playlist.id)))
+            }.store(in: &store.cancellableSet)
     }
 }
 
@@ -647,21 +645,19 @@ struct PlaylistCreateDoneCommand: AppCommand {
 }
 
 struct PlaylistDeleteCommand: AppCommand {
-    let pid: Int64
+    let pid: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistDelete(pid: pid) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    store.dispatch(.playlistDeleteDone(result: .success(json["id"] as! Int64)))
-                }else {
-                    store.dispatch(.playlistDeleteDone(result: .failure(.playlistDeleteError)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: PlaylistDeleteAction(parameters: .init(pid: pid)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.playlistDeleteDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.playlistDeleteDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { playlistDeleteResponse in
+                store.dispatch(.playlistDeleteDone(result: .success(playlistDeleteResponse.id)))
+            }.store(in: &store.cancellableSet)
     }
 }
 

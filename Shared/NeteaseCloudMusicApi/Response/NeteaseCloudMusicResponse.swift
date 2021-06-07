@@ -126,7 +126,7 @@ public struct CommonCrteator: Codable {
     public let userId, userType, vipType: Int
 }
 
-public struct CommonPlaylist: Codable {
+public struct PlaylistResponse: Codable {
     public let adType: Int
     public let alg: String?
     public let anonimous: Bool
@@ -136,12 +136,12 @@ public struct CommonPlaylist: Codable {
     public let cloudTrackCount: Int
     public let commentCount: Int?
     public let commentThreadId: String
-    public let coverImgId: Double
+    public let coverImgId: Int
     public let coverImgIdStr: String?
     public let coverImgUrl: String
     public let coverStatus: Int?
     public let createTime: Int
-    public let creator: CommonCrteator
+    public let creator: CommonCrteator?
     public let description: String?
     //        public let englishTitle: Any?
     public let playlistDescription: String?
@@ -157,7 +157,7 @@ public struct CommonPlaylist: Codable {
     //        public let sharedUsers: Any?
     public let specialType: Int
     public let status: Int
-    public let subscribed: Bool
+    public let subscribed: Bool?
     public let subscribedCount: Int
     public let subscribers: [CommonCrteator]
     public let tags: [String]

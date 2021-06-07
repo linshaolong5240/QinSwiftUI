@@ -30,7 +30,7 @@ extension ArtistSublistResponse.Artist {
     var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
-extension CommonPlaylist {
+extension PlaylistResponse {
     struct UserPlaylistDataModel: Codable {
         var coverImgUrl: String?
         var id: Int64
@@ -40,7 +40,7 @@ extension CommonPlaylist {
         var userId: Int64
     }
     
-    var dataModel: UserPlaylistDataModel { UserPlaylistDataModel(coverImgUrl: coverImgUrl, id: Int64(id), name: name, subscribed: subscribed, trackCount: Int64(trackCount), userId: Int64(userId)) }
+    var dataModel: UserPlaylistDataModel { UserPlaylistDataModel(coverImgUrl: coverImgUrl, id: Int64(id), name: name, subscribed: subscribed ?? false, trackCount: Int64(trackCount), userId: Int64(userId)) }
 }
 
 extension CommonAlbum {

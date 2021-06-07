@@ -10,6 +10,6 @@ import Foundation
 public struct UserPlaylistResponse: NeteaseCloudMusicResponse {
     public let code: Int
     public let more: Bool
-    public let playlist: [CommonPlaylist]
+    public let playlist: [PlaylistResponse]
     public let version: String
 }
