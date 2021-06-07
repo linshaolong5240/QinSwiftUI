@@ -8,6 +8,10 @@
 import Foundation
 import CoreData
 
+extension UserPlaylist: CoreDataOrdered {
+    
+}
+
 extension AlbumSublistResponse.Album {
     struct AlbumSubDataModel: Codable {
         var id: Int64
@@ -26,7 +30,7 @@ extension ArtistSublistResponse.Artist {
     var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
-extension PlaylistResponse: CoreDataMangable {
+extension PlaylistResponse: CoreDataManged {
     struct UserPlaylistDataModel: Codable {
         var coverImgUrl: String?
         var id: Int64
@@ -104,7 +108,7 @@ extension ArtistAlbumsResponse.ArtistAlbum {
     }
 }
 
-extension ArtistHotSongsResponse.HotSong: CoreDataMangable {
+extension ArtistHotSongsResponse.HotSong: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(duration)
@@ -114,7 +118,7 @@ extension ArtistHotSongsResponse.HotSong: CoreDataMangable {
     }
 }
 
-extension ArtistMVResponse.MV.Artist: CoreDataMangable {
+extension ArtistMVResponse.MV.Artist: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.followed = false
@@ -126,7 +130,7 @@ extension ArtistMVResponse.MV.Artist: CoreDataMangable {
     }
 }
 
-extension ArtistMVResponse.MV: CoreDataMangable {
+extension ArtistMVResponse.MV: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> MV {
         let entity = MV(context: context)
         entity.duration = Int64(duration)

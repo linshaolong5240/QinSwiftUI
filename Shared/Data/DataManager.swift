@@ -9,16 +9,13 @@
 import Foundation
 import CoreData
 
-protocol CoreDataMangable {
+protocol CoreDataManged {
     associatedtype Entity: NSManagedObject
     func entity(context: NSManagedObjectContext) -> Entity
 }
 
-protocol CoreDataOrderable {
+protocol CoreDataOrdered {
     var orderNumber: Int64 { get set }
-}
-extension UserPlaylist: CoreDataOrderable {
-    
 }
 
 class DataManager {
@@ -77,7 +74,7 @@ class DataManager {
             print("\(#function):\(error)")
         }
     }
-    public func batchInsert<T: NSManagedObject, Element: CoreDataMangable>(type: T.Type, models: [Element]) {
+    public func batchInsert<T: NSManagedObject, Element: CoreDataManged>(type: T.Type, models: [Element]) {
         #if DEBUG
         print("\(#function): \(type)")
         #endif
@@ -86,7 +83,7 @@ class DataManager {
             _ = item.entity(context: context())
         }
     }
-    public func batchOrderInsert<T: NSManagedObject, Element: CoreDataMangable>(type: T.Type, models: [Element]) where T: CoreDataOrderable {
+    public func batchOrderInsert<T: NSManagedObject, Element: CoreDataManged>(type: T.Type, models: [Element]) where T: CoreDataOrdered {
         #if DEBUG
         print("\(#function): \(type)")
         #endif
