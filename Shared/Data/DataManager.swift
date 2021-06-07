@@ -14,6 +14,13 @@ protocol CoreDataMangable {
     func entity(context: NSManagedObjectContext) -> Entity
 }
 
+protocol CoreDataOrderable {
+    var orderNumber: Int64 { get set }
+}
+extension UserPlaylist: CoreDataOrderable {
+    
+}
+
 class DataManager {
     static let shared = DataManager()
     lazy var persistentContainer: NSPersistentContainer = {
@@ -78,6 +85,16 @@ class DataManager {
         models.forEach { item in
             _ = item.entity(context: context())
         }
+    }
+    public func batchOrderInsert<T: NSManagedObject, Element: CoreDataMangable>(type: T.Type, models: [Element]) where T: CoreDataOrderable {
+        #if DEBUG
+        print("\(#function): \(type)")
+        #endif
+        defer { save() }
+        models.enumerated().forEach({ index, item in
+            var entity = item.entity(context: context()) as? T
+            entity?.orderNumber = Int64(index)
+        })
     }
     public func batchInsert(entityName: String, objects: [[String: Any]]) {
         defer { save() }

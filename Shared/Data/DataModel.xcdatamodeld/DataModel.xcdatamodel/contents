@@ -118,6 +118,7 @@
         <attribute name="coverImgUrl" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="orderNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="subscribed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="trackCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -136,6 +137,6 @@
         <element name="Playlist" positionX="-1930.801025390625" positionY="-1642.122100830078" width="128" height="163"/>
         <element name="RecommendPlaylist" positionX="-1652.767822265625" positionY="-1410.951629638672" width="128" height="88"/>
         <element name="Song" positionX="-1933.198486328125" positionY="-1325.470428466797" width="126.224609375" height="148"/>
-        <element name="UserPlaylist" positionX="-1648.798583984375" positionY="-1297.807647705078" width="128" height="119"/>
+        <element name="UserPlaylist" positionX="-1648.798583984375" positionY="-1297.807647705078" width="128" height="134"/>
     </elements>
 </model>

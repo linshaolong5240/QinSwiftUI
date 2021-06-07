@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CreatedPlaylistView: View {
-    @FetchRequest(sortDescriptors: [], predicate: nil, animation: nil) private var results: FetchedResults<UserPlaylist>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \UserPlaylist.orderNumber, ascending: true)], predicate: nil, animation: nil) private var results: FetchedResults<UserPlaylist>
     @State private var playlistDetailId: Int64 = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var showPlaylistCreate: Bool = false
