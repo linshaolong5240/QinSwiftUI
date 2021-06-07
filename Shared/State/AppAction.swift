@@ -32,6 +32,7 @@ enum AppAction {
     case commentMusicRequestDone(result: Result<([CommentJSONModel],[CommentJSONModel],Int), AppError>)
     case commentMusicLoadMore
     case coverShape
+    case error(AppError)
     case initAction
     case loginRequest(email: String, password: String)
     case loginRequestDone(result: Result<LoginResponse, AppError>)
@@ -41,7 +42,7 @@ enum AppAction {
     case logoutRequestDone(result: Result<Int, AppError>)
     case mvDetailRequest(id: Int)
     case mvDetaillRequestDone(result: Result<Int, AppError>)
-    case mvUrl(id: Int64)
+    case mvUrl(id: Int)
 //    case mvUrlDone(result: Result<String, AppError>)
     case playerPause
     case playerPlay

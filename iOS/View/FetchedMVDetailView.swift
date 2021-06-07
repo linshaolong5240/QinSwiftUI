@@ -81,31 +81,24 @@ struct MVDetailView: View {
             .fullScreenCover(isPresented: $showPlayer, content: {
                 AVPlayerView(url: $mvURL)
                     .edgesIgnoringSafeArea(.all)
-        })
+            })
             Spacer()
         }
     }
     
     func fetchMVURL() {
-        NeteaseCloudMusicApi.shared.mvUrl(id: mv.id) { result in
-            switch result {
-            case .success(let json):
-                guard json["code"] as? Int == 200 else {
-                    return
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: MVURLAction(parameters: .init(id: Int(mv.id))))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
                 }
-                guard let mvURLDict = json["data"] as? [String: Any] else {
-                    return
-                }
-                if let mvURLJSONModel = mvURLDict.toData?.toModel(MVURLJSONModel.self) {
-                    if let url = URL(string: mvURLJSONModel.url) {
-                        self.mvURL = url
-                        self.showPlayer = true
-                    }
-                }
-            case .failure:
-                break
-            }
-        }
+            } receiveValue: { mvURLResponse in
+//                store.dispatch(.mvDetaillRequestDone(result: .success(id)))
+                mvURL = URL(string: mvURLResponse.data.url)
+                showPlayer = true
+            }.store(in: &Store.shared.cancellableSet)
     }
 }
 

@@ -464,29 +464,21 @@ struct MVDetailDoneCommand: AppCommand {
 }
 
 struct MVUrlCommand: AppCommand {
-    let id: Int64
+    let id: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.mvUrl(id: id) { result in
-//            print(data)
-//            guard error == nil else {
-//                if let err = error {
-//                    store.dispatch(.mvDetaillDone(result: .failure(err)))
+//        NeteaseCloudMusicApi
+//            .shared
+//            .requestPublisher(action: MVURLAction(parameters: .init(id: Int(mv.id))))
+//            .sink { completion in
+//                if case .failure(let error) = completion {
+//                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
 //                }
-//                return
-//            }
-//            if data?["code"] as? Int == 200 {
-//                if let mvDict = data?["data"] as? [String: Any] {
-//                    if let mvJSONModel = mvDict.toData?.toModel(MVJSONModel.self) {
-//                        print(mvJSONModel)
-//                        store.dispatch(.mvDetaillDone(result: .success(mvJSONModel)))
-//                    }
-//                }
-//            }else if let data = data {
-//                let (code, message) = NeteaseCloudMusicApi.parseErrorMessage(data)
-//                store.dispatch(.mvDetaillDone(result: .failure(.mvDetailError(code: code, message: message))))
-//            }
-        }
+//            } receiveValue: { mvURLResponse in
+////                store.dispatch(.mvDetaillRequestDone(result: .success(id)))
+//                mvURL = URL(string: mvURLResponse.data.url)
+//                showPlayer = true
+//            }.store(in: &Store.shared.cancellableSet)
     }
 }
 

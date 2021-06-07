@@ -172,6 +172,8 @@ class Store: ObservableObject {
             appCommand = CommentMusicCommand(id: id, offset: offset)
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
+        case .error(let error):
+            appState.error = error
         case .initAction:
             if appState.playing.playinglist.count > 0 {
                 let index = appState.playing.index
