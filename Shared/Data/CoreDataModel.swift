@@ -8,10 +8,6 @@
 import Foundation
 import CoreData
 
-protocol CoreDataMangable {
-    associatedtype Entity: NSManagedObject
-    func entity(context: NSManagedObjectContext) -> Entity
-}
 extension AlbumSublistResponse.Album {
     struct AlbumSubDataModel: Codable {
         var id: Int64
@@ -30,7 +26,7 @@ extension ArtistSublistResponse.Artist {
     var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
-extension PlaylistResponse {
+extension PlaylistResponse: CoreDataMangable {
     struct UserPlaylistDataModel: Codable {
         var coverImgUrl: String?
         var id: Int64
@@ -41,6 +37,16 @@ extension PlaylistResponse {
     }
     
     var dataModel: UserPlaylistDataModel { UserPlaylistDataModel(coverImgUrl: coverImgUrl, id: Int64(id), name: name, subscribed: subscribed ?? false, trackCount: Int64(trackCount), userId: Int64(userId)) }
+    
+    func entity(context: NSManagedObjectContext) -> UserPlaylist {
+        let entity = UserPlaylist(context: context)
+        entity.coverImgUrl = coverImgUrl
+        entity.id = Int64(id)
+        entity.name = name
+        entity.subscribed = subscribed ?? false
+        entity.trackCount = Int64(trackCount)
+        return entity
+    }
 }
 
 extension CommonAlbum {

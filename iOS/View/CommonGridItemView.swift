@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 
 struct CommonGridItemView: View {
-    private let configuration: CommonGridItemConfiguration
+    @ObservedObject var configuration: CommonGridItemConfiguration
     
     init(_ configuration: CommonGridItemConfiguration) {
         self.configuration = configuration
@@ -66,7 +67,7 @@ struct CommonGridItemView: View {
 //}
 //#endif
 
-struct CommonGridItemConfiguration {
+class CommonGridItemConfiguration: ObservableObject {
     var id: Int64
     var name: String?
     var picUrl: String?

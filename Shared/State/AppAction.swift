@@ -63,7 +63,7 @@ enum AppAction {
     case playlistCreateRequest(name: String, privacy: PlaylistCreateAction.Privacy = .common)
     case playlistCreateRequestDone(result: Result<Int, AppError>)
     case playlistDelete(pid: Int)
-    case playlistDeleteDone(result: Result<Int, AppError>)
+    case playlistDeleteRequestDone(result: Result<Int, AppError>)
     case playlistDetail(id: Int64)
     case playlistDetailDone(result: Result<PlaylistJSONModel, AppError>)
     case playlistDetailSongs(playlistJSONModel: PlaylistJSONModel)

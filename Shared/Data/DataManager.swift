@@ -9,6 +9,11 @@
 import Foundation
 import CoreData
 
+protocol CoreDataMangable {
+    associatedtype Entity: NSManagedObject
+    func entity(context: NSManagedObjectContext) -> Entity
+}
+
 class DataManager {
     static let shared = DataManager()
     lazy var persistentContainer: NSPersistentContainer = {
@@ -26,6 +31,7 @@ class DataManager {
         /*add necessary support for migration*/
         //防止重复插入数据
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        container.viewContext.automaticallyMergesChangesFromParent = true
         return container
     }()
     public func context() -> NSManagedObjectContext {
@@ -36,21 +42,64 @@ class DataManager {
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return context
     }
-    public func batchDelete(entityName: String, predicate: NSPredicate? = nil) {
-        do {
-            let context = self.context()
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-            request.predicate = predicate
-            let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
-            let deleteResult = try context.execute(batchDelete)
-            print("\(#function) \(deleteResult.description)")
-        }catch let error {
-            print("\(#function):\(error)")
-        }
+    public func batchDelete<T: NSManagedObject>(type: T.Type, predicate: NSPredicate? = nil) {
+        #if DEBUG
+//        print("\(#function): \(entityName)")
+        #endif
+        defer { save() }
+        let context = context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequest.entity = type.entity()
+        fetchRequest.predicate = predicate
+        let result = try? context.fetch(fetchRequest) as? [NSManagedObject]
+        result?.forEach(context.delete)
+//        do {
+//            let context = context()
+//            let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+//            request.predicate = predicate
+//            let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
+//            let deleteResult = try context.execute(batchDelete)
+//            print("\(#function) \(deleteResult.description)")
+//        }catch let error {
+//            print("\(#function):\(error)")
+//        }
     }
+    public func batchDelete(entityName: String, predicate: NSPredicate? = nil) {
+        #if DEBUG
+        print("\(#function): \(entityName)")
+        #endif
+        defer { save() }
+        let context = context()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fetchRequest.predicate = predicate
+        let result = try? context.fetch(fetchRequest) as? [NSManagedObject]
+        result?.forEach(context.delete)
+//        do {
+//            let context = context()
+//            let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+//            request.predicate = predicate
+//            let batchDelete = NSBatchDeleteRequest(fetchRequest: request)
+//            let deleteResult = try context.execute(batchDelete)
+//            print("\(#function) \(deleteResult.description)")
+//        }catch let error {
+//            print("\(#function):\(error)")
+//        }
+    }
+//    public func batchInsert<T: NSManagedObject, MODEL: CoreDataMangable>(type: T.Type, models: [MODEL]) {
+//        defer { save() }
+//        do {
+//            let context = context()
+//            let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
+//            let insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
+//            print("\(#function) \(insertResult.description)")
+//        }catch let error {
+//            print("\(#function):\(error)")
+//        }
+//    }
     public func batchInsert(entityName: String, objects: [[String: Any]]) {
+        defer { save() }
         do {
-            let context = self.context()
+            let context = context()
             let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
             let insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
             print("\(#function) \(insertResult.description)")
@@ -59,19 +108,13 @@ class DataManager {
         }
     }
     public func batchInsertAfterDeleteAll(entityName: String, objects: [[String: Any]]) {
-        do {
-            self.batchDelete(entityName: entityName)
-            let context = self.context()
-            let batchInsert = NSBatchInsertRequest(entityName: entityName, objects: objects)
-            let insertResult = try context.execute(batchInsert) as! NSBatchInsertResult
-            print("\(#function) \(insertResult.description)")
-        }catch let error {
-            print("\(#function):\nentityName:\(entityName)\nerror:\(error)")
-        }
+        batchDelete(entityName: entityName)
+        batchInsert(entityName: entityName, objects: objects)
     }
     public func batchUpdate(entityName: String, propertiesToUpdate: [AnyHashable : Any], predicate: NSPredicate? = nil) {
+        defer { save() }
         do {
-            let context = self.context()
+            let context = context()
             let updateRequest = NSBatchUpdateRequest(entityName: entityName)
             updateRequest.propertiesToUpdate = propertiesToUpdate
             updateRequest.predicate = predicate
@@ -82,9 +125,9 @@ class DataManager {
             print("\(#function):\(error)")
         }
     }
-    public func batchUpdateLike(ids: [Int]) {
-        self.batchUpdate(entityName: "Song", propertiesToUpdate: ["like" : true], predicate: NSPredicate(format: "id IN %@", ids))
-    }
+//    public func batchUpdateLike(ids: [Int]) {
+//        batchUpdate(entityName: "Song", propertiesToUpdate: ["like" : true], predicate: NSPredicate(format: "id IN %@", ids))
+//    }
     public func getAlbum(id: Int) -> Album? {
         var album: Album? = nil
         do {
@@ -385,6 +428,12 @@ class DataManager {
                     artist.addToSongs(song)
                 }
             }
+        }
+    }
+    public func updateUserPlaylist(model: UserPlaylistResponse) {
+        defer { save() }
+        model.playlist.forEach { item in
+            _ = item.entity(context: context())
         }
     }
 }

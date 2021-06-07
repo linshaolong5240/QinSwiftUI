@@ -619,7 +619,7 @@ struct PlaylistCategoriesCommand: AppCommand {
     }
 }
 
-struct PlaylistCreateCommand: AppCommand {
+struct PlaylistCreateRequestCommand: AppCommand {
     let name: String
     let privacy: PlaylistCreateAction.Privacy
     
@@ -644,7 +644,7 @@ struct PlaylistCreateDoneCommand: AppCommand {
     }
 }
 
-struct PlaylistDeleteCommand: AppCommand {
+struct PlaylistDeleteRequestCommand: AppCommand {
     let pid: Int
     
     func execute(in store: Store) {
@@ -653,10 +653,10 @@ struct PlaylistDeleteCommand: AppCommand {
             .requestPublisher(action: PlaylistDeleteAction(parameters: .init(pid: pid)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.playlistDeleteDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.playlistDeleteRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { playlistDeleteResponse in
-                store.dispatch(.playlistDeleteDone(result: .success(playlistDeleteResponse.id)))
+                store.dispatch(.playlistDeleteRequestDone(result: .success(playlistDeleteResponse.id)))
             }.store(in: &store.cancellableSet)
     }
 }
@@ -1091,7 +1091,10 @@ struct UserPlayListCommand: AppCommand {
             let subedPlaylistIds =  userPlaylistResponse.playlist.filter { $0.userId != uid }.map { $0.id }
             let userPlaylistIds =  userPlaylistResponse.playlist.map{ $0.id }
             let result = (createdPlaylistId: createdPlaylistIds, subedPlaylistIds: subedPlaylistIds, userPlaylistIds: userPlaylistIds)
-            DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: userPlaylistResponse.playlist.map(\.dataModel.dictionary))
+//            DataManager.shared.batchDelete(entityName: "UserPlaylist")
+            DataManager.shared.batchDelete(type: UserPlaylist.self)
+            DataManager.shared.updateUserPlaylist(model: userPlaylistResponse)
+//            DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: userPlaylistResponse.playlist.map(\.dataModel.dictionary))
             store.dispatch(.userPlaylistDone(result: .success(result)))
         }.store(in: &store.cancellableSet)
     }

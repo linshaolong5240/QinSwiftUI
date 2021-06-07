@@ -295,7 +295,7 @@ class Store: ObservableObject {
                 appState.initRequestingCount -= 1
             }
         case .playlistCreateRequest(let name, let privacy):
-            appCommand = PlaylistCreateCommand(name: name, privacy: privacy)
+            appCommand = PlaylistCreateRequestCommand(name: name, privacy: privacy)
         case .playlistCreateRequestDone(let result):
             switch result {
             case .success:
@@ -304,8 +304,8 @@ class Store: ObservableObject {
                 appState.error = error
             }
         case .playlistDelete(let pid):
-            appCommand = PlaylistDeleteCommand(pid: pid)
-        case .playlistDeleteDone(let result):
+            appCommand = PlaylistDeleteRequestCommand(pid: pid)
+        case .playlistDeleteRequestDone(let result):
             switch result {
             case .success:
                 appCommand = PlaylistDeleteDoneCommand()
