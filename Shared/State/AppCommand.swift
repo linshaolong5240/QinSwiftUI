@@ -1091,7 +1091,7 @@ struct UserPlayListCommand: AppCommand {
             let subedPlaylistIds =  userPlaylistResponse.playlist.filter { $0.userId != uid }.map { $0.id }
             let userPlaylistIds =  userPlaylistResponse.playlist.map{ $0.id }
             let result = (createdPlaylistId: createdPlaylistIds, subedPlaylistIds: subedPlaylistIds, userPlaylistIds: userPlaylistIds)
-            DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: userPlaylistResponse.playlist.map({ $0.dataModel.dictionary }))
+            DataManager.shared.batchInsertAfterDeleteAll(entityName: "UserPlaylist", objects: userPlaylistResponse.playlist.map(\.dataModel.dictionary))
             store.dispatch(.userPlaylistDone(result: .success(result)))
         }.store(in: &store.cancellableSet)
     }
