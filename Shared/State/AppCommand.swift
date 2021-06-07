@@ -27,7 +27,7 @@ struct InitAcionCommand: AppCommand {
         store.dispatch(.songLikeListRequest())
         
         store.appState.initRequestingCount += 1
-        store.dispatch(.playlistCategoriesRequest)
+        store.dispatch(.playlistCatalogueRequest)
         
         store.appState.initRequestingCount += 1
         store.dispatch(.recommendPlaylistRequest)
@@ -593,90 +593,29 @@ struct PlayinglistInsertCommand: AppCommand {
     }
 }
 
-struct PlaylistCommand: AppCommand {
-    let cat: String
-    let hot: Bool
-    let limit: Int
-    let offset: Int
-    
-    func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlist(cat: cat, hot: hot, limit: limit, offset: offset) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    let playlistDicts = json["playlists"]! as! [NeteaseCloudMusicApi.ResponseData]
-                    let playlists = playlistDicts.map{$0.toData!.toModel(PlaylistJSONModel.self)!}.map{PlaylistViewModel($0)}
-                    let category = json["cat"]! as! String
-                    let more = json["more"]! as! Bool
-                    let total = json["total"] as! Int
-                    let result = (playlists: playlists, category: category, total: total , more: more)
-                    store.dispatch(.playlistDone(result: .success(result)))
-                }else {
-                    let code = json["code"] as? Int ?? -1
-                    let message = json["message"] as? String ?? "PlaylistCommandError"
-                    store.dispatch(.playlistDone(result: .failure(.playlistCategories(code: code, message: message))))
-                }
-            case .failure(let error):
-                store.dispatch(.playlistDone(result: .failure(error)))
-            }
-        }
-    }
-}
-
 struct PlaylistCategoriesCommand: AppCommand {
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistCategories { result in
-            switch result {
-            case .success(let json):
-                let alldict = json["all"] as! NeteaseCloudMusicApi.ResponseData
-                let all = alldict.toData!.toModel(PlaylistSubCategory.self)!
-                
-                let categoriesdict = json["categories"] as! [String: Any]
-                let categoriesModel = categoriesdict.toData!.toModel(PlaylistCategoryJSONModel.self)!
-
-                let subcategoriesdict = json["sub"] as! [[String: Any]]
-                let subcategories = subcategoriesdict.map{$0.toData!.toModel(PlaylistSubCategory.self)!}
-                
-                let categoriesMirror = Mirror(reflecting: categoriesModel)
-                
-                var categories = categoriesMirror.children.map{ children -> PlaylistCategoryViewModel in
-                    var id: Int
-                    switch children.label {
-                    case "_0":
-                        id = 0
-                    case "_1":
-                        id = 1
-                    case "_2":
-                        id = 2
-                    case "_3":
-                        id = 3
-                    case "_4":
-                        id = 4
-                    default:
-                        id = 5
-                    }
-                    let name = children.value as! String
-                    let subs = subcategories.filter { (sub) -> Bool in
-                        sub.category == id
-                    }.map { c in
-                        return c.name
-                    }
-                    return PlaylistCategoryViewModel(id: id, name: name, subCategories: subs)
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: PlaylistCatalogueAction())
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.playlistCatalogueRequestsDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-                categories.append(PlaylistCategoryViewModel(id: all.category + 1, name: all.name, subCategories: [String]()))
-                store.dispatch(.playlistCategoriesDone(result: .success(categories)))
-            case .failure(let error):
-                store.dispatch(.playlistCategoriesDone(result: .failure(error)))
-            }
-        }
-    }
-}
+            } receiveValue: { playlistCatalogueResponse in
+                var playlistCatalogue = [PlaylistCatalogue]()
+                
+                let keys = playlistCatalogueResponse.categories.keys.sorted(by: { $0 < $1})
+                
+                keys.forEach { key in
+                    let category = PlaylistCatalogue(id: Int(key)!, name: playlistCatalogueResponse.categories[key]!, subs: playlistCatalogueResponse.sub.filter({ Int(key) == $0.category }).map(\.name))
+                    playlistCatalogue.append(category)
+                }
+                let all = PlaylistCatalogue(id: playlistCatalogue.count, name: playlistCatalogueResponse.all.name, subs: [])
+                playlistCatalogue.append(all)
 
-struct PlaylistCategoriesDoneCommand: AppCommand {
-    let category: String
-    
-    func execute(in store: Store) {
-            store.dispatch(.playlist(category: category))
+                store.dispatch(.playlistCatalogueRequestsDone(result: .success(playlistCatalogue)))
+            }.store(in: &store.cancellableSet)
     }
 }
 

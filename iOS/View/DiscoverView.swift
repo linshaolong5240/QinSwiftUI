@@ -36,7 +36,7 @@ struct DiscoverView: View {
                     }
                 }/*@END_MENU_TOKEN@*/
                 .pickerStyle(SegmentedPickerStyle())
-                DiscoverPlaylistView()
+//                DiscoverPlaylistView(viewModel: <#DiscoverPlaylistViewModel#>)
             }
         }
         .navigationBarHidden(true)

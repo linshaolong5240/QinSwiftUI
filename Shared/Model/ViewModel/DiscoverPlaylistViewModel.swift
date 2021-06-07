@@ -5,26 +5,39 @@
 //  Created by 林少龙 on 2020/10/12.
 //
 
-import SwiftUI
+import Combine
+
+struct PlaylistCatalogue: Identifiable {
+    public var id: Int
+    public let name: String
+    public let subs: [String]
+}
+
+extension CommonPlaylist: Identifiable {
+    
+}
 
 class DiscoverPlaylistViewModel: ObservableObject {
-    var categoriesRequesting: Bool = false
-    var playlistRequesting: Bool = false
-
-    var categories = [PlaylistCategoryViewModel]()
-    @Published var category: Int = 0
-    var subcategory: String = ""
-    var more: Bool = false
-    var playlists = [PlaylistViewModel]()
-    var total: Int = 0
+    var cancell = AnyCancellable({})
+        
+    @Published var requesting = false
+    var catalogue: [PlaylistCatalogue]
+    @Published var playlists = [CommonPlaylist]()
     
-    init() {
+    init(catalogue: [PlaylistCatalogue]) {
+        self.catalogue = catalogue
     }
-    init(categories: [PlaylistCategoryViewModel], category: Int, more: Bool, playlists: [PlaylistViewModel], total: Int) {
-        self.categories = categories
-        self.category = category
-        self.more = more
-        self.playlists = playlists
-        self.total = total
+    
+    func playlistRequest(cat: String) {
+        cancell = NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: PlaylistListAction(parameters: .init(cat: cat, order: .hot, limit: 30, offset: 0 * 30, total: true)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
+                }
+            } receiveValue: {[weak self] playlistListResponse in
+                self?.playlists = playlistListResponse.playlists
+            }
     }
 }

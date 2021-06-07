@@ -93,3 +93,82 @@ public struct CommonArtistResponse: Codable {
     public let topicPerson: Int
     public let trans: String
 }
+
+public struct CommonCrteator: Codable {
+    public let accountStatus: Int
+    public let anchor: Bool
+    public let authenticationTypes: Int
+    public let authority: Int
+    public let authStatus: Int
+//            public let avatarDetail: Any?
+    public let avatarImgId: Double
+    public let avatarImgId_str: String?
+    public let avatarImgIdStr: String
+    public let avatarUrl: String
+    public let backgroundImgId: Double
+    public let backgroundImgIdStr: String
+    public let backgroundUrl: String
+    public let birthday: Int
+    public let city: Int
+    public let defaultAvatar: Bool
+    public let description: String
+    public let detailDescription: String
+    public let djStatus: Int
+//            public let experts: Any?
+    public let expertTags: [String]?
+    public let followed: Bool
+    public let gender: Int
+    public let mutual: Bool
+    public let nickname: String
+    public let province: Int
+//            public let remarkName: Any?
+    public let signature: String
+    public let userId, userType, vipType: Int
+}
+
+public struct CommonPlaylist: Codable {
+    public let adType: Int
+    public let alg: String?
+    public let anonimous: Bool
+    //        public let artists: Any?
+    public let backgroundCoverId: Int?
+    public let backgroundCoverUrl: String?
+    public let cloudTrackCount: Int
+    public let commentCount: Int?
+    public let commentThreadId: String
+    public let coverImgId: Double
+    public let coverImgIdStr: String?
+    public let coverImgUrl: String
+    public let coverStatus: Int?
+    public let createTime: Int
+    public let creator: CommonCrteator
+    public let description: String?
+    //        public let englishTitle: Any?
+    public let playlistDescription: String?
+    public let highQuality: Bool
+    public let id: Int
+    public let name: String
+    public let newImported: Bool
+    public let ordered: Bool
+    public let playCount: Int
+    public let privacy: Int
+//        public let recommendInfo: Any?
+    public let shareCount: Int?
+    //        public let sharedUsers: Any?
+    public let specialType: Int
+    public let status: Int
+    public let subscribed: Bool
+    public let subscribedCount: Int
+    public let subscribers: [CommonCrteator]
+    public let tags: [String]
+    public let titleImage: Int?
+    public let titleImageUrl: String?
+    public let totalDuration: Int
+    public let trackCount: Int
+    public let trackNumberUpdateTime: Int
+//        public let tracks: Any?
+    public let trackUpdateTime: Int
+    //        public let updateFrequency: Any?
+    public let updateTime: Int
+    public let userId: Int
+}

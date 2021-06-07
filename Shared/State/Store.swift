@@ -280,35 +280,17 @@ class Store: ObservableObject {
         case .PlayinglistSet(let playlist, let index):
             appState.playing.playinglist = playlist
             appState.playing.index = index
-        case .playlist(let category, let hot, let limit, let offset):
-            if category != appState.playlist.discoverPlaylist.subcategory || appState.playlist.discoverPlaylist.playlists.count == 0 {
-                appState.playlist.discoverPlaylist.playlistRequesting = true
-                appCommand = PlaylistCommand(cat: category, hot: hot, limit: limit, offset: offset)
-            }
-        case .playlistDone(let result):
-            switch result {
-            case .success(let result):
-                appState.playlist.discoverPlaylist.playlists  = result.playlists
-                appState.playlist.discoverPlaylist.subcategory  = result.category
-                appState.playlist.discoverPlaylist.more  = result.more
-                appState.playlist.discoverPlaylist.total  = result.total
-            case .failure(let error):
-                appState.error = error
-            }
-            appState.playlist.discoverPlaylist.playlistRequesting = false
-        case .playlistCategoriesRequest:
-            appState.playlist.discoverPlaylist.categoriesRequesting = true
+        case .playlistCatalogueRequest:
+            appState.discoverPlaylist.requesting = true
             appCommand = PlaylistCategoriesCommand()
-        case .playlistCategoriesDone(let result):
+        case .playlistCatalogueRequestsDone(let result):
             switch result {
-            case .success(let categories):
-                appState.playlist.discoverPlaylist.categories = categories
-                appState.playlist.discoverPlaylist.category = categories.last?.id ?? 0
-                appState.playlist.discoverPlaylist.subcategory = categories.last?.name ?? ""
+            case .success(let catalogue):
+                appState.discoverPlaylist.catalogue = catalogue
             case .failure(let error):
                 appState.error = error
             }
-            appState.playlist.discoverPlaylist.categoriesRequesting = false
+            appState.discoverPlaylist.requesting = false
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }

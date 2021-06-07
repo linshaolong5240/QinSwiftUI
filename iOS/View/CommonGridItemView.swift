@@ -22,6 +22,9 @@ struct CommonGridItemView: View {
     init(_ item: ArtistSub) {
         self.configuration = CommonGridItemConfiguration(item)
     }
+    init(_ item: CommonPlaylist) {
+        self.configuration = CommonGridItemConfiguration(item)
+    }
     init(_ item: MV) {
         self.configuration = CommonGridItemConfiguration(item)
     }
@@ -91,6 +94,12 @@ struct CommonGridItemConfiguration {
         self.name = item.name
         self.picUrl = item.img1v1Url
         self.subscribed = nil
+    }
+    init(_ item: CommonPlaylist) {
+        self.id = Int64(item.id)
+        self.name = item.name
+        self.picUrl = item.coverImgUrl
+        self.subscribed = item.subscribed
     }
     init(_ item: MV) {
         self.id = item.id

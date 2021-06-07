@@ -16,9 +16,10 @@ struct AppState {
     var album = Album()
     var artist = Artist()
     var comment = Comment()
+    var discoverPlaylist = DiscoverPlaylist()
     var lyric = Lyric()
     var playing = Playing()
-    var playlist = Playlists()
+    var playlist = UserPlaylist()
     var search = Search()
     var settings = Settings()
     var error: AppError?
@@ -78,19 +79,21 @@ extension AppState {
         var total: Int = 0
     }
     
+    struct DiscoverPlaylist {
+        var requesting = false
+        var catalogue = [PlaylistCatalogue]()
+    }
+    
     struct Lyric {
         var requesting = false
         var getlyricError: AppError?
         var lyric: LyricViewModel?
     }
     
-    struct Playlists {
+    struct UserPlaylist {
         //用户相关歌单
         var recommendPlaylistRequesting: Bool = false
         var userPlaylistRequesting: Bool = false
-
-        //发现歌单
-        var discoverPlaylist = DiscoverPlaylistViewModel()
         
         //歌单详情
         var detailRequesting: Bool = false

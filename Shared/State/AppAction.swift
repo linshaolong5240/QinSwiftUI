@@ -58,10 +58,8 @@ enum AppAction {
     case playerSeek(isSeeking: Bool, time: Double)
     case playinglistInsert(id: Int64)
     case PlayinglistSet(playinglist: [Int64], index: Int)
-    case playlist(category: String, hot: Bool = true, limit: Int = 30, offset: Int = 0)
-    case playlistDone(result: Result<(playlists: [PlaylistViewModel], category: String, total: Int , more: Bool), AppError>)
-    case playlistCategoriesRequest
-    case playlistCategoriesDone(result: Result<[PlaylistCategoryViewModel], AppError>)
+    case playlistCatalogueRequest
+    case playlistCatalogueRequestsDone(result: Result<[PlaylistCatalogue], AppError>)
     case playlistCreate(name: String, privacy: Int = 0)
     case playlistCreateDone(result: Result<Bool, AppError>)
     case playlistDelete(pid: Int64)

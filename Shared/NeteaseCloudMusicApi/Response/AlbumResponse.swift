@@ -2,7 +2,7 @@
 //  AlbumResponse.swift
 //  Qin
 //
-//  Created by qfdev on 2021/5/27.
+//  Created by 林少龙 on 2021/5/27.
 //
 
 import Foundation

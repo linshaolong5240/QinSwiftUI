@@ -29,7 +29,7 @@ struct HomeView: View {
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             SearchBarView()
                             Button(action: {}) {
-                                NavigationLink(destination: DiscoverPlaylistView()) {
+                                NavigationLink(destination: DiscoverPlaylistView(viewModel: .init(catalogue: store.appState.discoverPlaylist.catalogue))) {
                                     NEUSFView(systemName: "square.grid.2x2", size:  .small)
                                 }
                             }

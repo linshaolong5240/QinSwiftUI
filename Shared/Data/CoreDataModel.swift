@@ -30,7 +30,7 @@ extension ArtistSublistResponse.Artist {
     var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
-extension UserPlaylistResponse.Playlist {
+extension CommonPlaylist {
     struct UserPlaylistDataModel: Codable {
         var coverImgUrl: String?
         var id: Int64

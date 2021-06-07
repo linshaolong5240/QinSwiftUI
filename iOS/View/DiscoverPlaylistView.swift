@@ -9,9 +9,10 @@ import SwiftUI
 
 struct DiscoverPlaylistView: View {
     @EnvironmentObject private var store: Store
-    private var viewModel: DiscoverPlaylistViewModel {store.appState.playlist.discoverPlaylist}
-    private var viewModeBindingl: Binding<DiscoverPlaylistViewModel> {$store.appState.playlist.discoverPlaylist}
+    @ObservedObject var viewModel: DiscoverPlaylistViewModel
 
+    @State private var selection: Int = 0
+    @State private var subSelection: String?
     @State private var showCategories: Bool = true
     
     var body: some View {
@@ -27,47 +28,49 @@ struct DiscoverPlaylistView: View {
                 }
                 .padding(.horizontal)
                 .onAppear {
-                    Store.shared.dispatch(.playlist(category: viewModel.subcategory))
+                    selection = viewModel.catalogue.count - 1
+                    //                    Store.shared.dispatch(.playlist(category: viewModel.subcategory))
                 }
-                    if showCategories {
-                        Picker(selection: viewModeBindingl.category, label: Text("")) /*@START_MENU_TOKEN@*/{
-                            ForEach(viewModel.categories) { item in
-                                Text("\(item.name)").tag(item.id)
-                            }
-                        }/*@END_MENU_TOKEN@*/
-                        .pickerStyle(SegmentedPickerStyle())
-                        .padding(.horizontal)
-                        .onChange(of: viewModel.category, perform: { [viewModel] value in
-                            if value == viewModel.categories.last?.id {
-                                Store.shared.dispatch(.playlist(category: viewModel.categories.last!.name))
-                            }
+                Picker(selection: $selection, label: Text("")) /*@START_MENU_TOKEN@*/{
+                    ForEach(viewModel.catalogue, id: \.id) { item in
+                        Text("\(item.name)").tag(item.id)
+                    }
+                }/*@END_MENU_TOKEN@*/
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                .onChange(of: selection, perform: { value in
+                    if value == viewModel.catalogue.last?.id {
+                        viewModel.playlistRequest(cat: viewModel.catalogue.last!.name)
+                    }
+                    subSelection = nil
+                })
+                
+                if selection != viewModel.catalogue.last?.id && viewModel.catalogue.count > 0 {
+                    MultilineHStack(viewModel.catalogue[selection].subs) { item in
+                        Button(action: {
+                            subSelection = item
+                            viewModel.playlistRequest(cat: item)
+                        }, label: {
+                            Text(item)
+                                .foregroundColor(item == subSelection ? Color.white : Color.black)
+                                .padding(.horizontal)
+                                .background(Color.orange)
+                                .clipShape(RoundedRectangle(cornerRadius: 5))
                         })
-                        if viewModel.category != viewModel.categories.last?.id && viewModel.categories.count > 0 {
-                            MultilineHStack(viewModel.categories[viewModel.category].subCategories) { item in
-                                Button(action: {
-                                    Store.shared.dispatch(.playlist(category: item))
-                                }, label: {
-                                    Text(item)
-                                        .foregroundColor(item == viewModel.subcategory ? Color.white : Color.black)
-                                        .padding(.horizontal)
-                                        .background(Color.orange)
-                                        .clipShape(RoundedRectangle(cornerRadius: 5))
-                                })
-                            }
-                            .padding(.horizontal)
+                    }
+                    .padding(.horizontal)
+                }
+                
+                if viewModel.requesting {
+                    Text("Loading")
+                    Spacer()
+                }else {
+                    VGridView(viewModel.playlists, gridColumns: 3) { item in
+                        NavigationLink(destination: FetchedPlaylistDetailView(id: Int64(item.id))) {
+                            CommonGridItemView(item)
                         }
                     }
-
-                    if viewModel.playlistRequesting {
-                        Text("Loading")
-                        Spacer()
-                    }else {
-                        VGridView(viewModel.playlists, gridColumns: 3) { item in
-                            NavigationLink(destination: FetchedPlaylistDetailView(id: item.id)) {
-                                CommonGridItemView(item)
-                            }
-                        }
-                    }
+                }
             }
         }
         .navigationBarHidden(true)
@@ -76,8 +79,12 @@ struct DiscoverPlaylistView: View {
 
 #if DEBUG
 struct DiscoverPlaylistView_Previews: PreviewProvider {
+
     static var previews: some View {
-        DiscoverPlaylistView()
+        let catalogue = ["语种", "风格", "场景", "情感", "主题", "全部歌单"].enumerated().map { (index, value) in
+            PlaylistCatalogue(id: index, name: value, subs: [])
+        }
+        DiscoverPlaylistView(viewModel: .init(catalogue: catalogue))
     }
 }
 #endif

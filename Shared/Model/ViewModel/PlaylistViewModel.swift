@@ -21,9 +21,11 @@ struct PlaylistViewModel: Identifiable {
     var songs = [SongViewModel]()
     var songsId = [Int64]()
     var userId: Int64 = 0
+    
     init() {
         
     }
+    
     init(_ playList: PlaylistJSONModel) {
         self.count = playList.trackCount
         self.coverImgUrl = playList.coverImgUrl

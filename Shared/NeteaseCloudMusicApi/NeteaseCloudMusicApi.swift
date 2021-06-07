@@ -240,26 +240,6 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //获取分类歌单
-    func playlist(cat: String, hot: Bool, limit: Int, offset: Int, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/playlist/list"
-        let order = hot ? "hot" : "new"
-        
-        let data = [
-            "cat": cat,
-            "order": order,
-            "limit": limit,
-            "offset": limit * offset,
-            "total": true,
-          ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //歌单分类
-    func playlistCategories(complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/playlist/catalogue"
-        let data = [String : Any]()
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
     //新建歌单
     func playlistCreate(name: String, privacy: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/playlist/create"
