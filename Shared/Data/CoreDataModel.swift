@@ -38,7 +38,7 @@ extension PlaylistResponse: CoreDataManged {
     }
 }
 
-extension SongDetailResponse.SongResponse: CoreDataManged {
+extension SongResponse: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(dt)

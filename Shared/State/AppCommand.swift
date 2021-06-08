@@ -833,24 +833,20 @@ struct RecommendPlaylistDoneCommand: AppCommand {
 
 struct RecommendSongsCommand: AppCommand {
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.recommendSongs { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    if let recommendSongDicts = json["data"] as? NeteaseCloudMusicApi.ResponseData {
-                        let recommendSongsJSONModel = recommendSongDicts.toData!.toModel(RecommendSongsJSONModel.self)!
-                        DataManager.shared.updateRecommendSongsPlaylist(recommendSongsJSONModel: recommendSongsJSONModel)
-                        DataManager.shared.updateSongs(songsJSONModel: recommendSongsJSONModel.dailySongs)
-                        DataManager.shared.updateRecommendSongsPlaylistSongs(ids: recommendSongsJSONModel.dailySongs.map{ Int($0.id) })
-                        store.dispatch(.recommendSongsDone(result: .success(recommendSongsJSONModel)))
-                    }
-                }else {
-                    store.dispatch(.recommendSongsDone(result: .failure(.playlistDetailError)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: RecommendSongAction())
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.recommendSongsDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.recommendSongsDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { recommendSongsResponse in
+                guard recommendSongsResponse.isSuccess else {
+                    store.dispatch(.recommendSongsDone(result: .failure(AppError.recommendSongsError)))
+                    return
+                }
+                store.dispatch(.recommendSongsDone(result: .success(recommendSongsResponse)))
+            }.store(in: &store.cancellableSet)
     }
 }
 

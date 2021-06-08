@@ -377,16 +377,16 @@ class Store: ObservableObject {
                 appState.initRequestingCount -= 1
             }
         case .recommendSongsRequest:
-            appState.playlist.detailRequesting = true
+            appState.playlist.recommendSongsRequesting = true
             appCommand = RecommendSongsCommand()
         case .recommendSongsDone(let result):
             switch result {
-            case .success:
-                break
+            case .success(let recommendSongsResponse):
+                appState.playlist.recommendSongs = recommendSongsResponse.data.dailySongs
             case .failure(let error):
                 appState.error = error
             }
-            appState.playlist.detailRequesting = false
+            appState.playlist.recommendSongsRequesting = false
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
