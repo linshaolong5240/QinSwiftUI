@@ -846,41 +846,52 @@ struct RecommendSongsDoneCommand: AppCommand {
 
 struct SearchCommand: AppCommand {
     let keyword: String
-    let type: NeteaseCloudMusicApi.SearchType
+    let type: SearchType
     let limit: Int
     let offset: Int
     
     func execute(in store: Store) {
-        guard keyword.count > 0 else {
-            return
+        if type == .song {
+            NeteaseCloudMusicApi
+                .shared
+                .requestPublisher(action: SearchSongAction(parameters: .init(s: keyword, type: type, limit: limit, offset: limit * offset)))
+                .sink { completion in
+                    if case .failure(let error) = completion {
+                        store.dispatch(.searchSongDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    }
+                } receiveValue: { searchSongResponse in
+                    guard searchSongResponse.isSuccess else {
+                        store.dispatch(.searchSongDone(result: .failure(AppError.searchError)))
+                        return
+                    }
+                    store.dispatch(.searchSongDone(result: .success(searchSongResponse.result.songs.map(\.id))))
+                }.store(in: &store.cancellableSet)
         }
-        NeteaseCloudMusicApi.shared.search(keyword: keyword, type: type, limit: limit, offset: offset) { result in
-            switch result {
-            case .success(let json):
-                if let result = json["result"] as? [String: Any] {
-                    if let songsDict = result["songs"] as? [[String: Any]] {
-                        let songsJSONModel = songsDict.map{$0.toData!.toModel(SearchSongJSONModel.self)!}
-                        store.dispatch(.searchSongDone(result: .success(songsJSONModel.map{$0.id})))
+        if type == .playlist {
+            NeteaseCloudMusicApi
+                .shared
+                .requestPublisher(action: SearchPlaylistAction(parameters: .init(s: keyword, type: type, limit: limit, offset: limit * offset)))
+                .sink { completion in
+                    if case .failure(let error) = completion {
+                        store.dispatch(.searchPlaylistDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                     }
-                    if let playlists = result["playlists"] as? [[String: Any]] {
-                        let playlistsViewModel = playlists.map{$0.toData!.toModel(SearchPlaylistJSONModel.self)!}.map{PlaylistViewModel($0)}
-                        store.dispatch(.searchPlaylistDone(result: .success(playlistsViewModel)))
+                } receiveValue: { searchPlaylistResponse in
+                    guard searchPlaylistResponse.isSuccess else {
+                        store.dispatch(.searchPlaylistDone(result: .failure(AppError.searchError)))
+                        return
                     }
-                }else {
-                    store.dispatch(.searchSongDone(result: .failure(.songsDetailError)))
-                }
-            case .failure(let error):
-                store.dispatch(.searchSongDone(result: .failure(error)))
-            }
+                    store.dispatch(.searchPlaylistDone(result: .success(searchPlaylistResponse)))
+                }.store(in: &store.cancellableSet)
+
         }
     }
 }
 
 struct SearchSongDoneCommand: AppCommand {
-    let ids: [Int64]
+    let ids: [Int]
     
     func execute(in store: Store) {
-        store.dispatch(.songsDetail(ids: ids.map(Int.init)))
+        store.dispatch(.songsDetail(ids: ids))
     }
 }
 

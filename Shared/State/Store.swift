@@ -389,12 +389,14 @@ class Store: ObservableObject {
                 appState.initRequestingCount -= 1
             }
         case .search(let keyword, let type, let limit, let offset):
-            appState.search.searchRequesting = true
-            appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)
+            if keyword.count > 0 {
+                appState.search.searchRequesting = true
+                appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)
+            }
         case .searchPlaylistDone(let result):
             switch result {
-            case .success(let playlists):
-                appState.search.playlists = playlists
+            case .success(let searchPlaylistResponse):
+                appState.search.result.playlists = searchPlaylistResponse.result.playlists
             case .failure(let error):
                 appState.error = error
             }

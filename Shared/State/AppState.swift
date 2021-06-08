@@ -121,10 +121,14 @@ extension AppState {
     }
     
     struct Search {
+        struct Result {
+            var playlists = [SearchPlaylistResponse.Result.Playlist]()
+            var songs = [SearchSongResponse.Result.Song]()
+        }
         var keyword: String = ""
         var searchRequesting: Bool = false
-        var songsId = [Int64]()
-        var playlists = [PlaylistViewModel]()
+        var songsId = [Int]()
+        var result = Result()
     }
 }
 

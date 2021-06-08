@@ -158,17 +158,7 @@ extension String {
 
 extension NeteaseCloudMusicApi {
     // 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频
-    enum SearchType: Int {
-        case song = 1
-        case album = 10
-        case artist = 100
-        case playlist = 1000
-        case user = 1002
-        case mv = 1004
-        case lyric = 1006
-        case fm = 1009
-        case vedio = 1014
-    }
+
     enum CommentType: String {
         case song = "R_SO_4_"//  歌曲
         case mv = "R_MV_5_"//  MV

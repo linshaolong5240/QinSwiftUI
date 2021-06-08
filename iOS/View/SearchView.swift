@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+extension SearchPlaylistResponse.Result.Playlist: Identifiable {
+    
+}
+
+extension SearchSongResponse.Result.Song: Identifiable {
+    
+}
+
 struct SearchView: View {
     @EnvironmentObject var store: Store
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     private var search: AppState.Search {store.appState.search}
     private var searchBinding: Binding<AppState.Search> {$store.appState.search}
-    @State private var searchType: NeteaseCloudMusicApi.SearchType = .song
+    @State private var searchType: SearchType = .song
     @State private var showCancel = false
     
     var body: some View {
@@ -42,8 +50,8 @@ struct SearchView: View {
                 }
                 .padding(.horizontal)
                 Picker(selection: $searchType, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
-                    Text("单曲").tag(NeteaseCloudMusicApi.SearchType.song)
-                    Text("歌单").tag(NeteaseCloudMusicApi.SearchType.playlist)
+                    Text("单曲").tag(SearchType.song)
+                    Text("歌单").tag(SearchType.playlist)
                 }/*@END_MENU_TOKEN@*/
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
@@ -57,9 +65,9 @@ struct SearchView: View {
                 }else {
                     switch searchType {
                     case .song:
-                        SearchSongResultView(songsId: search.songsId)
+                        SearchSongResultView(songsId: search.songsId.map(Int64.init))
                     case .playlist:
-                        SearchPlaylistResultView()
+                        SearchPlaylistResultView(playlists: search.result.playlists)
                     default:
                         Spacer()
                     }
@@ -74,13 +82,12 @@ struct SearchView: View {
 }
 
 struct SearchPlaylistResultView: View {
-    @EnvironmentObject var store: Store
-    private var search: AppState.Search {store.appState.search}
+    let playlists: [SearchPlaylistResponse.Result.Playlist]
     
     var body: some View {
         ScrollView {
             LazyVStack {
-                ForEach(search.playlists) { item in
+                ForEach(playlists) { item in
                     NavigationLink(destination: FetchedPlaylistDetailView(id: Int(item.id))) {
                         SearchPlaylistResultRowView(viewModel: item)
                             .padding(.horizontal)
@@ -92,7 +99,7 @@ struct SearchPlaylistResultView: View {
 }
 
 struct SearchPlaylistResultRowView: View {
-    let viewModel: PlaylistViewModel
+    let viewModel: SearchPlaylistResponse.Result.Playlist
     
     var body: some View {
         HStack(alignment: .top) {
@@ -100,7 +107,7 @@ struct SearchPlaylistResultRowView: View {
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainTextColor)
-                Text("\(viewModel.count) songs")
+                Text("\(viewModel.trackCount) songs")
                     .foregroundColor(Color.secondTextColor)
             }
             Spacer()
