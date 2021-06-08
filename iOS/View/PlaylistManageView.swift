@@ -11,7 +11,7 @@ struct PlaylistManageView: View {
     let playlist = Store.shared.appState.playlist.userPlaylist
     @State private var editMode: EditMode = .active
     @Binding var showSheet: Bool
-    @State private var ids = [Int64]()
+    @State private var ids = [Int]()
     @State private var deleteId: Int64 = 0
     @State private var isDeleted: Bool = false
     @State private var isMoved: Bool = false
@@ -45,7 +45,7 @@ struct PlaylistManageView: View {
                 }
                 .environment(\.editMode, $editMode)
                 .onAppear {
-                    ids = playlist.map{ Int64($0.id) }
+                    ids = playlist.map(\.id)
                 }
             }
         }

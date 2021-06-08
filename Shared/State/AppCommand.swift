@@ -715,29 +715,20 @@ struct PlaylistDetailSongsCommand: AppCommand {
     }
 }
 
-//struct PlaylistDetailSongsDoneCommand: AppCommand {
-//    let playlistJSONModel: PlaylistJSONModel
-//
-//    func execute(in store: Store) {
-//    }
-//}
-
 struct PlaylistOrderUpdateCommand: AppCommand {
-    let ids: [Int64]
+    let ids: [Int]
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistOrderUpdate(ids: ids) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    store.dispatch(.playlistOrderUpdateDone(result: .success(true)))
-                }else {
-                    store.dispatch(.playlistOrderUpdateDone(result: .failure(.playlistOrderUpdateError(code: json["code"] as! Int, message: json["msg"] as! String))))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: PlaylistOrderUpdateAction(parameters: .init(ids: ids)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.playlistOrderUpdateDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.playlistOrderUpdateDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { playlistOrderUpdateResponse in
+                store.dispatch(.playlistOrderUpdateDone(result: .success(playlistOrderUpdateResponse.isSuccess)))
+            }.store(in: &store.cancellableSet)
     }
 }
 

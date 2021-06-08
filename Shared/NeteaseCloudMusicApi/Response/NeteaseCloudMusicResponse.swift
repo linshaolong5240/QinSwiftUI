@@ -11,6 +11,10 @@ protocol NeteaseCloudMusicResponse: Codable {
     var code: Int { get }
 }
 
+extension NeteaseCloudMusicResponse {
+    var isSuccess: Bool { code == 200 }
+}
+
 public struct CommonAlbum: Codable {
     public struct Info: Codable {
         public struct CommentThread: Codable {
