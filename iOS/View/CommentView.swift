@@ -75,7 +75,7 @@ struct CommentListView: View {
                 }
                 Button(action: {
                     hideKeyboard()
-                    Store.shared.dispatch(.commentRequest(id: id, content: editComment, type: .song, action: .add))
+                    Store.shared.dispatch(.commentRequest(id: Int(id), content: editComment, type: .song, action: .add))
                     editComment = ""
                 }) {
                     NEUSFView(systemName: "arrow.up.message.fill", size: .small)
@@ -172,7 +172,7 @@ struct CommentRowView: View {
                     Spacer()
                     if viewModel.userId == user?.userId ?? 0 {
                         Button(action: {
-                            Store.shared.dispatch(.commentRequest(id: id, cid: viewModel.commentId, type: type, action: .delete))
+                            Store.shared.dispatch(.commentRequest(id: Int(id), commentId: Int(viewModel.commentId), type: type, action: .delete))
                         }, label: {
                             Text("删除")
                         })

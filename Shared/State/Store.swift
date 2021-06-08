@@ -131,9 +131,9 @@ class Store: ObservableObject {
                 appState.initRequestingCount -= 1
             }
         case .commentRequest(let id, let cid, let content, let type, let action):
-            if content.count > 0 {
+            if content != nil || action == .delete {
                 appState.comment.commentRequesting = true
-                appCommand = CommentCommand(id: id, cid: cid, content: content, type: type, action: action)
+                appCommand = CommentCommand(id: id, commentId: cid, content: content, type: type, action: action)
             }
         case .commentDoneRequest(let result):
             switch result {

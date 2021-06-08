@@ -72,7 +72,7 @@ class NeteaseCloudMusicApi {
                 }
             }
         }
-        #if false//DEBUG
+        #if DEBUG
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
@@ -152,15 +152,6 @@ class NeteaseCloudMusicApi {
 extension String {
     func plusSymbolToPercent() -> String {
         return self.replacingOccurrences(of: "+", with: "%2B")
-    }
-}
-
-
-extension NeteaseCloudMusicApi {
-    enum CommentAction: String {
-        case add = "add"
-        case delete = "delete"
-        case reply = "reply"
     }
 }
 

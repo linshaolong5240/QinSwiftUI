@@ -226,31 +226,64 @@ struct ArtistSublistRequestCommand: AppCommand {
 }
 
 struct CommentCommand: AppCommand {
-    let id: Int64
-    let cid: Int64
-    let content: String
+    let id: Int
+    let commentId: Int?
+    let content: String?
     let type: CommentType
-    let action: NeteaseCloudMusicApi.CommentAction
+    let action: CommentAction
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.comment(id: id, cid: cid, content: content,type: type, action: action) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    let args = (id, cid, type , action)
-                    store.dispatch(.commentDoneRequest(result: .success(args)))
-                }
-            case .failure(let error):
-                store.dispatch(.commentDoneRequest(result: .failure(error)))
-            }
+        if let content = content, action == .add {
+            NeteaseCloudMusicApi.shared.requestPublisher(action: CommentAddAction(parameters: .init(threadId: id, content: content, type: type)))
+                .sink { completion in
+                    if case .failure(let error) = completion {
+                        store.dispatch(.commentDoneRequest(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    }
+                } receiveValue: { commentAddResponse in
+                    guard commentAddResponse.isSuccess else {
+                        store.dispatch(.commentDoneRequest(result: .failure(AppError.comment)))
+                        return
+                    }
+                    let result = (id: id, type: type, action: action)
+                    store.dispatch(.commentDoneRequest(result: .success(result)))
+                }.store(in: &store.cancellableSet)
         }
+        if let commentId = commentId, action == .delete {
+            NeteaseCloudMusicApi.shared.requestPublisher(action: CommentDeleteAction(parameters: .init(threadId: id, commentId: commentId, type: type)))
+                .sink { completion in
+                    if case .failure(let error) = completion {
+                        store.dispatch(.commentDoneRequest(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    }
+                } receiveValue: { commentDeleteResponse in
+                    guard commentDeleteResponse.isSuccess else {
+                        store.dispatch(.commentDoneRequest(result: .failure(AppError.comment)))
+                        return
+                    }
+                    let result = (id: id, type: type, action: action)
+                    store.dispatch(.commentDoneRequest(result: .success(result)))
+                }.store(in: &store.cancellableSet)
+        }
+
+
+//        NeteaseCloudMusicApi.shared.comment(id: id, cid: cid, content: content,type: type, action: action) { result in
+//            switch result {
+//            case .success(let json):
+//                print(json.toJSONString)
+//                if json["code"] as! Int == 200 {
+//                    let args = (id, cid, type , action)
+//                    store.dispatch(.commentDoneRequest(result: .success(args)))
+//                }
+//            case .failure(let error):
+//                store.dispatch(.commentDoneRequest(result: .failure(error)))
+//            }
+//        }
     }
 }
 
 struct CommentDoneCommand: AppCommand {
-    let id: Int64
+    let id: Int
     let type: CommentType
-    let action: NeteaseCloudMusicApi.CommentAction
+    let action: CommentAction
 
     func execute(in store: Store) {
         if type == .song {

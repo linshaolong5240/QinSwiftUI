@@ -16,7 +16,7 @@ enum AppError: Error, Identifiable {
     case artistIntroduction(code: Int, message: String)
     case artistMV(code: Int, message: String)
     case artistSub(code: Int, message: String)
-    case comment(code: Int, message: String)
+    case comment
     case commentLikeRequest
     case commentMusic
     case httpRequest
@@ -55,7 +55,7 @@ extension AppError {
         case .artistIntroduction(let code, let message): return errorFormat(error: "获取歌手描述错误", code: code, message: message)
         case .artistMV(let code, let message): return errorFormat(error: "获取歌手MV错误", code: code, message: message)
         case .artistSub(let code, let message): return errorFormat(error: "收藏或取消收藏歌手错误", code: code, message: message)
-        case .comment(let code, let message): return errorFormat(error: "发送评论错误", code: code, message: message)
+        case .comment: return "发送评论错误"
         case .commentLikeRequest: return "评论点赞错误"
         case .commentMusic: return "获取评论错误"
         case .httpRequest: return "网络请求错误"
