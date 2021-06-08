@@ -76,7 +76,7 @@ struct PlaylistDetailView: View {
                 Text("id:\(String(playlist.id))")
                     .foregroundColor(.secondTextColor)
                 Spacer()
-                if !Store.shared.appState.playlist.createdPlaylistIds.contains(playlist.id) {
+                if !Store.shared.appState.playlist.createdPlaylistIds.contains(Int(playlist.id)) {
                     Button(action: {
                         let id = playlist.id
                         let sub = !subedPlaylistIDs.contains(Int(id))

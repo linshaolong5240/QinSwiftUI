@@ -350,9 +350,9 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistTracks(let pid, let op, let ids):
+        case .playlistTracks(let pid, let ids, let op):
             if ids.count > 0 {
-                appCommand = PlaylistTracksCommand(pid: pid, op: op, ids: ids)
+                appCommand = PlaylistTracksCommand(pid: pid, ids: ids, op: op)
             }
         case .playlistTracksDone(let result):
             switch result {
@@ -489,7 +489,7 @@ class Store: ObservableObject {
             switch result {
             case .success(let playlists):
                 if let uid = appState.settings.loginUser?.userId {
-                    appState.playlist.createdPlaylistIds = playlists.filter { $0.userId == uid }.map { Int64($0.id) }
+                    appState.playlist.createdPlaylistIds = playlists.filter { $0.userId == uid }.map(\.id)
                     appState.playlist.subedPlaylistIds =  playlists.filter { $0.userId != uid }.map(\.id)
                     appState.playlist.userPlaylistIds =  playlists.map { Int64($0.id) }
                     

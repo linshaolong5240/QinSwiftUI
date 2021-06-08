@@ -201,7 +201,7 @@ public struct PrivilegeResponse: Codable {
         public let resConsumable: Bool
         public let userConsumable: Bool
     }
-    public let chargeInfoList: [ChargeInfoList]
+    public let chargeInfoList: [ChargeInfoList]?
     public let cp: Int
     public let cs: Bool
     public let dl: Int

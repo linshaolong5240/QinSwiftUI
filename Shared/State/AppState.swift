@@ -102,10 +102,11 @@ extension AppState {
         var likedIds = [Int64]()
         //喜欢的音乐歌单ID
         var likedPlaylistId: Int64 = 0
-        var createdPlaylistIds = [Int64]()
+        var createdPlaylistIds = [Int]()
         var subedPlaylistIds = [Int]()
         var userPlaylistIds = [Int64]()
         var userPlaylist = [PlaylistResponse]()
+        var createdPlaylist: [PlaylistResponse] { userPlaylist.filter({createdPlaylistIds.contains($0.id)}) }
     }
     
     struct Playing {

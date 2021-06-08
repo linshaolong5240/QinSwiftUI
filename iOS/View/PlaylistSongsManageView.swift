@@ -28,7 +28,7 @@ struct PlaylistSongsManageView: View {
                     Button(action: {
                         showSheet.toggle()
                         if deletedIds.count > 0 {
-                            Store.shared.dispatch(.playlistTracks(pid: playlist.id, op: false, ids: deletedIds))
+                            Store.shared.dispatch(.playlistTracks(pid: Int(playlist.id), ids: deletedIds.map(Int.init), op: false))
                         }
                         if isMoved {
                             Store.shared.dispatch(.songsOrderUpdate(pid: playlist.id, ids: songs.map{ $0.id }))

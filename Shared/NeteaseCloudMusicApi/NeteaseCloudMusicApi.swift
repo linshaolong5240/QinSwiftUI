@@ -157,6 +157,7 @@ extension String {
 
 
 extension NeteaseCloudMusicApi {
+    // 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频
     enum SearchType: Int {
         case song = 1
         case album = 10
@@ -245,17 +246,6 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //对歌单添加或删除歌曲
-    func playlistTracks(pid: Int64, op: Bool, ids: [Int64], complete: @escaping CompletionBlock) {
-        let op = op ? "add" : "del"
-        let data = [
-            "op": op,
-            "pid": pid,
-            "trackIds": "[" + ids.map(String.init).joined(separator: ",") + "]"
-            ] as [String : Any]
-        let url = "https://music.163.com/weapi/playlist/manipulate/tracks"
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
     //推荐歌单( 需要登录 )
     func recommendResource(complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/v1/discovery/recommend/resource"
@@ -268,7 +258,7 @@ extension NeteaseCloudMusicApi {
         let data = ResponseData()
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //歌曲链接 // 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频
+    //歌曲链接
     func search(keyword: String, type: SearchType = .song, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/search/get"
         let data = [

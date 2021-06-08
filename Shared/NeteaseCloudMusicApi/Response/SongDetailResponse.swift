@@ -11,7 +11,7 @@ public struct SongDetailResponse: NeteaseCloudMusicResponse {
     public struct SongResponse: Codable {
         public struct Album: Codable {
             public let id: Int
-            public let name: String
+            public let name: String?
             public let pic: Double
             public let picUrl: String
             public let tns: [String]
@@ -20,7 +20,7 @@ public struct SongDetailResponse: NeteaseCloudMusicResponse {
         public struct Artist: Codable {
             public let alias: [String]
             public let id: Int
-            public let name: String
+            public let name: String?
             public let tns: [String]
         }
         public struct NoCopyrightRcmd: Codable {
@@ -38,8 +38,8 @@ public struct SongDetailResponse: NeteaseCloudMusicResponse {
         public let al: Album
         public let alia: [String]
         public let ar: [Artist]
-        public let cd: String
-        public let cf: String
+        public let cd: String?
+        public let cf: String?
         public let copyright: Int
         public let cp: Int
 //        public let crbt: Any?

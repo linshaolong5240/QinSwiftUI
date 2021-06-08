@@ -99,7 +99,7 @@ struct PlayingNowView: View {
                         .offset(y: bottomType == .playinglist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     if bottomType == .createdPlaylist {
-                        PlaylistTracksView(showList: $showMore, bottomType: $bottomType)
+                        PlaylistTracksView(playlist: store.appState.playlist.createdPlaylist, showList: $showMore, bottomType: $bottomType)
                         .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
                         .transition(.move(edge: .bottom))
                     }
@@ -255,7 +255,7 @@ struct PlayingNowStatusView: View {
 }
 
 struct PlaylistTracksView: View {
-    let playlist = [PlaylistResponse]()
+    let playlist: [PlaylistResponse]
     @Binding var showList: Bool
     @Binding  var bottomType: PlayingNowBottomType
     
@@ -282,11 +282,11 @@ struct PlaylistTracksView: View {
             ScrollView {
                 LazyVStack{
                     ForEach(playlist){ item in
-                        if Store.shared.appState.playlist.createdPlaylistIds.contains(Int64(item.id)) && item.id != Store.shared.appState.playlist.likedPlaylistId {
+                        if Store.shared.appState.playlist.createdPlaylistIds.contains(item.id) && item.id != Store.shared.appState.playlist.likedPlaylistId {
                             Button(action: {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     if let songId = Store.shared.appState.playing.song?.id {
-                                        Store.shared.dispatch(.playlistTracks(pid: Int64(item.id), op: true, ids: [songId]))
+                                        Store.shared.dispatch(.playlistTracks(pid: item.id, ids: [Int(songId)], op: true))
                                     }
                                 }
                                 withAnimation(.default){

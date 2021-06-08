@@ -767,31 +767,33 @@ struct PlaylisSubscribeDoneCommand: AppCommand {
 }
 
 struct PlaylistTracksCommand: AppCommand {
-    let pid: Int64
+    let pid: Int
+    let ids: [Int]
     let op: Bool
-    let ids: [Int64]
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistTracks(pid: pid, op: op, ids: ids) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: PlaylistTracksAction(parameters: .init(pid: pid, ids: ids, op: op ? .add : .del)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.playlistTracksDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                }
+            } receiveValue: { playlistSubscribeResponse in
+                if playlistSubscribeResponse.isSuccess {
                     store.dispatch(.playlistTracksDone(result: .success(pid)))
                 }else {
-                    store.dispatch(.playlistTracksDone(result: .failure(.playlistTracksError(code: json["code"] as! Int, message: json["message"] as! String))))
+                    store.dispatch(.playlistTracksDone(result: .failure(AppError.playlistSubscribeError)))
                 }
-            case .failure(let error):
-                store.dispatch(.playlistTracksDone(result: .failure(error)))
-            }
-        }
+            }.store(in: &store.cancellableSet)
     }
 }
 
 struct PlaylistTracksDoneCommand: AppCommand {
-    let id: Int64
+    let id: Int
     
     func execute(in store: Store) {
-        store.dispatch(.playlistDetail(id: Int(id)))
+        store.dispatch(.playlistDetail(id: id))
         store.dispatch(.userPlaylistRequest())
     }
 }
