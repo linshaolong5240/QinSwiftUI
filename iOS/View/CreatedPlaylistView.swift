@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CreatedPlaylistView: View {
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \UserPlaylist.orderNumber, ascending: true)], predicate: nil, animation: nil) private var results: FetchedResults<UserPlaylist>
-    @State private var playlistDetailId: Int64 = 0
+    let playlist: [PlaylistResponse]
+    @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var showPlaylistCreate: Bool = false
     @State private var showPlaylistManage: Bool = false
@@ -25,7 +25,7 @@ struct CreatedPlaylistView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
-                Text("(\(results.count))")
+                Text("(\(playlist.count))")
                     .foregroundColor(Color.mainTextColor)
                 Spacer()
                 Button(action: {
@@ -49,37 +49,17 @@ struct CreatedPlaylistView: View {
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
-//            FetchedResultsView(entity: UserPlaylist.entity(), predicate: NSPredicate(format: "id IN %@", playlist.createdPlaylistIds)) { (results: FetchedResults<UserPlaylist>) in
-//                ScrollView(Axis.Set.horizontal, showsIndicators: true) {
-//                    let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
-//                    LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-//                        ForEach(results) { (item) in
-//                            if Store.shared.appState.playlist.createdPlaylistIds.contains(item.id) {
-//                                Button(action: {
-//                                    playlistDetailId = item.id
-//                                    showPlaylistDetail.toggle()
-//                                }, label: {
-//                                    CommonGridItemView(item )
-//                                        .padding(.vertical)
-//                                })
-//                            }
-//                        }
-//                    }/*@END_MENU_TOKEN@*/
-//                }
-//            }
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {
                 let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                    ForEach(results) { (item) in
-                        if Store.shared.appState.playlist.createdPlaylistIds.contains(item.id) {
-                            Button(action: {
-                                playlistDetailId = item.id
-                                showPlaylistDetail.toggle()
-                            }, label: {
-                                CommonGridItemView(item )
-                                    .padding(.vertical)
-                            })
-                        }
+                    ForEach(playlist) { (item) in
+                        Button(action: {
+                            playlistDetailId = item.id
+                            showPlaylistDetail.toggle()
+                        }, label: {
+                            CommonGridItemView(item)
+                                .padding(.vertical)
+                        })
                     }
                 }/*@END_MENU_TOKEN@*/
             }
@@ -87,7 +67,7 @@ struct CreatedPlaylistView: View {
     }
 }
 
-#if DEBUG
+#if false//DEBUG
 struct CreatedPlaylistView_Previews: PreviewProvider {
     static var previews: some View {
         CreatedPlaylistView()

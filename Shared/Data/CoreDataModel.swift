@@ -8,10 +8,6 @@
 import Foundation
 import CoreData
 
-extension UserPlaylist: CoreDataOrdered {
-    
-}
-
 extension AlbumSublistResponse.Album {
     struct AlbumSubDataModel: Codable {
         var id: Int64
@@ -31,19 +27,8 @@ extension ArtistSublistResponse.Artist {
 }
 
 extension PlaylistResponse: CoreDataManged {
-    struct UserPlaylistDataModel: Codable {
-        var coverImgUrl: String?
-        var id: Int64
-        var name: String
-        var subscribed: Bool
-        var trackCount: Int64
-        var userId: Int64
-    }
-    
-    var dataModel: UserPlaylistDataModel { UserPlaylistDataModel(coverImgUrl: coverImgUrl, id: Int64(id), name: name, subscribed: subscribed ?? false, trackCount: Int64(trackCount), userId: Int64(userId)) }
-    
-    func entity(context: NSManagedObjectContext) -> UserPlaylist {
-        let entity = UserPlaylist(context: context)
+    func entity(context: NSManagedObjectContext) -> Playlist {
+        let entity = Playlist(context: context)
         entity.coverImgUrl = coverImgUrl
         entity.id = Int64(id)
         entity.name = name
@@ -53,7 +38,17 @@ extension PlaylistResponse: CoreDataManged {
     }
 }
 
-extension CommonAlbum {
+extension SongDetailResponse.SongResponse: CoreDataManged {
+    func entity(context: NSManagedObjectContext) -> Song {
+        let entity = Song(context: context)
+        entity.durationTime = Int64(dt)
+        entity.id = Int64(id)
+        entity.name = name
+        return entity
+    }
+}
+
+extension CommonAlbum: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
         entity.id = Int64(id)
@@ -65,7 +60,7 @@ extension CommonAlbum {
     }
 }
 
-extension CommonArtistResponse {
+extension CommonArtistResponse: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.followed = followed
@@ -77,7 +72,7 @@ extension CommonArtistResponse {
     }
 }
 
-extension AlbumResponse.AlbumSong {
+extension AlbumResponse.AlbumSong: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(dt)
@@ -87,7 +82,7 @@ extension AlbumResponse.AlbumSong {
     }
 }
 
-extension AlbumResponse.AlbumSong.AlbumSongArtist {
+extension AlbumResponse.AlbumSong.AlbumSongArtist: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.id = Int64(id)
@@ -96,7 +91,7 @@ extension AlbumResponse.AlbumSong.AlbumSongArtist {
     }
 }
 
-extension ArtistAlbumsResponse.ArtistAlbum {
+extension ArtistAlbumsResponse.ArtistAlbum: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
         entity.id = Int64(id)

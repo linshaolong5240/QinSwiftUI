@@ -66,7 +66,7 @@ struct DiscoverPlaylistView: View {
                     Spacer()
                 }else {
                     VGridView(viewModel.playlists, gridColumns: 3) { item in
-                        NavigationLink(destination: FetchedPlaylistDetailView(id: Int64(item.id))) {
+                        NavigationLink(destination: FetchedPlaylistDetailView(id: item.id)) {
                             CommonGridItemView(item)
                         }
                     }

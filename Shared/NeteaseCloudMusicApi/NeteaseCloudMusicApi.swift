@@ -240,16 +240,6 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //歌单详情
-    func playlistDetail(id: Int64, complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/v3/playlist/detail"
-        let data = [
-            "id": id,
-            "n": 100000,
-            "s": 8
-        ]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
     //歌单顺序
     func playlistOrderUpdate(ids: [Int64], complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/playlist/order/update"
@@ -309,16 +299,6 @@ extension NeteaseCloudMusicApi {
             "trackIds": ids,
             "op": "update"
             ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //歌曲详情
-    func songsDetail(ids: [Int64], complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/v3/song/detail"
-        let c = ids.map{"{" + "id:" + String($0) + "}"}.joined(separator: ",")
-        let data = [
-            "c": "[" + c + "]",
-            "ids": "[" + ids.map(String.init).joined(separator: ",") + "]"
-        ]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
 }

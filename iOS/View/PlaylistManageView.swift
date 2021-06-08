@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct PlaylistManageView: View {
+    let playlist = [PlaylistResponse]()
+
     @State private var editMode: EditMode = .active
-    @FetchRequest(entity: UserPlaylist.entity(), sortDescriptors: []) private var results: FetchedResults<UserPlaylist>
     @Binding var showSheet: Bool
     @State private var ids = [Int64]()
     @State private var deleteId: Int64 = 0
@@ -37,7 +38,7 @@ struct PlaylistManageView: View {
                 )
                 .padding()
                 List {
-                    ForEach(results) { (item: UserPlaylist) in
+                    ForEach(playlist) { item in
                         UserPlaylistRowView(playlist: item)
                     }
                     .onDelete(perform: deleteAction)
@@ -45,7 +46,7 @@ struct PlaylistManageView: View {
                 }
                 .environment(\.editMode, $editMode)
                 .onAppear {
-                    ids = results.map{ $0.id }
+                    ids = playlist.map{ Int64($0.id) }
                 }
             }
         }
@@ -58,7 +59,7 @@ struct PlaylistManageView: View {
     func deleteAction(from source: IndexSet) {
         isDeleted = true
         if let index = source.first {
-            deleteId = results[index].id
+            deleteId = Int64(playlist[index].id)
         }
     }
     func moveAction(from source: IndexSet, offset: Int) {
@@ -78,13 +79,13 @@ struct PlaylistManageView_Previews: PreviewProvider {
 
 
 struct UserPlaylistRowView: View {
-    @ObservedObject var playlist: UserPlaylist
+   let playlist: PlaylistResponse
     
     var body: some View {
         HStack {
             NEUCoverView(url: playlist.coverImgUrl, coverShape: .rectangle, size: .little)
             VStack(alignment: .leading) {
-                Text(playlist.name ?? "")
+                Text(playlist.name)
                     .foregroundColor(.mainTextColor)
                 Text("\(playlist.trackCount) songs")
                     .foregroundColor(.secondTextColor)

@@ -127,9 +127,18 @@ public struct CommonCrteator: Codable {
 }
 
 public struct PlaylistResponse: Codable {
+    public struct TrackId: Codable {
+//        public let alg: Any?
+        public let at: Int
+        public let id: Int
+        public let rcmdReason: String
+        public let t: Int
+        public let uid: Int
+        public let v: Int
+    }
     public let adType: Int
     public let alg: String?
-    public let anonimous: Bool
+    public let anonimous: Bool?
     //        public let artists: Any?
     public let backgroundCoverId: Int?
     public let backgroundCoverUrl: String?
@@ -152,6 +161,7 @@ public struct PlaylistResponse: Codable {
     public let ordered: Bool
     public let playCount: Int
     public let privacy: Int
+//    public let remixVideo: Any?
 //        public let recommendInfo: Any?
     public let shareCount: Int?
     //        public let sharedUsers: Any?
@@ -163,12 +173,50 @@ public struct PlaylistResponse: Codable {
     public let tags: [String]
     public let titleImage: Int?
     public let titleImageUrl: String?
-    public let totalDuration: Int
+    public let totalDuration: Int?
     public let trackCount: Int
+    public let trackIds: [TrackId]?
     public let trackNumberUpdateTime: Int
-//        public let tracks: Any?
+//    public let tracks: [Track]?
     public let trackUpdateTime: Int
     //        public let updateFrequency: Any?
     public let updateTime: Int
     public let userId: Int
+//    public let videoIds: Any?
+//    public let videos: Any?
+}
+
+public struct PrivilegeResponse: Codable {
+    public struct ChargeInfoList: Codable {
+        public let chargeMessage: String?
+        public let chargeType: Int
+        public let chargeUrl: String?
+        public let rate: Int
+    }
+    public struct FreeTrialPrivilege: Codable {
+        public let resConsumable: Bool
+        public let userConsumable: Bool
+    }
+    public let chargeInfoList: [ChargeInfoList]
+    public let cp: Int
+    public let cs: Bool
+    public let dl: Int
+    public let downloadMaxbr: Int
+    public let fee: Int
+    public let fl: Int
+    public let flag: Int
+    public let freeTrialPrivilege: FreeTrialPrivilege
+    public let id: Int
+    public let maxbr: Int
+    public let payed: Int
+//    public let pc: Any?
+    public let pl: Int
+    public let playMaxbr: Int
+    public let preSell: Bool
+    public let realPayed: Int?
+//            public let rscl: Any?
+    public let sp: Int
+    public let st: Int
+    public let subp: Int
+    public let toast: Bool
 }

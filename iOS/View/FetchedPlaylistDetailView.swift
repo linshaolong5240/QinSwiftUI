@@ -12,13 +12,13 @@ import Combine
 struct FetchedPlaylistDetailView: View {
     @State private var show: Bool = false
     
-    let id: Int64
+    let id: Int
     
     var body: some View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                CommonNavigationBarView(id: id, title: "歌单详情", type: .playlist)
+                CommonNavigationBarView(id: Int64(id), title: "歌单详情", type: .playlist)
                     .padding(.horizontal)
                     .onAppear {
                         DispatchQueue.main.async {
@@ -139,7 +139,7 @@ struct CommonNavigationBarView: View {
                     if id == 0 {
                         Store.shared.dispatch(.recommendSongsRequest)
                     } else {
-                        Store.shared.dispatch(.playlistDetail(id: id))
+                        Store.shared.dispatch(.playlistDetail(id: Int(id)))
                     }
                 }
             }){

@@ -39,6 +39,7 @@ struct PlaylistViewModel: Identifiable {
         self.songsId = playList.trackIds?.map({$0.id}) ?? [Int64]()
         self.userId = playList.userId
     }
+    
     init(_ recommendPlaylist: RecommendPlaylistJSONModel) {
         self.count = recommendPlaylist.trackCount
         self.coverImgUrl = recommendPlaylist.picUrl
@@ -49,6 +50,7 @@ struct PlaylistViewModel: Identifiable {
         self.playCount = recommendPlaylist.playcount
         self.userId = recommendPlaylist.userId
     }
+    
     init(_ recommendSongs: RecommendSongsJSONModel) {
         self.count = recommendSongs.dailySongs.count
 //        self.description = recommendSongs.recommendReasons.map{$0.reason}.joined(separator: "\n")
@@ -57,6 +59,7 @@ struct PlaylistViewModel: Identifiable {
 //        self.songs = recommendSongs.dailySongs.map{SongViewModel($0)}
         self.songsId = self.songs.map{$0.id}
     }
+    
     init(_ searchPlaylist: SearchPlaylistJSONModel) {
         self.count = searchPlaylist.trackCount
         self.coverImgUrl = searchPlaylist.coverImgUrl

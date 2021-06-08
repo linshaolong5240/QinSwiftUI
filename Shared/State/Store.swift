@@ -318,17 +318,16 @@ class Store: ObservableObject {
             appCommand = PlaylistDetailCommand(id: id)
         case .playlistDetailDone(let result):
             switch result {
-            case .success(let playlistJSONModel):
-                appCommand = PlaylistDetailDoneCommand(playlistJSONModel: playlistJSONModel)
+            case .success(let playlist):
+                appCommand = PlaylistDetailDoneCommand(playlist: playlist)
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistDetailSongs(let playlistJSONModel):
-            appCommand = PlaylistDetailSongsCommand(playlistJSONModel: playlistJSONModel)
+        case .playlistDetailSongs(let playlist):
+            appCommand = PlaylistDetailSongsCommand(playlist: playlist)
         case .playlistDetailSongsDone(let result):
             switch result {
-            case .success:
-                break
+            case .success: break
             case .failure(let error):
                 appState.error = error
             }
@@ -415,8 +414,7 @@ class Store: ObservableObject {
             appCommand = SongsDetailCommand(ids: ids)
         case .songsDetailDone(let result):
             switch result {
-            case .success(let songs):
-                appCommand = SongsDetailDoneCommand(songsJSONModel: songs)
+            case .success: break
             case .failure(let error):
                 appState.error = error
             }
@@ -489,13 +487,19 @@ class Store: ObservableObject {
             }
         case .userPlaylistDone(let result):
             switch result {
-            case .success(let result):
-                if let id = result.userPlaylistIds.first {
+            case .success(let playlists):
+                if let uid = appState.settings.loginUser?.userId {
+                    appState.playlist.createdPlaylistIds = playlists.filter { $0.userId == uid }.map { Int64($0.id) }
+                    appState.playlist.subedPlaylistIds =  playlists.filter { $0.userId != uid }.map { Int64($0.id) }
+                    appState.playlist.userPlaylistIds =  playlists.map { Int64($0.id) }
+                    
+                    appState.playlist.createdPlaylist = playlists.filter({ $0.userId == uid })
+                    appState.playlist.subedPlaylist = playlists.filter({ $0.userId != uid })
+                }
+
+                if let id = playlists.first?.id {
                     appState.playlist.likedPlaylistId = Int64(id)
                 }
-                appState.playlist.createdPlaylistIds = result.createdPlaylistId.map({ Int64($0) })
-                appState.playlist.subedPlaylistIds = result.subedPlaylistIds.map({ Int64($0) })
-                appState.playlist.userPlaylistIds = result.userPlaylistIds.map({ Int64($0) })
             case .failure(let error):
                 appState.error = error
             }

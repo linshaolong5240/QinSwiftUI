@@ -15,7 +15,7 @@ struct RecommendPlaylistView: View {
     var body: some View {
         VStack(spacing: 0) {
             NavigationLink(
-                destination: FetchedPlaylistDetailView(id: playlistDetailId),
+                destination: FetchedPlaylistDetailView(id: Int(playlistDetailId)),
                 isActive: $showPlaylistDetail,
                 label: {EmptyView()})
             HStack {

@@ -81,7 +81,7 @@ struct SearchPlaylistResultView: View {
         ScrollView {
             LazyVStack {
                 ForEach(search.playlists) { item in
-                    NavigationLink(destination: FetchedPlaylistDetailView(id: item.id)) {
+                    NavigationLink(destination: FetchedPlaylistDetailView(id: Int(item.id))) {
                         SearchPlaylistResultRowView(viewModel: item)
                             .padding(.horizontal)
                     }

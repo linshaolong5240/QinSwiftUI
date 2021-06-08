@@ -20,38 +20,6 @@ public struct AlbumResponse: NeteaseCloudMusicResponse {
             public let id: Int
             public let name: String
         }
-        public struct Privilege: Codable {
-            public struct ChargeInfoList: Codable {
-                public let chargeMessage: String?
-                public let chargeType: Int
-                public let chargeUrl: String?
-                public let rate: Int
-            }
-            public struct FreeTrialPrivilege: Codable {
-                public let resConsumable: Bool
-                public let userConsumable: Bool
-            }
-            public let chargeInfoList: [ChargeInfoList]
-            public let cp: Int
-            public let cs: Bool
-            public let dl: Int
-            public let downloadMaxbr: Int
-            public let fee: Int
-            public let fl: Int
-            public let flag: Int
-            public let freeTrialPrivilege: FreeTrialPrivilege
-            public let id: Int
-            public let maxbr: Int
-            public let payed: Int
-            public let pl: Int
-            public let playMaxbr: Int
-            public let preSell: Bool
-//            public let rscl: Any?
-            public let sp: Int
-            public let st: Int
-            public let subp: Int
-            public let toast: Bool
-        }
         public struct Quality: Codable {
             var br: Int
             var fid: Int
@@ -81,7 +49,7 @@ public struct AlbumResponse: NeteaseCloudMusicResponse {
         public let no: Int
 //        public let noCopyrightRcmd: Any?
         public let pop: Int
-        public let privilege: Privilege
+        public let privilege: PrivilegeResponse
         public let pst: Int
         public let rt: String?
         public let rtUrl: String?

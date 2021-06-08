@@ -122,9 +122,13 @@ class DataManager {
             print("\(#function):\(error)")
         }
     }
-//    public func batchUpdateLike(ids: [Int]) {
-//        batchUpdate(entityName: "Song", propertiesToUpdate: ["like" : true], predicate: NSPredicate(format: "id IN %@", ids))
-//    }
+    public func update<T: CoreDataManged>(model: T) {
+        #if DEBUG
+        print("\(#function): \(type(of: model))")
+        #endif
+        defer { save() }
+        _ = model.entity(context: context())
+    }
     public func getAlbum(id: Int) -> Album? {
         var album: Album? = nil
         do {
@@ -332,20 +336,17 @@ class DataManager {
             }
         }
     }
-    public func updatePlaylist(playlistJSONModel: PlaylistJSONModel) {
-        _ = playlistJSONModel.toPlaylistEntity(context: self.context())
-        self.save()
-    }
     public func updatePlaylistSongs(id: Int, songsId: [Int]) {
-        if let playlist = self.getPlaylist(id: Int64(id)) {
+        defer { save() }
+
+        if let playlist = getPlaylist(id: Int64(id)) {
             if let songs = playlist.songs {
                 playlist.removeFromSongs(songs)
             }
-            playlist.songsId = songsId.map({Int64($0) })
-            if let songs = self.getSongs(ids: songsId) {
+            playlist.songsId = songsId.map({Int64($0)})
+            if let songs = getSongs(ids: songsId) {
                 playlist.addToSongs(NSSet(array: songs))
             }
-            self.save()
         }
     }
     public func updateRecommendSongsPlaylist(recommendSongsJSONModel: RecommendSongsJSONModel) {

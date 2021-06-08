@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 //喜欢歌曲
 public struct SongLikeAction: NeteaseCloudMusicAction {
     public struct SongLikeParameters: Encodable {

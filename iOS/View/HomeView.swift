@@ -11,7 +11,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
-
+    private var playlist: AppState.UserPlaylist { store.appState.playlist }
     private var user: User? { store.appState.settings.loginUser }
     
     var body: some View {
@@ -41,8 +41,8 @@ struct HomeView: View {
                             ScrollView {
                                 RecommendPlaylistView()
                                     .padding(.top, 10)
-                                CreatedPlaylistView()
-                                SubedPlaylistView()
+                                CreatedPlaylistView(playlist: playlist.createdPlaylist)
+                                SubedPlaylistView(playlist: playlist.subedPlaylist)
                                 SubedAlbumsView()
                                 SubedArtistsView()
                             }

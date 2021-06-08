@@ -38,9 +38,7 @@ struct CommonGridItemView: View {
     init(_ item: RecommendPlaylist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ item: UserPlaylist) {
-        self.configuration = CommonGridItemConfiguration(item)
-    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             NEUCoverView(url: configuration.picUrl, coverShape: .rectangle, size: .small)
@@ -124,12 +122,6 @@ class CommonGridItemConfiguration: ObservableObject {
         self.id = item.id
         self.name = item.name
         self.picUrl = item.picUrl
-        self.subscribed = nil
-    }
-    init(_ item: UserPlaylist) {
-        self.id = item.id
-        self.name = item.name
-        self.picUrl = item.coverImgUrl
         self.subscribed = nil
     }
 }

@@ -255,6 +255,7 @@ struct PlayingNowStatusView: View {
 }
 
 struct PlaylistTracksView: View {
+    let playlist = [PlaylistResponse]()
     @Binding var showList: Bool
     @Binding  var bottomType: PlayingNowBottomType
     
@@ -278,25 +279,23 @@ struct PlaylistTracksView: View {
                 }
             }
             .padding(.horizontal)
-            FetchedResultsView(entity: UserPlaylist.entity()) { (results: FetchedResults<UserPlaylist>) in
-                ScrollView {
-                    LazyVStack{
-                        ForEach(results){ (item: UserPlaylist) in
-                            if Store.shared.appState.playlist.createdPlaylistIds.contains(item.id) && item.id != Store.shared.appState.playlist.likedPlaylistId {
-                                Button(action: {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                        if let songId = Store.shared.appState.playing.song?.id {
-                                            Store.shared.dispatch(.playlistTracks(pid: item.id, op: true, ids: [songId]))
-                                        }
+            ScrollView {
+                LazyVStack{
+                    ForEach(playlist){ item in
+                        if Store.shared.appState.playlist.createdPlaylistIds.contains(Int64(item.id)) && item.id != Store.shared.appState.playlist.likedPlaylistId {
+                            Button(action: {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    if let songId = Store.shared.appState.playing.song?.id {
+                                        Store.shared.dispatch(.playlistTracks(pid: Int64(item.id), op: true, ids: [songId]))
                                     }
-                                    withAnimation(.default){
-                                        showList = false
-                                        bottomType = .playingStatus
-                                    }
-                                }) {
-                                    UserPlaylistRowView(playlist: item)
-                                    .padding(.horizontal)
                                 }
+                                withAnimation(.default){
+                                    showList = false
+                                    bottomType = .playingStatus
+                                }
+                            }) {
+                                UserPlaylistRowView(playlist: item)
+                                .padding(.horizontal)
                             }
                         }
                     }
