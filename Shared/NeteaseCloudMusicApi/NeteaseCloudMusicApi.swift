@@ -157,17 +157,6 @@ extension String {
 
 
 extension NeteaseCloudMusicApi {
-    // 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频
-
-    enum CommentType: String {
-        case song = "R_SO_4_"//  歌曲
-        case mv = "R_MV_5_"//  MV
-        case playlist = "A_PL_0_"//  歌单
-        case album = "R_AL_3_"//  专辑
-        case dj = "A_DJ_1_"//  电台
-        case vedio = "R_VI_62_"//  视频
-        case event = "A_EV_2_"//  动态
-    }
     enum CommentAction: String {
         case add = "add"
         case delete = "delete"
@@ -205,19 +194,6 @@ extension NeteaseCloudMusicApi {
         case .reply:
             data["commentId"] = cid
             data["content"] = content
-        }
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    // 点赞与取消点赞评论
-    // 动态点赞不需要传入 id 参数，需要传入动态的 threadId 参数
-    func commentLike(id: Int64, cid: Int64, like: Bool, type: CommentType, complete: @escaping CompletionBlock) {
-        let like = like ? "like" : "unlike"
-        let url = "https://music.163.com/weapi/v1/comment/\(like)"
-        var data = ["threadId": type.rawValue + String(id),
-                    "commentId": cid
-        ] as [String : Any]
-        if type == .event {
-            data["threadId"] = id
         }
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }

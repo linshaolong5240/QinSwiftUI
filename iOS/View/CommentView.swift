@@ -128,7 +128,7 @@ struct CommentRowView: View {
 
     @StateObject var viewModel: CommentViewModel
     let id: Int64
-    let type: NeteaseCloudMusicApi.CommentType
+    let type: CommentType
     
     @State var showBeReplied = false
     
@@ -141,7 +141,7 @@ struct CommentRowView: View {
                     Spacer()
                     Text(String(viewModel.likedCount))
                     Button(action: {
-                        Store.shared.dispatch(.commentLikeRequest(id: id, cid:viewModel.commentId, like: viewModel.liked ? false : true, type: type))
+                        Store.shared.dispatch(.commentLikeRequest(id: Int(id), cid: Int(viewModel.commentId), like: viewModel.liked ? false : true, type: type))
                         viewModel.liked.toggle()
                     }, label: {
                         Image(systemName: viewModel.liked ? "hand.thumbsup.fill" : "hand.thumbsup")

@@ -229,7 +229,7 @@ struct CommentCommand: AppCommand {
     let id: Int64
     let cid: Int64
     let content: String
-    let type: NeteaseCloudMusicApi.CommentType
+    let type: CommentType
     let action: NeteaseCloudMusicApi.CommentAction
     
     func execute(in store: Store) {
@@ -249,7 +249,7 @@ struct CommentCommand: AppCommand {
 
 struct CommentDoneCommand: AppCommand {
     let id: Int64
-    let type: NeteaseCloudMusicApi.CommentType
+    let type: CommentType
     let action: NeteaseCloudMusicApi.CommentAction
 
     func execute(in store: Store) {
@@ -262,32 +262,24 @@ struct CommentDoneCommand: AppCommand {
 }
 
 struct CommentLikeCommand: AppCommand {
-    let id: Int64
-    let cid: Int64
+    let id: Int
+    let cid: Int
     let like: Bool
-    let type: NeteaseCloudMusicApi.CommentType
+    let type: CommentType
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.commentLike(id: id, cid: cid, like: like, type: type) { result in
-//            guard error == nil else {
-//                store.dispatch(.commentMusicDone(result: .failure(error!)))
-//                return
-//            }
-//            if data!["code"] as! Int == 200 {
-//                var hotComments = [Comment]()
-//                var comments = [Comment]()
-//                if let hotCommentsArray = data?["hotComments"] as? [NeteaseCloudMusicApi.ResponseData] {
-//                    hotComments = hotCommentsArray.map({$0.toData!.toModel(Comment.self)!})
-//                }
-//                if let commentsArray = data?["comments"] as? [NeteaseCloudMusicApi.ResponseData] {
-//                    comments = commentsArray.map({$0.toData!.toModel(Comment.self)!})
-//                }
-//                comments.append(contentsOf: hotComments)
-//                store.dispatch(.commentMusicDone(result: .success((hotComments,comments))))
-//            }else {
-//                store.dispatch(.commentMusicDone(result: .failure(.commentMusic)))
-//            }
-        }
+        NeteaseCloudMusicApi.shared.requestPublisher(action: CommentLikeAction(like: like, parameters: .init(threadId: id, commentId: cid, commentType: type)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.commentLikeDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                }
+            } receiveValue: { commentlikeResponse in
+                guard commentlikeResponse.isSuccess else {
+                    store.dispatch(.commentLikeDone(result: .failure(AppError.commentLikeRequest)))
+                    return
+                }
+                store.dispatch(.commentLikeDone(result: .success(id)))
+            }.store(in: &store.cancellableSet)
     }
 }
 

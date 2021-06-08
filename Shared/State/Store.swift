@@ -145,6 +145,13 @@ class Store: ObservableObject {
             appState.comment.commentRequesting = false
         case .commentLikeRequest(let id, let cid, let like, let type):
             appCommand = CommentLikeCommand(id: id, cid: cid, like: like, type: type)
+        case .commentLikeDone(let result):
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                appState.error = error
+            }
         case .commentMusicRequest(let id, let limit, let offset, let beforeTime):
             if id != 0 {
                 appState.comment.commentMusicRequesting = true
