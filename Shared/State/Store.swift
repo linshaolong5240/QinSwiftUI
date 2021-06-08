@@ -493,8 +493,7 @@ class Store: ObservableObject {
                     appState.playlist.subedPlaylistIds =  playlists.filter { $0.userId != uid }.map { Int64($0.id) }
                     appState.playlist.userPlaylistIds =  playlists.map { Int64($0.id) }
                     
-                    appState.playlist.createdPlaylist = playlists.filter({ $0.userId == uid })
-                    appState.playlist.subedPlaylist = playlists.filter({ $0.userId != uid })
+                    appState.playlist.userPlaylist = playlists
                 }
 
                 if let id = playlists.first?.id {

@@ -41,8 +41,8 @@ struct HomeView: View {
                             ScrollView {
                                 RecommendPlaylistView()
                                     .padding(.top, 10)
-                                CreatedPlaylistView(playlist: playlist.createdPlaylist)
-                                SubedPlaylistView(playlist: playlist.subedPlaylist)
+                                CreatedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId == user?.userId }))
+                                SubedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId != user?.userId }))
                                 SubedAlbumsView()
                                 SubedArtistsView()
                             }

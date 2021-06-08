@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct PlaylistManageView: View {
-    let playlist = [PlaylistResponse]()
-
+    let playlist = Store.shared.appState.playlist.userPlaylist
     @State private var editMode: EditMode = .active
     @Binding var showSheet: Bool
     @State private var ids = [Int64]()

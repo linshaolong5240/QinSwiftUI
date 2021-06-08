@@ -105,8 +105,7 @@ extension AppState {
         var createdPlaylistIds = [Int64]()
         var subedPlaylistIds = [Int64]()
         var userPlaylistIds = [Int64]()
-        var createdPlaylist = [PlaylistResponse]()
-        var subedPlaylist = [PlaylistResponse]()
+        var userPlaylist = [PlaylistResponse]()
     }
     
     struct Playing {
