@@ -24,7 +24,7 @@ public struct CommentSongResponse: NeteaseCloudMusicResponse {
                 public let rights: Bool
                 public let vipCode: Int
             }
-            public let associator: Associator
+            public let associator: Associator?
 //            public let musicPackage: Any?
             public let redVipAnnualCount, redVipLevel: Int
         }
@@ -46,7 +46,7 @@ public struct CommentSongResponse: NeteaseCloudMusicResponse {
     public struct Comment: Codable {
         public struct BeReplied: Codable {
             public let beRepliedCommentId: Int
-            public let content: String
+            public let content: String?
 //            public let expressionUrl: String?
             public let status: Int
             public let user: User

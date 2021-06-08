@@ -37,29 +37,8 @@ class CommentViewModel: ObservableObject, Identifiable {
     
     init(_ comment: CommentSongResponse.Comment.BeReplied) {
         self.commentId = Int64(comment.beRepliedCommentId)
-        self.content = comment.content
+        self.content = comment.content ?? ""
         self.id = Int64(comment.user.userId)
         self.avatarUrl = comment.user.avatarUrl
         self.nickname = comment.user.nickname
-    }
-    
-    init(_ comment: CommentJSONModel.RepliedComment) {
-        self.commentId = comment.beRepliedCommentId
-        self.content = comment.content ?? ""
-        self.id = comment.user.userId
-        self.avatarUrl = comment.user.avatarUrl
-        self.nickname = comment.user.nickname
-    }
-    init(_ comment: CommentJSONModel) {
-        self.beReplied = comment.beReplied.map{CommentViewModel($0)}
-        self.commentId = comment.commentId
-        self.content = comment.content
-        self.id = comment.commentId
-        self.liked = comment.liked
-        self.likedCount = comment.likedCount
-        self.parentCommentId = comment.parentCommentId
-        self.userId = comment.user.userId
-        self.avatarUrl = comment.user.avatarUrl
-        self.nickname = comment.user.nickname
-    }
-}
+    }}

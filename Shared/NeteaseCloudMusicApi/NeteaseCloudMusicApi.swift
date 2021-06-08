@@ -72,7 +72,7 @@ class NeteaseCloudMusicApi {
                 }
             }
         }
-        #if DEBUG
+        #if false//DEBUG
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
