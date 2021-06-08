@@ -980,30 +980,32 @@ struct SongLyricRequestCommand: AppCommand {
 }
 
 struct SongsOrderUpdateCommand: AppCommand {
-    let pid: Int64
-    let ids: [Int64]
+    let pid: Int
+    let ids: [Int]
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.songsOrderUpdate(pid: pid, ids: ids) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as? Int == 200 {
-                    store.dispatch(.songsOrderUpdateDone(result: .success(pid)))
-                }else {
-                    store.dispatch(.songsOrderUpdateDone(result: .failure(.playlistOrderUpdateError(code: json["code"] as! Int, message: json["message"] as! String))))
-                }
-            case .failure(let error):
-                store.dispatch(.songsOrderUpdateDone(result: .failure(error)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: SongOrderUpdateAction(parameters: .init(pid: pid, trackIds: ids)))
+            .sink { completion in
+            if case .failure(let error) = completion {
+                store.dispatch(.songsOrderUpdateDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        }
+        } receiveValue: { songOrderUpdateResponse in
+            guard songOrderUpdateResponse.isSuccess else {
+                store.dispatch(.songsOrderUpdateDone(result: .failure(AppError.songsOrderUpdate)))
+                return
+            }
+            store.dispatch(.songsOrderUpdateDone(result: .success(pid)))
+        }.store(in: &store.cancellableSet)
     }
 }
 
 struct SongsOrderUpdateDoneCommand: AppCommand {
-    let id: Int64
+    let id: Int
     
     func execute(in store: Store) {
-        store.dispatch(.playlistDetail(id: Int(id)))
+        store.dispatch(.playlistDetail(id: id))
     }
 }
 

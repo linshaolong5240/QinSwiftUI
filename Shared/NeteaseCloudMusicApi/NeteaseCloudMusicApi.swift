@@ -72,7 +72,7 @@ class NeteaseCloudMusicApi {
                 }
             }
         }
-        #if false//DEBUG
+        #if DEBUG
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
@@ -267,16 +267,6 @@ extension NeteaseCloudMusicApi {
             "limit": limit,
             "offset": offset
         ] as [String : Any]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //歌曲顺序
-    func songsOrderUpdate(pid: Int64, ids: [Int64], complete: @escaping CompletionBlock) {
-        let url = "http://interface.music.163.com/weapi/playlist/manipulate/tracks"
-        let data = [
-            "pid": pid,
-            "trackIds": ids,
-            "op": "update"
-            ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
 }

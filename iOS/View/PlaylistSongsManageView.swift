@@ -31,7 +31,7 @@ struct PlaylistSongsManageView: View {
                             Store.shared.dispatch(.playlistTracks(pid: Int(playlist.id), ids: deletedIds.map(Int.init), op: false))
                         }
                         if isMoved {
-                            Store.shared.dispatch(.songsOrderUpdate(pid: playlist.id, ids: songs.map{ $0.id }))
+                            Store.shared.dispatch(.songsOrderUpdate(pid: Int(playlist.id), ids: songs.map{ Int($0.id) }))
                         }
                     }, label: {
                         NEUSFView(systemName: "checkmark", size: .medium)

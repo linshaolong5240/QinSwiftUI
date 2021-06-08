@@ -37,7 +37,7 @@ enum AppError: Error, Identifiable {
     case recommendSongsError
     case searchError
     case songsDetailError
-    case songsOrderUpdate(code: Int, message: String)
+    case songsOrderUpdate
     case songsURLError
     case userPlaylistError
     case httpRequestError(error: Error)
@@ -74,7 +74,7 @@ extension AppError {
         case .recommendSongsError: return "获取每日推荐歌曲错误"
         case .searchError: return "搜索错误"
         case .songsDetailError: return "获取歌曲详情错误"
-        case .songsOrderUpdate(let code, let message): return errorFormat(error: "歌曲排序错误", code: code, message: message)
+        case .songsOrderUpdate: return "歌曲排序错误"
         case .songsURLError: return "获取歌曲链接错误"
         case .userPlaylistError: return "获取用户歌单错误"
         case .httpRequestError(let error): return error.localizedDescription
