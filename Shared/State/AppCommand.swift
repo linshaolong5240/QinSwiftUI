@@ -882,7 +882,6 @@ struct SearchCommand: AppCommand {
                     }
                     store.dispatch(.searchPlaylistDone(result: .success(searchPlaylistResponse)))
                 }.store(in: &store.cancellableSet)
-
         }
     }
 }
