@@ -345,8 +345,8 @@ class Store: ObservableObject {
             appCommand = PlaylisSubscribeCommand(id: id, sub: sub)
         case .playlistSubscibeDone(let result):
             switch result {
-            case .success(let id):
-                appCommand = PlaylisSubscribeDoneCommand(id: id)
+            case .success:
+                appCommand = PlaylisSubscribeDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
@@ -490,7 +490,7 @@ class Store: ObservableObject {
             case .success(let playlists):
                 if let uid = appState.settings.loginUser?.userId {
                     appState.playlist.createdPlaylistIds = playlists.filter { $0.userId == uid }.map { Int64($0.id) }
-                    appState.playlist.subedPlaylistIds =  playlists.filter { $0.userId != uid }.map { Int64($0.id) }
+                    appState.playlist.subedPlaylistIds =  playlists.filter { $0.userId != uid }.map(\.id)
                     appState.playlist.userPlaylistIds =  playlists.map { Int64($0.id) }
                     
                     appState.playlist.userPlaylist = playlists

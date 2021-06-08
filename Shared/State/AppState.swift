@@ -103,7 +103,7 @@ extension AppState {
         //喜欢的音乐歌单ID
         var likedPlaylistId: Int64 = 0
         var createdPlaylistIds = [Int64]()
-        var subedPlaylistIds = [Int64]()
+        var subedPlaylistIds = [Int]()
         var userPlaylistIds = [Int64]()
         var userPlaylist = [PlaylistResponse]()
     }

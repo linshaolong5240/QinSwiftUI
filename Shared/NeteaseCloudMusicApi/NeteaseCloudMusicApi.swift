@@ -53,9 +53,14 @@ class NeteaseCloudMusicApi {
             "Content-Type": "application/x-www-form-urlencoded",
             "Host": "music.163.com",
             "Referer": "https://music.163.com",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4"
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15",
         ]
-
+//        let cookies = HTTPCookieStorage.shared.cookies
+//        let cookiesString = cookies!.map({ cookie in
+//            cookie.name + "=" + cookie.value
+//        }).joined(separator: "; ")
+//        httpHeader["Cookie"] = cookiesString
+//        print(httpHeader)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = httpHeader
@@ -240,23 +245,6 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //歌单顺序
-    func playlistOrderUpdate(ids: [Int64], complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/playlist/order/update"
-        let data = [
-            "ids": ids
-        ]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //歌单收藏
-    func playlistSubscribe(id: Int64, sub: Bool, complete: @escaping CompletionBlock) {
-        let t = sub ? "subscribe" : "unsubscribe"
-        let url = "https://music.163.com/weapi/playlist/\(t)"
-        let data = [
-            "id": id
-        ]
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
     //对歌单添加或删除歌曲
     func playlistTracks(pid: Int64, op: Bool, ids: [Int64], complete: @escaping CompletionBlock) {
         let op = op ? "add" : "del"
@@ -324,15 +312,20 @@ extension NeteaseCloudMusicApi {
     
     func httpRequest(method: HttpMethod, url: String, data: String?, complete: @escaping CompletionBlock) {
         
-        let httpHeader = [ //"Accept": "*/*",
+        var httpHeader = [ //"Accept": "*/*",
             //"Accept-Encoding": "gzip,deflate,sdch",
             //"Connection": "keep-alive",
             "Content-Type": "application/x-www-form-urlencoded",
-            "Host": "music.163.com",
+//            "Host": "music.163.com",
             "Referer": "https://music.163.com",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4"
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15",
         ]
-        
+        let cookies = HTTPCookieStorage.shared.cookies
+        let cookiesString = cookies!.map({ cookie in
+            cookie.name + "=" + cookie.value
+        }).joined(separator: "; ")
+        httpHeader["Cookie"] = cookiesString
+        print(httpHeader)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = httpHeader

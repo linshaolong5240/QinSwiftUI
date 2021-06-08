@@ -64,6 +64,8 @@ struct PlaylistDetailView_Previews: PreviewProvider {
 #endif
 
 struct PlaylistDetailView: View {
+    @EnvironmentObject private var store: Store
+    private var subedPlaylistIDs: [Int] { store.appState.playlist.subedPlaylistIds }
     @ObservedObject var playlist :Playlist
     @State private var showPlaylistSongsManage: Bool = false
     
@@ -77,8 +79,8 @@ struct PlaylistDetailView: View {
                 if !Store.shared.appState.playlist.createdPlaylistIds.contains(playlist.id) {
                     Button(action: {
                         let id = playlist.id
-                        let sub = !Store.shared.appState.playlist.subedPlaylistIds.contains(id)
-                        Store.shared.dispatch(.playlistSubscibe(id: id, sub: sub))
+                        let sub = !subedPlaylistIDs.contains(Int(id))
+                        Store.shared.dispatch(.playlistSubscibe(id: Int(id), sub: sub))
                     }) {
                         NEUSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(playlist.id) ? "heart.fill" : "heart",
                                   size: .small)

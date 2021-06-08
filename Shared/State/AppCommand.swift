@@ -739,30 +739,29 @@ struct PlaylistOrderUpdateDoneCommand: AppCommand {
 }
 
 struct PlaylisSubscribeCommand: AppCommand {
-    let id: Int64
+    let id: Int
     let sub: Bool
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.playlistSubscribe(id: id, sub: sub) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: PlaylistSubscribeAction(sub: sub, parameters: .init(id: id)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.playlistSubscibeDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                }
+            } receiveValue: { playlistSubscribeResponse in
+                if playlistSubscribeResponse.isSuccess {
                     store.dispatch(.playlistSubscibeDone(result: .success(id)))
                 }else {
-                    store.dispatch(.playlistSubscibeDone(result: .failure(.playlistSubscribeError)))
+                    store.dispatch(.playlistSubscibeDone(result: .failure(AppError.playlistSubscribeError)))
                 }
-            case .failure(let error):
-                store.dispatch(.playlistSubscibeDone(result: .failure(error)))
-            }
-        }
+            }.store(in: &store.cancellableSet)
     }
 }
 
 struct PlaylisSubscribeDoneCommand: AppCommand {
-    let id: Int64
-    
     func execute(in store: Store) {
-        store.dispatch(.playlistDetail(id: Int(id)))
         store.dispatch(.userPlaylistRequest())
     }
 }
@@ -946,8 +945,8 @@ struct SongLikeRequestCommand: AppCommand {
             if case .failure(let error) = completion {
                 store.dispatch(.songLikeRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-        } receiveValue: { likeSongResponse in
-            store.dispatch(.songLikeRequestDone(result: .success(like)))
+        } receiveValue: { songLikeResponse in
+            store.dispatch(.songLikeRequestDone(result: .success(songLikeResponse.isSuccess)))
         }.store(in: &store.cancellableSet)
     }
 }

@@ -258,6 +258,10 @@
 		EFF3072D266F5B4400D5E1F4 /* PlaylistOrderUpdateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF3072B266F5B4400D5E1F4 /* PlaylistOrderUpdateAction.swift */; };
 		EFF3072F266F5BD200D5E1F4 /* PlaylistOrderUpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF3072E266F5BD200D5E1F4 /* PlaylistOrderUpdateResponse.swift */; };
 		EFF30730266F5BD200D5E1F4 /* PlaylistOrderUpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF3072E266F5BD200D5E1F4 /* PlaylistOrderUpdateResponse.swift */; };
+		EFF30732266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF30731266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift */; };
+		EFF30733266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF30731266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift */; };
+		EFF30735266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF30734266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift */; };
+		EFF30736266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF30734266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -404,6 +408,8 @@
 		EFF30728266F451C00D5E1F4 /* SongDetailAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongDetailAction.swift; sourceTree = "<group>"; };
 		EFF3072B266F5B4400D5E1F4 /* PlaylistOrderUpdateAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOrderUpdateAction.swift; sourceTree = "<group>"; };
 		EFF3072E266F5BD200D5E1F4 /* PlaylistOrderUpdateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOrderUpdateResponse.swift; sourceTree = "<group>"; };
+		EFF30731266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSubscribeResponse.swift; sourceTree = "<group>"; };
+		EFF30734266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSubscribeAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,6 +690,7 @@
 				EFF3071F266F202E00D5E1F4 /* PlaylistDetailResponse.swift */,
 				EF28DA24266E065400CE0369 /* PlaylistListResponse.swift */,
 				EFF3072E266F5BD200D5E1F4 /* PlaylistOrderUpdateResponse.swift */,
+				EFF30731266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift */,
 				EFF30725266F42EE00D5E1F4 /* SongDetailResponse.swift */,
 				2B8EFEBD266BF92000FF42EF /* SongLikeResponse.swift */,
 				2B8EFEC3266BFDA800FF42EF /* SongLikeListResponse.swift */,
@@ -711,6 +718,7 @@
 				EFF30722266F3C8700D5E1F4 /* PlaylistDetailAction.swift */,
 				EF28DA27266E097000CE0369 /* PlaylistListAction.swift */,
 				EFF3072B266F5B4400D5E1F4 /* PlaylistOrderUpdateAction.swift */,
+				EFF30734266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift */,
 				EFF30728266F451C00D5E1F4 /* SongDetailAction.swift */,
 				2B8EFEC0266BF99C00FF42EF /* SongLikeAction.swift */,
 				2B8EFEC6266BFDE600FF42EF /* SongLikeListAction.swift */,
@@ -832,6 +840,7 @@
 			files = (
 				2B62FB7B2507A28F00097D5B /* NEUButtonStyle.swift in Sources */,
 				EFF3072C266F5B4400D5E1F4 /* PlaylistOrderUpdateAction.swift in Sources */,
+				EFF30735266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift in Sources */,
 				2B62FB7C2507A28F00097D5B /* NEUSFView.swift in Sources */,
 				2B019C4C261DCE4100E1E9D6 /* UINavigationController+Extension.swift in Sources */,
 				2B8EFEC7266BFDE600FF42EF /* SongLikeListAction.swift in Sources */,
@@ -907,6 +916,7 @@
 				2B2D517824E39C1C007B52A4 /* SearchView.swift in Sources */,
 				2B47BE4D250BC22600848354 /* NEUDivider.swift in Sources */,
 				2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
+				EFF30732266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift in Sources */,
 				2B494BB8257E7366005C6A31 /* MVJSONModel.swift in Sources */,
 				2BC8316925710ED4003D8D10 /* CreatedPlaylistView.swift in Sources */,
 				EF474B1D2660EECE0021F3D1 /* LogoutResponse.swift in Sources */,
@@ -1044,6 +1054,7 @@
 				EF6EF0F8265E5A1600F164B5 /* NeteaseCloudMusicAction.swift in Sources */,
 				EF3890D4262D803D00C39649 /* JSONHelper.swift in Sources */,
 				2B8EFECE266C00FC00FF42EF /* LoginRefreshAction.swift in Sources */,
+				EFF30733266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift in Sources */,
 				2BC4C210254A3FBE00121D3E /* RecommendSongsJSONModel.swift in Sources */,
 				2BD285BF252B119B000E4B9F /* AlbumJSONModel.swift in Sources */,
 				2B8EFEBC266BF3D800FF42EF /* ArtistSubAction.swift in Sources */,
@@ -1057,6 +1068,7 @@
 				EFF30730266F5BD200D5E1F4 /* PlaylistOrderUpdateResponse.swift in Sources */,
 				2BCCB32124DC7BCC004CAD67 /* AppCommand.swift in Sources */,
 				2BD4D9CC251BC460006798ED /* LyricViewModel.swift in Sources */,
+				EFF30736266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift in Sources */,
 				EF28DA32266E196700CE0369 /* PlaylistDeleteResponse.swift in Sources */,
 				2BCCB2E324DC7A17004CAD67 /* Player.swift in Sources */,
 				2B8EFEBF266BF92000FF42EF /* SongLikeResponse.swift in Sources */,

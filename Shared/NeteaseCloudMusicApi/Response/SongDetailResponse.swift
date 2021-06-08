@@ -32,7 +32,7 @@ public struct SongDetailResponse: NeteaseCloudMusicResponse {
             public let br: Int
             public let fid: Int
             public let size: Int
-            public let vd: Int
+            public let vd: Double
         }
 //        public let a: Any?
         public let al: Album
