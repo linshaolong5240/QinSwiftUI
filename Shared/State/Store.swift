@@ -152,22 +152,26 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .commentMusicRequest(let id, let limit, let offset, let beforeTime):
-            if id != 0 {
+        case .commentMusicRequest(let rid, let limit, let offset, let beforeTime):
+            if rid != 0 {
                 appState.comment.commentMusicRequesting = true
-                appState.comment.id = id
+                appState.comment.id = rid
+                appState.comment.limit = limit
                 appState.comment.offset = offset
-                appState.comment.hotComments = [CommentViewModel]()
-                appState.comment.comments = [CommentViewModel]()
+                appState.comment.befortime = beforeTime
+                appState.comment.hotComments = .init()
+                appState.comment.comments = .init()
                 appState.comment.total = 0
-                appCommand = CommentMusicCommand(id: id, limit: limit, offset: offset, beforeTime: beforeTime)
+                appCommand = CommentMusicCommand(rid: rid, limit: limit, offset: offset, beforeTime: beforeTime)
             }
         case .commentMusicRequestDone(let result):
             switch result {
-            case .success(let result):
-                appState.comment.hotComments.append(contentsOf: result.0.map({CommentViewModel($0)}))
-                appState.comment.comments.append(contentsOf: result.1.map({CommentViewModel($0)}))
-                appState.comment.total = result.2
+            case .success(let commentSongResponse):
+                appState.comment.hotComments = commentSongResponse.hotComments
+                appState.comment.comments = commentSongResponse.comments
+//                appState.comment.hotComments.append(contentsOf: result.0.map({CommentViewModel($0)}))
+//                appState.comment.comments.append(contentsOf: result.1.map({CommentViewModel($0)}))
+                appState.comment.total = commentSongResponse.total
             case .failure(let error):
                 appState.error = error
             }
@@ -175,8 +179,10 @@ class Store: ObservableObject {
         case .commentMusicLoadMore:
             appState.comment.offset += 1
             let id = appState.comment.id
+            let limit = appState.comment.limit
             let offset = appState.comment.offset
-            appCommand = CommentMusicCommand(id: id, offset: offset)
+            let beforetime = appState.comment.befortime
+            appCommand = CommentMusicCommand(rid: id, limit: limit, offset: offset, beforeTime: beforetime)
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
         case .error(let error):

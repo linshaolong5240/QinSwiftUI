@@ -255,7 +255,7 @@ struct CommentDoneCommand: AppCommand {
     func execute(in store: Store) {
         if type == .song {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                store.dispatch(.commentMusicRequest(id: id))
+                store.dispatch(.commentMusicRequest(rid: Int(id)))
             }
         }
     }
@@ -284,41 +284,24 @@ struct CommentLikeCommand: AppCommand {
 }
 
 struct CommentMusicCommand: AppCommand {
-    let id: Int64
+    let rid: Int
     let limit: Int
     let offset: Int
     let beforeTime: Int
     
-    init(id: Int64 = 0, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0) {
-        self.id = id
-        self.limit = limit
-        self.offset = offset
-        self.beforeTime = beforeTime
-    }
-    
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.commentMusic(id: id, limit: limit, offset: offset, beforeTime: beforeTime) { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    var hotComments = [CommentJSONModel]()
-                    var comments = [CommentJSONModel]()
-                   
-                    if let hotCommentsArray = json["hotComments"] as? [NeteaseCloudMusicApi.ResponseData] {
-                        hotComments = hotCommentsArray.map({$0.toData!.toModel(CommentJSONModel.self)!})
-                    }
-                    if let commentsArray = json["comments"] as? [NeteaseCloudMusicApi.ResponseData] {
-                        comments = commentsArray.map({$0.toData!.toModel(CommentJSONModel.self)!})
-                    }
-                    let total = json["total"] as! Int
-                    store.dispatch(.commentMusicRequestDone(result: .success((hotComments,comments,total))))
-                }else {
-                    store.dispatch(.commentMusicRequestDone(result: .failure(.commentMusic)))
+        NeteaseCloudMusicApi.shared.requestPublisher(action: CommentSongAction(rid: rid, parameters: .init(rid: rid, limit: limit, offset: limit * offset, beforeTime: beforeTime)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.commentMusicRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.commentMusicRequestDone(result: .failure(error)))
-            }
-        }
+            } receiveValue: { commentSongResponse in
+                guard commentSongResponse.isSuccess else {
+                    store.dispatch(.commentMusicRequestDone(result: .failure(AppError.commentMusic)))
+                    return
+                }
+                store.dispatch(.commentMusicRequestDone(result: .success(commentSongResponse)))
+            }.store(in: &store.cancellableSet)
     }
 }
 

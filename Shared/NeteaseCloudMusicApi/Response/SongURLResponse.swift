@@ -19,7 +19,7 @@ public struct SongURLResponse: NeteaseCloudMusicResponse {
 //        public let freeTrialPrivilege: FreeTrialPrivilege
         public let gain, id: Int
 //        public let level: Any?
-        public let md5: String
+        public let md5: String?
         public let payed, size: Int
         public let type: String
 //        public let uf: Any?

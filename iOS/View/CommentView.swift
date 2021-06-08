@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+extension CommentSongResponse.Comment: Identifiable {
+    public var id: Int { commentId }
+}
+
+extension CommentSongResponse.Comment.BeReplied: Identifiable {
+    public var id: Int { beRepliedCommentId }
+}
+
 struct CommentView: View {
     let id: Int64
     
@@ -77,7 +85,7 @@ struct CommentListView: View {
             .padding()
             .onAppear {
                 if Store.shared.appState.comment.id != id {
-                    Store.shared.dispatch(.commentMusicRequest(id: id))
+                    Store.shared.dispatch(.commentMusicRequest(rid: Int(id)))
                 }
             }
             if comment.commentMusicRequesting {
@@ -93,7 +101,7 @@ struct CommentListView: View {
                             Spacer()
                         }
                         ForEach(comment.hotComments) { item in
-                            CommentRowView(viewModel: item, id: id, type: .song)
+                            CommentRowView(viewModel: CommentViewModel(item), id: id, type: .song)
                             Divider()
                         }
                         HStack {
@@ -102,7 +110,7 @@ struct CommentListView: View {
                             Spacer()
                         }
                         ForEach(comment.comments) { item in
-                            CommentRowView(viewModel: item, id: id, type: .song)
+                            CommentRowView(viewModel: CommentViewModel(item), id: id, type: .song)
                             Divider()
                         }
                     }

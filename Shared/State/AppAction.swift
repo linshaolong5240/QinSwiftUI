@@ -29,8 +29,8 @@ enum AppAction {
     case commentDoneRequest(result: Result<(id: Int64, cid: Int64, type: CommentType, action: NeteaseCloudMusicApi.CommentAction), AppError>)
     case commentLikeRequest(id: Int, cid: Int, like: Bool, type: CommentType)
     case commentLikeDone(result: Result<Int, AppError>)
-    case commentMusicRequest(id: Int64, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0)
-    case commentMusicRequestDone(result: Result<([CommentJSONModel],[CommentJSONModel],Int), AppError>)
+    case commentMusicRequest(rid: Int, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0)
+    case commentMusicRequestDone(result: Result<CommentSongResponse, AppError>)
     case commentMusicLoadMore
     case coverShape
     case error(AppError)

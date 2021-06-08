@@ -72,10 +72,12 @@ extension AppState {
     struct Comment {
         var commentRequesting = false
         var commentMusicRequesting = false
-        var hotComments = [CommentViewModel]()
-        var comments = [CommentViewModel]()
-        var id: Int64 = 0
+        var hotComments = [CommentSongResponse.Comment]()
+        var comments = [CommentSongResponse.Comment]()
+        var id: Int = 0
+        var limit: Int = 0
         var offset: Int = 0
+        var befortime: Int = 0
         var total: Int = 0
     }
     
