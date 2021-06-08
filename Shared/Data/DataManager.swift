@@ -234,7 +234,7 @@ class DataManager {
         }
         self.save()
     }
-    public func updateAlbum(model: AlbumResponse) {
+    public func updateAlbum(model: AlbumDetailResponse) {
         defer { save() }
         
         let album = model.album.entity(context: context())
@@ -276,11 +276,11 @@ class DataManager {
         _ = artistJSONModel.toArtistEntity(context: self.context())
         self.save()
     }
-    public func updateArtist(model: CommonArtistResponse) {
+    public func updateArtist(model: ArtistResponse) {
         defer { save() }
         _ = model.entity(context: context())
     }
-    public func updateArtist(artistModel: CommonArtistResponse, introduction: String) {
+    public func updateArtist(artistModel: ArtistResponse, introduction: String) {
         defer { save() }
         let artist = artistModel.entity(context: context())
         artist.introduction = introduction
@@ -349,14 +349,7 @@ class DataManager {
             }
         }
     }
-    public func updateRecommendSongsPlaylist(recommendSongsJSONModel: RecommendSongsJSONModel) {
-        let playlist = Playlist(context: self.context())
-        playlist.id = 0
-        playlist.name = "每日推荐"
-        playlist.introduction = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
-        playlist.songsId = recommendSongsJSONModel.dailySongs.map{$0.id}
-        self.save()
-    }
+    
     public func updateRecommendSongsPlaylistSongs(ids: [Int]) {
         if let playlist = self.getPlaylist(id: 0) {
             if let songs = playlist.songs {

@@ -1,5 +1,5 @@
 //
-//  AlbumResponse.swift
+//  AlbumDetailResponse.swift
 //  Qin
 //
 //  Created by 林少龙 on 2021/5/27.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AlbumResponse: NeteaseCloudMusicResponse {
+public struct AlbumDetailResponse: NeteaseCloudMusicResponse {
 
     public struct AlbumSong: Codable {
         public struct Album: Codable {
@@ -60,7 +60,7 @@ public struct AlbumResponse: NeteaseCloudMusicResponse {
         public let t: Int
         public let v: Int
     }
-    public let album: CommonAlbum
+    public let album: AlbumResponse
     public let code: Int
     public let resourceState: Bool
     public let songs: [AlbumSong]

@@ -20,9 +20,9 @@ public struct ArtistHotSongsResponse: NeteaseCloudMusicResponse {
             public let sr: Int
             public let volumeDelta: Double
         }
-        public let album: CommonAlbum
+        public let album: AlbumResponse
         public let alias: [String]
-        public let artists: [CommonArtistResponse]
+        public let artists: [ArtistResponse]
 //        public let audition: Any?
         public let bMusic: Quality?
         public let copyFrom: String
@@ -58,7 +58,7 @@ public struct ArtistHotSongsResponse: NeteaseCloudMusicResponse {
         public let starredNum: Int
         public let status: Int
     }
-    public let artist: CommonArtistResponse
+    public let artist: ArtistResponse
     public let code: Int
     public let hotSongs: [HotSong]
     public let more: Bool

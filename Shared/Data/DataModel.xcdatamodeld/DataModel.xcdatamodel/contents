@@ -87,16 +87,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="RecommendPlaylist" representedClassName="RecommendPlaylist" syncable="YES" codeGenerationType="class">
-        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="picUrl" optional="YES" attributeType="String"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="id"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
     <entity name="Song" representedClassName="Song" syncable="YES" codeGenerationType="class">
         <attribute name="durationTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -122,7 +112,6 @@
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>
         <element name="MV" positionX="-2301.01611328125" positionY="-1528.080322265625" width="128" height="223"/>
         <element name="Playlist" positionX="-1930.801025390625" positionY="-1642.122100830078" width="128" height="164"/>
-        <element name="RecommendPlaylist" positionX="-1652.767822265625" positionY="-1410.951629638672" width="128" height="88"/>
         <element name="Song" positionX="-1933.198486328125" positionY="-1325.470428466797" width="126.224609375" height="148"/>
     </elements>
 </model>

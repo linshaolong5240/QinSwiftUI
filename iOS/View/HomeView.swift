@@ -39,7 +39,7 @@ struct HomeView: View {
                         Divider()
                         if store.appState.initRequestingCount == 0 {
                             ScrollView {
-                                RecommendPlaylistView()
+                                RecommendPlaylistView(playlist: playlist.recommendPlaylist)
                                     .padding(.top, 10)
                                 CreatedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId == user?.userId }))
                                 SubedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId != user?.userId }))

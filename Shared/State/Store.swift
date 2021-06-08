@@ -366,9 +366,8 @@ class Store: ObservableObject {
             appCommand = RecommendPlaylistCommand()
         case .recommendPlaylistDone(let result):
             switch result {
-            case .success:
-                break
-//                appCommand = RecommendPlaylistDoneCommand()
+            case .success(let recommandPlaylistResponse):
+                appState.playlist.recommendPlaylist = recommandPlaylistResponse.recommend
             case .failure(let error):
                 appState.error = error
             }
@@ -381,8 +380,7 @@ class Store: ObservableObject {
             appCommand = RecommendSongsCommand()
         case .recommendSongsDone(let result):
             switch result {
-            case .success(let recommendSongsResponse):
-                appState.playlist.recommendSongs = recommendSongsResponse.data.dailySongs
+            case .success: break
             case .failure(let error):
                 appState.error = error
             }

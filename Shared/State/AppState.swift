@@ -92,11 +92,10 @@ extension AppState {
     
     struct UserPlaylist {
         //用户相关歌单
+        var recommendPlaylist = [RecommendPlaylistResponse.RecommendPlaylist]()
         var recommendPlaylistRequesting: Bool = false
-        var recommendSongs = [SongResponse]()
         var recommendSongsRequesting = false
         var userPlaylistRequesting: Bool = false
-        
         //歌单详情
         var detailRequesting: Bool = false
         

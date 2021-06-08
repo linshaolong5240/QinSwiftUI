@@ -15,7 +15,7 @@ extension NeteaseCloudMusicResponse {
     var isSuccess: Bool { code == 200 }
 }
 
-public struct CommonAlbum: Codable {
+public struct AlbumResponse: Codable {
     public struct Info: Codable {
         public struct CommentThread: Codable {
             public struct ResourceInfo: Codable {
@@ -52,8 +52,8 @@ public struct CommonAlbum: Codable {
         public let threadId: String
     }
     public let alias: [String]
-    public let artist: CommonArtistResponse
-    public let artists: [CommonArtistResponse]
+    public let artist: ArtistResponse
+    public let artists: [ArtistResponse]
     public let blurPicUrl: String?
     public let briefDesc: String?
     public let commentThreadId: String
@@ -80,7 +80,7 @@ public struct CommonAlbum: Codable {
     public let type: String?
 }
 
-public struct CommonArtistResponse: Codable {
+public struct ArtistResponse: Codable {
     public let accountId: Int?
     public let albumSize: Int
     public let alias: [String]
@@ -98,7 +98,7 @@ public struct CommonArtistResponse: Codable {
     public let trans: String
 }
 
-public struct CommonCrteator: Codable {
+public struct CrteatorResponse: Codable {
     public let accountStatus: Int
     public let anchor: Bool
     public let authenticationTypes: Int
@@ -129,6 +129,7 @@ public struct CommonCrteator: Codable {
     public let signature: String
     public let userId, userType, vipType: Int
 }
+
 public struct SongResponse: Codable {
     public struct Al: Codable {
         public let id: Int
@@ -212,6 +213,7 @@ public struct SongResponse: Codable {
     public let t: Int
     public let v: Int
 }
+
 public struct PlaylistResponse: Codable {
     public struct TrackId: Codable {
 //        public let alg: Any?
@@ -236,7 +238,7 @@ public struct PlaylistResponse: Codable {
     public let coverImgUrl: String
     public let coverStatus: Int?
     public let createTime: Int
-    public let creator: CommonCrteator?
+    public let creator: CrteatorResponse?
     public let description: String?
     //        public let englishTitle: Any?
     public let playlistDescription: String?
@@ -255,7 +257,7 @@ public struct PlaylistResponse: Codable {
     public let status: Int
     public let subscribed: Bool?
     public let subscribedCount: Int
-    public let subscribers: [CommonCrteator]
+    public let subscribers: [CrteatorResponse]
     public let tags: [String]
     public let titleImage: Int?
     public let titleImageUrl: String?

@@ -46,14 +46,14 @@ struct AlbumRequestCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi
             .shared
-            .requestPublisher(action: AlbumAction(id: id))
+            .requestPublisher(action: AlbumDetailAction(id: id))
             .sink { completion in
             if case .failure(let error) = completion {
                 store.dispatch(.albumRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
             }
-            } receiveValue: { albumResponse in
-                DataManager.shared.updateAlbum(model: albumResponse)
-                store.dispatch(.albumRequestDone(result: .success(albumResponse.songs.map({ $0.id }))))
+            } receiveValue: { albumDetailResponse in
+                DataManager.shared.updateAlbum(model: albumDetailResponse)
+                store.dispatch(.albumRequestDone(result: .success(albumDetailResponse.songs.map({ $0.id }))))
             }.store(in: &store.cancellableSet)
     }
 }
@@ -794,40 +794,25 @@ struct PlaylistTracksDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         store.dispatch(.playlistDetail(id: id))
-        store.dispatch(.userPlaylistRequest())
     }
 }
 
 struct RecommendPlaylistCommand: AppCommand {
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.recommendResource { result in
-            switch result {
-            case .success(let json):
-                if json["code"] as! Int == 200 {
-                    if let playlistDicts = json["recommend"] as? [NeteaseCloudMusicApi.ResponseData] {
-
-                        let playlistModels = playlistDicts.map{$0.toData!.toModel(RecommendPlaylistModel.self)!}
-                        do {
-                            let data = try JSONEncoder().encode(playlistModels)
-                            let objects = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as! [[String: Any]]
-                            DataManager.shared.batchInsertAfterDeleteAll(entityName: "RecommendPlaylist", objects: objects)
-                        }catch let error {
-                            print("\(#function) \(error)")
-                        }
-                        store.dispatch(.recommendPlaylistDone(result: .success(playlistModels.map{$0.id})))
-                    }
-                }else {
-                    store.dispatch(.recommendPlaylistDone(result: .failure(.playlistDetailError)))
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: RecommendPlaylistAction())
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.recommendPlaylistDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
-            case .failure(let error):
-                store.dispatch(.recommendPlaylistDone(result: .failure(error)))
-            }
-        }
-    }
-}
-
-struct RecommendPlaylistDoneCommand: AppCommand {
-    func execute(in store: Store) {
+            } receiveValue: { recommendPlaylistResponse in
+                guard recommendPlaylistResponse.isSuccess else {
+                    store.dispatch(.recommendPlaylistDone(result: .failure(AppError.recommendPlaylistRequest)))
+                    return
+                }
+                store.dispatch(.recommendPlaylistDone(result: .success(recommendPlaylistResponse)))
+            }.store(in: &store.cancellableSet)
     }
 }
 
@@ -845,7 +830,8 @@ struct RecommendSongsCommand: AppCommand {
                     store.dispatch(.recommendSongsDone(result: .failure(AppError.recommendSongsError)))
                     return
                 }
-                store.dispatch(.recommendSongsDone(result: .success(recommendSongsResponse)))
+                DataManager.shared.update(model: recommendSongsResponse)
+                store.dispatch(.recommendSongsDone(result: .success(recommendSongsResponse.data.dailySongs.map(\.id))))
             }.store(in: &store.cancellableSet)
     }
 }
@@ -913,21 +899,6 @@ struct SongsDetailCommand: AppCommand {
                 DataManager.shared.batchInsert(type: Song.self, models: songDetailResponse.songs)
                 store.dispatch(.songsDetailDone(result: .success(ids)))
             }.store(in: &store.cancellableSet)
-
-//        NeteaseCloudMusicApi.shared.songsDetail(ids: ids) { result in
-//            switch result {
-//            case .success(let json):
-//                if let songsDict = json["songs"] as? [[String: Any]] {
-//                    let songsJSONModel = songsDict.map{$0.toData!.toModel(SongDetailJSONModel.self)!}
-//                    DataManager.shared.updateSongs(songsJSONModel: songsJSONModel)
-//                    store.dispatch(.songsDetailDone(result: .success(songsJSONModel)))
-//                }else {
-//                    store.dispatch(.songsDetailDone(result: .failure(.songsDetailError)))
-//                }
-//            case .failure(let error):
-//                store.dispatch(.songsDetailDone(result: .failure(error)))
-//            }
-//        }
     }
 }
 

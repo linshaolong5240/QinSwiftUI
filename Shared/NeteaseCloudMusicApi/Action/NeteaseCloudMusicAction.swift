@@ -10,9 +10,9 @@ import Foundation
 public struct EmptyParameters: Encodable { }
 
 //专辑内容
-public struct AlbumAction: NeteaseCloudMusicAction {
+public struct AlbumDetailAction: NeteaseCloudMusicAction {
     public typealias Parameters = EmptyParameters
-    public typealias ResponseType = AlbumResponse
+    public typealias ResponseType = AlbumDetailResponse
     
     public let id: Int
     public var uri: String { "/weapi/v1/album/\(id)"}

@@ -7,9 +7,13 @@
 
 import SwiftUI
 
+extension RecommendPlaylistResponse.RecommendPlaylist: Identifiable {
+    
+}
+
 struct RecommendPlaylistView: View {
-    @FetchRequest(entity: RecommendPlaylist.entity(), sortDescriptors: []) var results: FetchedResults<RecommendPlaylist>
-    @State private var playlistDetailId: Int64 = 0
+    let playlist: [RecommendPlaylistResponse.RecommendPlaylist]
+    @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
 
     var body: some View {
@@ -24,7 +28,7 @@ struct RecommendPlaylistView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                 Spacer()
-                Text("\(results.count) 推荐的歌单")
+                Text("\(playlist.count) 推荐的歌单")
                     .foregroundColor(Color.secondTextColor)
             }
             .padding(.horizontal)
@@ -38,7 +42,7 @@ struct RecommendPlaylistView: View {
                         CommonGridItemView(CommonGridItemConfiguration(id: 0, name: "每日推荐", picUrl: nil, subscribed: false))
                             .padding(.vertical)
                     })
-                    ForEach(results) { (item) in
+                    ForEach(playlist) { (item) in
                         Button(action: {
                             playlistDetailId = item.id
                             showPlaylistDetail.toggle()
@@ -56,7 +60,7 @@ struct RecommendPlaylistView: View {
 #if DEBUG
 struct RecommendPlaylistView_Previews: PreviewProvider {
     static var previews: some View {
-        RecommendPlaylistView()
+        RecommendPlaylistView(playlist: [RecommendPlaylistResponse.RecommendPlaylist]())
     }
 }
 #endif

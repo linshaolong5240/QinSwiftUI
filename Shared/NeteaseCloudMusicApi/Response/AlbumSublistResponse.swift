@@ -10,7 +10,7 @@ import Foundation
 public struct AlbumSublistResponse: NeteaseCloudMusicResponse {
     public struct Album: Codable {
         public let alias: [String]
-        public let artists: [CommonArtistResponse]
+        public let artists: [ArtistResponse]
         public let id: Int
         public let msg: [String]
         public let name: String

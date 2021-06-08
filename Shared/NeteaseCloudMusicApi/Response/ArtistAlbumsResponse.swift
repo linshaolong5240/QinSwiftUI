@@ -10,8 +10,8 @@ import Foundation
 public struct ArtistAlbumsResponse: NeteaseCloudMusicResponse {
     public struct ArtistAlbum: Codable {
         public let alias: [String]
-        public let artist: CommonArtistResponse
-        public let artists: [CommonArtistResponse]
+        public let artist: ArtistResponse
+        public let artists: [ArtistResponse]
         public let blurPicUrl: String
         public let briefDesc: String?
         public let commentThreadId: String
@@ -36,7 +36,7 @@ public struct ArtistAlbumsResponse: NeteaseCloudMusicResponse {
         public let tags: String
         public let type: String
     }
-    public let artist: CommonArtistResponse
+    public let artist: ArtistResponse
     public let code: Int
     public let hotAlbums: [ArtistAlbum]
     public let more: Bool

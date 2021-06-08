@@ -246,18 +246,6 @@ extension NeteaseCloudMusicApi {
         ] as [String : Any]
         httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
     }
-    //推荐歌单( 需要登录 )
-    func recommendResource(complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/v1/discovery/recommend/resource"
-        let data = ResponseData()
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
-    //推荐歌曲( 需要登录 )
-    func recommendSongs(complete: @escaping CompletionBlock) {
-        let url = "https://music.163.com/weapi/v3/discovery/recommend/songs"
-        let data = ResponseData()
-        httpRequest(method: .POST, url: url, data: encrypto(text: data.toJSONString), complete: complete)
-    }
     //歌曲链接
     func search(keyword: String, type: SearchType = .song, limit: Int = 30, offset: Int = 0, complete: @escaping CompletionBlock) {
         let url = "https://music.163.com/weapi/search/get"

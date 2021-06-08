@@ -48,7 +48,7 @@ extension SongResponse: CoreDataManged {
     }
 }
 
-extension CommonAlbum: CoreDataManged {
+extension AlbumResponse: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
         entity.id = Int64(id)
@@ -60,7 +60,7 @@ extension CommonAlbum: CoreDataManged {
     }
 }
 
-extension CommonArtistResponse: CoreDataManged {
+extension ArtistResponse: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.followed = followed
@@ -72,7 +72,7 @@ extension CommonArtistResponse: CoreDataManged {
     }
 }
 
-extension AlbumResponse.AlbumSong: CoreDataManged {
+extension AlbumDetailResponse.AlbumSong: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(dt)
@@ -82,7 +82,7 @@ extension AlbumResponse.AlbumSong: CoreDataManged {
     }
 }
 
-extension AlbumResponse.AlbumSong.AlbumSongArtist: CoreDataManged {
+extension AlbumDetailResponse.AlbumSong.AlbumSongArtist: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.id = Int64(id)
@@ -131,6 +131,17 @@ extension ArtistMVResponse.MV: CoreDataManged {
         entity.duration = Int64(duration)
         entity.id = Int64(id)
         entity.name = name
+        return entity
+    }
+}
+
+extension RecommendSongsResponse: CoreDataManged {
+    func entity(context: NSManagedObjectContext) -> Playlist {
+        let entity = Playlist(context: context)
+        entity.id = 0
+        entity.name = "每日推荐"
+        entity.introduction = "它聪明、熟悉每个用户的喜好，从海量音乐中挑选出你可能喜欢的音乐。\n它通过你每一次操作来记录你的口味"
+        entity.songsId = data.dailySongs.map{ Int64($0.id) }
         return entity
     }
 }
