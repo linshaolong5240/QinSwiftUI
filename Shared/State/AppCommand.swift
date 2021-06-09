@@ -714,8 +714,12 @@ struct PlaylistDetailSongsCommand: AppCommand {
                     if case .failure(let error) = completion {
                         store.dispatch(.playlistDetailSongsDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                     }
-                } receiveValue: { playlistDetailResponse in
-                    DataManager.shared.batchInsert(type: Song.self, models: playlistDetailResponse.songs)
+                } receiveValue: { songDetailResponse in
+                    guard songDetailResponse.isSuccess else {
+                        store.dispatch(.playlistDetailSongsDone(result: .failure(AppError.songsDetailError)))
+                        return
+                    }
+                    DataManager.shared.updateSongs(model: songDetailResponse.songs)
                     DataManager.shared.updatePlaylistSongs(id: playlist.id, songsId: ids)
                     store.dispatch(.playlistDetailSongsDone(result: .success(ids)))
                 }.store(in: &store.cancellableSet)

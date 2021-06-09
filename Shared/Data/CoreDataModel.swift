@@ -48,6 +48,30 @@ extension SongResponse: CoreDataManged {
     }
 }
 
+extension SongResponse.Al: CoreDataManged {
+    func entity(context: NSManagedObjectContext) -> Album {
+        let entity = Album(context: context)
+        entity.id = Int64(id)
+        entity.introduction = nil
+        entity.name = name
+        entity.picUrl = picUrl
+//        entity.publishTime = Int64(publishTime)
+        return entity
+    }
+}
+
+extension SongResponse.Ar: CoreDataManged {
+    func entity(context: NSManagedObjectContext) -> Artist {
+        let entity = Artist(context: context)
+//        entity.followed = followed
+        entity.id = Int64(id)
+        entity.img1v1Url = nil
+        entity.introduction = nil
+        entity.name = name
+        return entity
+    }
+}
+
 extension AlbumResponse: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
@@ -63,7 +87,6 @@ extension AlbumResponse: CoreDataManged {
 extension ArtistResponse: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
-        entity.followed = followed
         entity.id = Int64(id)
         entity.img1v1Url = img1v1Url
         entity.introduction = briefDesc
@@ -116,7 +139,6 @@ extension ArtistHotSongsResponse.HotSong: CoreDataManged {
 extension ArtistMVResponse.MV.Artist: CoreDataManged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
-        entity.followed = false
         entity.id = Int64(id)
         entity.img1v1Url = img1v1Url
         entity.introduction = briefDesc

@@ -28,14 +28,3 @@ struct ArtistJSONModel: Codable, Identifiable {
     var topicPerson: Int
     var trans: String
 }
-
-extension ArtistJSONModel {
-    public func toArtistEntity(context: NSManagedObjectContext) -> Artist {
-        let entity = Artist(context: context)
-        entity.followed = self.followed ?? false
-        entity.id = self.id
-        entity.img1v1Url = self.img1v1Url
-        entity.name = self.name
-        return entity
-    }
-}

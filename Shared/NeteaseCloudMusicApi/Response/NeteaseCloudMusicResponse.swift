@@ -111,7 +111,7 @@ public struct CrteatorResponse: Codable {
     public let avatarUrl: String
     public let backgroundImgId: Double
     public let backgroundImgIdStr: String
-    public let backgroundUrl: String
+    public let backgroundUrl: String?
     public let birthday: Int
     public let city: Int
     public let defaultAvatar: Bool
