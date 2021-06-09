@@ -184,12 +184,18 @@ class Player: AVPlayer, ObservableObject {
     }
     func initMPRemoteCommand() {
         let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playerPlay)
-            return .success
-        }
-        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playerPause)
+//耳机线控制无效
+//        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+//            Store.shared.dispatch(.playerPlay)
+//            return .success
+//        }
+//        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+//            Store.shared.dispatch(.playerPause)
+//            return .success
+//        }
+        //耳机线控制
+        commandCenter.togglePlayPauseCommand.addTarget{ (event) -> MPRemoteCommandHandlerStatus in
+            Store.shared.dispatch(.playerPlayOrPause)
             return .success
         }
         commandCenter.nextTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in

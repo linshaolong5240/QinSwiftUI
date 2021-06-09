@@ -21,7 +21,7 @@ public struct SongURLResponse: NeteaseCloudMusicResponse {
 //        public let level: Any?
         public let md5: String?
         public let payed, size: Int
-        public let type: String
+        public let type: String?
 //        public let uf: Any?
         public let url: String?
         public let urlSource: Int
