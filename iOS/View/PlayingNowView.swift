@@ -18,6 +18,8 @@ struct PlayingNowView: View {
     @EnvironmentObject var store: Store
  
     private var playing: AppState.Playing { store.appState.playing }
+    private var playlist: AppState.Playlist { store.appState.playlist }
+
     @State private var showMore: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
@@ -60,13 +62,13 @@ struct PlayingNowView: View {
                 ZStack {
                     if showMore {
                         HStack {
-                            Button(action: {
-                                if let id = Store.shared.appState.playing.song?.id {
-                                    let like = !Store.shared.appState.playlist.likedIds.contains(id)
-                                    Store.shared.dispatch(.songLikeRequest(id: Int(id), like: like))
-                                }
-                            }) {
-                                NEUSFView(systemName: store.appState.playlist.likedIds.contains(playing.song?.id ?? 0) ? "heart.fill" : "heart", size: .medium)
+                            Button {
+                                let id = Int(playing.song?.id ?? 0)
+                                let like = !playlist.songlikedIds.contains(id)
+                                Store.shared.dispatch(.songLikeRequest(id: id, like: like))
+                            } label: {
+                                let imageName = playlist.songlikedIds.contains(Int(playing.song?.id ?? 0)) ? "heart.fill" : "heart"
+                                NEUSFView(systemName: imageName, size: .medium)
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             .matchedGeometryEffect(id: 0, in: namespace)
@@ -126,8 +128,9 @@ struct PlayingView_Previews: PreviewProvider {
 #endif
 
 struct PlayinglistView: View {
+    let songsId: [Int]
+    
     @State private var show: Bool = false
-    let songsId: [Int64]
     
     var body: some View {
         FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
@@ -135,8 +138,8 @@ struct PlayinglistView: View {
                 if let songs = results {
                     LazyVStack {
                         ForEach(songs.sorted(by: { (left, right) -> Bool in
-                            let lIndex = songsId.firstIndex(of: left.id)!
-                            let rIndex = songsId.firstIndex(of: right.id)!
+                            let lIndex = songsId.firstIndex(of: Int(left.id))!
+                            let rIndex = songsId.firstIndex(of: Int(right.id))!
                             return lIndex > rIndex ? false : true
                         })) { item in
                             SongRowView(song: item)

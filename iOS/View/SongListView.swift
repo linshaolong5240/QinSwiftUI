@@ -21,12 +21,12 @@ struct SongListView: View {
             HStack {
                 Button(action: {
                     if showLike {
-                        let likeIds = Store.shared.appState.playlist.likedIds
-                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{$0.id}.filter({ (id) -> Bool in
+                        let likeIds = Store.shared.appState.playlist.songlikedIds
+                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{Int($0.id)}.filter({ (id) -> Bool in
                             return likeIds.contains(id)
                         }), index: 0))
                     }else {
-                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{$0.id}, index: 0))
+                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{Int($0.id)}, index: 0))
                     }
                     Store.shared.dispatch(.playerPlayBy(index: 0))
                 }) {
@@ -44,7 +44,7 @@ struct SongListView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(songs) { item in
-                        if !showLike || store.appState.playlist.likedIds.contains(item.id) {
+                        if !showLike || store.appState.playlist.songlikedIds.contains(Int(item.id)) {
                             SongRowView(song: item)
                                 .padding(.horizontal)
                                 .onTapGesture {

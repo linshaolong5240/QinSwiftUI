@@ -19,7 +19,7 @@ struct AppState {
     var discoverPlaylist = DiscoverPlaylist()
     var lyric = Lyric()
     var playing = Playing()
-    var playlist = UserPlaylist()
+    var playlist = Playlist()
     var search = Search()
     var settings = Settings()
     var error: AppError?
@@ -95,7 +95,7 @@ extension AppState {
         var lyric: LyricViewModel?
     }
     
-    struct UserPlaylist {
+    struct Playlist {
         //用户相关歌单
         var recommendPlaylist = [RecommendPlaylistResponse.RecommendPlaylist]()
         var recommendPlaylistRequesting: Bool = false
@@ -105,12 +105,12 @@ extension AppState {
         var detailRequesting: Bool = false
         
         //喜欢的音乐ID
-        var likedIds = [Int64]()
+        var songlikedIds = [Int]()
         //喜欢的音乐歌单ID
-        var likedPlaylistId: Int64 = 0
+        var likedPlaylistId: Int = 0
         var createdPlaylistIds = [Int]()
         var subedPlaylistIds = [Int]()
-        var userPlaylistIds = [Int64]()
+        var userPlaylistIds = [Int]()
         var userPlaylist = [PlaylistResponse]()
         var createdPlaylist: [PlaylistResponse] { userPlaylist.filter({createdPlaylistIds.contains($0.id)}) }
     }
@@ -118,7 +118,7 @@ extension AppState {
     struct Playing {
         @UserDefault(key: "index") var index: Int = 0
         var isSeeking: Bool = false
-        @UserDefault(key: "playinglist") var playinglist = [Int64]()
+        @UserDefault(key: "playinglist") var playinglist = [Int]()
         var playingError: AppError?
         var song: Song? = nil
         var songUrl: String?

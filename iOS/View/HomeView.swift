@@ -13,7 +13,7 @@ struct HomeView: View {
     @EnvironmentObject private var player: Player
     private var album: AppState.Album { store.appState.album }
     private var artist: AppState.Artist { store.appState.artist }
-    private var playlist: AppState.UserPlaylist { store.appState.playlist }
+    private var playlist: AppState.Playlist { store.appState.playlist }
     private var user: User? { store.appState.settings.loginUser }
     
     var body: some View {

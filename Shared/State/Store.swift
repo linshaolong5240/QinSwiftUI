@@ -245,7 +245,7 @@ class Store: ObservableObject {
         case .playerPlayMode:
             appState.settings.playMode = appState.settings.playMode.next()
         case .playerPlayRequest(let id):
-            appCommand = PlayerPlayRequestCommand(id: Int(id))
+            appCommand = PlayerPlayRequestCommand(id: id)
         case .playerPlayRequestDone(let result):
             switch result {
             case .success(let songURL):
@@ -446,7 +446,7 @@ class Store: ObservableObject {
         case .songLikeListRequestDone(let result):
             switch result {
             case .success(let ids):
-                appState.playlist.likedIds = ids.map({ Int64($0) })
+                appState.playlist.songlikedIds = ids
             case .failure(let error):
                 appState.error = error
             }
@@ -501,13 +501,13 @@ class Store: ObservableObject {
                 if let uid = appState.settings.loginUser?.userId {
                     appState.playlist.createdPlaylistIds = playlists.filter { $0.userId == uid }.map(\.id)
                     appState.playlist.subedPlaylistIds =  playlists.filter { $0.userId != uid }.map(\.id)
-                    appState.playlist.userPlaylistIds =  playlists.map { Int64($0.id) }
+                    appState.playlist.userPlaylistIds =  playlists.map(\.id)
                     
                     appState.playlist.userPlaylist = playlists
                 }
 
                 if let id = playlists.first?.id {
-                    appState.playlist.likedPlaylistId = Int64(id)
+                    appState.playlist.likedPlaylistId = id
                 }
             case .failure(let error):
                 appState.error = error
