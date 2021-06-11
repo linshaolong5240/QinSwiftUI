@@ -848,14 +848,6 @@ struct RecommendSongsCommand: AppCommand {
     }
 }
 
-struct RecommendSongsDoneCommand: AppCommand {
-    let playlist: PlaylistViewModel
-    
-    func execute(in store: Store) {
-        store.dispatch(.songsDetail(ids: playlist.songsId.map(Int.init)))
-    }
-}
-
 struct SearchCommand: AppCommand {
     let keyword: String
     let type: SearchType

@@ -345,26 +345,7 @@ class DataManager {
         }
         self.save()
     }
-    public func updateSongs(songsJSONModel: [SongDetailJSONModel]) {
-        for songModel in songsJSONModel {
-            let song = songModel.toSongEntity(context: self.context())
-            if let album = self.getAlbum(id: Int(songModel.al.id)) {
-                album.addToSongs(song)
-            }else {
-                let album = songModel.al.toAlbumEntity(context: self.context())
-                album.addToSongs(song)
-            }
-            for ar in songModel.ar {
-                if let artist = self.getArtist(id: Int(ar.id)) {
-                    artist.addToSongs(song)
-                }else {
-                    let artist = ar.toArtistEntity(context: self.context())
-                    artist.addToSongs(song)
-                }
-            }
-        }
-        self.save()
-    }
+    
     public func updateSongs(model: ArtistHotSongsResponse) {
         defer { save() }
         model.hotSongs.forEach { item in

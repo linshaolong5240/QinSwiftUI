@@ -21,7 +21,9 @@ class CommentViewModel: ObservableObject, Identifiable {
     var nickname: String = ""
     
     init() {
+        
     }
+    
     init(_ comment: CommentSongResponse.Comment) {
         self.beReplied = comment.beReplied.map{CommentViewModel($0)}
         self.commentId = Int64(comment.commentId)

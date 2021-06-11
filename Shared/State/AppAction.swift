@@ -93,7 +93,7 @@ enum AppAction {
     case songsOrderUpdate(pid: Int, ids: [Int])
     case songsOrderUpdateDone(result: Result<Int, AppError>)
     case songsURLRequest(ids: [Int])
-    case songsURLRequestDone(result: Result<[SongURLJSONModel], AppError>)
+    case songsURLRequestDone(result: Result<SongURLResponse, AppError>)
     case userPlaylistRequest(uid: Int? = nil, limit: Int = 999, offset: Int = 0)
     case userPlaylistDone(result: Result<[PlaylistResponse], AppError>)
 }
