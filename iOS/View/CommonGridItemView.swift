@@ -20,7 +20,7 @@ struct CommonGridItemView: View {
     init(_ model: AlbumSublistResponse.Album) {
         self.configuration = CommonGridItemConfiguration(model)
     }
-    init(_ item: ArtistSub) {
+    init(_ item: ArtistSublistResponse.Artist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: PlaylistResponse) {
@@ -88,10 +88,10 @@ class CommonGridItemConfiguration: ObservableObject {
         self.picUrl = model.picUrl
         self.subscribed = true
     }
-    init(_ item: ArtistSub) {
-        self.id = Int(item.id)
-        self.name = item.name
-        self.picUrl = item.img1v1Url
+    init(_ model: ArtistSublistResponse.Artist) {
+        self.id = model.id
+        self.name = model.name
+        self.picUrl = model.img1v1Url
         self.subscribed = nil
     }
     init(_ item: PlaylistResponse) {

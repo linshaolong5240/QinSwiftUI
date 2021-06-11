@@ -84,10 +84,10 @@ struct ArtistDetailView: View {
                 Spacer()
                 Button(action: {
                     let id = artist.id
-                    let sub = !Store.shared.appState.artist.subedIds.contains(id)
+                    let sub = !Store.shared.appState.artist.subedIds.contains(Int(id))
                     Store.shared.dispatch(.artistSubRequest(id: Int(id), sub: sub))
                 }) {
-                    NEUSFView(systemName: store.appState.artist.subedIds.contains(artist.id) ? "heart.fill" : "heart",
+                    NEUSFView(systemName: store.appState.artist.subedIds.contains(Int(artist.id)) ? "heart.fill" : "heart",
                               size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))

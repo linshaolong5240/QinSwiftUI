@@ -216,15 +216,11 @@ struct ArtistSublistRequestCommand: AppCommand {
                     store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { artistSublistResponse in
-                let artistSublist = artistSublistResponse.data.map(\.dataModel)
-                do {
-                    let data = try JSONEncoder().encode(artistSublist)
-                    let objects = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
-                    DataManager.shared.batchInsertAfterDeleteAll(entityName: "ArtistSub", objects: objects)
-                    store.dispatch(.artistSublistRequestDone(result: .success(artistSublist.map{$0.id})))
-                }catch let error {
-                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                guard artistSublistResponse.isSuccess else {
+                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest)))
+                    return
                 }
+                store.dispatch(.artistSublistRequestDone(result: .success(artistSublistResponse)))
             }.store(in: &store.cancellableSet)
     }
 }

@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SubedArtistsView: View {
-    @FetchRequest(entity: ArtistSub.entity(), sortDescriptors: []) var results: FetchedResults<ArtistSub>
+struct ArtistSublistView: View {
+    let artists: [ArtistSublistResponse.Artist]
     @State private var artistId: Int = 0
     @State private var showArtistDetail: Bool = false
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
@@ -25,19 +25,19 @@ struct SubedArtistsView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                 Spacer()
-                Text("\(results.count)收藏的歌手")
+                Text("\(artists.count)收藏的歌手")
                     .foregroundColor(Color.secondTextColor)
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal) {
                 let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                    ForEach(results) { item in
+                    ForEach(artists) { item in
                         Button(action: {
                             artistId = Int(item.id)
                             showArtistDetail.toggle()
                         }, label: {
-                            CommonGridItemView(item )
+                            CommonGridItemView(item)
                                 .padding(.vertical)
                         })
                     }
@@ -50,7 +50,7 @@ struct SubedArtistsView: View {
 #if DEBUG
 struct ArtistSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        SubedArtistsView()
+        ArtistSublistView(artists: [ArtistSublistResponse.Artist]())
     }
 }
 #endif

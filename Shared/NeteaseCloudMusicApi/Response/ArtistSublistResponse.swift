@@ -25,3 +25,5 @@ public struct ArtistSublistResponse: NeteaseCloudMusicResponse {
     public let data: [Artist]
     public let hasMore: Bool
 }
+
+extension ArtistSublistResponse.Artist: Identifiable { }

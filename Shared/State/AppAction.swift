@@ -24,7 +24,7 @@ enum AppAction {
     case artistSubRequest(id: Int, sub: Bool)
     case artistSubRequestDone(result: Result<Bool, AppError>)
     case artistSublistRequest(limit: Int = 30, offset: Int = 0)
-    case artistSublistRequestDone(result: Result<[Int64], AppError>)
+    case artistSublistRequestDone(result: Result<ArtistSublistResponse, AppError>)
     case commentRequest(id: Int = 0, commentId: Int? = nil, content: String? = nil, type: CommentType, action: CommentAction)
     case commentDoneRequest(result: Result<(id: Int, type: CommentType, action: CommentAction), AppError>)
     case commentLikeRequest(id: Int, cid: Int, like: Bool, type: CommentType)

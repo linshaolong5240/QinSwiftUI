@@ -66,7 +66,8 @@ extension AppState {
         var introductionRequesting: Bool = false
         var mvRequesting: Bool = false
         var artistSublistRequesting: Bool = false
-        var subedIds = [Int64]()
+        var artistSublist = [ArtistSublistResponse.Artist]()
+        var subedIds: [Int] { artistSublist.map(\.id) }
 
         var error: AppError?
     }
