@@ -11,6 +11,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
+    private var album: AppState.Album { store.appState.album }
     private var playlist: AppState.UserPlaylist { store.appState.playlist }
     private var user: User? { store.appState.settings.loginUser }
     
@@ -43,7 +44,7 @@ struct HomeView: View {
                                     .padding(.top, 10)
                                 CreatedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId == user?.userId }))
                                 SubedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId != user?.userId }))
-                                SubedAlbumsView()
+                                SubedAlbumsView(albums: album.albumSublist)
                                 SubedArtistsView()
                             }
                         }else {

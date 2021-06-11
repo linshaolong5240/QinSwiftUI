@@ -13,7 +13,7 @@ import UIKit
 struct FetchedMVDetailView: View {
     @State private var show: Bool = false
     
-    let id: Int64
+    let id: Int
 
     var body: some View {
         ZStack {

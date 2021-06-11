@@ -10,7 +10,7 @@ import SwiftUI
 struct FetchedArtistDetailView: View {
     @State private var show: Bool = false
     
-    let id: Int64
+    let id: Int
     
     var body: some View {
         ZStack {
@@ -29,13 +29,13 @@ struct FetchedArtistDetailView: View {
                             ArtistDetailView(artist: artist)
                                 .onAppear {
                                     if results.first?.introduction == nil {
-                                        Store.shared.dispatch(.artistRequest(id: id))
+                                        Store.shared.dispatch(.artistDetailRequest(id: id))
                                     }
                                 }
                         }else {
                             Text("Loading...")
                                 .onAppear {
-                                    Store.shared.dispatch(.artistRequest(id: id))
+                                    Store.shared.dispatch(.artistDetailRequest(id: id))
                                 }
                             Spacer()
                         }
@@ -107,7 +107,7 @@ struct ArtistDetailView: View {
                     VGridView(albums.sorted(by: { (left, right) -> Bool in
                         return left.publishTime > right.publishTime ? true : false
                     }), gridColumns: 3) { item in
-                        NavigationLink(destination: FetchedAlbumDetailView(id: item.id)) {
+                        NavigationLink(destination: FetchedAlbumDetailView(id: Int(item.id))) {
                             CommonGridItemView(item)
                         }
                     }
@@ -134,7 +134,7 @@ struct ArtistDetailView: View {
                         Button(action: {
                             Store.shared.dispatch(.mvDetailRequest(id: Int(item.id)))
                         }) {
-                            NavigationLink(destination: FetchedMVDetailView(id: item.id)) {
+                            NavigationLink(destination: FetchedMVDetailView(id: Int(item.id))) {
                                 CommonGridItemView(item)
                             }
                         }

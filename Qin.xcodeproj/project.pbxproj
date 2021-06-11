@@ -619,10 +619,10 @@
 		2BCCB31824DC7BCC004CAD67 /* State */ = {
 			isa = PBXGroup;
 			children = (
-				2BCCB31924DC7BCC004CAD67 /* AppState.swift */,
+				2BCCB31C24DC7BCC004CAD67 /* AppAction.swift */,
 				2BCCB31A24DC7BCC004CAD67 /* AppCommand.swift */,
 				2BCCB31B24DC7BCC004CAD67 /* AppError.swift */,
-				2BCCB31C24DC7BCC004CAD67 /* AppAction.swift */,
+				2BCCB31924DC7BCC004CAD67 /* AppState.swift */,
 				2BCCB31D24DC7BCC004CAD67 /* Store.swift */,
 			);
 			path = State;

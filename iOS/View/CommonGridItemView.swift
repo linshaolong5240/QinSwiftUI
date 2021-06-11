@@ -17,8 +17,8 @@ struct CommonGridItemView: View {
     init(_ item: Album) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ item: AlbumSub) {
-        self.configuration = CommonGridItemConfiguration(item)
+    init(_ model: AlbumSublistResponse.Album) {
+        self.configuration = CommonGridItemConfiguration(model)
     }
     init(_ item: ArtistSub) {
         self.configuration = CommonGridItemConfiguration(item)
@@ -66,60 +66,60 @@ struct CommonGridItemView: View {
 //#endif
 
 class CommonGridItemConfiguration: ObservableObject {
-    var id: Int64
+    var id: Int
     var name: String?
     var picUrl: String?
     var subscribed: Bool?
-    init(id: Int64, name: String, picUrl: String?, subscribed: Bool) {
+    init(id: Int, name: String, picUrl: String?, subscribed: Bool) {
         self.id = id
         self.name = name
         self.picUrl = picUrl
         self.subscribed = subscribed
     }
     init(_ item: Album) {
-        self.id = item.id
+        self.id = Int(item.id)
         self.name = item.name
         self.picUrl = item.picUrl
         self.subscribed = nil
     }
-    init(_ item: AlbumSub) {
-        self.id = item.id
-        self.name = item.name
-        self.picUrl = item.picUrl
-        self.subscribed = nil
+    init(_ model: AlbumSublistResponse.Album) {
+        self.id = model.id
+        self.name = model.name
+        self.picUrl = model.picUrl
+        self.subscribed = true
     }
     init(_ item: ArtistSub) {
-        self.id = item.id
+        self.id = Int(item.id)
         self.name = item.name
         self.picUrl = item.img1v1Url
         self.subscribed = nil
     }
     init(_ item: PlaylistResponse) {
-        self.id = Int64(item.id)
+        self.id = item.id
         self.name = item.name
         self.picUrl = item.coverImgUrl
         self.subscribed = item.subscribed
     }
     init(_ item: MV) {
-        self.id = item.id
+        self.id = Int(item.id)
         self.name = item.name
         self.picUrl = item.imgurl
         self.subscribed = item.subed
     }
     init(_ item: Playlist) {
-        self.id = item.id
+        self.id = Int(item.id)
         self.name = item.name
         self.picUrl = item.coverImgUrl
         self.subscribed = item.subscribed
     }
     init(_ item: PlaylistViewModel) {
-        self.id = item.id
+        self.id = Int(item.id)
         self.name = item.name
         self.picUrl = item.coverImgUrl
         self.subscribed = item.subscribed
     }
     init(_ item: RecommendPlaylistResponse.RecommendPlaylist) {
-        self.id = Int64(item.id)
+        self.id = item.id
         self.name = item.name
         self.picUrl = item.picUrl
         self.subscribed = nil

@@ -10,8 +10,10 @@ import Foundation
 
 enum AppError: Error, Identifiable {
     var id: String { localizedDescription }
-    case albumSub
-    case artist(code: Int, message: String)
+    case albumDetailRequest
+    case albumSubRequest
+    case albumSublistRequest
+    case artistDetailRequest
     case artistAlbum(code: Int, message: String)
     case artistIntroduction(code: Int, message: String)
     case artistMV(code: Int, message: String)
@@ -49,8 +51,10 @@ enum AppError: Error, Identifiable {
 extension AppError {
     var localizedDescription: String {
         switch self {
-        case .albumSub: return "Album sub or unsub failure"
-        case .artist(let code, let message): return errorFormat(error: "获取歌手信息错误", code: code, message: message)
+        case .albumDetailRequest: return "Album detail request failure"
+        case .albumSubRequest: return "Album sub or unsub failure"
+        case .albumSublistRequest: return "Album sublist failure"
+        case .artistDetailRequest: return "Artist detail request failure"
         case .artistAlbum(let code, let message): return errorFormat(error: "获取歌手专辑错误", code: code, message: message)
         case .artistIntroduction(let code, let message): return errorFormat(error: "获取歌手描述错误", code: code, message: message)
         case .artistMV(let code, let message): return errorFormat(error: "获取歌手MV错误", code: code, message: message)

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SubedAlbumsView: View {
-    @FetchRequest(entity: AlbumSub.entity(), sortDescriptors: []) var results: FetchedResults<AlbumSub>
-    @State private var albumDetailId: Int64 = 0
+    let albums: [AlbumSublistResponse.Album]
+    @State private var albumDetailId: Int = 0
     @State private var showAlbumDetail: Bool = false
     
     var body: some View {
@@ -24,19 +24,19 @@ struct SubedAlbumsView: View {
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainTextColor)
                 Spacer()
-                Text("\(results.count)收藏的专辑")
+                Text("\(albums.count)收藏的专辑")
                     .foregroundColor(Color.secondTextColor)
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal) {
                 let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
-                    ForEach(results) { item in
+                    ForEach(albums) { item in
                         Button(action: {
-                            albumDetailId = item.id
+                            albumDetailId = Int(item.id)
                             showAlbumDetail.toggle()
                         }, label: {
-                            AlbumSubGridView(album: item)
+                            CommonGridItemView(item)
                                 .padding(.vertical)
                         })
                     }
@@ -49,27 +49,7 @@ struct SubedAlbumsView: View {
 #if DEBUG
 struct AlbumSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        SubedAlbumsView()
+        SubedAlbumsView(albums: [AlbumSublistResponse.Album]())
     }
 }
 #endif
-
-struct AlbumSubGridView: View {
-    @ObservedObject var album: AlbumSub
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            NEUCoverView(url: album.picUrl, coverShape: .rectangle, size: .small)
-                .padding()
-            Group {
-                Text(album.name ?? "")
-                    .foregroundColor(Color.mainTextColor)
-                    .lineLimit(1)
-                    .frame(width: 110, alignment: .leading)
-//                Text("\(viewModel.count) songs")
-//                    .foregroundColor(Color.secondTextColor)
-            }
-            .padding(.leading)
-        }
-    }
-}

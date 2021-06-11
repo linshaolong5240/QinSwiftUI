@@ -10,7 +10,7 @@ import SwiftUI
 struct  FetchedAlbumDetailView: View {
     @State private var show: Bool = false
 
-    let id: Int64
+    let id: Int
     
     var body: some View {
         ZStack {
@@ -29,13 +29,13 @@ struct  FetchedAlbumDetailView: View {
                             AlbumDetailView(album: album)
                                 .onAppear {
                                     if album.songsId == nil {
-                                        Store.shared.dispatch(.albumRequest(id: Int(id)))
+                                        Store.shared.dispatch(.albumDetailRequest(id: Int(id)))
                                     }
                                 }
                         }else {
                             Text("正在加载")
                                 .onAppear {
-                                    Store.shared.dispatch(.albumRequest(id: Int(id)))
+                                    Store.shared.dispatch(.albumDetailRequest(id: Int(id)))
                                 }
                             Spacer()
                         }
@@ -71,10 +71,10 @@ struct AlbumDetailView: View {
                 Spacer()
                 Button(action: {
                     let id = album.id
-                    let sub = !Store.shared.appState.album.subedIds.contains(id)
-                    Store.shared.dispatch(.albumSubRequest(id: id, sub: sub))
+                    let sub = !Store.shared.appState.album.subedIds.contains(Int(id))
+                    Store.shared.dispatch(.albumSubRequest(id: Int(id), sub: sub))
                 }) {
-                    NEUSFView(systemName: store.appState.album.subedIds.contains(album.id) ? "heart.fill" : "heart",
+                    NEUSFView(systemName: store.appState.album.subedIds.contains(Int(album.id)) ? "heart.fill" : "heart",
                               size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))

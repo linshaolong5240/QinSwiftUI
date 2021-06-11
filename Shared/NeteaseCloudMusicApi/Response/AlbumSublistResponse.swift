@@ -26,3 +26,7 @@ public struct AlbumSublistResponse: NeteaseCloudMusicResponse {
     public let hasMore: Bool
     public let paidCount: Int
 }
+
+extension AlbumSublistResponse.Album: Identifiable {
+    
+}

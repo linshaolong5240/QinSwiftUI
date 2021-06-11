@@ -9,14 +9,14 @@
 import Foundation
 
 enum AppAction {
-    case albumRequest(id: Int)
-    case albumRequestDone(result: Result<[Int], AppError>)
-    case albumSubRequest(id: Int64, sub: Bool)
+    case albumDetailRequest(id: Int)
+    case albumDetailRequestDone(result: Result<[Int], AppError>)
+    case albumSubRequest(id: Int, sub: Bool)
     case albumSubRequestDone(result: Result<Bool, AppError>)
-    case albumSublistRequest(limit: Int = 100, offset: Int = 0)
-    case albumSublistRequestDone(result: Result<[Int64], AppError>)
-    case artistRequest(id: Int64)
-    case artistRequestDone(result: Result<[Int], AppError>)
+    case albumSublistRequest(limit: Int = 999, offset: Int = 0)
+    case albumSublistRequestDone(result: Result<AlbumSublistResponse, AppError>)
+    case artistDetailRequest(id: Int)
+    case artistDetailRequestDone(result: Result<[Int], AppError>)
     case artistAlbumRequest(id: Int64,limit: Int = 999, offset: Int = 0)
     case artistAlbumRequestDone(result: Result<[Int], AppError>)
     case artistMvRequest(id: Int, limit: Int = 999, offset: Int = 0, total: Bool = true)

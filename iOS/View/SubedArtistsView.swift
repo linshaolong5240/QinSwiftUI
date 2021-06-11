@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SubedArtistsView: View {
     @FetchRequest(entity: ArtistSub.entity(), sortDescriptors: []) var results: FetchedResults<ArtistSub>
-    @State private var artistId: Int64 = 0
+    @State private var artistId: Int = 0
     @State private var showArtistDetail: Bool = false
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
     
@@ -34,7 +34,7 @@ struct SubedArtistsView: View {
                 LazyHGrid(rows: rows) /*@START_MENU_TOKEN@*/{
                     ForEach(results) { item in
                         Button(action: {
-                            artistId = item.id
+                            artistId = Int(item.id)
                             showArtistDetail.toggle()
                         }, label: {
                             CommonGridItemView(item )

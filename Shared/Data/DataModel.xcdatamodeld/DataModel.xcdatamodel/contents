@@ -15,16 +15,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="AlbumSub" representedClassName="AlbumSub" syncable="YES" codeGenerationType="class">
-        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="picUrl" optional="YES" attributeType="String"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="id"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
     <entity name="Artist" representedClassName="Artist" syncable="YES" codeGenerationType="class">
         <attribute name="hotSongsId" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[Int64]"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -106,7 +96,6 @@
     </entity>
     <elements>
         <element name="Album" positionX="-2135.127197265625" positionY="-1406.215469360352" width="128" height="149"/>
-        <element name="AlbumSub" positionX="-1656.499755859375" positionY="-1526.816360473633" width="128" height="88"/>
         <element name="Artist" positionX="-2508.3388671875" positionY="-1063.632385253906" width="128" height="164"/>
         <element name="ArtistSub" positionX="-1118.6015625" positionY="-1120.96484375" width="128" height="88"/>
         <element name="MV" positionX="-2301.01611328125" positionY="-1528.080322265625" width="128" height="223"/>

@@ -248,18 +248,6 @@ class DataManager {
             }
         }
     }
-    public func updateAlbumSongs(id: Int, songsId: [Int]) {
-        if let album = self.getAlbum(id: id) {
-            if let songs = album.songs {
-                album.removeFromSongs(songs)
-            }
-            album.songsId = songsId.map({ Int64($0) })
-            if let songs = self.getSongs(ids: songsId) {
-                album.addToSongs(NSSet(array: songs))
-            }
-            self.save()
-        }
-    }
     public func updateArtist(model: ArtistResponse) {
         defer { save() }
         _ = model.entity(context: context())

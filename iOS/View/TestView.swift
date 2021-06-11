@@ -15,7 +15,7 @@ struct TestView: View {
     var body: some View {
         VStack {
             Button(action: {
-                Store.shared.dispatch(.artistRequest(id: 12206844))
+                Store.shared.dispatch(.artistDetailRequest(id: 12206844))
                 print("test")
             }, label: {
                 Text("Button")

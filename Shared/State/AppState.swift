@@ -55,7 +55,9 @@ extension AppState {
     struct Album {
         var detailRequesting: Bool = false
         var sublistRequesting: Bool = false
-        var subedIds = [Int64]()
+
+        var albumSublist = [AlbumSublistResponse.Album]()
+        var subedIds: [Int] { albumSublist.map(\.id) }
     }
     
     struct Artist {

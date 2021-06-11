@@ -22,7 +22,7 @@ struct PlayingNowView: View {
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
     @State private var showArtist: Bool = false
-    @State private var artistId: Int64 = 0
+    @State private var artistId: Int = 0
     @Namespace private var namespace
     
     var body: some View {
@@ -158,7 +158,7 @@ struct PlayingNowStatusView: View {
     @State private var showLyric: Bool = false
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
-    @Binding var artistId: Int64
+    @Binding var artistId: Int
 
     var body: some View {
         VStack {
@@ -173,7 +173,7 @@ struct PlayingNowStatusView: View {
                         ForEach(Array(artists as! Set<Artist>)) { item in
                             Button(action: {
                                 if item.id != 0 {
-                                    artistId = item.id
+                                    artistId = Int(item.id)
                                     showArtist.toggle()
                                 }
                             }, label: {

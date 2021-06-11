@@ -18,7 +18,7 @@ struct FetchedPlaylistDetailView: View {
         ZStack {
             NEUBackgroundView()
             VStack {
-                CommonNavigationBarView(id: Int64(id), title: "歌单详情", type: .playlist)
+                CommonNavigationBarView(id: id, title: "歌单详情", type: .playlist)
                     .padding(.horizontal)
                     .onAppear {
                         DispatchQueue.main.async {
@@ -121,7 +121,7 @@ struct CommonNavigationBarView: View {
     enum CommonNavigationBarType {
         case album, artist, mv, playlist
     }
-    let id: Int64
+    let id: Int
     let title: String
     let type: CommonNavigationBarType
     
@@ -132,16 +132,16 @@ struct CommonNavigationBarView: View {
             Button(action: {
                 switch type {
                 case .album:
-                    Store.shared.dispatch(.albumRequest(id: Int(id)))
+                    Store.shared.dispatch(.albumDetailRequest(id: id))
                 case .artist:
-                    Store.shared.dispatch(.artistRequest(id: id))
+                    Store.shared.dispatch(.artistDetailRequest(id: id))
                 case .mv:
-                    Store.shared.dispatch(.mvDetailRequest(id: Int(id)))
+                    Store.shared.dispatch(.mvDetailRequest(id: id))
                 case .playlist:
                     if id == 0 {
                         Store.shared.dispatch(.recommendSongsRequest)
                     } else {
-                        Store.shared.dispatch(.playlistDetail(id: Int(id)))
+                        Store.shared.dispatch(.playlistDetail(id: id))
                     }
                 }
             }){

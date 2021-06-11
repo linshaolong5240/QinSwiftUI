@@ -8,15 +8,6 @@
 import Foundation
 import CoreData
 
-extension AlbumSublistResponse.Album {
-    struct AlbumSubDataModel: Codable {
-        var id: Int64
-        var name: String
-        var picUrl: String
-    }
-    var dataModel: AlbumSubDataModel { AlbumSubDataModel(id: Int64(id), name: name, picUrl: picUrl) }
-}
-
 extension ArtistSublistResponse.Artist {
     struct ArtistSubDataModel: Codable {
         var id: Int64
