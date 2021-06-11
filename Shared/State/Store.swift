@@ -292,7 +292,7 @@ class Store: ObservableObject {
             appState.playing.index = index
         case .playlistCatalogueRequest:
             appState.discoverPlaylist.requesting = true
-            appCommand = PlaylistCategoriesCommand()
+            appCommand = PlaylistCategoriesRequestCommand()
         case .playlistCatalogueRequestsDone(let result):
             switch result {
             case .success(let catalogue):
@@ -313,7 +313,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistDelete(let pid):
+        case .playlistDeleteRequest(let pid):
             appCommand = PlaylistDeleteRequestCommand(pid: pid)
         case .playlistDeleteRequestDone(let result):
             switch result {

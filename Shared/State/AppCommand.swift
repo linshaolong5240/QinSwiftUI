@@ -572,7 +572,7 @@ struct PlayinglistInsertCommand: AppCommand {
     }
 }
 
-struct PlaylistCategoriesCommand: AppCommand {
+struct PlaylistCategoriesRequestCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi
             .shared
@@ -582,6 +582,10 @@ struct PlaylistCategoriesCommand: AppCommand {
                     store.dispatch(.playlistCatalogueRequestsDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { playlistCatalogueResponse in
+                guard playlistCatalogueResponse.isSuccess else {
+                    store.dispatch(.playlistCatalogueRequestsDone(result: .failure(AppError.playlistCategoriesRequest)))
+                    return
+                }
                 var playlistCatalogue = [PlaylistCatalogue]()
                 
                 let keys = playlistCatalogueResponse.categories.keys.sorted(by: { $0 < $1})
@@ -590,6 +594,7 @@ struct PlaylistCategoriesCommand: AppCommand {
                     let category = PlaylistCatalogue(id: Int(key)!, name: playlistCatalogueResponse.categories[key]!, subs: playlistCatalogueResponse.sub.filter({ Int(key) == $0.category }).map(\.name))
                     playlistCatalogue.append(category)
                 }
+                
                 let all = PlaylistCatalogue(id: playlistCatalogue.count, name: playlistCatalogueResponse.all.name, subs: [])
                 playlistCatalogue.append(all)
                 
