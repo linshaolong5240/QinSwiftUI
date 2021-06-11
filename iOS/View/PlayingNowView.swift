@@ -395,7 +395,7 @@ struct PlayingNowListView: View {
                     .transition(.move(edge: .bottom))
                     .animation(.default)
                 if listType == 1 {
-                    CommentListView(id: store.appState.playing.song?.id ?? 0)
+                    CommentListView(id: Int(store.appState.playing.song?.id  ?? 0))
 //                        .offset(y: listType == 1 ? 0 : offset)
                         .transition(.move(edge: .bottom))
                         .animation(.default)

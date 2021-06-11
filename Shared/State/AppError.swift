@@ -13,11 +13,11 @@ enum AppError: Error, Identifiable {
     case albumDetailRequest
     case albumSubRequest
     case albumSublistRequest
+    case artistAlbumsRequest
     case artistDetailRequest
-    case artistAlbum(code: Int, message: String)
     case artistIntroduction(code: Int, message: String)
-    case artistMV(code: Int, message: String)
-    case artistSub(code: Int, message: String)
+    case artistMVsRequest
+    case artistSubRequest
     case artistSublistRequest
     case comment
     case commentLikeRequest
@@ -26,10 +26,11 @@ enum AppError: Error, Identifiable {
     case jsonObject(message: String? = nil)
     case like
     case likelist
-    case loginError(code: Int, message: String)
-    case loginRefresh(code: Int, message: String)
+    case loginRequest
+    case loginRefreshRequest
+    case logoutRequest
     case lyricError
-    case mvDetailError(code: Int, message: String)
+    case mvDetailRequest
     case neteaseCloudMusic(error: Error)
     case playlistCategories(code: Int, message: String)
     case playlistCreateError
@@ -55,11 +56,11 @@ extension AppError {
         case .albumDetailRequest: return "Album detail request failure"
         case .albumSubRequest: return "Album sub or unsub failure"
         case .albumSublistRequest: return "Album sublist failure"
+        case .artistAlbumsRequest: return "Artist album request failure"
         case .artistDetailRequest: return "Artist detail request failure"
-        case .artistAlbum(let code, let message): return errorFormat(error: "获取歌手专辑错误", code: code, message: message)
         case .artistIntroduction(let code, let message): return errorFormat(error: "获取歌手描述错误", code: code, message: message)
-        case .artistMV(let code, let message): return errorFormat(error: "获取歌手MV错误", code: code, message: message)
-        case .artistSub(let code, let message): return errorFormat(error: "收藏或取消收藏歌手错误", code: code, message: message)
+        case .artistMVsRequest: return "Artist mvs request failure"
+        case .artistSubRequest: return "Artist sub request failure"
         case .artistSublistRequest: return "Artist sublist request failure"
         case .comment: return "发送评论错误"
         case .commentLikeRequest: return "评论点赞错误"
@@ -68,10 +69,11 @@ extension AppError {
         case .jsonObject(let message): return "jsonObject error: \(message ?? "")"
         case .like: return "喜欢或取消喜欢歌曲错误"
         case .likelist: return "获取喜欢的音乐列表错误"
-        case .loginError(let code, let message): return errorFormat(error: "账号或密码错误", code: code, message: message)
-        case .loginRefresh(let code, let message): return errorFormat(error: "刷新登录状态错误", code: code, message: message)
+        case .loginRequest: return "Login request failure"
+        case .loginRefreshRequest: return "Login refresh request failure"
+        case .logoutRequest: return "Logout request failure"
         case .lyricError: return "获取歌词错误"
-        case .mvDetailError(let code, let message): return errorFormat(error: "获取MV详情错误", code: code, message: message)
+        case .mvDetailRequest: return "MV Detail request failure"
         case .neteaseCloudMusic(let error): return "NeteaseCloudMusic:\n\(error)"
         case .playlistCategories(let code, let message): return errorFormat(error: "获取歌单分类错误", code: code, message: message)
         case .playlistCreateError: return "新建歌单错误"

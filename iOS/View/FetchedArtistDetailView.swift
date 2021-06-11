@@ -149,11 +149,11 @@ struct ArtistDetailView: View {
             switch value {
             case .album:
                 if artist.albums?.count == 0 {
-                    Store.shared.dispatch(.artistAlbumRequest(id: artist.id, limit: 999, offset: 0))
+                    Store.shared.dispatch(.artistAlbumsRequest(id: Int(artist.id)))
                 }
             case .mv:
                 if artist.mvs?.count == 0 {
-                    Store.shared.dispatch(.artistMvRequest(id: Int(artist.id)))
+                    Store.shared.dispatch(.artistMVsRequest(id: Int(artist.id)))
                 }
             case .hotSong: break
             }

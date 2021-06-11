@@ -17,13 +17,13 @@ enum AppAction {
     case albumSublistRequestDone(result: Result<AlbumSublistResponse, AppError>)
     case artistDetailRequest(id: Int)
     case artistDetailRequestDone(result: Result<[Int], AppError>)
-    case artistAlbumRequest(id: Int64,limit: Int = 999, offset: Int = 0)
-    case artistAlbumRequestDone(result: Result<[Int], AppError>)
-    case artistMvRequest(id: Int, limit: Int = 999, offset: Int = 0, total: Bool = true)
-    case artistMvRequestDone(result: Result<[Int], AppError>)
+    case artistAlbumsRequest(id: Int, limit: Int = 999, offset: Int = 0)
+    case artistAlbumsRequestDone(result: Result<[Int], AppError>)
+    case artistMVsRequest(id: Int, limit: Int = 999, offset: Int = 0, total: Bool = true)
+    case artistMVsRequestDone(result: Result<ArtistMVResponse, AppError>)
     case artistSubRequest(id: Int, sub: Bool)
     case artistSubRequestDone(result: Result<Bool, AppError>)
-    case artistSublistRequest(limit: Int = 30, offset: Int = 0)
+    case artistSublistRequest(limit: Int = 999, offset: Int = 0)
     case artistSublistRequestDone(result: Result<ArtistSublistResponse, AppError>)
     case commentRequest(id: Int = 0, commentId: Int? = nil, content: String? = nil, type: CommentType, action: CommentAction)
     case commentDoneRequest(result: Result<(id: Int, type: CommentType, action: CommentAction), AppError>)
@@ -31,7 +31,7 @@ enum AppAction {
     case commentLikeDone(result: Result<Int, AppError>)
     case commentMusicRequest(rid: Int, limit: Int = 20, offset: Int = 0, beforeTime: Int = 0)
     case commentMusicRequestDone(result: Result<CommentSongResponse, AppError>)
-    case commentMusicLoadMore
+    case commentMusicLoadMoreRequest
     case coverShape
     case error(AppError)
     case initAction
@@ -43,12 +43,12 @@ enum AppAction {
     case logoutRequestDone(result: Result<Int, AppError>)
     case mvDetailRequest(id: Int)
     case mvDetaillRequestDone(result: Result<Int, AppError>)
-    case mvUrl(id: Int)
+    case mvURLRequest(id: Int)
 //    case mvUrlDone(result: Result<String, AppError>)
     case playerPause
     case playerPlay
     case playerPlayBackward
-    case playerPlayByIndex(index: Int)
+    case playerPlayBy(index: Int)
     case playerPlayForward
     case playerPlayMode
     case playerPlayRequest(id: Int64)

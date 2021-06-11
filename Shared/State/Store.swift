@@ -49,7 +49,7 @@ class Store: ObservableObject {
         case .albumSubRequestDone(let result):
             switch result {
             case .success:
-                appCommand = AlbumSubDoneCommand()
+                appCommand = AlbumSubRequestDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
@@ -67,10 +67,10 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .artistAlbumRequest(let id, let limit, let offset):
+        case .artistAlbumsRequest(let id, let limit, let offset):
             appState.artist.albumRequesting = true
-            appCommand = ArtistAlbumsRequestCommand(id: Int(id), limit: limit, offset: offset)
-        case .artistAlbumRequestDone(let result):
+            appCommand = ArtistAlbumsRequestCommand(id: id, limit: limit, offset: offset)
+        case .artistAlbumsRequestDone(let result):
             switch result {
             case .success:
                 break
@@ -91,13 +91,12 @@ class Store: ObservableObject {
                 appState.artist.error = error
             }
             appState.artist.detailRequesting = false
-        case .artistMvRequest(let id, let limit, let offset, let total):
+        case .artistMVsRequest(let id, let limit, let offset, let total):
             appState.artist.mvRequesting = true
-            appCommand = ArtistMVCommand(id: id, limit: limit, offset: offset, total: total)
-        case .artistMvRequestDone(let result):
+            appCommand = ArtistMVsRequestCommand(id: id, limit: limit, offset: offset, total: total)
+        case .artistMVsRequestDone(let result):
             switch result {
-            case .success:
-                break
+            case .success: break
             case .failure(let error):
                 appState.artist.error = error
             }
@@ -106,11 +105,11 @@ class Store: ObservableObject {
                 appState.artist.detailRequesting = false
             }
         case .artistSubRequest(let id, let sub):
-            appCommand = ArtistSubCommand(id: id, sub: sub)
+            appCommand = ArtistSubRequestCommand(id: id, sub: sub)
         case .artistSubRequestDone(let result):
             switch result {
             case .success:
-                appCommand = ArtistSubDoneCommand()
+                appCommand = ArtistSubRequestDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
@@ -131,18 +130,18 @@ class Store: ObservableObject {
         case .commentRequest(let id, let cid, let content, let type, let action):
             if content != nil || action == .delete {
                 appState.comment.commentRequesting = true
-                appCommand = CommentCommand(id: id, commentId: cid, content: content, type: type, action: action)
+                appCommand = CommentRequestCommand(id: id, commentId: cid, content: content, type: type, action: action)
             }
         case .commentDoneRequest(let result):
             switch result {
             case .success(let args):
-                appCommand = CommentDoneCommand(id: args.id, type: args.type, action: args.action)
+                appCommand = CommentRequestDoneCommand(id: args.id, type: args.type, action: args.action)
             case .failure(let error):
                 appState.error = error
             }
             appState.comment.commentRequesting = false
         case .commentLikeRequest(let id, let cid, let like, let type):
-            appCommand = CommentLikeCommand(id: id, cid: cid, like: like, type: type)
+            appCommand = CommentLikeRequestCommand(id: id, cid: cid, like: like, type: type)
         case .commentLikeDone(let result):
             switch result {
             case .success:
@@ -160,7 +159,7 @@ class Store: ObservableObject {
                 appState.comment.hotComments = .init()
                 appState.comment.comments = .init()
                 appState.comment.total = 0
-                appCommand = CommentMusicCommand(rid: rid, limit: limit, offset: offset, beforeTime: beforeTime)
+                appCommand = CommentMusicRequestCommand(rid: rid, limit: limit, offset: offset, beforeTime: beforeTime)
             }
         case .commentMusicRequestDone(let result):
             switch result {
@@ -174,13 +173,13 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.comment.commentMusicRequesting = false
-        case .commentMusicLoadMore:
+        case .commentMusicLoadMoreRequest:
             appState.comment.offset += 1
             let id = appState.comment.id
             let limit = appState.comment.limit
             let offset = appState.comment.offset
             let beforetime = appState.comment.befortime
-            appCommand = CommentMusicCommand(rid: id, limit: limit, offset: offset, beforeTime: beforetime)
+            appCommand = CommentMusicRequestCommand(rid: id, limit: limit, offset: offset, beforeTime: beforetime)
         case .coverShape:
             appState.settings.coverShape = appState.settings.coverShape.next()
         case .error(let error):
@@ -226,7 +225,7 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
-        case .mvUrl(let id):
+        case .mvURLRequest(let id):
             appCommand = MVUrlCommand(id: id)
         case .playerPause:
             Player.shared.pause()
@@ -236,7 +235,7 @@ class Store: ObservableObject {
             appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
         case .playerPlayBackward:
             appCommand = PlayerPlayBackwardCommand()
-        case .playerPlayByIndex(let index):
+        case .playerPlayBy(let index):
             appState.playing.index = index
             let id = appState.playing.playinglist[index]
             appState.playing.song = DataManager.shared.getSong(id: Int(id))

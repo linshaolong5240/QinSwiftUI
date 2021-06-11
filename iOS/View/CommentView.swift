@@ -16,7 +16,7 @@ extension CommentSongResponse.Comment.BeReplied: Identifiable {
 }
 
 struct CommentView: View {
-    let id: Int64
+    let id: Int
     
     var body: some View {
         ZStack {
@@ -53,7 +53,7 @@ struct CommentListView: View {
     private var comment: AppState.Comment { store.appState.comment }
     @State private var editComment: String = ""
     @State private var showCancel: Bool = false
-    let id: Int64
+    let id: Int
     
     var body: some View {
         VStack {
@@ -75,7 +75,7 @@ struct CommentListView: View {
                 }
                 Button(action: {
                     hideKeyboard()
-                    Store.shared.dispatch(.commentRequest(id: Int(id), content: editComment, type: .song, action: .add))
+                    Store.shared.dispatch(.commentRequest(id: id, content: editComment, type: .song, action: .add))
                     editComment = ""
                 }) {
                     NEUSFView(systemName: "arrow.up.message.fill", size: .small)
@@ -85,7 +85,7 @@ struct CommentListView: View {
             .padding()
             .onAppear {
                 if Store.shared.appState.comment.id != id {
-                    Store.shared.dispatch(.commentMusicRequest(rid: Int(id)))
+                    Store.shared.dispatch(.commentMusicRequest(rid: id))
                 }
             }
             if comment.commentMusicRequesting {
@@ -117,9 +117,9 @@ struct CommentListView: View {
                     .padding(.horizontal)
                     if comment.comments.count < comment.total {
                         Button(action: {
-                            Store.shared.dispatch(.commentMusicLoadMore)
+                            Store.shared.dispatch(.commentMusicLoadMoreRequest)
                         }, label: {
-                            Text("加载更多")
+                            Text("Load more")
                         })
                     }
                     Spacer()
@@ -135,7 +135,7 @@ struct CommentRowView: View {
     private var user: User? { store.appState.settings.loginUser }
 
     @StateObject var viewModel: CommentViewModel
-    let id: Int64
+    let id: Int
     let type: CommentType
     
     @State var showBeReplied = false
@@ -149,7 +149,7 @@ struct CommentRowView: View {
                     Spacer()
                     Text(String(viewModel.likedCount))
                     Button(action: {
-                        Store.shared.dispatch(.commentLikeRequest(id: Int(id), cid: Int(viewModel.commentId), like: viewModel.liked ? false : true, type: type))
+                        Store.shared.dispatch(.commentLikeRequest(id: id, cid: viewModel.commentId, like: viewModel.liked ? false : true, type: type))
                         viewModel.liked.toggle()
                     }, label: {
                         Image(systemName: viewModel.liked ? "hand.thumbsup.fill" : "hand.thumbsup")
@@ -172,7 +172,7 @@ struct CommentRowView: View {
                     Spacer()
                     if viewModel.userId == user?.userId ?? 0 {
                         Button(action: {
-                            Store.shared.dispatch(.commentRequest(id: Int(id), commentId: Int(viewModel.commentId), type: type, action: .delete))
+                            Store.shared.dispatch(.commentRequest(id: id, commentId: viewModel.commentId, type: type, action: .delete))
                         }, label: {
                             Text("删除")
                         })
