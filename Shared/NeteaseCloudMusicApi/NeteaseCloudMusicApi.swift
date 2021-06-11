@@ -19,6 +19,9 @@ public protocol NeteaseCloudMusicAction {
     var responseType: ResponseType.Type { get }
 }
 
+public struct EmptyParameters: Encodable { }
+
+
 class NeteaseCloudMusicApi {
     
     enum HttpMethod: String {
