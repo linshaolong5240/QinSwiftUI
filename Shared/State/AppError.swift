@@ -33,7 +33,7 @@ enum AppError: Error, Identifiable {
     case mvDetailRequest
     case neteaseCloudMusic(error: Error)
     case playlistCategoriesRequest
-    case playlistCreateError
+    case playlistCreateRequest
     case playlistDeleteError
     case playlistDetailError
     case playlistOrderUpdateError(code: Int, message: String)
@@ -76,7 +76,7 @@ extension AppError {
         case .mvDetailRequest: return "MV Detail request failure"
         case .neteaseCloudMusic(let error): return "NeteaseCloudMusic:\n\(error)"
         case .playlistCategoriesRequest: return "Playlist categories request failure"
-        case .playlistCreateError: return "新建歌单错误"
+        case .playlistCreateRequest: return "Playlist create request failure"
         case .playlistDeleteError: return "删除歌单错误"
         case .playlistDetailError: return "获取歌单详情错误"
         case .playlistOrderUpdateError(let code, let message): return errorFormat(error: "歌单排序错误", code: code, message: message)

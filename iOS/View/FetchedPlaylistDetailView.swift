@@ -32,7 +32,7 @@ struct FetchedPlaylistDetailView: View {
                         }else {
                             Text("正在加载")
                                 .onAppear {
-                                    Store.shared.dispatch(.playlistDetail(id: id))
+                                    Store.shared.dispatch(.playlistDetailRequest(id: id))
                                 }
                             Spacer()
                         }
@@ -80,7 +80,7 @@ struct PlaylistDetailView: View {
                     Button(action: {
                         let id = playlist.id
                         let sub = !subedPlaylistIDs.contains(Int(id))
-                        Store.shared.dispatch(.playlistSubscibe(id: Int(id), sub: sub))
+                        Store.shared.dispatch(.playlistSubscibeRequest(id: Int(id), sub: sub))
                     }) {
                         NEUSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(Int(playlist.id)) ? "heart.fill" : "heart",
                                   size: .small)
@@ -141,7 +141,7 @@ struct CommonNavigationBarView: View {
                     if id == 0 {
                         Store.shared.dispatch(.recommendSongsRequest)
                     } else {
-                        Store.shared.dispatch(.playlistDetail(id: id))
+                        Store.shared.dispatch(.playlistDetailRequest(id: id))
                     }
                 }
             }){

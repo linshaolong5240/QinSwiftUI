@@ -25,7 +25,7 @@ struct PlaylistManageView: View {
                     Button(action: {
                         showSheet.toggle()
                         if isMoved {
-                            Store.shared.dispatch(.playlistOrderUpdate(ids: ids))
+                            Store.shared.dispatch(.playlistOrderUpdateRequesting(ids: ids))
                         }
                     }, label: {
                         NEUSFView(systemName: "checkmark", size: .medium)

@@ -28,10 +28,10 @@ struct PlaylistSongsManageView: View {
                     Button(action: {
                         showSheet.toggle()
                         if deletedIds.count > 0 {
-                            Store.shared.dispatch(.playlistTracks(pid: Int(playlist.id), ids: deletedIds.map(Int.init), op: false))
+                            Store.shared.dispatch(.playlistTracksRequest(pid: Int(playlist.id), ids: deletedIds.map(Int.init), op: false))
                         }
                         if isMoved {
-                            Store.shared.dispatch(.songsOrderUpdate(pid: Int(playlist.id), ids: songs.map{ Int($0.id) }))
+                            Store.shared.dispatch(.songsOrderUpdateRequesting(pid: Int(playlist.id), ids: songs.map{ Int($0.id) }))
                         }
                     }, label: {
                         NEUSFView(systemName: "checkmark", size: .medium)

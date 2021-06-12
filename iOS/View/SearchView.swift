@@ -37,7 +37,7 @@ struct SearchView: View {
                                 }
                               },
                               onCommit: {
-                                store.dispatch(.search(keyword: search.keyword, type: searchType))
+                                store.dispatch(.searchRequest(keyword: search.keyword, type: searchType))
                               })
                         .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "magnifyingglass", size: .medium)))
                     if showCancel {
@@ -56,7 +56,7 @@ struct SearchView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
                 .onChange(of: searchType, perform: { value in
-                    Store.shared.dispatch(.search(keyword: search.keyword, type: value))
+                    Store.shared.dispatch(.searchRequest(keyword: search.keyword, type: value))
                 })
                 if search.searchRequesting {
                     Text("正在搜索...")
@@ -74,7 +74,7 @@ struct SearchView: View {
                 }
             }
             .onAppear {
-                Store.shared.dispatch(.search(keyword: search.keyword))
+                Store.shared.dispatch(.searchRequest(keyword: search.keyword))
             }
         }
         .navigationBarHidden(true)

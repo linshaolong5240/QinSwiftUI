@@ -616,12 +616,16 @@ struct PlaylistCreateRequestCommand: AppCommand {
                     store.dispatch(.playlistCreateRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { playlistCreateResponse in
+                guard playlistCreateResponse.isSuccess else {
+                    store.dispatch(.playlistCreateRequestDone(result: .failure(AppError.playlistCreateRequest)))
+                    return
+                }
                 store.dispatch(.playlistCreateRequestDone(result: .success(playlistCreateResponse.playlist.id)))
             }.store(in: &store.cancellableSet)
     }
 }
 
-struct PlaylistCreateDoneCommand: AppCommand {
+struct PlaylistCreateRequestDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         store.dispatch(.userPlaylistRequest())
@@ -645,14 +649,14 @@ struct PlaylistDeleteRequestCommand: AppCommand {
     }
 }
 
-struct PlaylistDeleteDoneCommand: AppCommand {
+struct PlaylistDeleteReuquestDoneCommand: AppCommand {
     
     func execute(in store: Store) {
         store.dispatch(.userPlaylistRequest())
     }
 }
 
-struct PlaylistDetailCommand: AppCommand {
+struct PlaylistDetailRequestCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
@@ -661,11 +665,11 @@ struct PlaylistDetailCommand: AppCommand {
             .requestPublisher(action: PlaylistDetailAction(parameters: .init(id: id)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.playlistDetailDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.playlistDetailRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { playlistDetailResponse in
                 DataManager.shared.update(model: playlistDetailResponse.playlist)
-                store.dispatch(.playlistDetailDone(result: .success(playlistDetailResponse.playlist)))
+                store.dispatch(.playlistDetailRequestDone(result: .success(playlistDetailResponse.playlist)))
             }.store(in: &store.cancellableSet)
     }
 }
@@ -674,11 +678,11 @@ struct PlaylistDetailDoneCommand: AppCommand {
     let playlist: PlaylistResponse
     
     func execute(in store: Store) {
-        store.dispatch(.playlistDetailSongs(playlist: playlist))
+        store.dispatch(.playlistDetailSongsRequest(playlist: playlist))
     }
 }
 
-struct PlaylistDetailSongsCommand: AppCommand {
+struct PlaylistDetailSongsRequestCommand: AppCommand {
     let playlist: PlaylistResponse
     
     func execute(in store: Store) {
@@ -688,22 +692,22 @@ struct PlaylistDetailSongsCommand: AppCommand {
                 .requestPublisher(action: SongDetailAction(parameters: .init(ids: ids)))
                 .sink { completion in
                     if case .failure(let error) = completion {
-                        store.dispatch(.playlistDetailSongsDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                        store.dispatch(.playlistDetailSongsRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                     }
                 } receiveValue: { songDetailResponse in
                     guard songDetailResponse.isSuccess else {
-                        store.dispatch(.playlistDetailSongsDone(result: .failure(AppError.songsDetailError)))
+                        store.dispatch(.playlistDetailSongsRequestDone(result: .failure(AppError.songsDetailError)))
                         return
                     }
                     DataManager.shared.updateSongs(model: songDetailResponse.songs)
                     DataManager.shared.updatePlaylistSongs(id: playlist.id, songsId: ids)
-                    store.dispatch(.playlistDetailSongsDone(result: .success(ids)))
+                    store.dispatch(.playlistDetailSongsRequestDone(result: .success(ids)))
                 }.store(in: &store.cancellableSet)
         }
     }
 }
 
-struct PlaylistOrderUpdateCommand: AppCommand {
+struct PlaylistOrderUpdateRequestCommand: AppCommand {
     let ids: [Int]
     
     func execute(in store: Store) {
@@ -720,13 +724,13 @@ struct PlaylistOrderUpdateCommand: AppCommand {
     }
 }
 
-struct PlaylistOrderUpdateDoneCommand: AppCommand {
+struct PlaylistOrderUpdateRequestDoneCommand: AppCommand {
     func execute(in store: Store) {
         store.dispatch(.userPlaylistRequest())
     }
 }
 
-struct PlaylisSubscribeCommand: AppCommand {
+struct PlaylisSubscribeRequestCommand: AppCommand {
     let id: Int
     let sub: Bool
     
@@ -736,25 +740,25 @@ struct PlaylisSubscribeCommand: AppCommand {
             .requestPublisher(action: PlaylistSubscribeAction(sub: sub, parameters: .init(id: id)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.playlistSubscibeDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.playlistSubscibeRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { playlistSubscribeResponse in
                 if playlistSubscribeResponse.isSuccess {
-                    store.dispatch(.playlistSubscibeDone(result: .success(id)))
+                    store.dispatch(.playlistSubscibeRequestDone(result: .success(id)))
                 }else {
-                    store.dispatch(.playlistSubscibeDone(result: .failure(AppError.playlistSubscribeError)))
+                    store.dispatch(.playlistSubscibeRequestDone(result: .failure(AppError.playlistSubscribeError)))
                 }
             }.store(in: &store.cancellableSet)
     }
 }
 
-struct PlaylisSubscribeDoneCommand: AppCommand {
+struct PlaylisSubscribeRequestDoneCommand: AppCommand {
     func execute(in store: Store) {
         store.dispatch(.userPlaylistRequest())
     }
 }
 
-struct PlaylistTracksCommand: AppCommand {
+struct PlaylistTracksRequestCommand: AppCommand {
     let pid: Int
     let ids: [Int]
     let op: Bool
@@ -765,66 +769,66 @@ struct PlaylistTracksCommand: AppCommand {
             .requestPublisher(action: PlaylistTracksAction(parameters: .init(pid: pid, ids: ids, op: op ? .add : .del)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.playlistTracksDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.playlistTracksRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { playlistSubscribeResponse in
                 if playlistSubscribeResponse.isSuccess {
-                    store.dispatch(.playlistTracksDone(result: .success(pid)))
+                    store.dispatch(.playlistTracksRequestDone(result: .success(pid)))
                 }else {
-                    store.dispatch(.playlistTracksDone(result: .failure(AppError.playlistSubscribeError)))
+                    store.dispatch(.playlistTracksRequestDone(result: .failure(AppError.playlistSubscribeError)))
                 }
             }.store(in: &store.cancellableSet)
     }
 }
 
-struct PlaylistTracksDoneCommand: AppCommand {
+struct PlaylistTracksRequestDoneCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-        store.dispatch(.playlistDetail(id: id))
+        store.dispatch(.playlistDetailRequest(id: id))
     }
 }
 
-struct RecommendPlaylistCommand: AppCommand {
+struct RecommendPlaylistRequestCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi
             .shared
             .requestPublisher(action: RecommendPlaylistAction())
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.recommendPlaylistDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.recommendPlaylistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { recommendPlaylistResponse in
                 guard recommendPlaylistResponse.isSuccess else {
-                    store.dispatch(.recommendPlaylistDone(result: .failure(AppError.recommendPlaylistRequest)))
+                    store.dispatch(.recommendPlaylistRequestDone(result: .failure(AppError.recommendPlaylistRequest)))
                     return
                 }
-                store.dispatch(.recommendPlaylistDone(result: .success(recommendPlaylistResponse)))
+                store.dispatch(.recommendPlaylistRequestDone(result: .success(recommendPlaylistResponse)))
             }.store(in: &store.cancellableSet)
     }
 }
 
-struct RecommendSongsCommand: AppCommand {
+struct RecommendSongsRequestCommand: AppCommand {
     func execute(in store: Store) {
         NeteaseCloudMusicApi
             .shared
             .requestPublisher(action: RecommendSongAction())
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.recommendSongsDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.recommendSongsRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { recommendSongsResponse in
                 guard recommendSongsResponse.isSuccess else {
-                    store.dispatch(.recommendSongsDone(result: .failure(AppError.recommendSongsError)))
+                    store.dispatch(.recommendSongsRequestDone(result: .failure(AppError.recommendSongsError)))
                     return
                 }
                 DataManager.shared.update(model: recommendSongsResponse)
-                store.dispatch(.recommendSongsDone(result: .success(recommendSongsResponse.data.dailySongs.map(\.id))))
+                store.dispatch(.recommendSongsRequestDone(result: .success(recommendSongsResponse.data.dailySongs.map(\.id))))
             }.store(in: &store.cancellableSet)
     }
 }
 
-struct SearchCommand: AppCommand {
+struct SearchRequestCommand: AppCommand {
     let keyword: String
     let type: SearchType
     let limit: Int
@@ -837,14 +841,14 @@ struct SearchCommand: AppCommand {
                 .requestPublisher(action: SearchSongAction(parameters: .init(s: keyword, type: type, limit: limit, offset: limit * offset)))
                 .sink { completion in
                     if case .failure(let error) = completion {
-                        store.dispatch(.searchSongDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                        store.dispatch(.searchSongRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                     }
                 } receiveValue: { searchSongResponse in
                     guard searchSongResponse.isSuccess else {
-                        store.dispatch(.searchSongDone(result: .failure(AppError.searchError)))
+                        store.dispatch(.searchSongRequestDone(result: .failure(AppError.searchError)))
                         return
                     }
-                    store.dispatch(.searchSongDone(result: .success(searchSongResponse.result.songs.map(\.id))))
+                    store.dispatch(.searchSongRequestDone(result: .success(searchSongResponse.result.songs.map(\.id))))
                 }.store(in: &store.cancellableSet)
         }
         if type == .playlist {
@@ -853,14 +857,14 @@ struct SearchCommand: AppCommand {
                 .requestPublisher(action: SearchPlaylistAction(parameters: .init(s: keyword, type: type, limit: limit, offset: limit * offset)))
                 .sink { completion in
                     if case .failure(let error) = completion {
-                        store.dispatch(.searchPlaylistDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                        store.dispatch(.searchPlaylistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                     }
                 } receiveValue: { searchPlaylistResponse in
                     guard searchPlaylistResponse.isSuccess else {
-                        store.dispatch(.searchPlaylistDone(result: .failure(AppError.searchError)))
+                        store.dispatch(.searchPlaylistRequestDone(result: .failure(AppError.searchError)))
                         return
                     }
-                    store.dispatch(.searchPlaylistDone(result: .success(searchPlaylistResponse)))
+                    store.dispatch(.searchPlaylistRequestDone(result: .success(searchPlaylistResponse)))
                 }.store(in: &store.cancellableSet)
         }
     }
@@ -870,7 +874,7 @@ struct SearchSongDoneCommand: AppCommand {
     let ids: [Int]
     
     func execute(in store: Store) {
-        store.dispatch(.songsDetail(ids: ids))
+        store.dispatch(.songsDetailRequest(ids: ids))
     }
 }
 
@@ -883,11 +887,11 @@ struct SongsDetailCommand: AppCommand {
             .requestPublisher(action: SongDetailAction(parameters: .init(ids: ids)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.songsDetailDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.songsDetailRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { songDetailResponse in
                 DataManager.shared.batchInsert(type: Song.self, models: songDetailResponse.songs)
-                store.dispatch(.songsDetailDone(result: .success(ids)))
+                store.dispatch(.songsDetailRequestDone(result: .success(ids)))
             }.store(in: &store.cancellableSet)
     }
 }
@@ -953,7 +957,7 @@ struct SongLyricRequestCommand: AppCommand {
     }
 }
 
-struct SongsOrderUpdateCommand: AppCommand {
+struct SongsOrderUpdateRequestCommand: AppCommand {
     let pid: Int
     let ids: [Int]
     
@@ -963,23 +967,23 @@ struct SongsOrderUpdateCommand: AppCommand {
             .requestPublisher(action: SongOrderUpdateAction(parameters: .init(pid: pid, trackIds: ids)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.songsOrderUpdateDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.songsOrderUpdateRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { songOrderUpdateResponse in
                 guard songOrderUpdateResponse.isSuccess else {
-                    store.dispatch(.songsOrderUpdateDone(result: .failure(AppError.songsOrderUpdate)))
+                    store.dispatch(.songsOrderUpdateRequestDone(result: .failure(AppError.songsOrderUpdate)))
                     return
                 }
-                store.dispatch(.songsOrderUpdateDone(result: .success(pid)))
+                store.dispatch(.songsOrderUpdateRequestDone(result: .success(pid)))
             }.store(in: &store.cancellableSet)
     }
 }
 
-struct SongsOrderUpdateDoneCommand: AppCommand {
+struct SongsOrderUpdateRequestingDoneCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-        store.dispatch(.playlistDetail(id: id))
+        store.dispatch(.playlistDetailRequest(id: id))
     }
 }
 
@@ -1035,7 +1039,7 @@ struct TooglePlayCommand: AppCommand {
     }
 }
 
-struct UserPlayListCommand: AppCommand {
+struct UserPlayListRequestCommand: AppCommand {
     let uid: Int
     let limit: Int
     let offset: Int
@@ -1046,10 +1050,10 @@ struct UserPlayListCommand: AppCommand {
             .requestPublisher(action: UserPlaylistAction(parameters: .init(uid: uid, limit: limit, offset: offset)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.userPlaylistDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.userPlaylistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { userPlaylistResponse in
-                store.dispatch(.userPlaylistDone(result: .success(userPlaylistResponse.playlist)))
+                store.dispatch(.userPlaylistRequestDone(result: .success(userPlaylistResponse.playlist)))
             }.store(in: &store.cancellableSet)
     }
 }

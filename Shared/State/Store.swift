@@ -309,7 +309,7 @@ class Store: ObservableObject {
         case .playlistCreateRequestDone(let result):
             switch result {
             case .success:
-                appCommand = PlaylistCreateDoneCommand()
+                appCommand = PlaylistCreateRequestDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
@@ -318,63 +318,63 @@ class Store: ObservableObject {
         case .playlistDeleteRequestDone(let result):
             switch result {
             case .success:
-                appCommand = PlaylistDeleteDoneCommand()
+                appCommand = PlaylistDeleteReuquestDoneCommand()
                 break
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistDetail(let id):
+        case .playlistDetailRequest(let id):
             appState.playlist.detailRequesting = true
-            appCommand = PlaylistDetailCommand(id: id)
-        case .playlistDetailDone(let result):
+            appCommand = PlaylistDetailRequestCommand(id: id)
+        case .playlistDetailRequestDone(let result):
             switch result {
             case .success(let playlist):
                 appCommand = PlaylistDetailDoneCommand(playlist: playlist)
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistDetailSongs(let playlist):
-            appCommand = PlaylistDetailSongsCommand(playlist: playlist)
-        case .playlistDetailSongsDone(let result):
+        case .playlistDetailSongsRequest(let playlist):
+            appCommand = PlaylistDetailSongsRequestCommand(playlist: playlist)
+        case .playlistDetailSongsRequestDone(let result):
             switch result {
             case .success: break
             case .failure(let error):
                 appState.error = error
             }
             appState.playlist.detailRequesting = false
-        case .playlistOrderUpdate(let ids):
-            appCommand = PlaylistOrderUpdateCommand(ids: ids)
+        case .playlistOrderUpdateRequesting(let ids):
+            appCommand = PlaylistOrderUpdateRequestCommand(ids: ids)
         case .playlistOrderUpdateDone(let result):
             switch result {
             case .success:
-                appCommand = PlaylistOrderUpdateDoneCommand()
+                appCommand = PlaylistOrderUpdateRequestDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistSubscibe(let id, let sub):
-            appCommand = PlaylisSubscribeCommand(id: id, sub: sub)
-        case .playlistSubscibeDone(let result):
+        case .playlistSubscibeRequest(let id, let sub):
+            appCommand = PlaylisSubscribeRequestCommand(id: id, sub: sub)
+        case .playlistSubscibeRequestDone(let result):
             switch result {
             case .success:
-                appCommand = PlaylisSubscribeDoneCommand()
+                appCommand = PlaylisSubscribeRequestDoneCommand()
             case .failure(let error):
                 appState.error = error
             }
-        case .playlistTracks(let pid, let ids, let op):
+        case .playlistTracksRequest(let pid, let ids, let op):
             if ids.count > 0 {
-                appCommand = PlaylistTracksCommand(pid: pid, ids: ids, op: op)
+                appCommand = PlaylistTracksRequestCommand(pid: pid, ids: ids, op: op)
             }
-        case .playlistTracksDone(let result):
+        case .playlistTracksRequestDone(let result):
             switch result {
             case .success(let id):
-                appCommand = PlaylistTracksDoneCommand(id: id)
+                appCommand = PlaylistTracksRequestDoneCommand(id: id)
             case .failure(let error):
                 appState.error = error
             }
         case .recommendPlaylistRequest:
             appState.playlist.recommendPlaylistRequesting = true
-            appCommand = RecommendPlaylistCommand()
-        case .recommendPlaylistDone(let result):
+            appCommand = RecommendPlaylistRequestCommand()
+        case .recommendPlaylistRequestDone(let result):
             switch result {
             case .success(let recommandPlaylistResponse):
                 appState.playlist.recommendPlaylist = recommandPlaylistResponse.recommend
@@ -387,8 +387,8 @@ class Store: ObservableObject {
             }
         case .recommendSongsRequest:
             appState.playlist.recommendSongsRequesting = true
-            appCommand = RecommendSongsCommand()
-        case .recommendSongsDone(let result):
+            appCommand = RecommendSongsRequestCommand()
+        case .recommendSongsRequestDone(let result):
             switch result {
             case .success: break
             case .failure(let error):
@@ -398,12 +398,12 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .search(let keyword, let type, let limit, let offset):
+        case .searchRequest(let keyword, let type, let limit, let offset):
             if keyword.count > 0 {
                 appState.search.searchRequesting = true
-                appCommand = SearchCommand(keyword: keyword, type: type, limit: limit, offset: offset)
+                appCommand = SearchRequestCommand(keyword: keyword, type: type, limit: limit, offset: offset)
             }
-        case .searchPlaylistDone(let result):
+        case .searchPlaylistRequestDone(let result):
             switch result {
             case .success(let searchPlaylistResponse):
                 appState.search.result.playlists = searchPlaylistResponse.result.playlists
@@ -411,7 +411,7 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.search.searchRequesting = false
-        case .searchSongDone(let result):
+        case .searchSongRequestDone(let result):
             switch result {
             case .success(let ids):
                 appState.search.songsId = ids
@@ -420,9 +420,9 @@ class Store: ObservableObject {
                 appState.error = error
             }
             appState.search.searchRequesting = false
-        case .songsDetail(let ids):
+        case .songsDetailRequest(let ids):
             appCommand = SongsDetailCommand(ids: ids)
-        case .songsDetailDone(let result):
+        case .songsDetailRequestDone(let result):
             switch result {
             case .success: break
             case .failure(let error):
@@ -469,12 +469,12 @@ class Store: ObservableObject {
                 appState.lyric.getlyricError = error
             }
             appState.lyric.requesting = false
-        case .songsOrderUpdate(let pid, let ids):
-            appCommand = SongsOrderUpdateCommand(pid: pid, ids: ids)
-        case .songsOrderUpdateDone(let result):
+        case .songsOrderUpdateRequesting(let pid, let ids):
+            appCommand = SongsOrderUpdateRequestCommand(pid: pid, ids: ids)
+        case .songsOrderUpdateRequestDone(let result):
             switch result {
             case .success(let id):
-                appCommand = SongsOrderUpdateDoneCommand(id: id)
+                appCommand = SongsOrderUpdateRequestingDoneCommand(id: id)
             break
             case .failure(let error):
                 appState.error = error
@@ -491,11 +491,11 @@ class Store: ObservableObject {
         case .userPlaylistRequest(let uid, let limit, let offset):
             appState.playlist.userPlaylistRequesting = true
             if let userId = uid {
-                appCommand = UserPlayListCommand(uid: userId, limit: limit, offset: offset)
+                appCommand = UserPlayListRequestCommand(uid: userId, limit: limit, offset: offset)
             }else if let userId = appState.settings.loginUser?.profile.userId {
-                appCommand = UserPlayListCommand(uid: userId, limit: limit, offset: offset)
+                appCommand = UserPlayListRequestCommand(uid: userId, limit: limit, offset: offset)
             }
-        case .userPlaylistDone(let result):
+        case .userPlaylistRequestDone(let result):
             switch result {
             case .success(let playlists):
                 if let uid = appState.settings.loginUser?.userId {

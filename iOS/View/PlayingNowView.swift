@@ -289,7 +289,7 @@ struct PlaylistTracksView: View {
                             Button(action: {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     if let songId = Store.shared.appState.playing.song?.id {
-                                        Store.shared.dispatch(.playlistTracks(pid: item.id, ids: [Int(songId)], op: true))
+                                        Store.shared.dispatch(.playlistTracksRequest(pid: item.id, ids: [Int(songId)], op: true))
                                     }
                                 }
                                 withAnimation(.default){
