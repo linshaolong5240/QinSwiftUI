@@ -381,11 +381,11 @@ struct LoginRefreshRequestCommand: AppCommand {
                     store.dispatch(.loginRefreshRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { loginRefreshResponse in
-                guard loginRefreshResponse.isSuccess else {
-                    store.dispatch(.loginRefreshRequestDone(result: .failure(AppError.loginRefreshRequest)))
-                    return
-                }
-                store.dispatch(.loginRefreshRequestDone(result: .success(true)))
+//                guard loginRefreshResponse.isSuccess else {
+//                    store.dispatch(.loginRefreshRequestDone(result: .failure(AppError.loginRefreshRequest)))
+//                    return
+//                }
+                store.dispatch(.loginRefreshRequestDone(result: .success(loginRefreshResponse.isSuccess)))
             }.store(in: &store.cancellableSet)
     }
 }
