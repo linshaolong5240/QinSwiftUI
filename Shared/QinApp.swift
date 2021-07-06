@@ -23,5 +23,8 @@ struct QinApp: App {
                 .environmentObject(player)
                 .environment(\.managedObjectContext, context)
         }
+        .commands {
+            SidebarCommands()
+        }
     }
 }

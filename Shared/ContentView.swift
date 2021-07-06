@@ -9,17 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        #if !os(macOS)
+        #if os(macOS)
         HomeView()
+            .frame(width: 800, height: 600)
         #else
-        Text("hello world")
-            .padding()
+        HomeView()
         #endif
     }
 }
 
+#if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
+#endif

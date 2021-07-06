@@ -394,11 +394,13 @@ struct LoginRefreshDoneCommand: AppCommand {
     let success: Bool
     
     func execute(in store: Store) {
+        #if os(iOS)
         if success {
             store.dispatch(.initAction)
         }else {
             store.dispatch(.logoutRequest)
         }
+        #endif
     }
 }
 
