@@ -147,6 +147,8 @@
 		2BD09855257BBDFB0062480F /* PlayingNowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD09854257BBDFB0062480F /* PlayingNowButtonView.swift */; };
 		2BD4D9CB251BC460006798ED /* LyricViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD4D9CA251BC460006798ED /* LyricViewModel.swift */; };
 		2BD4D9CC251BC460006798ED /* LyricViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD4D9CA251BC460006798ED /* LyricViewModel.swift */; };
+		2BDAED21269744970070CCAD /* UserCloudResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF613E026972D4F00BCA300 /* UserCloudResponse.swift */; };
+		2BDAED222697449E0070CCAD /* UserCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF613DE26972CF800BCA300 /* UserCloudAction.swift */; };
 		2BE66D72266F93AC00367778 /* SongOrderUpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D71266F93AC00367778 /* SongOrderUpdateResponse.swift */; };
 		2BE66D73266F93AC00367778 /* SongOrderUpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D71266F93AC00367778 /* SongOrderUpdateResponse.swift */; };
 		2BE66D75266F940B00367778 /* SongOrderUpdateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D74266F940B00367778 /* SongOrderUpdateAction.swift */; };
@@ -909,6 +911,7 @@
 				2BE66D90267004D700367778 /* CommentLikeAction.swift in Sources */,
 				2B1FBF8C2567BDBA0003ADC4 /* DataModel.xcdatamodeld in Sources */,
 				EF28DA34266E199800CE0369 /* PlaylistDeleteAction.swift in Sources */,
+				2BDAED21269744970070CCAD /* UserCloudResponse.swift in Sources */,
 				2B8F56EA252F8969008FFF8F /* DescriptionView.swift in Sources */,
 				EF010A322673425D00DB2AF9 /* AlbumSubAction.swift in Sources */,
 				2B8EFEBE266BF92000FF42EF /* SongLikeResponse.swift in Sources */,
@@ -1000,6 +1003,7 @@
 				EFF30723266F3C8700D5E1F4 /* PlaylistDetailAction.swift in Sources */,
 				2BE66D75266F940B00367778 /* SongOrderUpdateAction.swift in Sources */,
 				2BCCB29D24DC5A2B004CAD67 /* ViewModifier.swift in Sources */,
+				2BDAED222697449E0070CCAD /* UserCloudAction.swift in Sources */,
 				2BCCB31E24DC7BCC004CAD67 /* AppState.swift in Sources */,
 				2BE66D72266F93AC00367778 /* SongOrderUpdateResponse.swift in Sources */,
 				EF010A442673431F00DB2AF9 /* AlbumDetailAction.swift in Sources */,

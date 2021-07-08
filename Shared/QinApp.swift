@@ -14,6 +14,7 @@ struct QinApp: App {
     let context = DataManager.shared.context()
 
     var body: some Scene {
+        #if os(macOS)
         WindowGroup {
             ContentView()
                 .onAppear {
@@ -23,8 +24,20 @@ struct QinApp: App {
                 .environmentObject(player)
                 .environment(\.managedObjectContext, context)
         }
+        .windowStyle(HiddenTitleBarWindowStyle())
         .commands {
             SidebarCommands()
         }
+        #else
+        WindowGroup {
+            ContentView()
+                .onAppear {
+                    store.dispatch(.loginRefreshRequest)
+                }
+                .environmentObject(store)
+                .environmentObject(player)
+                .environment(\.managedObjectContext, context)
+        }
+        #endif
     }
 }
