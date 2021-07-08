@@ -15,9 +15,9 @@ public struct SongLikeAction: NeteaseCloudMusicAction {
         public var time: Int = 3
     }
     public typealias Parameters = SongLikeParameters
-    public typealias ResponseType = SongLikeResponse
+    public typealias Response = SongLikeResponse
 
     public var uri: String { "/weapi/radio/like" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

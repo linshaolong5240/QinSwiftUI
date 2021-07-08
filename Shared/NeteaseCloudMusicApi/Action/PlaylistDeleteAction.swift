@@ -2,7 +2,7 @@
 //  PlaylistDeleteAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/7.
+//  Created by 林少龙 on 2021/6/7.
 //
 
 import Foundation
@@ -12,9 +12,9 @@ public struct PlaylistDeleteAction: NeteaseCloudMusicAction {
         public var pid: Int
     }
     public typealias Parameters = PlaylistDeleteParameters
-    public typealias ResponseType = PlaylistDeleteResponse
+    public typealias Response = PlaylistDeleteResponse
 
     public var uri: String { "/weapi/playlist/delete" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

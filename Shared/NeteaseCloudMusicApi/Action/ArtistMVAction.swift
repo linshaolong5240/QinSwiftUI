@@ -15,9 +15,9 @@ public struct ArtistMVAction: NeteaseCloudMusicAction {
         public var total: Bool
     }
     public typealias Parameters = ArtistMVParameters
-    public typealias ResponseType = ArtistMVResponse
+    public typealias Response = ArtistMVResponse
 
     public var uri: String { "/weapi/artist/mvs" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

@@ -10,9 +10,9 @@ import Foundation
 //登陆状态
 public struct LoginRefreshAction: NeteaseCloudMusicAction {
     public typealias Parameters = EmptyParameters
-    public typealias ResponseType = LoginRefreshResponse
+    public typealias Response = LoginRefreshResponse
 
     public var uri: String { "/weapi/login/token/refresh" }
     public let parameters = Parameters()
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

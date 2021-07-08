@@ -10,9 +10,9 @@ import Foundation
 //歌单分类
 public struct PlaylistCatalogueAction: NeteaseCloudMusicAction {
     public typealias Parameters = EmptyParameters
-    public typealias ResponseType = PlaylistCatalogueResponse
+    public typealias Response = PlaylistCatalogueResponse
 
     public var uri: String { "/weapi/playlist/catalogue" }
     public let parameters = Parameters()
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

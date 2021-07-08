@@ -13,9 +13,9 @@ public struct MVURLAction: NeteaseCloudMusicAction {
         public var r: Int = 1080
     }
     public typealias Parameters = MVURLParameters
-    public typealias ResponseType = MVURLResponse
+    public typealias Response = MVURLResponse
 
     public var uri: String { "/weapi/song/enhance/play/mv/url" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

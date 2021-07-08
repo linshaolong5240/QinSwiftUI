@@ -32,18 +32,18 @@ public struct SearchActionParameters: Encodable {
 
 public struct SearchSongAction: NeteaseCloudMusicAction {
     public typealias Parameters = SearchActionParameters
-    public typealias ResponseType = SearchSongResponse
+    public typealias Response = SearchSongResponse
 
     public var uri: String { searchURI }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }
 
 public struct SearchPlaylistAction: NeteaseCloudMusicAction {
     public typealias Parameters = SearchActionParameters
-    public typealias ResponseType = SearchPlaylistResponse
+    public typealias Response = SearchPlaylistResponse
 
     public var uri: String { searchURI }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

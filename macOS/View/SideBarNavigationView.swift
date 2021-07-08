@@ -43,7 +43,7 @@ struct SideBarNavigationView: View {
                                 }
                             }
                             .padding()
-                            NavigationLink("我的云盘", destination: Text("Destination0"), tag: 0, selection:  $selection)
+                            NavigationLink("我的云盘", destination: UserCloudView(), tag: 0, selection:  $selection)
                             NavigationLink("test", destination: Text("Destination1"), tag: 1, selection:  $selection)
                             NavigationLink("test", destination: Text("Destination2"), tag: 2, selection:  $selection)
                         }

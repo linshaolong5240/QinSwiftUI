@@ -12,11 +12,11 @@ import Combine
 
 public protocol NeteaseCloudMusicAction {
     associatedtype Parameters: Encodable
-    associatedtype ResponseType: Decodable
+    associatedtype Response: Decodable
     
     var uri: String { get }
     var parameters: Parameters { get }
-    var responseType: ResponseType.Type { get }
+    var responseType: Response.Type { get }
 }
 
 public struct EmptyParameters: Encodable { }
@@ -47,7 +47,7 @@ class NeteaseCloudMusicApi {
         HTTPCookieStorage.shared.setCookie(cookie2!)
     }
     
-    public func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.ResponseType, Error> {
+    public func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
         let url: String =  host + action.uri
 
         let httpHeader = [ //"Accept": "*/*",
@@ -75,11 +75,11 @@ class NeteaseCloudMusicApi {
                 }
             }
         }
-        #if DEBUG
+        #if false//DEBUG
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
-                print(String(data: $0.data, encoding: .utf8))
+                print(String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString)
                 return $0.data
             }
             .decode(type: action.responseType, decoder: JSONDecoder())

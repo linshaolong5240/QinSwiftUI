@@ -12,9 +12,9 @@ public struct SongLikeListAction: NeteaseCloudMusicAction {
         public var uid: Int
     }
     public typealias Parameters = SongLikeListParameters
-    public typealias ResponseType = SongLikeListResponse
+    public typealias Response = SongLikeListResponse
 
     public var uri: String { "/weapi/song/like/get" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

@@ -9,9 +9,9 @@ import Foundation
 //推荐歌曲( 需要登录 )
 public struct RecommendSongAction: NeteaseCloudMusicAction {
     public typealias Parameters = EmptyParameters
-    public typealias ResponseType = RecommendSongsResponse
+    public typealias Response = RecommendSongsResponse
 
     public var uri: String { "/weapi/v3/discovery/recommend/songs" }
     public let parameters = Parameters()
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

@@ -2,7 +2,7 @@
 //  SongDetailAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/8.
+//  Created by 林少龙 on 2021/6/8.
 //
 
 import Foundation
@@ -18,9 +18,9 @@ public struct SongDetailAction: NeteaseCloudMusicAction {
         }
     }
     public typealias Parameters = SongDetailParameters
-    public typealias ResponseType = SongDetailResponse
+    public typealias Response = SongDetailResponse
 
     public var uri: String { "/weapi/v3/song/detail" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

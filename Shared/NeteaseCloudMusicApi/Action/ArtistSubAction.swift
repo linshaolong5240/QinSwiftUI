@@ -13,10 +13,10 @@ public struct ArtistSubAction: NeteaseCloudMusicAction {
         public var artistIds: [Int]
     }
     public typealias Parameters = ArtistSubParameters
-    public typealias ResponseType = ArtistSubResponse
+    public typealias Response = ArtistSubResponse
 
     public var sub: Bool
     public var uri: String { "/weapi/artist/\(sub ? "sub" : "unsub")" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

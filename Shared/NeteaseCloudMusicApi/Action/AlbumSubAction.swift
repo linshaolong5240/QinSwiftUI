@@ -2,7 +2,7 @@
 //  AlbumSubAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/11.
+//  Created by 林少龙 on 2021/6/11.
 //
 
 import Foundation
@@ -12,11 +12,11 @@ public struct AlbumSubAction: NeteaseCloudMusicAction {
         var id: Int
     }
     public typealias Parameters = AlbumSubParameters
-    public typealias ResponseType = AlbumSubResponse
+    public typealias Response = AlbumSubResponse
     
     public var uri: String { "/weapi/album/\(sub ? "sub" : "unsub")"}
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
     
     public let sub: Bool
 }

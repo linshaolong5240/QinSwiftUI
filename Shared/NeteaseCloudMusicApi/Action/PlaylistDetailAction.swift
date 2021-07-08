@@ -2,7 +2,7 @@
 //  PlaylistDetailAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/8.
+//  Created by 林少龙 on 2021/6/8.
 //
 
 import Foundation
@@ -15,9 +15,9 @@ public struct PlaylistDetailAction: NeteaseCloudMusicAction {
         public var s: Int = 8  //歌单最近的 s 个收藏者,默认为8
     }
     public typealias Parameters = PlaylistDetailParameters
-    public typealias ResponseType = PlaylistDetailResponse
+    public typealias Response = PlaylistDetailResponse
 
     public var uri: String { "/weapi/v3/playlist/detail" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

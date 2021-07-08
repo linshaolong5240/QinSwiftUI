@@ -10,9 +10,9 @@ import Foundation
 //退出登录
 public struct LogoutAction: NeteaseCloudMusicAction {
     public typealias Parameters = EmptyParameters
-    public typealias ResponseType = LogoutResponse
+    public typealias Response = LogoutResponse
 
     public var uri: String { "/weapi/logout" }
     public let parameters = Parameters()
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

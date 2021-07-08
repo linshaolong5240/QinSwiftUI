@@ -35,11 +35,11 @@ public struct CommentAddAction: NeteaseCloudMusicAction {
         }
     }
     public typealias Parameters = CommentAddParameters
-    public typealias ResponseType = CommentAddRespone
+    public typealias Response = CommentAddRespone
     
     public var uri: String { "\(URI)\(CommentAction.add.rawValue)" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }
 
 public struct CommentDeleteAction: NeteaseCloudMusicAction {
@@ -52,11 +52,11 @@ public struct CommentDeleteAction: NeteaseCloudMusicAction {
         }
     }
     public typealias Parameters = CommentDeleteParameters
-    public typealias ResponseType = CommentDeleteResponse
+    public typealias Response = CommentDeleteResponse
     
     public var uri: String { "\(URI)\(CommentAction.delete.rawValue)" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }
 
 //public struct CommentReplayAction: NeteaseCloudMusicAction {

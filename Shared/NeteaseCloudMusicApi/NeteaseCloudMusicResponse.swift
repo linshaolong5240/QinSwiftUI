@@ -15,6 +15,15 @@ extension NeteaseCloudMusicResponse {
     var isSuccess: Bool { code == 200 }
 }
 
+
+
+public struct SongQuality: Codable {
+    public let br: Int
+    public let fid: Int
+    public let size: Int
+    public let vd: Double
+}
+
 public struct AlbumResponse: Codable {
     public struct Info: Codable {
         public struct CommentThread: Codable {
@@ -146,13 +155,6 @@ public struct SongResponse: Codable {
         public let name: String?
         public let tns: [String]
     }
-
-    public struct Quality: Codable {
-        public let br: Int
-        public let fid: Int
-        public let size: Int
-        public let vd: Double
-    }
     public struct NoCopyrightRcmd: Codable {
     //            public let songId: Any?
         public let type: Int
@@ -186,10 +188,10 @@ public struct SongResponse: Codable {
     public let dt: Int
     public let fee: Int
     public let ftype: Int
-    public let h: Quality?
+    public let h: SongQuality?
     public let id: Int
-    public let l: Quality?
-    public let m: Quality?
+    public let l: SongQuality?
+    public let m: SongQuality?
     public let mark: Double
     public let mst: Int
     public let mv: Int

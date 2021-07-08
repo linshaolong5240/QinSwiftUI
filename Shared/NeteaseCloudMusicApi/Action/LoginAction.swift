@@ -21,9 +21,9 @@ public struct LoginAction: NeteaseCloudMusicAction {
         }
     }
     public typealias Parameters = LoginParameters
-    public typealias ResponseType = LoginResponse
+    public typealias Response = LoginResponse
 
     public var uri: String { "/weapi/login" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

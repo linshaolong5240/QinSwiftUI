@@ -2,7 +2,7 @@
 //  ArtistAlbumsAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/11.
+//  Created by 林少龙 on 2021/6/11.
 //
 
 import Foundation
@@ -14,10 +14,10 @@ public struct ArtistAlbumsAction: NeteaseCloudMusicAction {
         public var total: Bool = true
     }
     public typealias Parameters = ArtistAlbumsParameters
-    public typealias ResponseType = ArtistAlbumsResponse
+    public typealias Response = ArtistAlbumsResponse
 
     public let id: Int
     public var uri: String { "/weapi/artist/albums/\(id)" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

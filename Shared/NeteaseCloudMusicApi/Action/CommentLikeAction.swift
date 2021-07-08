@@ -19,10 +19,10 @@ public struct CommentLikeAction: NeteaseCloudMusicAction {
         }
     }
     public typealias Parameters = CommentLikeParameters
-    public typealias ResponseType = CommentLikeResponse
+    public typealias Response = CommentLikeResponse
 
     public var like: Bool
     public var uri: String { "/weapi/v1/comment/\(like ? "like" : "unlike")" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

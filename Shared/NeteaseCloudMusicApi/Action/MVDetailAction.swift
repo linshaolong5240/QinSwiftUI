@@ -12,9 +12,9 @@ public struct MVDetailAction: NeteaseCloudMusicAction {
         public var id: Int
     }
     public typealias Parameters = MVDetailParameters
-    public typealias ResponseType = MVDetailResponse
+    public typealias Response = MVDetailResponse
 
     public var uri: String { "/weapi/v1/mv/detail" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

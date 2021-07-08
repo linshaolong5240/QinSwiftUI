@@ -14,9 +14,9 @@ public struct UserPlaylistAction: NeteaseCloudMusicAction {
         public var offset: Int
     }
     public typealias Parameters = UserPlaylistParameters
-    public typealias ResponseType = UserPlaylistResponse
+    public typealias Response = UserPlaylistResponse
 
     public var uri: String { "/weapi/user/playlist" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

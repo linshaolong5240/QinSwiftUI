@@ -1041,6 +1041,22 @@ struct TooglePlayCommand: AppCommand {
     }
 }
 
+struct UserCloudRequestCommand: AppCommand {
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi
+            .shared
+            .requestPublisher(action: UserCloudAction(parameters: .init(limit: 30, offset: 0)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.userPlaylistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                }
+            } receiveValue: { userCloudResponse in
+                print(userCloudResponse.toJSONString)
+            }.store(in: &store.cancellableSet)
+    }
+}
+
 struct UserPlayListRequestCommand: AppCommand {
     let uid: Int
     let limit: Int

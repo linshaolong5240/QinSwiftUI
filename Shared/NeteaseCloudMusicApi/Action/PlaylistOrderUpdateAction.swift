@@ -2,7 +2,7 @@
 //  PlaylistOrderUpdateAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/8.
+//  Created by 林少龙 on 2021/6/8.
 //
 
 import Foundation
@@ -17,9 +17,9 @@ public struct PlaylistOrderUpdateAction: NeteaseCloudMusicAction {
         public var ids: [Int]
     }
     public typealias Parameters = PlaylistOrderUpdateParameters
-    public typealias ResponseType = PlaylistOrderUpdateResponse
+    public typealias Response = PlaylistOrderUpdateResponse
 
     public var uri: String { "/weapi/playlist/order/update" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

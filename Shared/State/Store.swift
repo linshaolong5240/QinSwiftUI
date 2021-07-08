@@ -488,6 +488,8 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
+        case .userCloudRequest:
+            appCommand = UserCloudRequestCommand()
         case .userPlaylistRequest(let uid, let limit, let offset):
             appState.playlist.userPlaylistRequesting = true
             if let userId = uid {

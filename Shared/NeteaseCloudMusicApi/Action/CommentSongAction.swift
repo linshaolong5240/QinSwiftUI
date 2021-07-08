@@ -20,10 +20,10 @@ public struct CommentSongAction: NeteaseCloudMusicAction {
         public var beforeTime: Int//deftaut 0
     }
     public typealias Parameters = CommentSongParameters
-    public typealias ResponseType = CommentSongResponse
+    public typealias Response = CommentSongResponse
     
     public let rid: Int
     public var uri: String { "/weapi/v1/resource/comments/R_SO_4_\(rid)" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

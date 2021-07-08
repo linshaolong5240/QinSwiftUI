@@ -15,9 +15,9 @@ public struct SongOrderUpdateAction: NeteaseCloudMusicAction {
         public var op: String = "update"
     }
     public typealias Parameters = SongOrderUpdateParameters
-    public typealias ResponseType = SongOrderUpdateResponse
+    public typealias Response = SongOrderUpdateResponse
 
     public var uri: String { "/weapi/playlist/manipulate/tracks" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

@@ -2,7 +2,7 @@
 //  PlaylistListAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/7.
+//  Created by 林少龙 on 2021/6/7.
 //
 
 import Foundation
@@ -19,9 +19,9 @@ public struct PlaylistListAction: NeteaseCloudMusicAction {
         public var total: Bool
     }
     public typealias Parameters = PlaylistListParameters
-    public typealias ResponseType = PlaylistListResponse
+    public typealias Response = PlaylistListResponse
 
     public var uri: String { "/weapi/playlist/list" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

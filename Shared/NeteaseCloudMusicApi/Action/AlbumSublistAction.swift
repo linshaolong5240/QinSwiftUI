@@ -2,7 +2,7 @@
 //  AlbumSublistAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/11.
+//  Created by 林少龙 on 2021/6/11.
 //
 
 import Foundation
@@ -14,9 +14,9 @@ public struct AlbumSublistAction: NeteaseCloudMusicAction {
         public var total: Bool = true
     }
     public typealias Parameters = AlbumSublistParameters
-    public typealias ResponseType = AlbumSublistResponse
+    public typealias Response = AlbumSublistResponse
 
     public let uri: String = "/weapi/album/sublist"
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }

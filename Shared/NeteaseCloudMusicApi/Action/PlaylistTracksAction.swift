@@ -2,7 +2,7 @@
 //  PlaylistTracksAction.swift
 //  Qin
 //
-//  Created by qfdev on 2021/6/8.
+//  Created by 林少龙 on 2021/6/8.
 //
 
 import Foundation
@@ -24,9 +24,9 @@ public struct PlaylistTracksAction: NeteaseCloudMusicAction {
         }
     }
     public typealias Parameters = PlaylistTracksParameters
-    public typealias ResponseType = PlaylistTracksResponse
+    public typealias Response = PlaylistTracksResponse
     
     public var uri: String { "/weapi/playlist/manipulate/tracks" }
     public let parameters: Parameters
-    public let responseType = ResponseType.self
+    public let responseType = Response.self
 }
