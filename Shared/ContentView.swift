@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         #if os(macOS)
-        HomeView()
+        SideBarNavigationView()
             .frame(width: 800, height: 600)
         #else
         HomeView()

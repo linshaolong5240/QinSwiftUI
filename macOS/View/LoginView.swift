@@ -18,13 +18,7 @@ struct LoginView: View {
         ZStack {
             NEUBackgroundView()
             VStack(spacing: 20.0) {
-                HStack {
-                    NEUBackwardButton()
-                    Spacer()
-                }
-                .overlay(
-                    NEUNavigationBarTitleView("登录")
-                )
+                NEUNavigationBarTitleView("登录")
                 TextField("email", text: $email)
                     .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "envelope", size: .medium)))
                 SecureField("password", text: $password)
@@ -41,7 +35,7 @@ struct LoginView: View {
                 }
                 Spacer()
             }
-            .padding(.horizontal)
+            .padding([.horizontal, .top])
         }
     }
 }
