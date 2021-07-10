@@ -241,7 +241,7 @@ struct ArtistSublistRequestCommand: AppCommand {
     }
 }
 
-struct CloudUploadCommand: AppCommand {
+struct CloudUploadCheckCommand: AppCommand {
     let fileURL: URL
     
     func execute(in store: Store) {
@@ -251,6 +251,27 @@ struct CloudUploadCommand: AppCommand {
         print(md5)
         print(fileSize)
         NeteaseCloudMusicApi.shared.requestPublisher(action: CloudUploadCheckAction(parameters: .init(length: fileSize, md5: md5)))
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                }
+            } receiveValue: { response in
+                print(response)
+                guard response.isSuccess else {
+//                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest)))
+                    return
+                }
+//                store.dispatch(.artistSublistRequestDone(result: .success(artistSublistResponse)))
+            }.store(in: &store.cancellableSet)
+    }
+}
+
+struct CloudUploadTokenCommand: AppCommand {
+    let fileName: String
+    let md5: String
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.requestPublisher(action: CloudUploadTokenAction(parameters: .init(filename: fileName, md5: md5)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))

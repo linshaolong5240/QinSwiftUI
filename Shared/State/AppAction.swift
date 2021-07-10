@@ -25,6 +25,7 @@ enum AppAction {
     case artistSubRequestDone(result: Result<Bool, AppError>)
     case artistSublistRequest(limit: Int = 999, offset: Int = 0)
     case cloudUpload(fileURL: URL)
+    case cloudUploadTokenRequest(filename: String, md5: String)
     case artistSublistRequestDone(result: Result<ArtistSublistResponse, AppError>)
     case commentRequest(id: Int = 0, commentId: Int? = nil, content: String? = nil, type: CommentType, action: CommentAction)
     case commentDoneRequest(result: Result<(id: Int, type: CommentType, action: CommentAction), AppError>)

@@ -23,7 +23,11 @@ struct CloudUploadView: View {
                 }, label: {
                     Text("Upload")
                 })
-                
+                Button(action: {
+                    Store.shared.dispatch(.cloudUploadTokenRequest(filename: "aHUOz", md5: "9657b4197680ed82ec898910de9ca9e7"))
+                }, label: {
+                    Text("token")
+                })
             }
         }
         .onDrop(of: [(kUTTypeFileURL as String)], delegate: self)

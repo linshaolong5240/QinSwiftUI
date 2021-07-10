@@ -8,5 +8,14 @@
 import Foundation
 
 public struct CloudUploadTokenResponse: NeteaseCloudMusicResponse {
-    public let code: Int
+    public struct Result: Codable {
+        public var bucket: String
+        public var docId: String
+        public var objectKey: String
+        public var resourceId: Int
+        public var token: String
+    }
+    public var code: Int
+    public var message: String?
+    public var result: Result
 }
