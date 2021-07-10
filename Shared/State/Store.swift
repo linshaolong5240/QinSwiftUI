@@ -127,6 +127,8 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
+        case .cloudUpload(let fileURL):
+            appCommand = CloudUploadCommand(fileURL: fileURL)
         case .commentRequest(let id, let cid, let content, let type, let action):
             if content != nil || action == .delete {
                 appState.comment.commentRequesting = true

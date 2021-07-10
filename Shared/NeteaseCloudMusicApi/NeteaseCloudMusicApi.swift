@@ -13,10 +13,15 @@ import Combine
 public protocol NeteaseCloudMusicAction {
     associatedtype Parameters: Encodable
     associatedtype Response: Decodable
-    
+    var host: String { get }
     var uri: String { get }
     var parameters: Parameters { get }
     var responseType: Response.Type { get }
+}
+extension NeteaseCloudMusicAction {
+    public static var defaultHost: String { "https://music.163.com" }
+    public var host: String { Self.defaultHost }
+    public var cloudHost: String { "https://interface.music.163.com" }
 }
 
 public struct EmptyParameters: Encodable { }
@@ -48,7 +53,7 @@ class NeteaseCloudMusicApi {
     }
     
     public func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
-        let url: String =  host + action.uri
+        let url: String =  action.host + action.uri
 
         let httpHeader = [ //"Accept": "*/*",
             //"Accept-Encoding": "gzip,deflate,sdch",
@@ -75,7 +80,7 @@ class NeteaseCloudMusicApi {
                 }
             }
         }
-        #if false//DEBUG
+        #if DEBUG
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
