@@ -15,6 +15,7 @@ struct AppState {
     var initRequestingCount: Int = 0
     var album = Album()
     var artist = Artist()
+    var cloud = Cloud()
     var comment = Comment()
     var discoverPlaylist = DiscoverPlaylist()
     var lyric = Lyric()
@@ -70,6 +71,13 @@ extension AppState {
         var subedIds: [Int] { artistSublist.map(\.id) }
 
         var error: AppError?
+    }
+    
+    struct Cloud {
+        @UserDefault(key: "fileURL") var fileURL: URL? = nil
+        @UserDefault(key: "md5") var md5: String = ""
+        @UserDefault(key: "fileSize") var fileSize: Int = 0
+        @UserDefault(key: "token") var token: CloudUploadTokenResponse.Result? = nil
     }
     
     struct Comment {

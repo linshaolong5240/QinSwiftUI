@@ -21,7 +21,7 @@ public struct CloudUploadAction: NeteaseCloudMusicAction {
     public var headers: [String : String]? {
         return ["x-nos-token": token,
                 "Content-MD5": md5,
-//                "Content-Type": "audio/mpeg",
+                "Content-Type": "audio/mpeg",
                 "Content-Length": String(size)
         ]
     }

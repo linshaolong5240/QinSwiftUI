@@ -22,4 +22,7 @@ extension URL {
         
         return deletingPathExtension().lastPathComponent
     }
+    var fileSize: Int? {
+        try? resourceValues(forKeys: [.fileSizeKey]).fileSize
+    }
 }

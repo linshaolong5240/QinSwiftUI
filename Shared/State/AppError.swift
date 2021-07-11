@@ -19,6 +19,8 @@ enum AppError: Error, Identifiable {
     case artistMVsRequest
     case artistSubRequest
     case artistSublistRequest
+    case cloudUploadCheckRequest
+    case cloudUploadTokenRequest
     case comment
     case commentLikeRequest
     case commentMusic
@@ -62,6 +64,8 @@ extension AppError {
         case .artistMVsRequest: return "Artist mvs request failure"
         case .artistSubRequest: return "Artist sub request failure"
         case .artistSublistRequest: return "Artist sublist request failure"
+        case .cloudUploadCheckRequest: return "Cloud upload check request failure"
+        case .cloudUploadTokenRequest: return "Cloud upload token request failure"
         case .comment: return "发送评论错误"
         case .commentLikeRequest: return "评论点赞错误"
         case .commentMusic: return "获取评论错误"

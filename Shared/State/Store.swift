@@ -127,12 +127,30 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .cloudUploadRequest(let objectKey, let token, let md5, let size, let data):
-            appCommand = CloudUploadCommand(objectKey: objectKey, token: token, md5: md5, size: size, data: data)
+        case .cloudUploadRequest(let token, let md5, let size, let data):
+            appCommand = CloudUploadCommand(token: token, fileSize: size, md5: md5, data: data)
         case .cloudUploadCheckRequest(let fileURL):
-            appCommand = CloudUploadCheckCommand(fileURL: fileURL)
-        case .cloudUploadTokenRequest(let filename, let md5):
-            appCommand = CloudUploadTokenCommand(fileName: filename, md5: md5)
+            appState.cloud.fileURL = fileURL
+            appCommand = CloudUploadCheckRequestCommand(fileURL: fileURL)
+        case .cloudUploadCheckRequestDone(let result):
+            switch  result {
+            case .success(let data):
+                appState.cloud.fileURL = data.fileURL
+                appState.cloud.md5 = data.md5
+                appCommand = CloudUploadCheckRequestDoneCommand(fileURL: data.fileURL, md5: data.md5)
+            case .failure(let error):
+                appState.error = error
+            }
+        case .cloudUploadTokenRequest(let fileURL, let md5):
+            appCommand = CloudUploadTokenRequestCommand(fileURL: fileURL, md5: md5)
+        case .cloudUploadTokenRequestDone(let result):
+            switch result {
+            case .success(let token):
+                appState.cloud.token = token
+                appCommand = CloudUploadTokenDoneCommand()
+            case .failure(let error):
+                appState.error = error
+            }
         case .commentRequest(let id, let cid, let content, let type, let action):
             if content != nil || action == .delete {
                 appState.comment.commentRequesting = true

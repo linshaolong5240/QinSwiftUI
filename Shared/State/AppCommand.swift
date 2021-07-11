@@ -242,15 +242,12 @@ struct ArtistSublistRequestCommand: AppCommand {
 }
 
 struct CloudUploadCommand: AppCommand {
-    let objectKey: String
-    let token: String
+    let token: CloudUploadTokenResponse.Result
+    let fileSize: Int
     let md5: String
-    let size: Int
     let data: Data
-    
     func execute(in store: Store) {
-        let form = data
-        NeteaseCloudMusicApi.shared.uploadPublisher(action: CloudUploadAction(objectKey: objectKey, token: token, md5: md5, size: size, data: form))
+        NeteaseCloudMusicApi.shared.uploadPublisher(action: CloudUploadAction(objectKey: token.objectKey, token: token.token, md5: md5, size: fileSize, data: data))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
@@ -265,7 +262,7 @@ struct CloudUploadCommand: AppCommand {
             }.store(in: &store.cancellableSet)
     }
 }
-struct CloudUploadCheckCommand: AppCommand {
+struct CloudUploadCheckRequestCommand: AppCommand {
     let fileURL: URL
     
     func execute(in store: Store) {
@@ -277,37 +274,64 @@ struct CloudUploadCheckCommand: AppCommand {
         NeteaseCloudMusicApi.shared.requestPublisher(action: CloudUploadCheckAction(parameters: .init(length: fileSize, md5: md5)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.cloudUploadCheckRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { response in
                 print(response)
                 guard response.isSuccess else {
-//                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest)))
+                    store.dispatch(.cloudUploadCheckRequestDone(result: .failure(AppError.cloudUploadCheckRequest)))
                     return
                 }
-//                store.dispatch(.artistSublistRequestDone(result: .success(artistSublistResponse)))
+                store.dispatch(.cloudUploadCheckRequestDone(result: .success((fileURL: fileURL, md5: md5))))
             }.store(in: &store.cancellableSet)
     }
 }
 
-struct CloudUploadTokenCommand: AppCommand {
-    let fileName: String
+struct CloudUploadCheckRequestDoneCommand: AppCommand {
+    let fileURL: URL
     let md5: String
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.requestPublisher(action: CloudUploadTokenAction(parameters: .init(filename: fileName, md5: md5)))
+        store.dispatch(.cloudUploadTokenRequest(fileURL: fileURL, md5: md5))
+    }
+}
+
+struct CloudUploadTokenRequestCommand: AppCommand {
+    let fileURL: URL
+    let md5: String
+    
+    func execute(in store: Store) {
+        NeteaseCloudMusicApi.shared.requestPublisher(action: CloudUploadTokenAction(parameters: .init(filename: fileURL.fileNameWithoutExtension ?? "", md5: md5)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                    store.dispatch(.cloudUploadTokenRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { response in
                 print(response)
                 guard response.isSuccess else {
-//                    store.dispatch(.artistSublistRequestDone(result: .failure(AppError.artistSublistRequest)))
+                    store.dispatch(.cloudUploadTokenRequestDone(result: .failure(AppError.cloudUploadTokenRequest)))
                     return
                 }
-//                store.dispatch(.artistSublistRequestDone(result: .success(artistSublistResponse)))
+                store.dispatch(.cloudUploadTokenRequestDone(result: .success(response.result)))
             }.store(in: &store.cancellableSet)
+    }
+}
+
+struct CloudUploadTokenDoneCommand: AppCommand {
+
+    func execute(in store: Store) {
+        guard let token = store.appState.cloud.token else {
+            return
+        }
+        guard  let url = store.appState.cloud.fileURL  else {
+            return
+        }
+        guard let data = try? Data(contentsOf: url) else {
+            return
+        }
+        let md5 = store.appState.cloud.md5
+        let size = store.appState.cloud.fileSize
+        store.dispatch(.cloudUploadRequest(token: token, md5: md5, size: size, data: data))
     }
 }
 
