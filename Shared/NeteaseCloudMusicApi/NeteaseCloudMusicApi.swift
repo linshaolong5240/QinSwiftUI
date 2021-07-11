@@ -10,18 +10,29 @@ import CryptoSwift
 import Security
 import Combine
 
+#if os(macOS)
+import Alamofire
+#endif
+
 public protocol NeteaseCloudMusicAction {
     associatedtype Parameters: Encodable
     associatedtype Response: Decodable
+    var headers: [String: String]? { get }
     var host: String { get }
     var uri: String { get }
     var parameters: Parameters { get }
     var responseType: Response.Type { get }
 }
+
 extension NeteaseCloudMusicAction {
-    public static var defaultHost: String { "https://music.163.com" }
+    public var headers: [String: String]? { nil }
+}
+
+extension NeteaseCloudMusicAction {
     public var host: String { Self.defaultHost }
+    public static var defaultHost: String { "https://music.163.com" }
     public var cloudHost: String { "https://interface.music.163.com" }
+    public var cloudUploadHost: String { "http://45.127.129.8" }
 }
 
 public struct EmptyParameters: Encodable { }
@@ -61,7 +72,7 @@ class NeteaseCloudMusicApi {
             "Content-Type": "application/x-www-form-urlencoded",
             "Host": "music.163.com",
             "Referer": "https://music.163.com",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15"
         ]
 //        let cookies = HTTPCookieStorage.shared.cookies
 //        let cookiesString = cookies!.map({ cookie in
@@ -81,6 +92,91 @@ class NeteaseCloudMusicApi {
             }
         }
         #if DEBUG
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map {
+                print(String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString)
+                return $0.data
+            }
+            .decode(type: action.responseType, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+        #else
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: action.responseType, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+        #endif
+    }
+    
+    public func uploadPublisher(method: HttpMethod = .POST, action: CloudUploadAction) -> AnyPublisher<CloudUploadResponse, Error> {
+        let url: String =  action.host + action.uri
+
+//        let httpHeader = [ //"Accept": "*/*",
+//            //"Accept-Encoding": "gzip,deflate,sdch",
+//            //"Connection": "keep-alive",
+//            "Content-Type": "application/x-www-form-urlencoded",
+//            "Host": "music.163.com",
+//            "Referer": "https://music.163.com",
+//            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15"
+//        ]
+//        let cookies = HTTPCookieStorage.shared.cookies
+//        let cookiesString = cookies!.map({ cookie in
+//            cookie.name + "=" + cookie.value
+//        }).joined(separator: "; ")
+//        httpHeader["Cookie"] = cookiesString
+//        print(httpHeader)
+        var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
+        request.httpMethod = method.rawValue
+        request.allHTTPHeaderFields = action.headers
+//        let m = MultipartFormData()
+//            m.append(action.data, withName: "")
+        request.httpBody = action.data
+//        var headers = HTTPHeaders()
+//        headers.add(name: "Content-Type", value: "audio/mpeg")
+//        headers.add(name: "x-nos-token", value: action.token)
+//        headers.add(name: "Content-MD5", value: action.md5)
+//        headers.add(name: "Content-Length", value: String(action.size))
+        #if DEBUG
+//        return Future<CloudUploadResponse, Error> { promise in
+//            AF.upload(multipartFormData: { m in
+//                m.append(action.data, withName: "aHUOz无损")
+//            }, to: "http://45.127.129.8/ymusic/\(action.objectKey.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed)!)?offset=0&complete=true&version=1.0", headers: headers).response { response in
+//                print(response.request)
+//                print(response.request?.allHTTPHeaderFields)
+//
+//                switch response.result {
+//                case .success(let data):
+//                    print(data)
+//                    print(String(data: data!, encoding: .utf8)?.jsonToDictionary?.toJSONString)
+//
+//                                if let d = data {
+//                                    print(String(data: d, encoding: .utf8)?.jsonToDictionary?.toJSONString)
+//                //                    promise(.success(d.toModel(CloudUploadResponse.self)!))
+//                                }
+//                case .failure(let error):
+//                    print(error)
+//                    promise(.failure(error))
+//                }
+//            }
+//            let task = URLSession.shared.uploadTask(with: request, from: action.data) { data, response, error in
+//                print(data)
+//                print(response)
+//                print(error)
+//
+//                if let e = error {
+//                    promise(.failure(e))
+//                }
+//                if let d = data {
+//                    print(String(data: d, encoding: .utf8)?.jsonToDictionary?.toJSONString)
+////                    promise(.success(d.toModel(CloudUploadResponse.self)!))
+//                }
+//            }
+//            task.resume()
+//        }
+//        .eraseToAnyPublisher()
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {

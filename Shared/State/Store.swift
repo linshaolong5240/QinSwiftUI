@@ -127,7 +127,9 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .cloudUpload(let fileURL):
+        case .cloudUploadRequest(let objectKey, let token, let md5, let size, let data):
+            appCommand = CloudUploadCommand(objectKey: objectKey, token: token, md5: md5, size: size, data: data)
+        case .cloudUploadCheckRequest(let fileURL):
             appCommand = CloudUploadCheckCommand(fileURL: fileURL)
         case .cloudUploadTokenRequest(let filename, let md5):
             appCommand = CloudUploadTokenCommand(fileName: filename, md5: md5)

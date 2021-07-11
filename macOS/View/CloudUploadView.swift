@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
-
+//size 12677747
+//CloudUploadTokenResponse(code: 200, message: nil, result: Qin.CloudUploadTokenResponse.Result(bucket: "ymusic", docId: "-1", objectKey: "obj/w5zCgMODwrDDjD3DisKy/3874458085/17a2/7d10/59a3/30950d1ef143de0efa654687c825f363.mp3", resourceId: 3874458085, token: "UPLOAD 319a693f5570493584f7271dd787a68a:5wyFvgKmDzGV9ecmYFT1BquwnauHNvFIJ6c4DSnSQeU=:eyJSZWdpb24iOiJIWiIsIk9iamVjdCI6Im9iai93NXpDZ01PRHdyRERqRDNEaXNLeS8zODc0NDU4MDg1LzE3YTIvN2QxMC81OWEzLzMwOTUwZDFlZjE0M2RlMGVmYTY1NDY4N2M4MjVmMzYzLm1wMyIsIkV4cGlyZXMiOjE2MjU5NDY2NzMsIkJ1Y2tldCI6InltdXNpYyIsIlJlc291cmNlSWQiOjAsIk92ZXJXcml0ZSI6ZmFsc2V9"))
 struct CloudUploadView: View {
-    @State private var filePath: String = "/Users/linshaolong/Downloads/aHUOz/aHUOz.mp3"
-    @State private var fileURL: URL? = URL(fileURLWithPath: "/Users/linshaolong/Downloads/aHUOz/aHUOz.mp3")
+    @State private var filePath: String = "/Users/linshaolong/Downloads/aHUOz的副本/aHUOz无损.mp3"
+    @State private var fileURL: URL? = URL(fileURLWithPath: "/Users/linshaolong/Downloads/aHUOz的副本/aHUOz无损.mp3")
     
     var body: some View {
         ZStack {
@@ -18,13 +19,18 @@ struct CloudUploadView: View {
                 TextField("Placeholder", text: $filePath)
                 Button(action: {
                     if let url = fileURL {
-                        Store.shared.dispatch(.cloudUpload(fileURL: url))
+                        Store.shared.dispatch(.cloudUploadCheckRequest(fileURL: url))
                     }
                 }, label: {
                     Text("Upload")
                 })
                 Button(action: {
                     Store.shared.dispatch(.cloudUploadTokenRequest(filename: "aHUOz", md5: "9657b4197680ed82ec898910de9ca9e7"))
+                }, label: {
+                    Text("token")
+                })
+                Button(action: {
+                    Store.shared.dispatch(.cloudUploadRequest(objectKey: "obj/w5zCgMODwrDDjD3DisKy/3874458085/17a2/7d10/59a3/30950d1ef143de0efa654687c825f363.mp3", token: "UPLOAD 319a693f5570493584f7271dd787a68a:5wyFvgKmDzGV9ecmYFT1BquwnauHNvFIJ6c4DSnSQeU=:eyJSZWdpb24iOiJIWiIsIk9iamVjdCI6Im9iai93NXpDZ01PRHdyRERqRDNEaXNLeS8zODc0NDU4MDg1LzE3YTIvN2QxMC81OWEzLzMwOTUwZDFlZjE0M2RlMGVmYTY1NDY4N2M4MjVmMzYzLm1wMyIsIkV4cGlyZXMiOjE2MjU5NDY2NzMsIkJ1Y2tldCI6InltdXNpYyIsIlJlc291cmNlSWQiOjAsIk92ZXJXcml0ZSI6ZmFsc2V9", md5: "9657b4197680ed82ec898910de9ca9e7", size: 12677747, data: try! Data(contentsOf: fileURL!)))
                 }, label: {
                     Text("token")
                 })
