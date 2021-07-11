@@ -76,8 +76,9 @@ extension AppState {
     struct Cloud {
         @UserDefault(key: "fileURL") var fileURL: URL? = nil
         @UserDefault(key: "md5") var md5: String = ""
-        @UserDefault(key: "fileSize") var fileSize: Int = 0
         @UserDefault(key: "token") var token: CloudUploadTokenResponse.Result? = nil
+        var needUpload: Bool = false
+        var songId: String = ""
     }
     
     struct Comment {

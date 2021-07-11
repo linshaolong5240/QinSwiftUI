@@ -95,7 +95,8 @@ class NeteaseCloudMusicApi {
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
-                print(String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString)
+                let str = String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString
+                print(str)
                 return $0.data
             }
             .decode(type: action.responseType, decoder: JSONDecoder())

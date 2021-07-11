@@ -127,27 +127,50 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .cloudUploadRequest(let token, let md5, let size, let data):
-            appCommand = CloudUploadCommand(token: token, fileSize: size, md5: md5, data: data)
+        case .cloudSongAddRequst(let songId):
+            appCommand = CloudSongAddRequstCommand(id: songId)
+        case .cloudSongAddRequstDone(let result):
+            switch result {
+            case .success(let response):
+                break
+            case .failure(let error):
+                appState.error = error
+            }
         case .cloudUploadCheckRequest(let fileURL):
             appState.cloud.fileURL = fileURL
             appCommand = CloudUploadCheckRequestCommand(fileURL: fileURL)
         case .cloudUploadCheckRequestDone(let result):
             switch  result {
             case .success(let data):
-                appState.cloud.fileURL = data.fileURL
+                appState.cloud.needUpload = data.response.needUpload
+                appState.cloud.songId = data.response.songId
                 appState.cloud.md5 = data.md5
-                appCommand = CloudUploadCheckRequestDoneCommand(fileURL: data.fileURL, md5: data.md5)
+                if let url = appState.cloud.fileURL {
+                    appCommand = CloudUploadCheckRequestDoneCommand(fileURL: url, md5: data.md5)
+                }
             case .failure(let error):
                 appState.error = error
             }
+        case .cloudUploadInfoRequest(let info):
+            appCommand = CloudUploadInfoRequestCommand(info: info)
+        case .cloudUploadInfoRequestDone(let result):
+            switch result {
+            case .success(let response):
+                appCommand = CloudUploadInfoRequestDoneCommand(info: response)
+            case .failure(let error):
+                appState.error = error
+            }
+        case .cloudUploadSongRequest(let token, let md5, let size, let data):
+            appCommand = CloudUploadCommand(token: token, fileSize: size, md5: md5, data: data)
         case .cloudUploadTokenRequest(let fileURL, let md5):
             appCommand = CloudUploadTokenRequestCommand(fileURL: fileURL, md5: md5)
         case .cloudUploadTokenRequestDone(let result):
             switch result {
             case .success(let token):
                 appState.cloud.token = token
-                appCommand = CloudUploadTokenDoneCommand()
+                if let url = appState.cloud.fileURL {
+                    appCommand = CloudUploadTokenDoneCommand(fileURL: url, token: token, md5: appState.cloud.md5)
+                }
             case .failure(let error):
                 appState.error = error
             }
