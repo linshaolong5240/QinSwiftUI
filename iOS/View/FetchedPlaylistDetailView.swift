@@ -32,6 +32,7 @@ struct FetchedPlaylistDetailView: View {
                         }else {
                             Text("正在加载")
                                 .onAppear {
+                                    print(results)
                                     Store.shared.dispatch(.playlistDetailRequest(id: id))
                                 }
                             Spacer()

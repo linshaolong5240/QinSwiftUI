@@ -959,9 +959,32 @@ struct RecommendSongsRequestCommand: AppCommand {
                     store.dispatch(.recommendSongsRequestDone(result: .failure(AppError.recommendSongsError)))
                     return
                 }
+                let ids = recommendSongsResponse.data.dailySongs.map(\.id)
                 DataManager.shared.update(model: recommendSongsResponse)
-                store.dispatch(.recommendSongsRequestDone(result: .success(recommendSongsResponse.data.dailySongs.map(\.id))))
+                NeteaseCloudMusicApi
+                    .shared
+                    .requestPublisher(action: SongDetailAction(parameters: .init(ids: ids)))
+                    .sink { completion in
+                        if case .failure(let error) = completion {
+                            store.dispatch(.recommendSongsRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
+                        }
+                    } receiveValue: { songDetailResponse in
+                        guard songDetailResponse.isSuccess else {
+                            store.dispatch(.recommendSongsRequestDone(result: .failure(AppError.songsDetailError)))
+                            return
+                        }
+                        DataManager.shared.updateSongs(model: songDetailResponse.songs)
+                        DataManager.shared.updateRecommendSongsPlaylistSongs(ids: ids)
+                        store.dispatch(.recommendSongsRequestDone(result: .success(ids)))
+                    }.store(in: &store.cancellableSet)
             }.store(in: &store.cancellableSet)
+    }
+}
+
+struct RecommendSongsRequestDoneCommand: AppCommand {
+    let ids: [Int]
+    
+    func execute(in store: Store) {
     }
 }
 
