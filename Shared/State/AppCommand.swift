@@ -974,7 +974,7 @@ struct RecommendSongsRequestCommand: AppCommand {
                             return
                         }
                         DataManager.shared.updateSongs(model: songDetailResponse.songs)
-                        DataManager.shared.updateRecommendSongsPlaylistSongs(ids: ids)
+                        DataManager.shared.updatePlaylistSongs(id: 0, songsId: ids)
                         store.dispatch(.recommendSongsRequestDone(result: .success(ids)))
                     }.store(in: &store.cancellableSet)
             }.store(in: &store.cancellableSet)

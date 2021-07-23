@@ -322,18 +322,6 @@ class DataManager {
         }
     }
     
-    public func updateRecommendSongsPlaylistSongs(ids: [Int]) {
-        if let playlist = self.getPlaylist(id: 0) {
-            if let songs = playlist.songs {
-                playlist.removeFromSongs(songs)
-            }
-            if let songs = self.getSongs(ids: ids) {
-                playlist.addToSongs(NSSet(array: songs))
-            }
-        }
-        self.save()
-    }
-    
     public func updateSongs(model: ArtistHotSongsResponse) {
         defer { save() }
         model.hotSongs.forEach { item in
