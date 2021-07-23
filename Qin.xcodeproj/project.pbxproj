@@ -172,7 +172,6 @@
 		2BDAED21269744970070CCAD /* UserCloudResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF613E026972D4F00BCA300 /* UserCloudResponse.swift */; };
 		2BDAED222697449E0070CCAD /* UserCloudAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFF613DE26972CF800BCA300 /* UserCloudAction.swift */; };
 		2BDAED242699F8570070CCAD /* CloudUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDAED232699F8570070CCAD /* CloudUploadView.swift */; };
-		2BDAED272699FE940070CCAD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2BDAED262699FE940070CCAD /* Alamofire */; };
 		2BE66D72266F93AC00367778 /* SongOrderUpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D71266F93AC00367778 /* SongOrderUpdateResponse.swift */; };
 		2BE66D73266F93AC00367778 /* SongOrderUpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D71266F93AC00367778 /* SongOrderUpdateResponse.swift */; };
 		2BE66D75266F940B00367778 /* SongOrderUpdateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D74266F940B00367778 /* SongOrderUpdateAction.swift */; };
@@ -487,7 +486,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BDAED272699FE940070CCAD /* Alamofire in Frameworks */,
 				2BCCB2CD24DC74CA004CAD67 /* KingfisherSwiftUI in Frameworks */,
 				2BCCB2CF24DC74CD004CAD67 /* CryptoSwift in Frameworks */,
 			);
@@ -852,7 +850,6 @@
 			packageProductDependencies = (
 				2BCCB2CC24DC74CA004CAD67 /* KingfisherSwiftUI */,
 				2BCCB2CE24DC74CD004CAD67 /* CryptoSwift */,
-				2BDAED262699FE940070CCAD /* Alamofire */,
 			);
 			productName = "Qin (macOS)";
 			productReference = 2BCCB25D24DC5671004CAD67 /* Qin.app */;
@@ -887,7 +884,6 @@
 			packageReferences = (
 				2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				2BCCB2C424DC7410004CAD67 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				2BDAED252699FE940070CCAD /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 2BCCB25624DC5671004CAD67 /* Products */;
 			projectDirPath = "";
@@ -1487,14 +1483,6 @@
 				minimumVersion = 5.14.1;
 			};
 		};
-		2BDAED252699FE940070CCAD /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.4.3;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1517,11 +1505,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */;
 			productName = CryptoSwift;
-		};
-		2BDAED262699FE940070CCAD /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2BDAED252699FE940070CCAD /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 
