@@ -15,9 +15,16 @@ struct DiscoverPlaylistView: View {
     @State private var subSelection: String?
     @State private var showCategories: Bool = true
     
+    @State private var playlistDetailId: Int = 0
+    @State private var showPlaylistDetail: Bool = false
+    
     var body: some View {
         ZStack {
             NEUBackgroundView()
+            NavigationLink(
+                destination: FetchedPlaylistDetailView(id: playlistDetailId),
+                isActive: $showPlaylistDetail,
+                label: { EmptyView() })
             VStack {
                 HStack {
                     NEUBackwardButton()
@@ -66,9 +73,12 @@ struct DiscoverPlaylistView: View {
                     Spacer()
                 }else {
                     VGridView(viewModel.playlists, gridColumns: 3) { item in
-                        NavigationLink(destination: FetchedPlaylistDetailView(id: item.id)) {
+                        Button(action: {
+                            playlistDetailId = item.id
+                            showPlaylistDetail = true
+                        }, label: {
                             CommonGridItemView(item)
-                        }
+                        })
                     }
                 }
             }
