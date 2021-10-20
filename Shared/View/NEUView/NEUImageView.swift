@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
+import Kingfisher
 import struct Kingfisher.DownsamplingImageProcessor
 
 enum NEUImageSize {
@@ -146,13 +146,19 @@ struct NEULightImageView<S: Shape>: View {
                                height: size.width - innerPadding * 2)
                         .clipShape(innerShape)
                 }else {
-                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width * 2, height: size.width * 2)))])
-                        .resizable()
-                        .renderingMode(.original)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: size.width - innerPadding * 2,
-                               height: size.width - innerPadding * 2)
-                        .clipShape(innerShape)
+                    KFImage(URL(string: imageUrl))
+//                      .placeholder(placeholderImage)
+                      .setProcessor(DownsamplingImageProcessor(size: CGSize(width: size.width * 2, height: size.width * 2)))
+                      .fade(duration: 0.25)
+                      .onProgress { receivedSize, totalSize in  }
+                      .onSuccess { result in  }
+                      .onFailure { error in }
+                      .resizable()
+                      .renderingMode(.original)
+                      .aspectRatio(contentMode: .fill)
+                      .frame(width: size.width - innerPadding * 2,
+                             height: size.width - innerPadding * 2)
+                      .clipShape(innerShape)
                 }
             }
         }
@@ -243,13 +249,19 @@ struct NEUDarkImageView<S: Shape>: View {
                                height: size.width - innerPadding * 2)
                         .clipShape(innerShape)
                 }else {
-                    KFImage(URL(string: imageUrl), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: size.width * 2, height: size.width * 2)))])
-                        .resizable()
-                        .renderingMode(.original)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: size.width - innerPadding * 2,
-                               height: size.width - innerPadding * 2)
-                        .clipShape(innerShape)
+                    KFImage(URL(string: imageUrl))
+//                      .placeholder(placeholderImage)
+                      .setProcessor(DownsamplingImageProcessor(size: CGSize(width: size.width * 2, height: size.width * 2)))
+                      .fade(duration: 0.25)
+                      .onProgress { receivedSize, totalSize in  }
+                      .onSuccess { result in  }
+                      .onFailure { error in }
+                      .resizable()
+                      .renderingMode(.original)
+                      .aspectRatio(contentMode: .fill)
+                      .frame(width: size.width - innerPadding * 2,
+                             height: size.width - innerPadding * 2)
+                      .clipShape(innerShape)
                 }
             }
         }
