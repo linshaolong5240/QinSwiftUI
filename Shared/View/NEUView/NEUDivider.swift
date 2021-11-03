@@ -7,51 +7,38 @@
 
 import SwiftUI
 
-struct NEUDivider: View {
-    @Environment(\.colorScheme) var colorScheme
+public struct NEUDivider: View {
+    @Environment(\.colorScheme) private var colorScheme
 
-    var body: some View {
-        if colorScheme == .light {
-            NEULightDivider()
-        }else {
-            NEUDarkDivider()
+    public var body: some View {
+        let topShadowColor: Color = colorScheme == .light ? Color.white : Color.darkBackgourdStart
+        let topShadowRadius: CGFloat = 3
+        let topShadowOffset: CGPoint = .init(x: 0, y: -2)
+        let bottomShadowColor: Color = colorScheme == .light ?  Color.black.opacity(0.2) : Color.darkBackgourdEnd
+        let bottomShadowRadius: CGFloat = 3
+        let bottomShadowOffset: CGPoint = .init(x: 0, y: 2)
+        ZStack {
+            colorScheme == .light ?  Color.lightBackgourdStart : Color.darkBackgourdStart
         }
+        .frame(height: 2)
+        .shadow(color: topShadowColor, radius: topShadowRadius, x: topShadowOffset.x, y: topShadowOffset.y)
+        .shadow(color: bottomShadowColor, radius: bottomShadowRadius, x: bottomShadowOffset.x, y: bottomShadowOffset.y)
     }
 }
 
-struct NEULightDivider: View {
-    var body: some View {
-        Color.lightBackgourdStart
-            .frame(height: 2)
-            .shadow(color: Color.white, radius: 3, y: -2)
-            .shadow(color: Color.black.opacity(0.2), radius: 3, y: 2)
-            .padding(.bottom, 2)
-    }
-}
-struct NEUDarkDivider: View {
-    var body: some View {
-        Color.darkBackgourdStart
-            .frame(height: 2)
-            .shadow(color: Color.darkBackgourdStart, radius: 3, y: -2)
-            .shadow(color: Color.darkBackgourdEnd, radius: 3, y: 2)
-            .padding(.bottom, 2)
-    }
-}
 #if DEBUG
 struct NEUDivider_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
-            VStack {
-                NEULightDivider()
-            }
+            NEUDivider()
         }
+        .preferredColorScheme(.light)
         ZStack {
             NEUBackgroundView()
-            VStack {
-                NEUDarkDivider()
-            }
+            NEUDivider()
         }
+        .preferredColorScheme(.dark)
     }
 }
 #endif
