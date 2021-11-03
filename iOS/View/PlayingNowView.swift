@@ -395,13 +395,8 @@ struct PlayingNowListView: View {
                 let offset = UIScreen.main.bounds.height
                 PlayinglistView(songsId: store.appState.playing.playinglist)
                     .offset(y: listType == 0 ? 0 : offset)
-                    .transition(.move(edge: .bottom))
-                    .animation(.default)
                 if listType == 1 {
                     CommentListView(id: Int(store.appState.playing.song?.id  ?? 0))
-//                        .offset(y: listType == 1 ? 0 : offset)
-                        .transition(.move(edge: .bottom))
-                        .animation(.default)
                 }
             }
         }
