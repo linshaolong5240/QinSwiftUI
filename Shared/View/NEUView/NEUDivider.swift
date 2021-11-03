@@ -41,13 +41,13 @@ struct NEUDarkDivider: View {
 struct NEUDivider_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            NEULightBackgroundView()
+            NEUBackgroundView()
             VStack {
                 NEULightDivider()
             }
         }
         ZStack {
-            NEUDarkBackgroundView()
+            NEUBackgroundView()
             VStack {
                 NEUDarkDivider()
             }

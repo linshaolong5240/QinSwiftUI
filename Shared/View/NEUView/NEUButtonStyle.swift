@@ -430,7 +430,7 @@ struct NEUButtonStyleDebugView: View {
     
     var body: some View {
         ZStack {
-            NEUDarkBackgroundView()
+            NEUBackgroundView()
             VStack(spacing: 50.0) {
                 Button(action: {
                     print("pressed")

@@ -8,33 +8,23 @@
 
 import SwiftUI
 
-struct NEUBackgroundView: View {
-    @Environment(\.colorScheme) var colorScheme
+public struct NEUBackgroundView: View {
+    @Environment(\.colorScheme) private var colorScheme
     
-    var body: some View {
-        if colorScheme == .light {
-            NEULightBackgroundView()
-        }else {
-            NEUDarkBackgroundView()
-        }
+    public var body: some View {
+        let colors = colorScheme == .light ? [Color.lightBackgourdStart, Color.lightBackgourdEnd] : [Color.darkBackgourdStart, Color.darkBackgourdMiddle,  Color.darkBackgourdEnd]
+        LinearGradient(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)
     }
 }
-struct NEULightBackgroundView: View {
-    var body: some View {
-        LinearGradient(Color.lightBackgourdStart, Color.lightBackgourdEnd)
-            .edgesIgnoringSafeArea(.all)
-    }
-}
-struct NEUDarkBackgroundView: View {
-    var body: some View {
-        LinearGradient(Color.darkBackgourdStart, Color.darkBackgourdMiddle,  Color.darkBackgourdEnd)
-            .edgesIgnoringSafeArea(.all)
-    }
-}
+
 #if DEBUG
 struct BackGroundView_Previews: PreviewProvider {
     static var previews: some View {
-        NEUDarkBackgroundView()
+        NEUBackgroundView()
+            .preferredColorScheme(.light)
+        NEUBackgroundView()
+            .preferredColorScheme(.dark)
+
     }
 }
 #endif
