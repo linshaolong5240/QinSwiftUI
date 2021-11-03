@@ -32,13 +32,9 @@ extension LinearGradient {
 #if DEBUG
 struct NEUView: View {
     var body: some View {
-//        NeuDividerView()
         ZStack {
             NEUBackgroundView()
-            VStack {
-                Spacer()
-                NEURingProgressView(percent: 0.7)
-            }
+            NEURingProgressView(percent: 0.7)
         }
     }
 }
@@ -49,12 +45,3 @@ struct NEUView_Previews: PreviewProvider {
     }
 }
 #endif
-
-struct NeuDividerView: View {
-    var body: some View {
-        Color("backgroundColor")
-            .frame(height: 1)
-            .shadow(color: Color.white.opacity(0.1), radius: 1, x: 0, y: 0)
-            .shadow(color: Color.black.opacity(1), radius: 1, x: 0, y: 2)
-    }
-}
