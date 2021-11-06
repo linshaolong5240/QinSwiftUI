@@ -14,6 +14,7 @@ public struct NEUBackgroundView: View {
     public var body: some View {
         let colors = colorScheme == .light ? [Color.lightBackgourdStart, Color.lightBackgourdEnd] : [Color.darkBackgourdStart, Color.darkBackgourdMiddle,  Color.darkBackgourdEnd]
         LinearGradient(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)
+            .ignoresSafeArea()
     }
 }
 
