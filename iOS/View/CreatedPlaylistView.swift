@@ -31,7 +31,7 @@ struct CreatedPlaylistView: View {
                 Button(action: {
                     showPlaylistManage.toggle()
                 }) {
-                    NEUSFView(systemName: "lineweight", size:  .small)
+                    QinSFView(systemName: "lineweight", size:  .small)
                         .sheet(isPresented: $showPlaylistManage) {
                             PlaylistManageView(showSheet: $showPlaylistManage)
                                 .environment(\.managedObjectContext, DataManager.shared.context())//sheet 需要传入父环境
@@ -41,7 +41,7 @@ struct CreatedPlaylistView: View {
                 Button(action: {
                     showPlaylistCreate.toggle()
                 }) {
-                    NEUSFView(systemName: "folder.badge.plus", size:  .small)
+                    QinSFView(systemName: "folder.badge.plus", size:  .small)
                         .sheet(isPresented: $showPlaylistCreate) {
                             PlaylistCreateView(showSheet: $showPlaylistCreate)
                         }
@@ -89,7 +89,7 @@ struct PlaylistCreateView: View {
                     Button(action: {
                         showSheet.toggle()
                     }, label: {
-                        NEUSFView(systemName: "checkmark", size:  .medium)
+                        QinSFView(systemName: "checkmark", size:  .medium)
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
@@ -108,7 +108,7 @@ struct PlaylistCreateView: View {
                     Store.shared.dispatch(.playlistCreateRequest(name: name))
                 }){
                     HStack(spacing: 0.0) {
-                        NEUSFView(systemName: "folder.badge.plus", size: .medium)
+                        QinSFView(systemName: "folder.badge.plus", size: .medium)
                             .padding(.horizontal)
                     }
                 }

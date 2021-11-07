@@ -25,10 +25,10 @@ struct CommentView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    NEUNavigationBarTitleView("歌曲评论")
+                    QinNavigationBarTitleView("歌曲评论")
                     Spacer()
                     Button(action: {}) {
-                        NEUSFView(systemName: "ellipsis" , size:  .medium)
+                        QinSFView(systemName: "ellipsis" , size:  .medium)
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
@@ -64,7 +64,7 @@ struct CommentListView: View {
                                 showCancel = isEditing
                             }
                           })
-                    .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "text.bubble", size: .small)))
+                    .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "text.bubble", size: .small)))
                 if showCancel {
                     Button(action: {
                         editComment = ""
@@ -78,7 +78,7 @@ struct CommentListView: View {
                     Store.shared.dispatch(.commentRequest(id: id, content: editComment, type: .song, action: .add))
                     editComment = ""
                 }) {
-                    NEUSFView(systemName: "arrow.up.message.fill", size: .small)
+                    QinSFView(systemName: "arrow.up.message.fill", size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }

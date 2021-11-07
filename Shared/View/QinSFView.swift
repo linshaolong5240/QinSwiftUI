@@ -1,5 +1,5 @@
 //
-//  NEUButtonView.swift
+//  QinSFView.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/4/28.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct NEUSFView: View {
+struct QinSFView: View {
     let systemName: String
     let size: ButtonSize
     let active: Bool
@@ -35,37 +35,29 @@ struct NEUSFView: View {
     }
 }
 
-extension NEUSFView {
+extension QinSFView {
     enum ButtonSize {
         case small
         case medium
         case big
         case large
         
-        var width: CGFloat {
+        var size: CGSize {
             switch self {
             case .small:
-                return 35
+                return CGSize(width: 35, height: 35)
             case .medium:
-                return 48
+                return CGSize(width: 50, height: 50)
             case .big:
-                return 70
+                return CGSize(width: 60, height: 60)
             case .large:
-                return 90
+                return CGSize(width: 80, height: 80)
             }
         }
-        var height: CGFloat {
-            switch self {
-            case .small:
-                return 35
-            case .medium:
-                return 48
-            case .big:
-                return 70
-            case .large:
-                return 90
-            }
-        }
+        
+        var width: CGFloat { size.width }
+        
+        var height: CGFloat { size.height }
         
         var fontSize: CGFloat {
             switch self {
@@ -89,7 +81,7 @@ struct NEUButtonView_Previews: PreviewProvider {
             NEUBackgroundView()
             VStack(spacing: 20.0) {
                 Button(action: {}, label: {
-                    NEUSFView(systemName: "play.fill",size: .small)
+                    QinSFView(systemName: "play.fill",size: .medium)
                 })
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
             }

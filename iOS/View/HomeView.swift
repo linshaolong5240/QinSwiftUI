@@ -15,7 +15,7 @@ struct HomeView: View {
     private var artist: AppState.Artist { store.appState.artist }
     private var playlist: AppState.Playlist { store.appState.playlist }
     private var user: User? { store.appState.settings.loginUser }
-    
+        
     var body: some View {
         NavigationView {
             ZStack {
@@ -25,14 +25,14 @@ struct HomeView: View {
                         HStack(spacing: 20.0) {
                             Button(action: {}) {
                                 NavigationLink(destination: UserView()) {
-                                    NEUSFView(systemName: "person", size:  .small)
+                                    QinSFView(systemName: "person", size:  .small)
                                 }
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             SearchBarView()
                             Button(action: {}) {
                                 NavigationLink(destination: DiscoverPlaylistView(viewModel: .init(catalogue: store.appState.discoverPlaylist.catalogue))) {
-                                    NEUSFView(systemName: "square.grid.2x2", size:  .small)
+                                    QinSFView(systemName: "square.grid.2x2", size:  .small)
                                 }
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
@@ -41,18 +41,26 @@ struct HomeView: View {
                         Divider()
                         if store.appState.initRequestingCount == 0 {
                             ScrollView {
-                                RecommendPlaylistView(playlist: playlist.recommendPlaylist)
-                                    .padding(.top, 10)
-                                CreatedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId == user?.userId }))
-                                SubedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId != user?.userId }))
-                                SubedAlbumsView(albums: album.albumSublist)
-                                ArtistSublistView(artists: artist.artistSublist)
+                                VStack {
+                                    RecommendPlaylistView(playlist: playlist.recommendPlaylist)
+                                        .padding(.top, 10)
+                                    CreatedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId == user?.userId }))
+                                    SubedPlaylistView(playlist: playlist.userPlaylist.filter({ $0.userId != user?.userId }))
+                                    SubedAlbumsView(albums: album.albumSublist)
+                                    ArtistSublistView(artists: artist.artistSublist)
+                                }
+                                .padding(.bottom, 100)
                             }
                         }else {
                             Spacer()
                         }
-                        BottomBarView()
                     }
+                    .overlay(
+                        VStack {
+                            Spacer()
+                            PlayerControBarView()
+                        }
+                    )
                     .edgesIgnoringSafeArea(.bottom)
                 }else {
                     LoginView()

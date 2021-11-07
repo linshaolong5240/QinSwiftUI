@@ -1,5 +1,5 @@
 //
-//  NEUNavigationBarTitleView.swift
+//  QinNavigationBarTitleView.swift
 //  Qin (iOS)
 //
 //  Created by 林少龙 on 2020/10/15.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NEUNavigationBarTitleView: View {
+struct QinNavigationBarTitleView: View {
     let title: String
     
     init(_ title: String) {
@@ -22,6 +22,6 @@ struct NEUNavigationBarTitleView: View {
 
 struct NEUNavigationBarTitleView_Previews: PreviewProvider {
     static var previews: some View {
-        NEUNavigationBarTitleView("title")
+        QinNavigationBarTitleView("title")
     }
 }

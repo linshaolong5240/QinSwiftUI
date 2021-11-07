@@ -30,7 +30,7 @@ struct SubedPlaylistView: View {
                 Button(action: {
                     showPlaylistManage.toggle()
                 }) {
-                    NEUSFView(systemName: "lineweight", size:  .small)
+                    QinSFView(systemName: "lineweight", size:  .small)
                         .sheet(isPresented: $showPlaylistManage) {
                             PlaylistManageView(showSheet: $showPlaylistManage)
                                 .environment(\.managedObjectContext, DataManager.shared.context())//sheet 需要传入父环境

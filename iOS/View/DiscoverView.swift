@@ -21,10 +21,10 @@ struct DiscoverView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    NEUNavigationBarTitleView("发现")
+                    QinNavigationBarTitleView("发现")
                     Spacer()
                     Button(action: {}, label: {
-                        NEUSFView(systemName: "ellipsis")
+                        QinSFView(systemName: "ellipsis")
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }

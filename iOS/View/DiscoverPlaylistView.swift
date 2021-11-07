@@ -29,7 +29,7 @@ struct DiscoverPlaylistView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    NEUNavigationBarTitleView("发现歌单")
+                    QinNavigationBarTitleView("发现歌单")
                     Spacer()
                     PlayingNowButtonView()
                 }

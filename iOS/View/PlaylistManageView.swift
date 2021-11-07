@@ -28,12 +28,12 @@ struct PlaylistManageView: View {
                             Store.shared.dispatch(.playlistOrderUpdateRequesting(ids: ids))
                         }
                     }, label: {
-                        NEUSFView(systemName: "checkmark", size: .medium)
+                        QinSFView(systemName: "checkmark", size: .medium)
                     })
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
                 }
                 .overlay(
-                    NEUNavigationBarTitleView("管理歌单")
+                    QinNavigationBarTitleView("管理歌单")
                 )
                 .padding()
                 List {

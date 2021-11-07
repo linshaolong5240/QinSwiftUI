@@ -23,14 +23,14 @@ struct LoginView: View {
                     Spacer()
                 }
                 .overlay(
-                    NEUNavigationBarTitleView("登录")
+                    QinNavigationBarTitleView("登录")
                 )
                 TextField("email", text: $email)
-                    .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "envelope", size: .medium)))
+                    .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "envelope", size: .medium)))
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
                 SecureField("password", text: $password)
-                    .textFieldStyle(NEUTextFieldStyle(label: NEUSFView(systemName: "key", size: .medium)))
+                    .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "key", size: .medium)))
                     .autocapitalization(.none)
                     .keyboardType(.asciiCapable)
                 Button(action: {

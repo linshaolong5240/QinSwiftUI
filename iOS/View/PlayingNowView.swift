@@ -40,7 +40,7 @@ struct PlayingNowView: View {
                             .transition(.move(edge: .bottom))
                             .matchedGeometryEffect(id: 0, in: namespace)
                         Spacer()
-                        NEUNavigationBarTitleView("PLAYING NOW")
+                        QinNavigationBarTitleView("PLAYING NOW")
                             .transition(.move(edge: .top))
                         Spacer()
                         Button(action: {
@@ -49,7 +49,7 @@ struct PlayingNowView: View {
                                 bottomType = .createdPlaylist
                             }
                         }) {
-                            NEUSFView(systemName: "plus" , size:  .medium)
+                            QinSFView(systemName: "plus" , size:  .medium)
                         }
                         .buttonStyle(NEUButtonStyle(shape: Circle()))
                         .transition(.move(edge: .bottom))
@@ -57,7 +57,7 @@ struct PlayingNowView: View {
                     }
                     .padding(.horizontal)
                 }else {
-                    NEUNavigationBarTitleView(playing.song?.name ?? "")
+                    QinNavigationBarTitleView(playing.song?.name ?? "")
                 }
                 ZStack {
                     if showMore {
@@ -68,13 +68,13 @@ struct PlayingNowView: View {
                                 Store.shared.dispatch(.songLikeRequest(id: id, like: like))
                             } label: {
                                 let imageName = playlist.songlikedIds.contains(Int(playing.song?.id ?? 0)) ? "heart.fill" : "heart"
-                                NEUSFView(systemName: imageName, size: .medium)
+                                QinSFView(systemName: imageName, size: .medium)
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             .matchedGeometryEffect(id: 0, in: namespace)
                             Spacer()
                             Button(action: {}) {
-                                NEUSFView(systemName: "ellipsis")
+                                QinSFView(systemName: "ellipsis")
                             }
                             .buttonStyle(NEUButtonStyle(shape: Circle()))
                             .matchedGeometryEffect(id: 1, in: namespace)
@@ -211,7 +211,7 @@ struct PlayingNowStatusView: View {
                                 showMore = showLyric
                             }
                         }) {
-                            NEUSFView(systemName: "text.justify", size: .small, inactiveColor: Color.secondTextColor)
+                            QinSFView(systemName: "text.justify", size: .small, inactiveColor: Color.secondTextColor)
                         }
                     }
                 }
@@ -229,26 +229,25 @@ struct PlayingNowStatusView: View {
             }
             .font(.system(size: 13))
             .foregroundColor(Color.secondTextColor)
-            HStack(spacing: 20) {
+            HStack(spacing: 40) {
                 Button(action: {
                     Store.shared.dispatch(.playerPlayBackward)
                 }) {
-                    NEUSFView(systemName: "backward.fill", size: .big)
+                    QinSFView(systemName: "backward.fill", size: .big
+                    )
                 }
                 .buttonStyle(NEUButtonStyle2(shape: Circle()))
-                
-                NEUSFView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
+                QinSFView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
                     .background(
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
                     )
                     .onTapGesture {
                         Store.shared.dispatch(.playerPlayOrPause)
                     }
-                
                 Button(action: {
                     Store.shared.dispatch(.playerPlayForward)
                 }) {
-                    NEUSFView(systemName: "forward.fill", size: .big)
+                    QinSFView(systemName: "forward.fill", size: .big)
                 }
                 .buttonStyle(NEUButtonStyle2(shape: Circle()))
             }
@@ -274,7 +273,7 @@ struct PlaylistTracksView: View {
                 Button(action: {
                     self.showCreate.toggle()
                 }) {
-                    NEUSFView(systemName: "rectangle.stack.badge.plus", size: .small)
+                    QinSFView(systemName: "rectangle.stack.badge.plus", size: .small)
                 }
                 .buttonStyle(NEUButtonStyle(shape: Circle()))
                 .sheet(isPresented: $showCreate) {
@@ -319,13 +318,13 @@ struct PlayingExtensionControllView: View {
             Button(action: {
                 store.dispatch(.coverShape)
             }) {
-                NEUSFView(systemName: settings.coverShape.systemName, size: .small, inactiveColor: Color.secondTextColor)
+                QinSFView(systemName: settings.coverShape.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }
             
             Button(action: {
                 Store.shared.dispatch(.playerPlayMode)
             }) {
-                NEUSFView(systemName: settings.playMode.systemName, size: .small, inactiveColor: Color.secondTextColor)
+                QinSFView(systemName: settings.playMode.systemName, size: .small, inactiveColor: Color.secondTextColor)
             }
         }
         .foregroundColor(Color.secondTextColor)

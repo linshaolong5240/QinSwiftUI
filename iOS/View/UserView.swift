@@ -19,12 +19,12 @@ struct UserView: View {
                 HStack {
                     NEUBackwardButton()
                     Spacer()
-                    NEUNavigationBarTitleView("用户")
+                    QinNavigationBarTitleView("用户")
                     Spacer()
                     Button(action: {
                     }) {
                         NavigationLink(destination: SettingsView()) {
-                            NEUSFView(systemName: "gear", size: .medium)
+                            QinSFView(systemName: "gear", size: .medium)
                         }
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))

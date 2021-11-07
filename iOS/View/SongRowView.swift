@@ -50,7 +50,7 @@ struct SongRowView: View {
                     Store.shared.dispatch(.playinglistInsert(id: Int(song.id)))
                 }
             }) {
-                NEUSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",
+                QinSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",
                           size: .small,
                           active: song.id == playing.song?.id && player.isPlaying ?  true : false,
                           activeColor: song.id == playing.song?.id ? Color.orange : Color.mainTextColor,

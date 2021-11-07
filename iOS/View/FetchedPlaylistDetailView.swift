@@ -83,7 +83,7 @@ struct PlaylistDetailView: View {
                         let sub = !subedPlaylistIDs.contains(Int(id))
                         Store.shared.dispatch(.playlistSubscibeRequest(id: Int(id), sub: sub))
                     }) {
-                        NEUSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(Int(playlist.id)) ? "heart.fill" : "heart",
+                        QinSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(Int(playlist.id)) ? "heart.fill" : "heart",
                                   size: .small)
                     }
                     .buttonStyle(NEUButtonStyle(shape: Circle()))
@@ -91,7 +91,7 @@ struct PlaylistDetailView: View {
                     Button(action: {
                         showPlaylistSongsManage.toggle()
                     }) {
-                        NEUSFView(systemName: "lineweight",
+                        QinSFView(systemName: "lineweight",
                                   size: .small)
                             .sheet(isPresented: $showPlaylistSongsManage) {
                                 PlaylistSongsManageView(showSheet: $showPlaylistSongsManage, playlist: playlist)
@@ -146,13 +146,13 @@ struct CommonNavigationBarView: View {
                     }
                 }
             }){
-                NEUSFView(systemName: "arrow.triangle.2.circlepath",inactiveColor: .accentColor)
+                QinSFView(systemName: "arrow.triangle.2.circlepath",inactiveColor: .accentColor)
             }
             PlayingNowButtonView()
         }
         .overlay(
             HStack {
-                NEUNavigationBarTitleView(title)
+                QinNavigationBarTitleView(title)
             }
         )
     }

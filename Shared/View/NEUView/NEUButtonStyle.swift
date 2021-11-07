@@ -7,6 +7,128 @@
 
 import SwiftUI
 
+public struct NEUButtonStyle<S: Shape>: ButtonStyle {
+    
+    @Environment(\.colorScheme) private var colorScheme
+    
+    let shape: S
+    
+    public func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .contentShape(shape)
+            .background(
+                GeometryReader { geometry in
+                    let backgroundColors: [Color] = colorScheme == .light ? [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.9411764706, green: 0.9450980392, blue: 0.9529411765, alpha: 1)), Color(#colorLiteral(red: 0.831372549, green: 0.8431372549, blue: 0.8588235294, alpha: 1))] : [Color(#colorLiteral(red: 0.1843137255, green: 0.2, blue: 0.2274509804, alpha: 1)), Color(#colorLiteral(red: 0.1490196078, green: 0.1647058824, blue: 0.1803921569, alpha: 1)), Color(#colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.137254902, alpha: 1))]
+                    let pressedBackgroundColors: [Color] = backgroundColors.reversed()
+
+                    if configuration.isPressed {
+                        shape.fill(                            LinearGradient(gradient: Gradient(colors: pressedBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    }else {
+                        let topLeftShadowColor: Color = colorScheme == .light ? .white : .white.opacity(0.11)
+                        let topLeftShadowRadius: CGFloat = colorScheme == .light ? 5: 10
+                        let bottomRightShadowColor: Color = colorScheme == .light ? .black.opacity(0.22) : .black.opacity(0.33)
+                        let bottomRightShadowRadius: CGFloat = colorScheme == .light ? 10: 10
+                        shape.fill(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .shadow(color: topLeftShadowColor, radius: topLeftShadowRadius, x: -topLeftShadowRadius, y: -topLeftShadowRadius)
+                            .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                    }
+                }
+            )
+    }
+}
+
+#if DEBUG
+fileprivate struct NEUButtonStyleDebugView: View {
+    @State private var vibrateOnRing = false
+    
+    var body: some View {
+        ZStack {
+            NEUBackgroundView()
+            HStack(spacing: 20.0) {
+                VStack(spacing: 50.0) {
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .small)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .big)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .large)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                }
+
+                VStack(spacing: 50.0) {
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .small)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .small)
+                    }
+                    .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .big)
+                    }
+                    .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                    Button(action: {
+                        print("pressed")
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .large)
+                    }
+                    .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                    Toggle(isOn: $vibrateOnRing, label: {
+                        QinSFView(systemName: "heart.fill", size: .big)
+                    }).toggleStyle(NEUToggleStyle(shape: Circle()))
+                }
+            }
+        }
+    }
+}
+
+struct NEUButtonStyle_Previews: PreviewProvider {
+
+    static var previews: some View {
+        NEUButtonStyleDebugView()
+            .preferredColorScheme(.light)
+        NEUButtonStyleDebugView()
+            .preferredColorScheme(.dark)
+    }
+}
+#endif
+
 struct NEUButtonBackground<S: Shape>: View {
     @Environment(\.colorScheme) var colorScheme
 
@@ -156,18 +278,6 @@ struct NEUDarkButtonBackground2<S: Shape>: View {
 
     private func offsetOuter(geometry: GeometryProxy) -> CGFloat {
         return geometry.size.width > geometry.size.height ? geometry.size.height / 15 : geometry.size.width / 15
-    }
-}
-
-struct NEUButtonStyle<S: Shape>: ButtonStyle {
-    let shape: S
-    
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .contentShape(shape)
-            .background(
-                NEUButtonBackground(isHighlighted: configuration.isPressed, shape: shape)
-            )
     }
 }
 
@@ -424,63 +534,3 @@ struct NEUToggleStyle<S: Shape>: ToggleStyle {
         
     }
 }
-#if DEBUG
-struct NEUButtonStyleDebugView: View {
-    @State private var vibrateOnRing = false
-    
-    var body: some View {
-        ZStack {
-            NEUBackgroundView()
-            VStack(spacing: 50.0) {
-                Button(action: {
-                    print("pressed")
-                }) {
-                    NEUSFView(systemName: "heart.fill", size: .small)
-                }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
-                Button(action: {
-                    print("pressed")
-                }) {
-                    NEUSFView(systemName: "heart.fill", size: .medium)
-                }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
-                Button(action: {
-                    print("pressed")
-                }) {
-                    NEUSFView(systemName: "heart.fill", size: .small)
-                }
-                .buttonStyle(NEUButtonStyle2(shape: Circle()))
-                Button(action: {
-                    print("pressed")
-                }) {
-                    NEUSFView(systemName: "heart.fill", size: .medium)
-                }
-                .buttonStyle(NEUButtonStyle2(shape: Circle()))
-                Button(action: {
-                    print("pressed")
-                }) {
-                    NEUSFView(systemName: "heart.fill", size: .big)
-                }
-                .buttonStyle(NEUButtonStyle2(shape: Circle()))
-                Button(action: {
-                    print("pressed")
-                }) {
-                    NEUSFView(systemName: "heart.fill", size: .large)
-                }
-                .buttonStyle(NEUButtonStyle2(shape: Circle()))
-                Toggle(isOn: $vibrateOnRing, label: {
-                    NEUSFView(systemName: "heart.fill", size: .big)
-                }).toggleStyle(NEUToggleStyle(shape: Circle()))
-            }
-        }
-    }
-}
-
-struct NEUButtonStyle_Previews: PreviewProvider {
-
-    static var previews: some View {
-        NEUButtonStyleDebugView()
-            .environment(\.colorScheme, .dark)
-    }
-}
-#endif
