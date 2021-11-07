@@ -8,23 +8,17 @@
 import SwiftUI
 
 #if DEBUG
-struct NEUButton: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
 struct NEUButton_Previews: PreviewProvider {
     static var previews: some View {
-        NEUButton()
+        NEUBackwardButton()
     }
 }
 #endif
 
-struct NEUBackwardButton: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+public struct NEUBackwardButton: View {
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
 
-    var body: some View {
+    public var body: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
         }) {
@@ -37,7 +31,7 @@ struct NEUBackwardButton: View {
 @available(iOS 13.0, tvOS 13.0, *)
 @available(macOS, unavailable)
 @available(watchOS, unavailable)
-struct NEUEditButton: View {
+public struct NEUEditButton: View {
     @Environment(\.editMode) private var editModeBinding:  Binding<EditMode>?
     let action: () -> Void
     
@@ -45,7 +39,7 @@ struct NEUEditButton: View {
         self.action = action
     }
     
-    var body: some View {
+    public var body: some View {
         Button(action: {
             if editModeBinding?.wrappedValue.isEditing ?? false {
                 editModeBinding?.wrappedValue = .inactive
