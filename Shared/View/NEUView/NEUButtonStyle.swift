@@ -15,6 +15,7 @@ public struct NEUButtonStyle<S: Shape>: ButtonStyle {
     
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
+            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
             .contentShape(shape)
             .background(
                 GeometryReader { geometry in
