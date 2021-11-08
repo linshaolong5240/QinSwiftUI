@@ -29,7 +29,7 @@ struct LoginView: View {
                     Text("登录")
                         .padding()
                 }
-                .buttonStyle(NEUButtonStyle(shape: Capsule()))
+                .buttonStyle(NEUSimpleButtonStyle(shape: Capsule()))
                 if store.appState.settings.loginRequesting {
                     Text("正在登录...")
                 }

@@ -51,7 +51,7 @@ struct PlayingNowView: View {
                         }) {
                             QinSFView(systemName: "plus" , size:  .medium)
                         }
-                        .buttonStyle(NEUButtonStyle(shape: Circle()))
+                        .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                         .transition(.move(edge: .bottom))
                         .matchedGeometryEffect(id: 1, in: namespace)
                     }
@@ -70,13 +70,13 @@ struct PlayingNowView: View {
                                 let imageName = playlist.songlikedIds.contains(Int(playing.song?.id ?? 0)) ? "heart.fill" : "heart"
                                 QinSFView(systemName: imageName, size: .medium)
                             }
-                            .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                             .matchedGeometryEffect(id: 0, in: namespace)
                             Spacer()
                             Button(action: {}) {
                                 QinSFView(systemName: "ellipsis")
                             }
-                            .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                             .matchedGeometryEffect(id: 1, in: namespace)
                         }
                         .padding(.horizontal)
@@ -275,7 +275,7 @@ struct PlaylistTracksView: View {
                 }) {
                     QinSFView(systemName: "rectangle.stack.badge.plus", size: .small)
                 }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 .sheet(isPresented: $showCreate) {
                     PlaylistCreateView(showSheet: $showCreate)
                 }

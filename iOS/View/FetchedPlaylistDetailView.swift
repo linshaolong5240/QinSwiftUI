@@ -86,7 +86,7 @@ struct PlaylistDetailView: View {
                         QinSFView(systemName: Store.shared.appState.playlist.userPlaylistIds.contains(Int(playlist.id)) ? "heart.fill" : "heart",
                                   size: .small)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 }else {
                     Button(action: {
                         showPlaylistSongsManage.toggle()
@@ -97,7 +97,7 @@ struct PlaylistDetailView: View {
                                 PlaylistSongsManageView(showSheet: $showPlaylistSongsManage, playlist: playlist)
                             }
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 }
             }
             .padding(.horizontal)

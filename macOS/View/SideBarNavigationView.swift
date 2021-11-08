@@ -38,7 +38,7 @@ struct SideBarNavigationView: View {
                                             .padding(.horizontal)
                                             .padding(.vertical, 10)
                                     }
-                                    .buttonStyle(NEUButtonStyle(shape: Capsule()))
+                                    .buttonStyle(NEUSimpleButtonStyle(shape: Capsule()))
                                     Spacer()
                                 }
                             }

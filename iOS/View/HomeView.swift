@@ -28,14 +28,14 @@ struct HomeView: View {
                                     QinSFView(systemName: "person", size:  .small)
                                 }
                             }
-                            .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                             SearchBarView()
                             Button(action: {}) {
                                 NavigationLink(destination: DiscoverPlaylistView(viewModel: .init(catalogue: store.appState.discoverPlaylist.catalogue))) {
                                     QinSFView(systemName: "square.grid.2x2", size:  .small)
                                 }
                             }
-                            .buttonStyle(NEUButtonStyle(shape: Circle()))
+                            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                         }
                         .padding([.leading, .bottom, .trailing])
                         Divider()

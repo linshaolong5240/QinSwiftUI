@@ -24,7 +24,7 @@ public struct NEUBackwardButton: View {
         }) {
             QinSFView(systemName: "chevron.backward" ,size: .medium)
         }
-        .buttonStyle(NEUButtonStyle(shape: Circle()))
+        .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
     }
 }
 

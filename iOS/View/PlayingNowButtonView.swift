@@ -43,7 +43,7 @@ struct PlayingNowButtonView: View {
                         .padding(3)
                 }
             }
-            .buttonStyle(NEUButtonStyle(shape: Circle()))
+            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
             .frame(width: 48, height: 48)
         }
     }

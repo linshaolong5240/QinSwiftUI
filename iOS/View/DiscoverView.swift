@@ -26,7 +26,7 @@ struct DiscoverView: View {
                     Button(action: {}, label: {
                         QinSFView(systemName: "ellipsis")
                     })
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 }
                 .padding(.horizontal)
 

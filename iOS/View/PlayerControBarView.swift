@@ -62,7 +62,7 @@ struct PlayerControBarView: View {
             }) {
                 QinSFView(systemName: "forward.fill", size: .medium)
             }
-            .buttonStyle(NEUButtonStyle(shape: Circle()))
+            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
         }
         .padding(.trailing)
         .background(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))

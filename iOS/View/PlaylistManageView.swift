@@ -30,7 +30,7 @@ struct PlaylistManageView: View {
                     }, label: {
                         QinSFView(systemName: "checkmark", size: .medium)
                     })
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 }
                 .overlay(
                     QinNavigationBarTitleView("管理歌单")

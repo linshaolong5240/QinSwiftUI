@@ -1,5 +1,5 @@
 //
-//  NEUButtonStyle.swift
+//  NEUSimpleButtonStyle.swift
 //  Qin (iOS)
 //
 //  Created by 林少龙 on 2020/8/15.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct NEUButtonStyle<S: Shape>: ButtonStyle {
+public struct NEUSimpleButtonStyle<S: Shape>: ButtonStyle {
     
     @Environment(\.colorScheme) private var colorScheme
     
@@ -52,25 +52,25 @@ fileprivate struct NEUButtonStyleDebugView: View {
                     }) {
                         QinSFView(systemName: "heart.fill", size: .small)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                     Button(action: {
                         print("pressed")
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                     Button(action: {
                         print("pressed")
                     }) {
                         QinSFView(systemName: "heart.fill", size: .big)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                     Button(action: {
                         print("pressed")
                     }) {
                         QinSFView(systemName: "heart.fill", size: .large)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 }
 
                 VStack(spacing: 50.0) {
@@ -79,13 +79,13 @@ fileprivate struct NEUButtonStyleDebugView: View {
                     }) {
                         QinSFView(systemName: "heart.fill", size: .small)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                     Button(action: {
                         print("pressed")
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                     Button(action: {
                         print("pressed")
                     }) {

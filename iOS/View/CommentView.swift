@@ -30,7 +30,7 @@ struct CommentView: View {
                     Button(action: {}) {
                         QinSFView(systemName: "ellipsis" , size:  .medium)
                     }
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 }
                 .padding(.horizontal)
                 CommentListView(id: id)
@@ -80,7 +80,7 @@ struct CommentListView: View {
                 }) {
                     QinSFView(systemName: "arrow.up.message.fill", size: .small)
                 }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
             }
             .padding()
             .onAppear {

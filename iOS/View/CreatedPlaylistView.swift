@@ -37,7 +37,7 @@ struct CreatedPlaylistView: View {
                                 .environment(\.managedObjectContext, DataManager.shared.context())//sheet 需要传入父环境
                         }
                 }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 Button(action: {
                     showPlaylistCreate.toggle()
                 }) {
@@ -46,7 +46,7 @@ struct CreatedPlaylistView: View {
                             PlaylistCreateView(showSheet: $showPlaylistCreate)
                         }
                 }
-                .buttonStyle(NEUButtonStyle(shape: Circle()))
+                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {
@@ -91,7 +91,7 @@ struct PlaylistCreateView: View {
                     }, label: {
                         QinSFView(systemName: "checkmark", size:  .medium)
                     })
-                    .buttonStyle(NEUButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
                 }
                 .padding()
                 .overlay(
@@ -112,7 +112,7 @@ struct PlaylistCreateView: View {
                             .padding(.horizontal)
                     }
                 }
-                .buttonStyle(NEUButtonStyle(shape: Capsule()))
+                .buttonStyle(NEUSimpleButtonStyle(shape: Capsule()))
                 Spacer()
             }
         }
