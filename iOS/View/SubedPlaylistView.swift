@@ -36,7 +36,7 @@ struct SubedPlaylistView: View {
                                 .environment(\.managedObjectContext, DataManager.shared.context())//sheet 需要传入父环境
                         }
                 }
-                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             ScrollView(Axis.Set.horizontal, showsIndicators: true) {

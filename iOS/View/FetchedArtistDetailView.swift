@@ -90,7 +90,7 @@ struct ArtistDetailView: View {
                     QinSFView(systemName: store.appState.artist.subedIds.contains(Int(artist.id)) ? "heart.fill" : "heart",
                               size: .small)
                 }
-                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             Picker(selection: $selection, label: Text("Picker")) /*@START_MENU_TOKEN@*/{

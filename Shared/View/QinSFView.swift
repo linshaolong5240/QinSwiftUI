@@ -83,7 +83,7 @@ struct NEUButtonView_Previews: PreviewProvider {
                 Button(action: {}, label: {
                     QinSFView(systemName: "play.fill",size: .medium)
                 })
-                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
             }
         }
         .preferredColorScheme(.dark)

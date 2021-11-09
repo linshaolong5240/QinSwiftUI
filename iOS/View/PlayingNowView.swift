@@ -51,7 +51,7 @@ struct PlayingNowView: View {
                         }) {
                             QinSFView(systemName: "plus" , size:  .medium)
                         }
-                        .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                        .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                         .transition(.move(edge: .bottom))
                         .matchedGeometryEffect(id: 1, in: namespace)
                     }
@@ -70,13 +70,13 @@ struct PlayingNowView: View {
                                 let imageName = playlist.songlikedIds.contains(Int(playing.song?.id ?? 0)) ? "heart.fill" : "heart"
                                 QinSFView(systemName: imageName, size: .medium)
                             }
-                            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                            .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                             .matchedGeometryEffect(id: 0, in: namespace)
                             Spacer()
                             Button(action: {}) {
                                 QinSFView(systemName: "ellipsis")
                             }
-                            .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                            .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                             .matchedGeometryEffect(id: 1, in: namespace)
                         }
                         .padding(.horizontal)
@@ -236,7 +236,7 @@ struct PlayingNowStatusView: View {
                     QinSFView(systemName: "backward.fill", size: .big
                     )
                 }
-                .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
                 QinSFView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
                     .background(
                         NEUToggleBackground(isHighlighted: true, shape: Circle())
@@ -249,7 +249,7 @@ struct PlayingNowStatusView: View {
                 }) {
                     QinSFView(systemName: "forward.fill", size: .big)
                 }
-                .buttonStyle(NEUButtonStyle2(shape: Circle()))
+                .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
             }
             .padding(.vertical)
         }
@@ -275,7 +275,7 @@ struct PlaylistTracksView: View {
                 }) {
                     QinSFView(systemName: "rectangle.stack.badge.plus", size: .small)
                 }
-                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                 .sheet(isPresented: $showCreate) {
                     PlaylistCreateView(showSheet: $showCreate)
                 }

@@ -77,7 +77,7 @@ struct AlbumDetailView: View {
                     QinSFView(systemName: store.appState.album.subedIds.contains(Int(album.id)) ? "heart.fill" : "heart",
                               size: .small)
                 }
-                .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
             }
             .padding(.horizontal)
             if let songs = album.songs {

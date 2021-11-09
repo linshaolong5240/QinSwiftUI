@@ -27,7 +27,7 @@ struct UserView: View {
                             QinSFView(systemName: "gear", size: .medium)
                         }
                     }
-                    .buttonStyle(NEUSimpleButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                 }
                 NEUCoverView(url: user?.profile.avatarUrl, coverShape: .rectangle, size: .medium)
                 if let uid = user?.profile.userId {
@@ -39,7 +39,7 @@ struct UserView: View {
                     Text("退出登录")
                         .padding()
                 }
-                .buttonStyle(NEUSimpleButtonStyle(shape: Capsule()))
+                .buttonStyle(NEUDefaultButtonStyle(shape: Capsule()))
                 Spacer()
             }
             .padding(.horizontal)

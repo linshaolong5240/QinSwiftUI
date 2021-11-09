@@ -9,6 +9,14 @@
 import SwiftUI
 
 extension Color {
+    static let lightBackgroundColors: [Color] = [Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)), Color(#colorLiteral(red: 0.9411764706, green: 0.9450980392, blue: 0.9529411765, alpha: 1)), Color(#colorLiteral(red: 0.831372549, green: 0.8431372549, blue: 0.8588235294, alpha: 1))]
+    static let darkBackgroundColors: [Color] = [Color(#colorLiteral(red: 0.1843137255, green: 0.2, blue: 0.2274509804, alpha: 1)), Color(#colorLiteral(red: 0.1490196078, green: 0.1647058824, blue: 0.1803921569, alpha: 1)), Color(#colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.137254902, alpha: 1))]
+
+    static let lightTopLeftShadowColor: Color = .white
+    static let darkTopLeftShadowColor: Color = .white.opacity(0.11)
+    static let lightBottomRightShadowColor: Color = .black.opacity(0.22)
+    static let darkBottomRightShadowColor: Color = .black.opacity(0.33)
+
     static let lightBackgourdStart = Color(red: 250 / 255, green: 250 / 255, blue: 250 / 255)
     
     static let lightBackgourdEnd = Color(red: 231 / 255, green: 233 / 255, blue: 237 / 255)
