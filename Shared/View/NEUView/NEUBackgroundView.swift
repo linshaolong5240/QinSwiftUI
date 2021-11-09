@@ -25,7 +25,6 @@ struct BackGroundView_Previews: PreviewProvider {
             .preferredColorScheme(.light)
         NEUBackgroundView()
             .preferredColorScheme(.dark)
-
     }
 }
 #endif

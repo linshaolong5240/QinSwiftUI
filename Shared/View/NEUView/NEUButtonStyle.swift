@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 public protocol NEUButtonStyle: ButtonStyle, NEUStyle {
     func neuBacgroundColors(_ colorScheme: ColorScheme) -> [Color]
     func neuPressedBacgroundColors(_ colorScheme: ColorScheme) -> [Color]
