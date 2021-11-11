@@ -1,37 +1,16 @@
 //
-//  NEUButton.swift
+//  QinEditButton.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/9/14.
+//  Created by 林少龙 on 2021/11/12.
 //
 
 import SwiftUI
 
-#if DEBUG
-struct NEUButton_Previews: PreviewProvider {
-    static var previews: some View {
-        NEUBackwardButton()
-    }
-}
-#endif
-
-public struct NEUBackwardButton: View {
-    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
-
-    public var body: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            QinSFView(systemName: "chevron.backward" ,size: .medium)
-        }
-        .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
-    }
-}
-
 @available(iOS 13.0, tvOS 13.0, *)
 @available(macOS, unavailable)
 @available(watchOS, unavailable)
-public struct NEUEditButton: View {
+public struct QinEditButton: View {
     @Environment(\.editMode) private var editModeBinding:  Binding<EditMode>?
     let action: () -> Void
     
@@ -53,3 +32,11 @@ public struct NEUEditButton: View {
         .buttonStyle(NEUButtonToggleStyle(isHighlighted: editModeBinding?.wrappedValue.isEditing ?? false, shape: Circle()))
     }
 }
+
+#if DEBUG
+struct QinEditButton_Previews: PreviewProvider {
+    static var previews: some View {
+        QinEditButton(action: {})
+    }
+}
+#endif

@@ -19,7 +19,7 @@ struct DiscoverView: View {
             NEUBackgroundView()
             VStack {
                 HStack {
-                    NEUBackwardButton()
+                    QinBackwardButton()
                     Spacer()
                     QinNavigationBarTitleView("发现")
                     Spacer()

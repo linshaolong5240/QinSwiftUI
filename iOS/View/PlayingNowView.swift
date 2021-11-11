@@ -36,7 +36,7 @@ struct PlayingNowView: View {
                 }
                 if !showMore {
                     HStack {
-                        NEUBackwardButton()
+                        QinBackwardButton()
                             .transition(.move(edge: .bottom))
                             .matchedGeometryEffect(id: 0, in: namespace)
                         Spacer()
@@ -239,7 +239,7 @@ struct PlayingNowStatusView: View {
                 .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
                 QinSFView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
                     .background(
-                        NEUToggleBackground(isHighlighted: true, shape: Circle())
+                        QinToggleBackground(isHighlighted: true, shape: Circle())
                     )
                     .onTapGesture {
                         Store.shared.dispatch(.playerPlayOrPause)

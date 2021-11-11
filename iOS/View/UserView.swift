@@ -17,7 +17,7 @@ struct UserView: View {
             NEUBackgroundView()
             VStack(spacing: 20.0) {
                 HStack {
-                    NEUBackwardButton()
+                    QinBackwardButton()
                     Spacer()
                     QinNavigationBarTitleView("用户")
                     Spacer()

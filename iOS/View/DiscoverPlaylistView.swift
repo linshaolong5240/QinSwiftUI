@@ -27,7 +27,7 @@ struct DiscoverPlaylistView: View {
                 label: { EmptyView() })
             VStack {
                 HStack {
-                    NEUBackwardButton()
+                    QinBackwardButton()
                     Spacer()
                     QinNavigationBarTitleView("发现歌单")
                     Spacer()

@@ -23,7 +23,7 @@ struct CommentView: View {
             NEUBackgroundView()
             VStack {
                 HStack {
-                    NEUBackwardButton()
+                    QinBackwardButton()
                     Spacer()
                     QinNavigationBarTitleView("歌曲评论")
                     Spacer()

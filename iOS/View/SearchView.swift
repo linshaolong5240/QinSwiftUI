@@ -29,7 +29,7 @@ struct SearchView: View {
             NEUBackgroundView()
             VStack {
                 HStack {
-                    NEUBackwardButton()
+                    QinBackwardButton()
                     TextField("搜索", text: searchBinding.keyword,
                               onEditingChanged: { isEditing in
                                 if showCancel != isEditing {

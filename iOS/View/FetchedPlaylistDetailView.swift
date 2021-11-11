@@ -128,7 +128,7 @@ struct CommonNavigationBarView: View {
     
     var body: some View {
         HStack {
-            NEUBackwardButton()
+            QinBackwardButton()
             Spacer()
             Button(action: {
                 switch type {

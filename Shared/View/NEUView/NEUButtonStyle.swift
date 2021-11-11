@@ -7,20 +7,7 @@
 
 import SwiftUI
 
-public protocol NEUButtonStyle: ButtonStyle, NEUStyle {
-    func neuBacgroundColors(_ colorScheme: ColorScheme) -> [Color]
-    func neuPressedBacgroundColors(_ colorScheme: ColorScheme) -> [Color]
-}
-
-extension NEUButtonStyle {
-    public func neuBacgroundColors(_ colorScheme: ColorScheme) -> [Color] {
-        colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors
-    }
-    
-    public func neuPressedBacgroundColors(_ colorScheme: ColorScheme) -> [Color] {
-        (colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors).reversed()
-    }
-}
+public protocol NEUButtonStyle: ButtonStyle, NEUStyle { }
 
 public struct NEUDefaultButtonStyle<S: Shape>: NEUButtonStyle {
     
@@ -145,7 +132,7 @@ public struct NEUConvexBorderButtonStyle<S: Shape>: NEUButtonStyle {
 
 #if DEBUG
 fileprivate struct NEUButtonStyleDebugView: View {
-    @State private var vibrateOnRing = false
+    @State private var onOff = false
     
     var body: some View {
         ZStack {

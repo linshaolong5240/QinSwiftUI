@@ -7,34 +7,75 @@
 
 import SwiftUI
 
-public struct NEUToggleStyle<S: Shape>: ToggleStyle {
-    let shape: S
+public protocol NEUToggleStyle: ToggleStyle, NEUStyle { }
+
+public struct NEUDefaultToggleStyle: NEUToggleStyle {
     
+    @Environment(\.colorScheme) private var colorScheme
+
     public func makeBody(configuration: Self.Configuration) -> some View {
-        Button(action: {
-            configuration.isOn.toggle()
-        }) {
+        let buttonBackgroundColors: [Color] = neuBacgroundColors(colorScheme)
+        
+        let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
+        let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
+
+        let topLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
+        let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
+
+        let backgroundColor: Color = colorScheme == .light ? Color(#colorLiteral(red: 0.8624982834, green: 0.8703991771, blue: 0.8829225898, alpha: 1)) : Color(#colorLiteral(red: 0.2546238303, green: 0.2623955607, blue: 0.283208847, alpha: 1))
+//        let pressedBackgroundColor: Color = colorScheme == .light ? Color(#colorLiteral(red: 0.8624982834, green: 0.8703991771, blue: 0.8829225898, alpha: 1)) : Color(#colorLiteral(red: 0.2546238303, green: 0.2623955607, blue: 0.283208847, alpha: 1))
+        
+        HStack {
             configuration.label
-                .contentShape(shape)
-                .background(
-                    NEUToggleBackground(isHighlighted: configuration.isOn, shape: shape)
-                )
+            ZStack {
+                Capsule()
+                    .fill(configuration.isOn ? Color.accentColor : backgroundColor)
+                .shadow(color: topLeftShadowColor, radius: topLeftShadowRadius, x: -topLeftShadowRadius, y: -topLeftShadowRadius)
+                .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                HStack {
+                    if configuration.isOn {
+                        Spacer()
+                    }
+                    Button(action: {
+                        withAnimation {
+                            configuration.isOn.toggle()
+                        }
+                    }) {
+                        Circle()
+                            .fill(LinearGradient(gradient: Gradient(colors: buttonBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .frame(width: 28, height: 28)
+                            .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    if !configuration.isOn {
+                        Spacer()
+                    }
+                }
+                .padding(.horizontal, 2)
+                .frame(width: 50, height: 31)
+                .mask(Capsule())
+            }
+            .frame(width: 50, height: 31)
         }
     }
 }
 
 #if DEBUG
 fileprivate struct NEUToggleStyleDEBUGView: View {
-    @State private var vibrateOnRing: Bool = false
+    @State private var onOff: Bool = false
     var body: some View {
         ZStack {
             NEUBackgroundView()
-            Toggle(isOn: $vibrateOnRing, label: {
-                QinSFView(systemName: "heart.fill", size: .big)
-            }).toggleStyle(NEUToggleStyle(shape: Circle()))
+            VStack {
+                Toggle("Label", isOn: $onOff) .toggleStyle(SwitchToggleStyle(tint: .red))
+                    .fixedSize()
+                Toggle("Label", isOn: $onOff).toggleStyle(NEUDefaultToggleStyle())
+                    .accentColor(.orange)
+            }
         }
     }
 }
+
 struct NEUToggleStyle_Previews: PreviewProvider {
     static var previews: some View {
         NEUToggleStyleDEBUGView()
@@ -44,112 +85,3 @@ struct NEUToggleStyle_Previews: PreviewProvider {
     }
 }
 #endif
-
-struct NEUToggleBackground<S: Shape>: View {
-    @Environment(\.colorScheme) var colorScheme
-
-    var isHighlighted: Bool
-    let shadow: Bool
-    let shape: S
-    
-    init(isHighlighted: Bool, shadow: Bool = true, shape: S) {
-        self.isHighlighted = isHighlighted
-        self.shadow = shadow
-        self.shape = shape
-    }
-    var body: some View {
-        if colorScheme == .light {
-            NEULightToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
-        }else {
-            NEUDarkToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
-        }
-    }
-}
-
-struct NEULightToggleBackground<S: Shape>: View {
-    var isHighlighted: Bool
-    let shadow: Bool
-    let shape: S
-    
-    init(isHighlighted: Bool, shadow: Bool = true, shape: S) {
-        self.isHighlighted = isHighlighted
-        self.shadow = shadow
-        self.shape = shape
-    }
-    
-    var body: some View {
-        ZStack {
-            if isHighlighted {
-                if shadow {
-                    shape.fill(Color.accentColor)
-//                        .overlay(
-//                            Circle().stroke(Color.gray)
-//                                .blur(radius: 4)
-//                                .offset(x: 2, y: 2)
-//                        )
-//                        .overlay(
-//                            Circle().stroke(Color.white)
-//                                .blur(radius: 4)
-//                                .offset(x: -2, y: -2)
-//                        )
-                        .shadow(color: Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1)), radius: 10, x: -10, y: -10)
-                        .shadow(color: Color(#colorLiteral(red: 0.9645015597, green: 0.5671981573, blue: 0.5118380189, alpha: 1)), radius: 10, x: 5, y: 5)
-                }else {
-                    shape.fill(Color.accentColor)
-                }
-            }else {
-                shape.fill(LinearGradient(Color.white, Color.lightBackgourdEnd))
-                    .shadow(color: Color.white, radius: 5, x: -5, y: -5)
-                    .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
-            }
-        }
-    }
-}
-
-struct NEUDarkToggleBackground<S: Shape>: View {
-    private let darkStart = Color( red: 47 / 255, green: 53 / 255, blue: 58 / 255)
-    private let darkMiddle = Color( red: 34 / 255, green: 37 / 255, blue: 41 / 255)
-    private let darkEnd = Color(red: 28 / 255, green: 30 / 255, blue: 34 / 255)
-    
-    var isHighlighted: Bool
-    let shadow: Bool
-    let shape: S
-    
-    init(isHighlighted: Bool, shadow: Bool = true, shape: S) {
-        self.isHighlighted = isHighlighted
-        self.shadow = shadow
-        self.shape = shape
-    }
-    var body: some View {
-        ZStack {
-            if isHighlighted {
-                if shadow == true {
-                    shape.fill(LinearGradient(.darkOrangeEnd, .darkOrangeMiddle, .darkOrangeStart))
-                        .overlay(
-                            shape.stroke(LinearGradient(.darkOrangeStart, .darkOrangeMiddle, .darkOrangeEnd), lineWidth: 3)
-                        )
-                        .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
-                        .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
-                }else {
-                    shape.fill(LinearGradient(.darkOrangeEnd, .darkOrangeMiddle, .darkOrangeStart))
-                        .overlay(
-                            shape.stroke(LinearGradient(.darkOrangeStart, .darkOrangeMiddle, .darkOrangeEnd), lineWidth: 3)
-                        )
-                }
-            }else {
-                shape.fill(LinearGradient(Color.darkBackgourdEnd, Color.darkBackgourdStart))
-                    .shadow(color: Color.white.opacity(0.1), radius: 10, x: -10, y: -10)
-                    .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
-                    .overlay(
-                        shape.fill(LinearGradient(darkStart, darkMiddle, darkEnd))
-                            .overlay(
-                                shape.stroke(Color.white.opacity(0.2), lineWidth: 1.0)
-                                    .blur(radius: 3.0)
-                                    .offset(x: 1, y: 1)
-                            )
-                            .padding(3)
-                    )
-            }
-        }
-    }
-}

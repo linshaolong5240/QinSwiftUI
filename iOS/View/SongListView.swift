@@ -38,7 +38,9 @@ struct SongListView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.secondTextColor)
                 Toggle("", isOn: $showLike)
+                    .toggleStyle(NEUDefaultToggleStyle())
                     .fixedSize()
+                    .accentColor(.orange)
             }
             .padding(.horizontal)
             ScrollView {
