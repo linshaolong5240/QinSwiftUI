@@ -26,11 +26,11 @@ struct LoginView: View {
                     QinNavigationBarTitleView("登录")
                 )
                 TextField("email", text: $email)
-                    .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "envelope", size: .medium)))
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "envelope").foregroundColor(.mainText)))
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
                 SecureField("password", text: $password)
-                    .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "key", size: .medium)))
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "key").foregroundColor(.mainText)))
                     .autocapitalization(.none)
                     .keyboardType(.asciiCapable)
                 Button(action: {
@@ -55,6 +55,12 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+            .environmentObject(Store.shared)
+            .preferredColorScheme(.light)
+        LoginView()
+            .environmentObject(Store.shared)
+            .preferredColorScheme(.dark)
+
     }
 }
 #endif
