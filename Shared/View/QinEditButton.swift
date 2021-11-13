@@ -27,16 +27,20 @@ public struct QinEditButton: View {
                 editModeBinding?.wrappedValue = .active
             }
         }) {
-            QinSFView(systemName: "square.and.pencil", size: .small, active: editModeBinding?.wrappedValue.isEditing ?? false)
+            QinSFView(systemName: "square.and.pencil", size: .medium)
         }
-        .buttonStyle(NEUButtonToggleStyle(isHighlighted: editModeBinding?.wrappedValue.isEditing ?? false, shape: Circle()))
+        .buttonStyle(NEUDefaultButtonStyle(shape: Circle(), toggle: editModeBinding?.wrappedValue.isEditing ?? false))
+
     }
 }
 
 #if DEBUG
 struct QinEditButton_Previews: PreviewProvider {
     static var previews: some View {
-        QinEditButton(action: {})
+        ZStack {
+            NEUBackgroundView()
+            QinEditButton(action: {})
+        }
     }
 }
 #endif
