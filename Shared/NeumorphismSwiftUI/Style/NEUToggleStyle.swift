@@ -14,14 +14,8 @@ public struct NEUDefaultToggleStyle: NEUToggleStyle {
     @Environment(\.colorScheme) private var colorScheme
 
     public func makeBody(configuration: Self.Configuration) -> some View {
-        let buttonBackgroundColors: [Color] = neuBacgroundColors(colorScheme)
         
-        let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
-        let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
-
-        let topLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
-        let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
-
+        let buttonBackgroundColors: [Color] = neuBacgroundColors(colorScheme)
         let backgroundColor: Color = colorScheme == .light ? Color(#colorLiteral(red: 0.8624982834, green: 0.8703991771, blue: 0.8829225898, alpha: 1)) : Color(#colorLiteral(red: 0.2546238303, green: 0.2623955607, blue: 0.283208847, alpha: 1))
 //        let pressedBackgroundColor: Color = colorScheme == .light ? Color(#colorLiteral(red: 0.8624982834, green: 0.8703991771, blue: 0.8829225898, alpha: 1)) : Color(#colorLiteral(red: 0.2546238303, green: 0.2623955607, blue: 0.283208847, alpha: 1))
         
@@ -30,8 +24,7 @@ public struct NEUDefaultToggleStyle: NEUToggleStyle {
             ZStack {
                 Capsule()
                     .fill(configuration.isOn ? Color.accentColor : backgroundColor)
-                .shadow(color: topLeftShadowColor, radius: topLeftShadowRadius, x: -topLeftShadowRadius, y: -topLeftShadowRadius)
-                .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                    .modifier(NEUShadowModifier())
                 HStack {
                     if configuration.isOn {
                         Spacer()
@@ -44,7 +37,7 @@ public struct NEUDefaultToggleStyle: NEUToggleStyle {
                         Circle()
                             .fill(LinearGradient(gradient: Gradient(colors: buttonBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
                             .frame(width: 28, height: 28)
-                            .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                            .modifier(NEUShadowModifier())
                     }
                     .buttonStyle(PlainButtonStyle())
                     if !configuration.isOn {

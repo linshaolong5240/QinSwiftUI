@@ -9,7 +9,19 @@ import SwiftUI
 
 public struct NEUShadowModifier: ViewModifier, NEUStyle {
     
+    enum Position {
+        case topLeading
+        case bottomTrailing
+        case all
+    }
+    
     @Environment(\.colorScheme) private var colorScheme
+    
+    let position: Position
+    
+    init(_ position: Position = .all) {
+        self.position = position
+    }
     
     public func body(content: Content) -> some View {
         let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
@@ -17,12 +29,23 @@ public struct NEUShadowModifier: ViewModifier, NEUStyle {
         
         let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
         let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
-
-        content
-            .shadow(color: topLeftShadowColor,
-                    radius: topLeftShadowRadius,
-                    x: -topLeftShadowRadius, y: -topLeftShadowRadius)
-            .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+        
+        switch position {
+        case .topLeading:
+            content
+                .shadow(color: topLeftShadowColor,
+                        radius: topLeftShadowRadius,
+                        x: -topLeftShadowRadius, y: -topLeftShadowRadius)
+        case .bottomTrailing:
+            content
+                .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+        case .all:
+            content
+                .shadow(color: topLeftShadowColor,
+                        radius: topLeftShadowRadius,
+                        x: -topLeftShadowRadius, y: -topLeftShadowRadius)
+                .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+        }
     }
 }
 

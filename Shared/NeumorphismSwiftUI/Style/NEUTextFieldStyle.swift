@@ -24,10 +24,6 @@ public struct NEUDefaultTextFieldStyle<Label>: NEUTextFieldStyle where Label: Vi
     public func _body(configuration: TextField<Self._Label>) -> some View {
         let backgroundColors: [Color] = neuBacgroundColors(colorScheme)
         let orangeColors: [Color] = .lightOrangeColors.reversed()
-        let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
-        let topLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
-        let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
-        let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
 
         HStack() {
             label
@@ -40,8 +36,7 @@ public struct NEUDefaultTextFieldStyle<Label>: NEUTextFieldStyle where Label: Vi
             ZStack {
                 LinearGradient(gradient: Gradient(colors: backgroundColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .mask(Capsule())
-                    .shadow(color: topLeftShadowColor, radius: topLeftShadowRadius, x: -topLeftShadowRadius, y: -topLeftShadowRadius)
-                    .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                    .modifier(NEUShadowModifier())
                 LinearGradient(gradient: Gradient(colors: orangeColors), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .mask(Capsule())
                     .padding(5)
