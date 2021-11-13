@@ -146,6 +146,7 @@ struct PlayinglistView: View {
                                 .padding(.horizontal)
                         }
                     }
+                    .padding(.vertical)
                 }
             }
         }

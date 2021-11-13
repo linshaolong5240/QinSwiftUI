@@ -57,6 +57,7 @@ struct SongListView: View {
                         }
                     }
                 }
+                .padding(.vertical)
             }
         }
     }
