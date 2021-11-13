@@ -10,7 +10,7 @@ import SwiftUI
 struct UserCloudView: View {
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 Button(action: {
                     Store.shared.dispatch(.userCloudRequest)

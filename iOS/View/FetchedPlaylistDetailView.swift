@@ -16,7 +16,7 @@ struct FetchedPlaylistDetailView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 CommonNavigationBarView(id: id, title: "歌单详情", type: .playlist)
                     .padding(.horizontal)
@@ -52,7 +52,7 @@ struct FetchedPlaylistDetailView: View {
 struct PlaylistDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 FetchedPlaylistDetailView(id: 0)
             }

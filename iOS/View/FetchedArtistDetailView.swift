@@ -14,7 +14,7 @@ struct FetchedArtistDetailView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 CommonNavigationBarView(id: id, title: "歌手详情", type: .artist)
                     .padding(.horizontal)
@@ -59,7 +59,7 @@ struct ArtistView_Previews: PreviewProvider {
 //                .environmentObject(Store.shared)
 //        }
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             ArtistDetailView(artist: Artist(context: DataManager.shared.context()))
                 .environmentObject(Store.shared)
         }

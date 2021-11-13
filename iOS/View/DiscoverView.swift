@@ -16,7 +16,7 @@ struct DiscoverView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 HStack {
                     QinBackwardButton()

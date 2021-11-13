@@ -31,7 +31,10 @@ struct PlayerControlBarView: View {
                     Store.shared.dispatch(.playerPlayOrPause)
                 }) {
                     QinSFView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
-                }.buttonStyle(NEUButtonToggleStyle(isHighlighted: true, shadow: false, shape: Circle()))
+                        .background(
+                            NEUPlayButtonBackgroundView(shape: Circle(), shadow: false)
+                        )
+                }
             }
             NavigationLink(destination: PlayingNowView()) {
                 HStack {
@@ -73,7 +76,7 @@ struct PlayerControlBarView: View {
 struct BottomBarView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 Spacer()
                 PlayerControlBarView()
@@ -84,7 +87,7 @@ struct BottomBarView_Previews: PreviewProvider {
         .environmentObject(Player.shared)
         .environment(\.colorScheme, .light)
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 Spacer()
                 PlayerControlBarView()

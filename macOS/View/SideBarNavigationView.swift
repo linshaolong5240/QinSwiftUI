@@ -22,7 +22,7 @@ struct SideBarNavigationView: View {
             VStack {
                 if user != nil {
                     ZStack {
-                        NEUBackgroundView()
+                        QinBackgroundView()
                         List {
                             VStack(alignment: .center, spacing: 20) {
                                 NEUCoverView(url: user?.profile.avatarUrl, coverShape: .rectangle, size: .small)

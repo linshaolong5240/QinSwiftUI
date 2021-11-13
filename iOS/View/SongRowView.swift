@@ -56,7 +56,7 @@ struct SongRowView: View {
                           activeColor: song.id == playing.song?.id ? Color.orange : Color.mainTextColor,
                           inactiveColor: song.id == playing.song?.id ? Color.orange : Color.mainTextColor)
             }
-            .buttonStyle((NEUBorderButtonToggleStyle(isHighlighted: song.id == playing.song?.id && player.isPlaying ?  true : false, shadow: true, shape: Circle())))
+            .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: song.id == playing.song?.id && player.isPlaying ?  true : false))
         }
         .padding(10)
         .background(

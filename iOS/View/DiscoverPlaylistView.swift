@@ -20,7 +20,7 @@ struct DiscoverPlaylistView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             NavigationLink(
                 destination: FetchedPlaylistDetailView(id: playlistDetailId),
                 isActive: $showPlaylistDetail,

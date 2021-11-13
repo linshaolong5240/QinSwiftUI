@@ -16,7 +16,7 @@ struct LoginView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack(spacing: 20.0) {
                 QinNavigationBarTitleView("登录")
                 TextField("email", text: $email)

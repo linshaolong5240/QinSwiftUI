@@ -14,7 +14,7 @@ struct CloudUploadView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 TextField("Placeholder", text: $filePath)
                 Button(action: {

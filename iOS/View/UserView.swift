@@ -14,7 +14,7 @@ struct UserView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack(spacing: 20.0) {
                 HStack {
                     QinBackwardButton()

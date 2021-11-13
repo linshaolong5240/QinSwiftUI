@@ -19,7 +19,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                NEUBackgroundView()
+                QinBackgroundView()
                 if user != nil {
                     VStack(spacing: 0) {
                         HStack(spacing: 20.0) {

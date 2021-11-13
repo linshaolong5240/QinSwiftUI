@@ -78,7 +78,7 @@ extension QinSFView {
 struct NEUButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack(spacing: 20.0) {
                 Button(action: {}, label: {
                     QinSFView(systemName: "play.fill",size: .medium)

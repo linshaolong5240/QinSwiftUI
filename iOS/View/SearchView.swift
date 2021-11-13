@@ -26,7 +26,7 @@ struct SearchView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 HStack {
                     QinBackwardButton()
@@ -182,7 +182,7 @@ struct SearchBarView: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             SearchView()
                 .environmentObject(Store.shared)
         }

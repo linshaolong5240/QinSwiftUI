@@ -19,7 +19,7 @@ public struct NEUBackgroundView: View {
 }
 
 #if DEBUG
-struct BackGroundView_Previews: PreviewProvider {
+struct NEUBackgroundView_Previews: PreviewProvider {
     static var previews: some View {
         NEUBackgroundView()
             .preferredColorScheme(.light)

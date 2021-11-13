@@ -14,7 +14,7 @@ struct  FetchedAlbumDetailView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 CommonNavigationBarView(id: id, title: "专辑详情", type: .album)
                     .padding(.horizontal)

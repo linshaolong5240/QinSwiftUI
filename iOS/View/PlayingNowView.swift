@@ -29,7 +29,7 @@ struct PlayingNowView: View {
     
     var body: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             VStack {
                 NavigationLink(destination: FetchedArtistDetailView(id: artistId), isActive: $showArtist) {
                     EmptyView()
@@ -239,7 +239,7 @@ struct PlayingNowStatusView: View {
                 .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
                 QinSFView(systemName: player.isPlaying ? "pause.fill" : "play.fill", size: .large, active: true)
                     .background(
-                        QinToggleBackground(isHighlighted: true, shape: Circle())
+                        NEUPlayButtonBackgroundView(shape: Circle())
                     )
                     .onTapGesture {
                         Store.shared.dispatch(.playerPlayOrPause)

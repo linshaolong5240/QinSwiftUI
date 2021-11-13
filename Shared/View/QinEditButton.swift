@@ -38,7 +38,7 @@ public struct QinEditButton: View {
 struct QinEditButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            NEUBackgroundView()
+            QinBackgroundView()
             QinEditButton(action: {})
         }
     }
