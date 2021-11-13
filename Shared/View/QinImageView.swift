@@ -1,5 +1,5 @@
 //
-//  NEUImageView.swift
+//  QinImageView.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/4/28.
@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 import struct Kingfisher.DownsamplingImageProcessor
 
-enum NEUImageSize {
+enum QinImageSize {
     case little
     case small
     case medium
@@ -30,11 +30,12 @@ enum NEUImageSize {
     }
 }
 
-struct NEUImageView<S: Shape>: View {
-    @Environment(\.colorScheme) var colorScheme
+struct QinImageView<S: Shape>: View {
+    
+    @Environment(\.colorScheme) private var colorScheme
 
     let url: String?
-    let size: NEUImageSize
+    let size: QinImageSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -42,7 +43,7 @@ struct NEUImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: NEUImageSize = .medium,
+         size: QinImageSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat,
@@ -59,7 +60,7 @@ struct NEUImageView<S: Shape>: View {
     
     var body: some View {
         if colorScheme == .light {
-            NEULightImageView(url: url,
+            QinLightImageView(url: url,
                               size: size,
                               innerShape: innerShape,
                               outerShape: outerShape,
@@ -67,7 +68,7 @@ struct NEUImageView<S: Shape>: View {
                               shadowReverse: shadowReverse,
                               isOrigin: isOrigin)
         }else {
-            NEUDarkImageView(url: url,
+            QinDarkImageView(url: url,
                              size: size,
                              innerShape: innerShape,
                              outerShape: outerShape,
@@ -78,9 +79,9 @@ struct NEUImageView<S: Shape>: View {
     }
 }
 
-struct NEULightImageView<S: Shape>: View {
+struct QinLightImageView<S: Shape>: View {
     let url: String?
-    let size: NEUImageSize
+    let size: QinImageSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -88,7 +89,7 @@ struct NEULightImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: NEUImageSize = .medium,
+         size: QinImageSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat = 10,
@@ -165,9 +166,9 @@ struct NEULightImageView<S: Shape>: View {
     }
 }
 
-struct NEUDarkImageView<S: Shape>: View {
+struct QinDarkImageView<S: Shape>: View {
     let url: String?
-    let size: NEUImageSize
+    let size: QinImageSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -175,7 +176,7 @@ struct NEUDarkImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: NEUImageSize = .medium,
+         size: QinImageSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat = 10,

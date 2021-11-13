@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-public protocol NEUButtonStyle: ButtonStyle, NEUStyle { }
+public protocol NEUButtonStyle: ButtonStyle, NEUStyle {
+
+}
 
 public struct NEUDefaultButtonStyle<S: Shape>: NEUButtonStyle {
     
@@ -30,18 +32,11 @@ public struct NEUDefaultButtonStyle<S: Shape>: NEUButtonStyle {
                     let backgroundColors: [Color] = neuBacgroundColors(colorScheme)
                     let pressedBackgroundColors: [Color] = neuPressedBacgroundColors(colorScheme)
                     
-                    let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
-                    let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
-
-                    let topLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
-                    let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
-
                     if configuration.isPressed || toggle {
                         shape.fill(                            LinearGradient(gradient: Gradient(colors: pressedBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
                     }else {
                         shape.fill(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .shadow(color: topLeftShadowColor, radius: topLeftShadowRadius, x: -topLeftShadowRadius, y: -topLeftShadowRadius)
-                            .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                            .modifier(NEUShadowModifier())
                     }
                 }
             )
@@ -71,18 +66,10 @@ public struct NEUUnevennessButtonStyle<S: Shape>: NEUButtonStyle {
 
                     let backgroundColors: [Color] = colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors
                     let pressedBackgroundColors: [Color] = backgroundColors.reversed()
-
-                    let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
-                    let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
-                    
-                    let topLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
-                    let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
                     
                     shape
                         .fill(LinearGradient(gradient: Gradient(colors: pressedBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .shadow(color: topLeftShadowColor,
-                                radius: topLeftShadowRadius, x: -topLeftShadowRadius, y: -topLeftShadowRadius)
-                        .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                        .modifier(NEUShadowModifier())
                     if !configuration.isPressed && !toggle {
                         shape
                             .fill(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
@@ -114,12 +101,6 @@ public struct NEUConvexBorderButtonStyle<S: Shape>: NEUButtonStyle {
                     let minLength: CGFloat = min(geometry.size.width, geometry.size.height)
 
                     let backgroundColors: [Color] = colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors
-
-                    let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
-                    let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
-                    
-                    let topLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
-                    let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
                     
                     let borderColors: [Color] = colorScheme == .light ? [Color( red: 245 / 255, green: 245 / 255, blue: 245 / 255), Color( red: 225 / 255, green: 230 / 255, blue: 235 / 255), Color( red: 210 / 255, green: 215 / 255, blue: 220 / 255)] : [Color( red: 33 / 255, green: 37 / 255, blue: 42 / 255), Color( red: 22 / 255, green: 24 / 255, blue: 26 / 255)]
                     let borderStrokeWidth: CGFloat = minLength / 15
@@ -128,8 +109,7 @@ public struct NEUConvexBorderButtonStyle<S: Shape>: NEUButtonStyle {
                     let topLeftStrokeColor: Color = colorScheme == .light ? .white : .white.opacity(0.11)
 
                     shape.fill(LinearGradient(colors: backgroundColors, startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .shadow(color: topLeftShadowColor, radius: topLeftShadowRadius, x: -topLeftShadowRadius, y: -topLeftShadowRadius)
-                        .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                        .modifier(NEUShadowModifier())
                     shape.stroke(LinearGradient(colors: borderColors, startPoint: .topLeading, endPoint: .bottomTrailing),
                                  lineWidth: borderStrokeWidth)
 

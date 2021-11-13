@@ -61,7 +61,7 @@ enum NEUCoverShape: Int, CaseIterable, Codable {
 struct NEUCoverView: View {
     let url: String?
     let coverShape: NEUCoverShape
-    let size: NEUImageSize
+    let size: QinImageSize
     var innerPadding: CGFloat {
         switch coverShape {
         case .circle:
@@ -86,7 +86,7 @@ struct NEUCoverView: View {
         case .circle:
             switch size {
             case .little:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: Circle(),
                              outerShape: Circle(),
@@ -94,7 +94,7 @@ struct NEUCoverView: View {
                              shadowReverse: true,
                              isOrigin: false)
             case .small:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: Circle(),
                              outerShape: Circle(),
@@ -102,7 +102,7 @@ struct NEUCoverView: View {
                              shadowReverse: true,
                              isOrigin: false)
             case .medium:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: Circle(),
                              outerShape: Circle(),
@@ -110,7 +110,7 @@ struct NEUCoverView: View {
                              shadowReverse: true,
                              isOrigin: false)
             case .large:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: Circle(),
                              outerShape: Circle(),
@@ -121,28 +121,28 @@ struct NEUCoverView: View {
         case .rectangle:
             switch size {
             case .little:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
                              outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),
                              innerPadding: innerPadding,
                              isOrigin: false)
             case .small:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
                              outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),
                              innerPadding: innerPadding,
                              isOrigin: false)
             case .medium:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
                              outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),
                              innerPadding: innerPadding,
                              isOrigin: false)
             case .large:
-                NEUImageView(url: url,
+                QinImageView(url: url,
                              size: size,
                              innerShape: RoundedRectangle(cornerRadius: (size.width - innerPadding) / 5, style: .continuous),
                              outerShape: RoundedRectangle(cornerRadius: size.width / 4, style: .continuous),

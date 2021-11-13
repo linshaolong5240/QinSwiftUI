@@ -344,7 +344,7 @@ struct PlayingNowCoverView: View {
         let url = playing.song?.album?.picUrl
         switch settings.coverShape {
         case .circle:
-            NEUImageView(url: url,
+            QinImageView(url: url,
                          size: !showMore ? .large: .medium,
                          innerShape: Circle(),
                          outerShape: Circle(),
@@ -354,7 +354,7 @@ struct PlayingNowCoverView: View {
                 .contentShape(Circle())
                 .onTapGesture(perform: tapAction)
         case .rectangle:
-            NEUImageView(url: url,
+            QinImageView(url: url,
                          size: showMore ? .medium: .large,
                          innerShape: RoundedRectangle(cornerRadius: showMore ? 25 : 50, style: .continuous),
                          outerShape: RoundedRectangle(cornerRadius: showMore ? 35 : 65, style: .continuous),
