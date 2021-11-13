@@ -39,7 +39,7 @@ struct SearchView: View {
                               onCommit: {
                                 store.dispatch(.searchRequest(keyword: search.keyword, type: searchType))
                               })
-                        .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "magnifyingglass", size: .medium)))
+                        .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "magnifyingglass").foregroundColor(.mainText)))
                     if showCancel {
                         Button(action: {
                             hideKeyboard()
@@ -163,8 +163,7 @@ struct SearchBarView: View {
                                 showSearch = true
                             }
                           })
-                .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "magnifyingglass", size: .medium)))
-                .foregroundColor(.mainText)
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "magnifyingglass").foregroundColor(.mainText)))
                 if showCancel {
                     Button(action: {
                         Store.shared.appState.search.keyword = ""

@@ -67,10 +67,15 @@ struct CreatedPlaylistView: View {
     }
 }
 
-#if false//DEBUG
+#if DEBUG
 struct CreatedPlaylistView_Previews: PreviewProvider {
     static var previews: some View {
-        CreatedPlaylistView()
+        CreatedPlaylistView(playlist: [])
+            .environmentObject(Store.shared)
+            .preferredColorScheme(.light)
+        CreatedPlaylistView(playlist: [])
+            .environmentObject(Store.shared)
+            .preferredColorScheme(.dark)
     }
 }
 #endif
@@ -101,7 +106,7 @@ struct PlaylistCreateView: View {
                         .foregroundColor(.mainText)
                 )
                 TextField("歌单名", text: $name)
-                    .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "folder.badge.plus").padding()))
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "folder.badge.plus").foregroundColor(.mainText)))
                     .padding()
                 Button(action: {
                     showSheet.toggle()

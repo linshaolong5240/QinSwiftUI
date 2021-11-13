@@ -64,7 +64,7 @@ struct CommentListView: View {
                                 showCancel = isEditing
                             }
                           })
-                    .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "text.bubble", size: .small)))
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "text.bubble").foregroundColor(.mainText)))
                 if showCancel {
                     Button(action: {
                         editComment = ""
@@ -78,7 +78,7 @@ struct CommentListView: View {
                     Store.shared.dispatch(.commentRequest(id: id, content: editComment, type: .song, action: .add))
                     editComment = ""
                 }) {
-                    QinSFView(systemName: "arrow.up.message.fill", size: .small)
+                    QinSFView(systemName: "arrow.up.message.fill", size: .medium)
                 }
                 .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
             }
