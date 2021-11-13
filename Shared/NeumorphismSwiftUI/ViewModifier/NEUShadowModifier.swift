@@ -17,34 +17,51 @@ public struct NEUShadowModifier: ViewModifier, NEUStyle {
     
     @Environment(\.colorScheme) private var colorScheme
     
+    var topLeftShadowColor: Color?
+    var topLeftShadowRadius: CGFloat?
+    var bottomRightShadowColor: Color?
+    var bottomRightShadowRadius: CGFloat?
+    
     let position: Position
     
     init(_ position: Position = .all) {
         self.position = position
     }
     
+    init(topLeftShadowColor: Color? = nil,
+         topLeftShadowRadius: CGFloat? = nil,
+         bottomRightShadowColor: Color? = nil,
+         bottomRightShadowRadius: CGFloat? = nil,
+         position: Position = .all) {
+        self.topLeftShadowColor = topLeftShadowColor
+        self.topLeftShadowRadius = topLeftShadowRadius
+        self.bottomRightShadowColor = bottomRightShadowColor
+        self.bottomRightShadowRadius = bottomRightShadowRadius
+        self.position = position
+    }
+    
     public func body(content: Content) -> some View {
-        let topLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
-        let topLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
+        let neuTopLeftShadowColor: Color = neuTopLeftShadowColor(colorScheme)
+        let neuTopLeftShadowRadius: CGFloat = neuTopLeftShadowRadius(colorScheme)
         
-        let bottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
-        let bottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
+        let neuBottomRightShadowColor: Color = neuBottomRightShadowColor(colorScheme)
+        let neuBottomRightShadowRadius: CGFloat = neuBottomRightShadowRadius(colorScheme)
         
         switch position {
         case .topLeading:
             content
-                .shadow(color: topLeftShadowColor,
-                        radius: topLeftShadowRadius,
-                        x: -topLeftShadowRadius, y: -topLeftShadowRadius)
+                .shadow(color: topLeftShadowColor ?? neuTopLeftShadowColor,
+                        radius: topLeftShadowRadius ?? neuTopLeftShadowRadius,
+                        x: -(topLeftShadowRadius ?? neuTopLeftShadowRadius), y: -(topLeftShadowRadius ?? neuTopLeftShadowRadius))
         case .bottomTrailing:
             content
-                .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                .shadow(color: bottomRightShadowColor ?? neuBottomRightShadowColor, radius: bottomRightShadowRadius ?? neuBottomRightShadowRadius, x: bottomRightShadowRadius ?? neuBottomRightShadowRadius, y: bottomRightShadowRadius ?? neuBottomRightShadowRadius)
         case .all:
             content
-                .shadow(color: topLeftShadowColor,
-                        radius: topLeftShadowRadius,
-                        x: -topLeftShadowRadius, y: -topLeftShadowRadius)
-                .shadow(color: bottomRightShadowColor, radius: bottomRightShadowRadius, x: bottomRightShadowRadius, y: bottomRightShadowRadius)
+                .shadow(color: topLeftShadowColor ?? neuTopLeftShadowColor,
+                        radius: topLeftShadowRadius ?? neuTopLeftShadowRadius,
+                        x: -(topLeftShadowRadius ?? neuTopLeftShadowRadius), y: -(topLeftShadowRadius ?? neuTopLeftShadowRadius))
+                .shadow(color: bottomRightShadowColor ?? neuBottomRightShadowColor, radius: bottomRightShadowRadius ?? neuBottomRightShadowRadius, x: bottomRightShadowRadius ?? neuBottomRightShadowRadius, y: bottomRightShadowRadius ?? neuBottomRightShadowRadius)
         }
     }
 }
