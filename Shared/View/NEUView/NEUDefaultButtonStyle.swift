@@ -7,22 +7,6 @@
 
 import SwiftUI
 
-struct NEUButtonToggleBackground<S: Shape>: View {
-    @Environment(\.colorScheme) var colorScheme
-
-    var isHighlighted: Bool
-    let shadow: Bool
-    let shape: S
-
-    var body: some View {
-        if colorScheme == .light {
-            NEULightToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
-        }else {
-            NEUDarkToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
-        }
-    }
-}
-
 struct NEUButtonToggleStyle<S: Shape>: ButtonStyle {
     let isHighlighted: Bool
     let shadow: Bool
@@ -38,6 +22,22 @@ struct NEUButtonToggleStyle<S: Shape>: ButtonStyle {
             .background(
                 NEUButtonToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
             )
+    }
+}
+
+struct NEUButtonToggleBackground<S: Shape>: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    var isHighlighted: Bool
+    let shadow: Bool
+    let shape: S
+
+    var body: some View {
+        if colorScheme == .light {
+            NEULightToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+        }else {
+            NEUDarkToggleBackground(isHighlighted: isHighlighted, shadow: shadow, shape: shape)
+        }
     }
 }
 

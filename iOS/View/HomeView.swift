@@ -58,7 +58,7 @@ struct HomeView: View {
                     .overlay(
                         VStack {
                             Spacer()
-                            PlayerControBarView()
+                            PlayerControlBarView()
                         }
                     )
                     .edgesIgnoringSafeArea(.bottom)

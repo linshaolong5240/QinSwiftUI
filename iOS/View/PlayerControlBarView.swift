@@ -1,5 +1,5 @@
 //
-//  PlayerControBarView.swift
+//  PlayerControlBarView.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/6/26.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct PlayerControBarView: View {
+struct PlayerControlBarView: View {
     
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var store: Store
@@ -76,9 +76,10 @@ struct BottomBarView_Previews: PreviewProvider {
             NEUBackgroundView()
             VStack {
                 Spacer()
-                PlayerControBarView()
+                PlayerControlBarView()
             }
         }
+        .edgesIgnoringSafeArea(.bottom)
         .environmentObject(Store.shared)
         .environmentObject(Player.shared)
         .environment(\.colorScheme, .light)
@@ -86,9 +87,10 @@ struct BottomBarView_Previews: PreviewProvider {
             NEUBackgroundView()
             VStack {
                 Spacer()
-                PlayerControBarView()
+                PlayerControlBarView()
             }
         }
+        .edgesIgnoringSafeArea(.bottom)
         .environmentObject(Store.shared)
         .environmentObject(Player.shared)
         .environment(\.colorScheme, .dark)
