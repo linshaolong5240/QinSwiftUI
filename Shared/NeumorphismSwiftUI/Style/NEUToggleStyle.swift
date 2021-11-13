@@ -15,16 +15,14 @@ public struct NEUDefaultToggleStyle: NEUToggleStyle {
 
     public func makeBody(configuration: Self.Configuration) -> some View {
         
-        let buttonBackgroundColors: [Color] = neuBacgroundColors(colorScheme)
-        let backgroundColor: Color = colorScheme == .light ? Color(#colorLiteral(red: 0.8624982834, green: 0.8703991771, blue: 0.8829225898, alpha: 1)) : Color(#colorLiteral(red: 0.2546238303, green: 0.2623955607, blue: 0.283208847, alpha: 1))
-//        let pressedBackgroundColor: Color = colorScheme == .light ? Color(#colorLiteral(red: 0.8624982834, green: 0.8703991771, blue: 0.8829225898, alpha: 1)) : Color(#colorLiteral(red: 0.2546238303, green: 0.2623955607, blue: 0.283208847, alpha: 1))
+        let buttonColors: [Color] = neuBacgroundColors(colorScheme)
+        let backgroundColors: [Color] = neuBacgroundColors(colorScheme).reversed()
+        let orangeColors: [Color] = neuOrangeColors(colorScheme)
         
         HStack {
             configuration.label
             ZStack {
-                Capsule()
-                    .fill(configuration.isOn ? Color.accentColor : backgroundColor)
-                    .modifier(NEUShadowModifier())
+                LinearGradient(gradient: Gradient(colors: configuration.isOn ? orangeColors : backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
                 HStack {
                     if configuration.isOn {
                         Spacer()
@@ -35,9 +33,8 @@ public struct NEUDefaultToggleStyle: NEUToggleStyle {
                         }
                     }) {
                         Circle()
-                            .fill(LinearGradient(gradient: Gradient(colors: buttonBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .fill(LinearGradient(gradient: Gradient(colors: buttonColors), startPoint: .topLeading, endPoint: .bottomTrailing))
                             .frame(width: 28, height: 28)
-                            .modifier(NEUShadowModifier())
                     }
                     .buttonStyle(PlainButtonStyle())
                     if !configuration.isOn {
@@ -48,7 +45,9 @@ public struct NEUDefaultToggleStyle: NEUToggleStyle {
                 .frame(width: 50, height: 31)
                 .mask(Capsule())
             }
+            .mask(Capsule())
             .frame(width: 50, height: 31)
+            .modifier(NEUShadowModifier())
         }
     }
 }
@@ -63,7 +62,7 @@ fileprivate struct NEUToggleStyleDEBUGView: View {
                 Toggle("Label", isOn: $onOff) .toggleStyle(SwitchToggleStyle(tint: .red))
                     .fixedSize()
                 Toggle("Label", isOn: $onOff).toggleStyle(NEUDefaultToggleStyle())
-                    .accentColor(.orange)
+                Toggle("Label", isOn: .constant(true)).toggleStyle(NEUDefaultToggleStyle())
             }
         }
     }
