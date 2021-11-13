@@ -78,7 +78,7 @@ struct CommentListView: View {
                     Store.shared.dispatch(.commentRequest(id: id, content: editComment, type: .song, action: .add))
                     editComment = ""
                 }) {
-                    QinSFView(systemName: "arrow.up.message.fill", size: .medium)
+                    QinSFView(systemName: "arrow.up.message.fill", size: .small)
                 }
                 .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
             }
