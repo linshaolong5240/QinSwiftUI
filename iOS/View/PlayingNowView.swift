@@ -170,7 +170,7 @@ struct PlayingNowStatusView: View {
                     .font(.title)
                     .fontWeight(.bold)
                     .lineLimit(1)
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                 if let artists = playing.song?.artists {
                     HStack {
                         ForEach(Array(artists as! Set<Artist>)) { item in

@@ -85,7 +85,7 @@ struct UserPlaylistRowView: View {
             NEUCoverView(url: playlist.coverImgUrl, coverShape: .rectangle, size: .little)
             VStack(alignment: .leading) {
                 Text(playlist.name)
-                    .foregroundColor(.mainTextColor)
+                    .foregroundColor(.mainText)
                 Text("\(playlist.trackCount) songs")
                     .foregroundColor(.secondTextColor)
             }

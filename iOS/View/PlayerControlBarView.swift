@@ -43,7 +43,7 @@ struct PlayerControlBarView: View {
                             .font(.title)
                             .fontWeight(.bold)
                             .lineLimit(1)
-                            .foregroundColor(Color.mainTextColor)
+                            .foregroundColor(Color.mainText)
                         HStack {
                             if let artists = playing.song?.artists {
                                 HStack {

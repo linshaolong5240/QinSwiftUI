@@ -39,7 +39,7 @@ struct SearchView: View {
                               onCommit: {
                                 store.dispatch(.searchRequest(keyword: search.keyword, type: searchType))
                               })
-                        .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "magnifyingglass", size: .medium)))
+                        .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "magnifyingglass", size: .medium)))
                     if showCancel {
                         Button(action: {
                             hideKeyboard()
@@ -106,7 +106,7 @@ struct SearchPlaylistResultRowView: View {
             NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .little)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                 Text("\(viewModel.trackCount) songs")
                     .foregroundColor(Color.secondTextColor)
             }
@@ -163,8 +163,8 @@ struct SearchBarView: View {
                                 showSearch = true
                             }
                           })
-                .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "magnifyingglass", size: .medium)))
-                .foregroundColor(.mainTextColor)
+                .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "magnifyingglass", size: .medium)))
+                .foregroundColor(.mainText)
                 if showCancel {
                     Button(action: {
                         Store.shared.appState.search.keyword = ""

@@ -26,7 +26,7 @@ struct RecommendPlaylistView: View {
                 Text("推荐的歌单")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                 Spacer()
                 Text("\(playlist.count) 推荐的歌单")
                     .foregroundColor(Color.secondTextColor)

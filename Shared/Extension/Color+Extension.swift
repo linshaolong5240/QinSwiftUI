@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 extension Color {
-    static var mainTextColor: Color {
+    static var mainText: Color {
         return Color("MainTextColor")
     }
     static var secondTextColor: Color {

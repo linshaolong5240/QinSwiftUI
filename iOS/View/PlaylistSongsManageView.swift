@@ -49,7 +49,7 @@ struct PlaylistSongsManageView: View {
                                 Text(item.name ?? "")
                                     .font(.system(size: 20))
                                     .fontWeight(.bold)
-                                    .foregroundColor(.mainTextColor)
+                                    .foregroundColor(.mainText)
                                     .lineLimit(1)
                                 if let artists = item.artists?.allObjects as? [Artist] {
                                     HStack {

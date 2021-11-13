@@ -18,7 +18,7 @@ struct QinSFView: View {
          size: ButtonSize = .medium,
          active: Bool = false,
          activeColor: Color = .white,
-         inactiveColor: Color = .mainTextColor) {
+         inactiveColor: Color = .mainText) {
         self.systemName = systemName
         self.size = size
         self.active = active

@@ -64,7 +64,7 @@ struct CommentListView: View {
                                 showCancel = isEditing
                             }
                           })
-                    .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "text.bubble", size: .small)))
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "text.bubble", size: .small)))
                 if showCancel {
                     Button(action: {
                         editComment = ""
@@ -90,14 +90,14 @@ struct CommentListView: View {
             }
             if comment.commentMusicRequesting {
                 Text("正在加载...")
-                    .foregroundColor(.mainTextColor)
+                    .foregroundColor(.mainText)
                 Spacer()
             }else {
                 ScrollView {
                     LazyVStack(alignment: .leading) {
                         HStack {
                             Text("热门评论(\(String(comment.hotComments.count)))")
-                                .foregroundColor(.mainTextColor)
+                                .foregroundColor(.mainText)
                             Spacer()
                         }
                         ForEach(comment.hotComments) { item in
@@ -106,7 +106,7 @@ struct CommentListView: View {
                         }
                         HStack {
                             Text("最新评论(\(String(comment.total)))")
-                                .foregroundColor(.mainTextColor)
+                                .foregroundColor(.mainText)
                             Spacer()
                         }
                         ForEach(comment.comments) { item in
@@ -157,7 +157,7 @@ struct CommentRowView: View {
                 }
                 .foregroundColor(.secondTextColor)
                 Text(viewModel.content)
-                    .foregroundColor(.mainTextColor)
+                    .foregroundColor(.mainText)
                 HStack {
                     if viewModel.beReplied.count > 0 {
                         Button(action: {

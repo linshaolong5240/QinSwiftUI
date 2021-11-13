@@ -22,7 +22,7 @@ struct SubedAlbumsView: View {
                 Text("收藏的专辑")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                 Spacer()
                 Text("\(albums.count)收藏的专辑")
                     .foregroundColor(Color.secondTextColor)

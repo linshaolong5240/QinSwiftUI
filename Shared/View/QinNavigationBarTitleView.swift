@@ -16,7 +16,7 @@ struct QinNavigationBarTitleView: View {
     var body: some View {
         Text(title)
             .fontWeight(.bold)
-            .foregroundColor(.mainTextColor)
+            .foregroundColor(.mainText)
     }
 }
 

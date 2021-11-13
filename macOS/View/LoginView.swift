@@ -20,9 +20,9 @@ struct LoginView: View {
             VStack(spacing: 20.0) {
                 QinNavigationBarTitleView("登录")
                 TextField("email", text: $email)
-                    .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "envelope", size: .medium)))
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "envelope", size: .medium)))
                 SecureField("password", text: $password)
-                    .textFieldStyle(NEUTextFieldStyle(label: QinSFView(systemName: "key", size: .medium)))
+                    .textFieldStyle(NEUDefaultTextFieldStyle(label: QinSFView(systemName: "key", size: .medium)))
                 Button(action: {
                     self.store.dispatch(.loginRequest(email: self.email, password: self.password))
                 }) {

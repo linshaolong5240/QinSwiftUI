@@ -45,7 +45,7 @@ struct CommonGridItemView: View {
                 .padding()
             Group {
                 Text(configuration.name ?? "")
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                     .lineLimit(1)
                     .frame(width: 110, alignment: .leading)
 //                Text("\(viewModel.count) songs")

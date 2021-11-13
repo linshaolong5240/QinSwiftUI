@@ -22,7 +22,7 @@ struct SongRowView: View {
             VStack(alignment: .leading) {
                 Text(song.name ?? "")
                     .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                     .lineLimit(1)
                 if let artists = song.artists?.allObjects as? [Artist] {
                     HStack {
@@ -40,7 +40,7 @@ struct SongRowView: View {
                 Store.shared.dispatch(.songLikeRequest(id: Int(song.id), like: like))
             }, label: {
                 Image(systemName: store.appState.playlist.songlikedIds.contains(Int(song.id)) ? "heart.fill" : "heart")
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                     .padding(.horizontal)
             })
             Button(action: {
@@ -53,8 +53,8 @@ struct SongRowView: View {
                 QinSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",
                           size: .small,
                           active: song.id == playing.song?.id && player.isPlaying ?  true : false,
-                          activeColor: song.id == playing.song?.id ? Color.orange : Color.mainTextColor,
-                          inactiveColor: song.id == playing.song?.id ? Color.orange : Color.mainTextColor)
+                          activeColor: song.id == playing.song?.id ? Color.orange : Color.mainText,
+                          inactiveColor: song.id == playing.song?.id ? Color.orange : Color.mainText)
             }
             .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: song.id == playing.song?.id && player.isPlaying ?  true : false))
         }

@@ -23,9 +23,9 @@ struct SubedPlaylistView: View {
                 Text("收藏的歌单")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                 Text("(\(Store.shared.appState.playlist.subedPlaylistIds.count))")
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                 Spacer()
                 Button(action: {
                     showPlaylistManage.toggle()

@@ -37,7 +37,7 @@ struct DescriptionView: View {
                 Text(configuration.name)
                     .fontWeight(.bold)
                     .lineLimit(showMoreDescription ? nil : 2)
-                    .foregroundColor(.mainTextColor)
+                    .foregroundColor(.mainText)
                 if showMoreDescription {
                     ScrollView {
                         Text(configuration.introduction)

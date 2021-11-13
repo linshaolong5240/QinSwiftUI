@@ -23,7 +23,7 @@ struct ArtistSublistView: View {
                 Text("收藏的歌手")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(Color.mainTextColor)
+                    .foregroundColor(Color.mainText)
                 Spacer()
                 Text("\(artists.count)收藏的歌手")
                     .foregroundColor(Color.secondTextColor)

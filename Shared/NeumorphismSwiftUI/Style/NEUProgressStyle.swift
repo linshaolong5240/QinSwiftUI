@@ -41,7 +41,7 @@ struct NEURingProgressView: View {
     
     var body: some View {
         let bottomColor: Color = Color(#colorLiteral(red: 0.8532857299, green: 0.883516252, blue: 1, alpha: 1))
-        let colors: [Color] = colorScheme == .light ? [.lightOrangeEnd, .lightOrangeMiddle, .lightOrangeStart] : [.lightOrangeEnd, .lightOrangeMiddle, .lightOrangeStart]
+        let colors: [Color] = colorScheme == .light ? .lightOrangeColors.reversed() : .darkOrangeColors.reversed()
         let topLeftShadowColor: Color = colorScheme == .light ? .white : .darkBackgourdStart
         let bottomRightShadowColor: Color = colorScheme == .light ?.black.opacity(0.2) : .darkBackgourdEnd
         ZStack {
