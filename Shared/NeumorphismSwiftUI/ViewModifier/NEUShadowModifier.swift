@@ -59,10 +59,12 @@ fileprivate struct NEUShadowModifierDEBUGView: View, NEUStyle {
         
         ZStack {
             NEUBackgroundView()
-            Capsule()
-                .fill(LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(height: 30)
-                .modifier(NEUShadowModifier())
+            VStack(spacing: 30) {
+                Capsule()
+                    .fill(LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .frame(height: 30)
+                    .modifier(NEUShadowModifier())
+            }
             .padding()
         }
     }

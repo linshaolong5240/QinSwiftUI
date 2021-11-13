@@ -8,7 +8,7 @@
 import SwiftUI
 
 public protocol NEUButtonStyle: ButtonStyle, NEUStyle {
-
+    
 }
 
 public struct NEUDefaultButtonStyle<S: Shape>: NEUButtonStyle {
@@ -63,7 +63,7 @@ public struct NEUUnevennessButtonStyle<S: Shape>: NEUButtonStyle {
                 GeometryReader { geometry in
                     let minLength: CGFloat = min(geometry.size.width, geometry.size.height)
                     let padding: CGFloat = minLength / 15.0
-
+                    
                     let backgroundColors: [Color] = colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors
                     let pressedBackgroundColors: [Color] = backgroundColors.reversed()
                     
@@ -81,9 +81,9 @@ public struct NEUUnevennessButtonStyle<S: Shape>: NEUButtonStyle {
 }
 
 public struct NEUConvexBorderButtonStyle<S: Shape>: NEUButtonStyle {
-
+    
     @Environment(\.colorScheme) private var colorScheme
-
+    
     let shape: S
     let toggle: Bool
     
@@ -99,20 +99,20 @@ public struct NEUConvexBorderButtonStyle<S: Shape>: NEUButtonStyle {
             .background(
                 GeometryReader { geometry in
                     let minLength: CGFloat = min(geometry.size.width, geometry.size.height)
-
+                    
                     let backgroundColors: [Color] = colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors
                     
                     let borderColors: [Color] = colorScheme == .light ? [Color( red: 245 / 255, green: 245 / 255, blue: 245 / 255), Color( red: 225 / 255, green: 230 / 255, blue: 235 / 255), Color( red: 210 / 255, green: 215 / 255, blue: 220 / 255)] : [Color( red: 33 / 255, green: 37 / 255, blue: 42 / 255), Color( red: 22 / 255, green: 24 / 255, blue: 26 / 255)]
                     let borderStrokeWidth: CGFloat = minLength / 15
-
+                    
                     let strokeWidth: CGFloat = minLength / 20
                     let topLeftStrokeColor: Color = colorScheme == .light ? .white : .white.opacity(0.11)
-
+                    
                     shape.fill(LinearGradient(colors: backgroundColors, startPoint: .topLeading, endPoint: .bottomTrailing))
                         .modifier(NEUShadowModifier())
                     shape.stroke(LinearGradient(colors: borderColors, startPoint: .topLeading, endPoint: .bottomTrailing),
                                  lineWidth: borderStrokeWidth)
-
+                    
                     if !configuration.isPressed && !toggle {
                         shape.stroke(topLeftStrokeColor, lineWidth: strokeWidth)
                             .blur(radius: 1)
@@ -132,74 +132,96 @@ fileprivate struct NEUButtonStyleDebugView: View {
         ZStack {
             NEUBackgroundView()
             VStack(spacing: 50.0) {
-                HStack {
+                HStack(spacing: 20) {
                     Button(action: {
                         onOff.toggle()
-                        print("pressed")
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
-                .buttonStyle(NEUUnevennessButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                     Button(action: {
                         onOff.toggle()
-                        print("pressed")
-                    }) {
-                        QinSFView(systemName: "heart.fill", size: .medium)
-                    }
-                    .buttonStyle(NEUUnevennessButtonStyle(shape: Circle(), toggle: onOff))
-                }
-                
-                HStack {
-                    Button(action: {
-                        onOff.toggle()
-                        print("pressed")
-                    }) {
-                        QinSFView(systemName: "heart.fill", size: .medium)
-                    }
-                .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
-                    Button(action: {
-                        onOff.toggle()
-                        print("pressed")
-                    }) {
-                        QinSFView(systemName: "heart.fill", size: .medium)
-                    }
-                    .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: onOff))
-                }
-                HStack {
-                    Button(action: {
-                        onOff.toggle()
-                        print("pressed")
-                    }) {
-                        QinSFView(systemName: "heart.fill", size: .medium)
-                    }
-                .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
-                    Button(action: {
-                        onOff.toggle()
-                        print("pressed")
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
                     .buttonStyle(NEUDefaultButtonStyle(shape: Circle(), toggle: onOff))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUDefaultButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUDefaultButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), toggle: onOff))
+
                 }
-                Button(action: {
-                    print("pressed")
-                }) {
-                    QinSFView(systemName: "heart.fill", size: .medium)
+                
+                HStack(spacing: 20) {
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUUnevennessButtonStyle(shape: Circle()))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUUnevennessButtonStyle(shape: Circle(), toggle: onOff))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUUnevennessButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUUnevennessButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), toggle: onOff))
+
                 }
-                .buttonStyle(NEUDefaultButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
-                Button(action: {
-                    print("pressed")
-                }) {
-                    QinSFView(systemName: "heart.fill", size: .medium)
+                
+                HStack(spacing: 20) {
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: onOff))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUConvexBorderButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
+                    Button(action: {
+                        onOff.toggle()
+                    }) {
+                        QinSFView(systemName: "heart.fill", size: .medium)
+                    }
+                    .buttonStyle(NEUConvexBorderButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), toggle: onOff))
+
                 }
-                .buttonStyle(NEUConvexBorderButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
             }
         }
     }
 }
 
 struct NEUButtonStyle_Previews: PreviewProvider {
-
+    
     static var previews: some View {
         NEUButtonStyleDebugView()
             .preferredColorScheme(.light)

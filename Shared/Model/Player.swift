@@ -164,7 +164,7 @@ class Player: AVPlayer, ObservableObject {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
         if let picUrl = Store.shared.appState.playing.song?.album?.picUrl {
             if let url = URL(string: picUrl) {
-                let _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinImageSize.medium.width * 2, height: QinImageSize.medium.width * 2)))]) { (result) in
+                let _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinContentSize.medium.width * 2, height: QinContentSize.medium.width * 2)))]) { (result) in
                     switch result {
                     case .success(let value):
                                 info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: value.image.size, requestHandler: { (size) -> UIImage in

@@ -1,5 +1,5 @@
 //
-//  NEUCoverView.swift
+//  QinCoverView.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/9/14.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 #if DEBUG
-struct NEUCoverView_Previews: PreviewProvider {
+struct QinCoverView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             NEUBackgroundView()
@@ -61,7 +61,7 @@ enum NEUCoverShape: Int, CaseIterable, Codable {
 struct NEUCoverView: View {
     let url: String?
     let coverShape: NEUCoverShape
-    let size: QinImageSize
+    let size: QinContentSize
     var innerPadding: CGFloat {
         switch coverShape {
         case .circle:

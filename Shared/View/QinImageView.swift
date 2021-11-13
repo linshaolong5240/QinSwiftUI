@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 import struct Kingfisher.DownsamplingImageProcessor
 
-enum QinImageSize {
+enum QinContentSize {
     case little
     case small
     case medium
@@ -35,7 +35,7 @@ struct QinImageView<S: Shape>: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let url: String?
-    let size: QinImageSize
+    let size: QinContentSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -43,7 +43,7 @@ struct QinImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: QinImageSize = .medium,
+         size: QinContentSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat,
@@ -81,7 +81,7 @@ struct QinImageView<S: Shape>: View {
 
 struct QinLightImageView<S: Shape>: View {
     let url: String?
-    let size: QinImageSize
+    let size: QinContentSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -89,7 +89,7 @@ struct QinLightImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: QinImageSize = .medium,
+         size: QinContentSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat = 10,
@@ -168,7 +168,7 @@ struct QinLightImageView<S: Shape>: View {
 
 struct QinDarkImageView<S: Shape>: View {
     let url: String?
-    let size: QinImageSize
+    let size: QinContentSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -176,7 +176,7 @@ struct QinDarkImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: QinImageSize = .medium,
+         size: QinContentSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat = 10,
