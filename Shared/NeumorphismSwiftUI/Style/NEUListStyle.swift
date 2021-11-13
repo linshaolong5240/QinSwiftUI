@@ -20,6 +20,7 @@ struct NEUListStyle_Previews: PreviewProvider {
     }
 }
 #endif
+
 struct NEUListRowBackgroundView: View {
     @Environment(\.colorScheme) var colorScheme
     let isHighlighted: Bool

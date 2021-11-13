@@ -194,7 +194,7 @@ struct NEUDarkImageView<S: Shape>: View {
         ZStack {
             ZStack {
                 if shadowReverse {
-                    LinearGradient(.darkBackgourdMiddle, .black)
+                    LinearGradient(gradient: Gradient(colors: [.darkBackgourdMiddle, .black]), startPoint: .topLeading, endPoint: .bottomTrailing)
 //                    Color.darkBackgourdStart
 //                    Color(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
 //                    .frame(width: size.width - innerPadding * 2,

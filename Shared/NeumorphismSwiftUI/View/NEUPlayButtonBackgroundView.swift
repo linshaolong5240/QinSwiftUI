@@ -59,10 +59,7 @@ struct NEULightToggleBackground<S: Shape>: View {
     }
 }
 
-struct NEUDarkToggleBackground<S: Shape>: View {
-    private let darkStart = Color( red: 47 / 255, green: 53 / 255, blue: 58 / 255)
-    private let darkMiddle = Color( red: 34 / 255, green: 37 / 255, blue: 41 / 255)
-    private let darkEnd = Color(red: 28 / 255, green: 30 / 255, blue: 34 / 255)
+struct NEUDarkToggleBackground<S: Shape>: View, NEUStyle {
     
     let shadow: Bool
     let shape: S
@@ -72,17 +69,19 @@ struct NEUDarkToggleBackground<S: Shape>: View {
         self.shape = shape
     }
     var body: some View {
+        let orangeColors: [Color] = .darkOrangeColors
+        
         if shadow == true {
-            shape.fill(LinearGradient(.darkOrangeEnd, .darkOrangeMiddle, .darkOrangeStart))
+            shape.fill(LinearGradient(gradient:Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
                 .overlay(
-                    shape.stroke(LinearGradient(.darkOrangeStart, .darkOrangeMiddle, .darkOrangeEnd), lineWidth: 3)
+                    shape.stroke(LinearGradient(gradient:Gradient(colors: orangeColors), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 3)
                 )
                 .shadow(color: .darkBackgourdStart, radius: 10, x: -10, y: -10)
                 .shadow(color: .darkBackgourdEnd, radius: 10, x: 10, y: 10)
         }else {
-            shape.fill(LinearGradient(.darkOrangeEnd, .darkOrangeMiddle, .darkOrangeStart))
+            shape.fill(LinearGradient(gradient:Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing))
                 .overlay(
-                    shape.stroke(LinearGradient(.darkOrangeStart, .darkOrangeMiddle, .darkOrangeEnd), lineWidth: 3)
+                    shape.stroke(LinearGradient(gradient:Gradient(colors: orangeColors), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 3)
                 )
         }
     }

@@ -8,9 +8,14 @@
 import Foundation
 import SwiftUI
 
-extension Array where Element == Color {
+public extension Array where Element == Color {
     static let lightOrangeColors: [Color] = [Color(#colorLiteral(red: 0.9647058824, green: 0.568627451, blue: 0.5137254902, alpha: 1)), Color(#colorLiteral(red: 1, green: 0.368627451, blue: 0.2823529412, alpha: 1)), Color(#colorLiteral(red: 0.8823529412, green: 0.3294117647, blue: 0.03921568627, alpha: 1))]
     static let darkOrangeColors: [Color] = [Color(#colorLiteral(red: 0.8823529412, green: 0.3294117647, blue: 0.03921568627, alpha: 1)), Color(#colorLiteral(red: 0.9254901961, green: 0.2862745098, blue: 0.07450980392, alpha: 1)), Color(#colorLiteral(red: 0.7333333333, green: 0.1254901961, blue: 0.05490196078, alpha: 1))]
+}
+
+public extension Color {
+    static let neuMainText: Color = Color("NEUMainTextColor")
+    static let neuSecondaryText: Color = Color("NEUSecondaryTextColor")
 }
 
 extension Color {
@@ -46,6 +51,10 @@ extension NEUStyle {
     
     public func neuPressedBacgroundColors(_ colorScheme: ColorScheme) -> [Color] {
         (colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors).reversed()
+    }
+    
+    public func neuOrangeColors(_ colorScheme: ColorScheme) -> [Color] {
+        colorScheme == .light ? .lightOrangeColors : .darkOrangeColors
     }
     
     public func neuTopLeftShadowColor(_ colorScheme: ColorScheme) -> Color {
