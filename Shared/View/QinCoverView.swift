@@ -47,8 +47,8 @@ enum QinCoverSize: Int, CaseIterable, Identifiable {
         switch self {
         case .little:   return CGSize(width: 60, height: 60)
         case .small:    return CGSize(width: 110, height: 110)
-        case .medium:   return CGSize(width: 110, height: 110)
-        case .large:    return CGSize(width: 110, height: 110)
+        case .medium:   return CGSize(width: 130, height: 130)
+        case .large:    return CGSize(width: 300, height: 300)
         }
     }
     
@@ -133,12 +133,12 @@ fileprivate struct QinImageBorderDEBUGView: View {
     var body: some View {
         ZStack {
             QinBackgroundView()
-            VStack(spacing: 30) {
+            VStack(spacing: 20) {
                 let urlString: String? = "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg"
 //                let urlString: String? = nil
                 ForEach(QinCoverSize.allCases) { item in
                     HStack(spacing: 20) {
-//                        QinCoverView(urlString, style: QinCoverStyle(size: item, shape: .rectangle))
+                        QinCoverView(urlString, style: QinCoverStyle(size: item, shape: .rectangle))
                         QinCoverView(urlString, style: QinCoverStyle(size: item, shape: .circle, type: .convexFlat))
 
                     }
@@ -151,8 +151,10 @@ fileprivate struct QinImageBorderDEBUGView: View {
 struct QinImageBorderView_Previews: PreviewProvider {
     static var previews: some View {
         QinImageBorderDEBUGView()
+            .ignoresSafeArea()
             .preferredColorScheme(.light)
         QinImageBorderDEBUGView()
+            .ignoresSafeArea()
             .preferredColorScheme(.dark)
     }
 }
