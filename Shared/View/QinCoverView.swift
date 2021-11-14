@@ -69,8 +69,8 @@ struct QinCoverStyle {
     var cornerRadius: CGFloat { size.cornerRadius }
     var borderWidth: CGFloat {
         switch shape {
-        case .circle:       return size.minLength / 20
-        case .rectangle:    return size.minLength / 10
+        case .circle:       return size.minLength / 25
+        case .rectangle:    return size.minLength / 15
         }
     }
 }

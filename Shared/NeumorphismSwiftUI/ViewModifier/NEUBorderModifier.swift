@@ -30,7 +30,7 @@ public struct NEUBorderModifier<S>: ViewModifier, NEUStyle where S: Shape {
 
     public func body(content: Content) -> some View {
         GeometryReader { geometry in
-            let backgroundColors: [Color] = neuBacgroundColors(colorScheme)
+            let neuBorderColors: [Color] = neuBorderColors(colorScheme)
             let neuBorderWidth = borderWidth ?? geometry.size.minLength / 15
             let topLeftStrokeColor: Color = colorScheme == .light ? .white : .white.opacity(0.33)
             let topLeftstrokeWidth: CGFloat = geometry.size.minLength / 18
@@ -39,13 +39,13 @@ public struct NEUBorderModifier<S>: ViewModifier, NEUStyle where S: Shape {
             case .concave:
                 content
                     .mask(shape)
-                shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: neuBorderWidth)
+                shape.stroke(LinearGradient(gradient: Gradient(colors: neuBorderColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: neuBorderWidth)
             case .convex:
                 ZStack {
                     content
                         .mask(shape)
                         .modifier(NEUShadowModifier())
-                    shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+                    shape.stroke(LinearGradient(gradient: Gradient(colors: neuBorderColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
                     shape.stroke(topLeftStrokeColor, lineWidth: topLeftstrokeWidth)
                         .blur(radius: 1)
                         .offset(x: topLeftstrokeWidth / 2, y: topLeftstrokeWidth / 2)
@@ -56,14 +56,14 @@ public struct NEUBorderModifier<S>: ViewModifier, NEUStyle where S: Shape {
                     content
                         .mask(shape)
                         .modifier(NEUShadowModifier())
-                    shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+                    shape.stroke(LinearGradient(gradient: Gradient(colors: neuBorderColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
                 }
             case .unevenness:
                 ZStack {
                     content
                         .mask(shape)
                         .modifier(NEUShadowModifier())
-                    shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+                    shape.stroke(LinearGradient(gradient: Gradient(colors: neuBorderColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
                 }
             }
         }

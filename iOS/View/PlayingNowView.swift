@@ -119,10 +119,16 @@ struct PlayingNowView: View {
 struct PlayingView_Previews: PreviewProvider {
     static var previews: some View {
         PlayingNowView()
+            .preferredColorScheme(.light)
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
             .environment(\.managedObjectContext, DataManager.shared.context())
-            .environment(\.colorScheme, .dark)
+        PlayingNowView()
+            .preferredColorScheme(.dark)
+            .environmentObject(Store.shared)
+            .environmentObject(Player.shared)
+            .environment(\.managedObjectContext, DataManager.shared.context())
+
     }
 }
 #endif
@@ -340,31 +346,20 @@ struct PlayingNowCoverView: View {
     @Binding var showMore: Bool
     @Binding var bottomType: PlayingNowBottomType
 
-    var body: some View {
-        let url = playing.song?.album?.picUrl
+    var type: NEUBorderStyle {
         switch settings.coverShape {
-        case .circle:
-            QinImageView(url: url,
-                         size: !showMore ? .large: .medium,
-                         innerShape: Circle(),
-                         outerShape: Circle(),
-                         innerPadding: showMore ? 6 : 12,
-                         shadowReverse: true,
-                         isOrigin: false)
-                .contentShape(Circle())
-                .onTapGesture(perform: tapAction)
-        case .rectangle:
-            QinImageView(url: url,
-                         size: showMore ? .medium: .large,
-                         innerShape: RoundedRectangle(cornerRadius: showMore ? 25 : 50, style: .continuous),
-                         outerShape: RoundedRectangle(cornerRadius: showMore ? 35 : 65, style: .continuous),
-                         innerPadding: showMore ? 10 : 20,
-                         shadowReverse: false,
-                         isOrigin: false)
-                .contentShape(Circle())
-                .onTapGesture(perform: tapAction)
+        case .circle:       return .convexFlat
+        case .rectangle:    return .unevenness
         }
     }
+    
+    var body: some View {
+        let url = playing.song?.album?.picUrl
+        QinCoverView(url, style: QinCoverStyle(size: showMore ? .medium : .large, shape: settings.coverShape, type: type))
+            .contentShape(Circle())
+            .onTapGesture(perform: tapAction)
+    }
+    
     func tapAction() {
         self.hideKeyboard()
         withAnimation(.default) {

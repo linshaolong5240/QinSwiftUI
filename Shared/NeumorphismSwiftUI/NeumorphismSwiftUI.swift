@@ -14,6 +14,8 @@ extension CGSize {
 public extension Array where Element == Color {
     static let lightOrangeColors: [Color] = [Color(#colorLiteral(red: 0.9647058824, green: 0.568627451, blue: 0.5137254902, alpha: 1)), Color(#colorLiteral(red: 1, green: 0.368627451, blue: 0.2823529412, alpha: 1)), Color(#colorLiteral(red: 0.8823529412, green: 0.3294117647, blue: 0.03921568627, alpha: 1))]
     static let darkOrangeColors: [Color] = [Color(#colorLiteral(red: 0.8823529412, green: 0.3294117647, blue: 0.03921568627, alpha: 1)), Color(#colorLiteral(red: 0.9254901961, green: 0.2862745098, blue: 0.07450980392, alpha: 1)), Color(#colorLiteral(red: 0.7333333333, green: 0.1254901961, blue: 0.05490196078, alpha: 1))]
+    static let lightBorderColors: [Color] = [Color( red: 245 / 255, green: 245 / 255, blue: 245 / 255), Color( red: 225 / 255, green: 230 / 255, blue: 235 / 255), Color( red: 210 / 255, green: 215 / 255, blue: 220 / 255)]
+    static let darkBorderColors: [Color] = [Color( red: 33 / 255, green: 37 / 255, blue: 42 / 255), Color( red: 22 / 255, green: 24 / 255, blue: 26 / 255)]
 }
 
 public extension Color {
@@ -58,6 +60,10 @@ extension NEUStyle {
     
     public func neuOrangeColors(_ colorScheme: ColorScheme) -> [Color] {
         colorScheme == .light ? .lightOrangeColors : .darkOrangeColors
+    }
+    
+    public func neuBorderColors(_ colorScheme: ColorScheme) -> [Color] {
+        colorScheme == .light ? .lightBorderColors : .darkBorderColors
     }
     
     public func neuTopLeftShadowColor(_ colorScheme: ColorScheme) -> Color {
