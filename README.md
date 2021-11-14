@@ -7,15 +7,17 @@
 * https://dribbble.com/shots/9338617-Simple-Music-Player/attachments/1373153?mode=media
 
 ## 截图:
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_login.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_home.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_playlist.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_player.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_player_playlist.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_player_commit.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_login.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_home.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_playlist.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_player.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_player_playlist.png)
-![image](https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_player_commit.png)
+<p float="left">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_login.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_home.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_playlist.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_player.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_player_playlist.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/dark_player_commit.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_login.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_home.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_playlist.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_player.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_player_playlist.png" width="140">
+<img src="https://raw.githubusercontent.com/linshaolong5240/QinSwiftUI/main/Images/light_player_commit.png" width="140">
+</p>
