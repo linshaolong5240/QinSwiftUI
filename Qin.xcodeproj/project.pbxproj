@@ -216,8 +216,6 @@
 		2BE66D9D267014FF00367778 /* CommentAddRespone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D9B267014FF00367778 /* CommentAddRespone.swift */; };
 		2BE66D9F267015E400367778 /* CommentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D9E267015E400367778 /* CommentAction.swift */; };
 		2BE66DA0267015E400367778 /* CommentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE66D9E267015E400367778 /* CommentAction.swift */; };
-		2BEB5C26250EE64700EEF5E0 /* QinCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEB5C25250EE64700EEF5E0 /* QinCoverView.swift */; };
-		2BEB5C27250EE64700EEF5E0 /* QinCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEB5C25250EE64700EEF5E0 /* QinCoverView.swift */; };
 		2BEC68182690664200772DB1 /* SideBarNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEC68172690664200772DB1 /* SideBarNavigationView.swift */; };
 		2BEC681A269068AF00772DB1 /* QinNavigationBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ABED625387F5D00B9A15C /* QinNavigationBarTitleView.swift */; };
 		2BEC681D26906AC900772DB1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEC681C26906AC900772DB1 /* LoginView.swift */; };
@@ -437,7 +435,6 @@
 		2BE66D98267014D800367778 /* CommentDeleteResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDeleteResponse.swift; sourceTree = "<group>"; };
 		2BE66D9B267014FF00367778 /* CommentAddRespone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAddRespone.swift; sourceTree = "<group>"; };
 		2BE66D9E267015E400367778 /* CommentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAction.swift; sourceTree = "<group>"; };
-		2BEB5C25250EE64700EEF5E0 /* QinCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QinCoverView.swift; sourceTree = "<group>"; };
 		2BEC68172690664200772DB1 /* SideBarNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarNavigationView.swift; sourceTree = "<group>"; };
 		2BEC681C26906AC900772DB1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		2BED107F253439B4005A14AA /* LyricView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricView.swift; sourceTree = "<group>"; };
@@ -523,7 +520,6 @@
 			children = (
 				2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */,
 				2B69AA96273D7C9D00DD824B /* QinBackwardButton.swift */,
-				2BEB5C25250EE64700EEF5E0 /* QinCoverView.swift */,
 				2B69AA99273D7D0700DD824B /* QinEditButton.swift */,
 				2BCCB29424DC5A2B004CAD67 /* QinImageView.swift */,
 				2B6547E0274104D500AB0E22 /* QinKFImageView.swift */,
@@ -1054,7 +1050,6 @@
 				EFF30732266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift in Sources */,
 				2BC8316925710ED4003D8D10 /* CreatedPlaylistView.swift in Sources */,
 				EF474B1D2660EECE0021F3D1 /* LogoutResponse.swift in Sources */,
-				2BEB5C26250EE64700EEF5E0 /* QinCoverView.swift in Sources */,
 				2BE66D7E266FEA8C00367778 /* RecommendPlaylistResponse.swift in Sources */,
 				2BCCB32024DC7BCC004CAD67 /* AppCommand.swift in Sources */,
 				EF28DA25266E065400CE0369 /* PlaylistListResponse.swift in Sources */,
@@ -1261,7 +1256,6 @@
 				2B792B1A269B5C3A00788CE1 /* CloudUploadInfoResponse.swift in Sources */,
 				2B8EFEB6266BDB0D00FF42EF /* ArtistMVAction.swift in Sources */,
 				2BE66D9D267014FF00367778 /* CommentAddRespone.swift in Sources */,
-				2BEB5C27250EE64700EEF5E0 /* QinCoverView.swift in Sources */,
 				EFF613E126972D4F00BCA300 /* UserCloudResponse.swift in Sources */,
 				EFDB8B5326609BB0005C3AEE /* ArtistHotSongsResponse.swift in Sources */,
 				2B69AA9B273D7D0700DD824B /* QinEditButton.swift in Sources */,

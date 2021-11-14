@@ -46,7 +46,7 @@ extension AppState {
             case dark, light, system
         }
         var accountBehavior = AccountBehavior.login
-        @UserDefault(key: "coverShape") var coverShape: NEUCoverShape = .circle
+        @UserDefault(key: "coverShape") var coverShape: QinCoverShape = .circle
         var loginRequesting = false
         @UserDefault(key: "loginUser") var loginUser: User? = nil
         @UserDefault(key: "playMode") var playMode: PlayMode = .playlist
@@ -191,6 +191,18 @@ struct UserDefaultPublisher<T: Codable> {
             projectedValue = .init((try? JSONDecoder().decode(T.self, from: data)) ?? wrappedValue)
         }else {
             projectedValue = .init(wrappedValue)
+        }
+    }
+}
+
+enum QinCoverShape: Int, CaseIterable, Codable {
+    case circle = 0 ,rectangle
+    var systemName: String {
+        switch self {
+        case .circle:
+            return "circle"
+        case .rectangle:
+            return "rectangle"
         }
     }
 }
