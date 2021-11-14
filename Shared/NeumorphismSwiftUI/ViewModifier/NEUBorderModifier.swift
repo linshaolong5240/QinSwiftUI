@@ -93,9 +93,16 @@ fileprivate struct NEUBorderModifierDEBUGView: View, NEUStyle {
                 LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
                     .frame(height: 30)
-                HStack {
+                HStack(spacing: 20) {
                     LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
                         .modifier(NEUBorderModifier(shape: Capsule(), style: .convex))
+                        .frame(width: 50, height: 50)
+                    LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: Capsule(), style: .convex))
+                        .frame(width: 150, height: 50)
+
+                    LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), style: .convex))
                         .frame(width: 50, height: 50)
                 }
                 Spacer()
