@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 import struct Kingfisher.DownsamplingImageProcessor
 
-enum QinContentSize {
+enum QinImageSize {
     case little
     case small
     case medium
@@ -35,7 +35,7 @@ struct QinImageView<S: Shape>: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let url: String?
-    let size: QinContentSize
+    let size: QinImageSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -43,7 +43,7 @@ struct QinImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: QinContentSize = .medium,
+         size: QinImageSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat,
@@ -81,7 +81,7 @@ struct QinImageView<S: Shape>: View {
 
 struct QinLightImageView<S: Shape>: View {
     let url: String?
-    let size: QinContentSize
+    let size: QinImageSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -89,7 +89,7 @@ struct QinLightImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: QinContentSize = .medium,
+         size: QinImageSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat = 10,
@@ -130,7 +130,7 @@ struct QinLightImageView<S: Shape>: View {
                     radius: 10,
                     x: innerPadding,
                     y: innerPadding)
-            Image("DefaultCover")
+            Image("PlaceholderImage")
                 .resizable()
                 .renderingMode(.original)
                 .aspectRatio(contentMode: .fill)
@@ -168,7 +168,7 @@ struct QinLightImageView<S: Shape>: View {
 
 struct QinDarkImageView<S: Shape>: View {
     let url: String?
-    let size: QinContentSize
+    let size: QinImageSize
     let innerShape: S
     let outerShape: S
     let innerPadding: CGFloat
@@ -176,7 +176,7 @@ struct QinDarkImageView<S: Shape>: View {
     let isOrigin: Bool
     
     init(url: String?,
-         size: QinContentSize = .medium,
+         size: QinImageSize = .medium,
          innerShape: S,
          outerShape: S,
          innerPadding: CGFloat = 10,
@@ -233,7 +233,7 @@ struct QinDarkImageView<S: Shape>: View {
                     radius: 10,
                     x: innerPadding,
                     y: innerPadding)
-            Image("DefaultCover")
+            Image("PlaceholderImage")
                 .resizable()
                 .renderingMode(.original)
                 .aspectRatio(contentMode: .fill)
@@ -275,7 +275,7 @@ struct NEUImageView_Previews: PreviewProvider {
             NEUBackgroundView()
             VStack(spacing: 50) {
                 HStack {
-                    ForEach(0 ..< 6) { item in
+                    ForEach(0 ..< 3) { item in
                         NEUCoverView(url: "https://p2.music.126.net/-SbVXET_BMXEDRqRGlbfLA==/1296324209218955.jpg",
                                      coverShape: .rectangle,
                                  size: .little)

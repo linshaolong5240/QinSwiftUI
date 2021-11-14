@@ -82,7 +82,7 @@ struct UserPlaylistRowView: View {
     
     var body: some View {
         HStack {
-            NEUCoverView(url: playlist.coverImgUrl, coverShape: .rectangle, size: .little)
+            QinKFImageView(playlist.coverImgUrl, type: .little)
             VStack(alignment: .leading) {
                 Text(playlist.name)
                     .foregroundColor(.mainText)

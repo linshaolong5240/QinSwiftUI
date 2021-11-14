@@ -644,7 +644,7 @@ struct PlayerPlayRequestCommand: AppCommand {
     func execute(in store: Store) {
         if let picUrl =  DataManager.shared.getSong(id: id)?.album?.picUrl {//预先下载播放器专辑图片，避免点击专辑图片动画过渡不自然
             if let url = URL(string: picUrl) {
-                let  _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinContentSize.large.width * 2, height: QinContentSize.large.width * 2)))]) { (result) in
+                let  _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinImageSize.large.width * 2, height: QinImageSize.large.width * 2)))]) { (result) in
                     switch result {
                     case .success(_):
                         break
@@ -652,7 +652,7 @@ struct PlayerPlayRequestCommand: AppCommand {
                         break
                     }
                 }
-                let  _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinContentSize.medium.width * 2, height: QinContentSize.medium.width * 2)))]) { (result) in
+                let  _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinImageSize.medium.width * 2, height: QinImageSize.medium.width * 2)))]) { (result) in
                     switch result {
                     case .success(_):
                         break

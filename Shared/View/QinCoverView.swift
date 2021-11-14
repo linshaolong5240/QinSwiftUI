@@ -61,7 +61,7 @@ enum NEUCoverShape: Int, CaseIterable, Codable {
 struct NEUCoverView: View {
     let url: String?
     let coverShape: NEUCoverShape
-    let size: QinContentSize
+    let size: QinImageSize
     var innerPadding: CGFloat {
         switch coverShape {
         case .circle:

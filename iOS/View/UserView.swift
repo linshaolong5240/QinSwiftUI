@@ -29,7 +29,7 @@ struct UserView: View {
                     }
                     .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                 }
-                NEUCoverView(url: user?.profile.avatarUrl, coverShape: .rectangle, size: .medium)
+                QinKFImageView(user?.profile.avatarUrl, type: .medium)
                 if let uid = user?.profile.userId {
                     Text("uid: \(uid)")
                 }

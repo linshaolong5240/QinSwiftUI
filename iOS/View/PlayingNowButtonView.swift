@@ -35,7 +35,7 @@ struct PlayingNowButtonView: View {
                       .padding(3)
                       .rotationEffect(.degrees(player.loadTime))
                 }else {
-                    Image("DefaultCover")
+                    Image("PlaceholderImage")
                         .resizable()
                         .renderingMode(.original)
                         .aspectRatio(contentMode: .fill)

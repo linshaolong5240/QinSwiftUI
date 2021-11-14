@@ -32,7 +32,7 @@ struct DescriptionView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            NEUCoverView(url: configuration.picUrl, coverShape: .rectangle, size: .medium)
+            QinKFImageView(configuration.picUrl, type: .medium)
             VStack(alignment: .leading) {
                 Text(configuration.name)
                     .fontWeight(.bold)

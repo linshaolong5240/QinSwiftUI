@@ -94,6 +94,7 @@ struct SearchPlaylistResultView: View {
                     }
                 }
             }
+            .padding(.vertical)
         }
     }
 }
@@ -103,7 +104,7 @@ struct SearchPlaylistResultRowView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            NEUCoverView(url: viewModel.coverImgUrl, coverShape: .rectangle, size: .little)
+            QinKFImageView(viewModel.coverImgUrl, type: .little)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainText)
@@ -132,6 +133,7 @@ struct SearchSongResultView: View {
                             .padding(.horizontal)
                         }
                     }
+                    .padding(.vertical)
                 }
             }
         }

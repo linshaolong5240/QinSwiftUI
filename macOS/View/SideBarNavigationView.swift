@@ -25,7 +25,7 @@ struct SideBarNavigationView: View {
                         QinBackgroundView()
                         List {
                             VStack(alignment: .center, spacing: 20) {
-                                NEUCoverView(url: user?.profile.avatarUrl, coverShape: .rectangle, size: .small)
+                                QinKFImageView(user?.profile.avatarUrl, type: .small)
                                 if let name = user?.profile.nickname {
                                     Text(name)
                                 }

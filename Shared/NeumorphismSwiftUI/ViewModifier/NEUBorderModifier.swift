@@ -38,7 +38,7 @@ public struct NEUBorderModifier<S>: ViewModifier, NEUStyle where S: Shape {
             case .concave:
                 content
                     .mask(shape)
-                shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+                shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: neuBorderWidth)
             case .convex:
                 ZStack {
                     content
@@ -69,7 +69,6 @@ fileprivate struct NEUBorderModifierDEBUGView: View, NEUStyle {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        let backgroundColors: [Color] = neuBacgroundColors(colorScheme)
         let orangeColors: [Color] = neuOrangeColors(colorScheme)
         
         ZStack {
