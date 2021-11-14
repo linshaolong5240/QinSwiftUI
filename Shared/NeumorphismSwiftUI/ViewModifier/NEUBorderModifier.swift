@@ -93,16 +93,37 @@ fileprivate struct NEUBorderModifierDEBUGView: View, NEUStyle {
                 LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
                     .frame(height: 30)
-                HStack(spacing: 20) {
-                    LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                HStack(spacing: 30) {
+                    LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: Capsule(), style: .concave))
+                        .frame(width: 50, height: 50)
+                    LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: Capsule(), style: .concave))
+                        .frame(width: 150, height: 50)
+                    LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), style: .concave))
+                        .frame(width: 50, height: 50)
+                }
+                HStack(spacing: 30) {
+                    LinearGradient(gradient: Gradient(colors: orangeColors), startPoint: .topLeading, endPoint: .bottomTrailing)
                         .modifier(NEUBorderModifier(shape: Capsule(), style: .convex))
                         .frame(width: 50, height: 50)
-                    LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    LinearGradient(gradient: Gradient(colors: orangeColors), startPoint: .topLeading, endPoint: .bottomTrailing)
                         .modifier(NEUBorderModifier(shape: Capsule(), style: .convex))
                         .frame(width: 150, height: 50)
-
-                    LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    LinearGradient(gradient: Gradient(colors: orangeColors), startPoint: .topLeading, endPoint: .bottomTrailing)
                         .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), style: .convex))
+                        .frame(width: 50, height: 50)
+                }
+                HStack(spacing: 30) {
+                    LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: Capsule(), style: .unevenness))
+                        .frame(width: 50, height: 50)
+                    LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: Capsule(), style: .unevenness))
+                        .frame(width: 150, height: 50)
+                    LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), style: .unevenness))
                         .frame(width: 50, height: 50)
                 }
                 Spacer()
