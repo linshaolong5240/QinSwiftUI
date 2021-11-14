@@ -532,8 +532,8 @@
 		2B3356EF27404AFD00B73359 /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
-				2B3356F027404B3000B73359 /* NEUShadowModifier.swift */,
 				2B3356F727405A8400B73359 /* NEUBorderModifier.swift */,
+				2B3356F027404B3000B73359 /* NEUShadowModifier.swift */,
 			);
 			path = ViewModifier;
 			sourceTree = "<group>";

@@ -9,26 +9,55 @@ import SwiftUI
 
 public struct NEUBorderModifier<S>: ViewModifier, NEUStyle where S: Shape {
     
+    enum NEUBorderStyle{
+        case concave
+        case convex
+        case unevenness
+    }
+    
     @Environment(\.colorScheme) private var colorScheme
 
     let shape: S
     var borderWidth: CGFloat?
+    let style: NEUBorderStyle
     
-    init(shape: S, borderWidth: CGFloat? = nil) {
+    init(shape: S, borderWidth: CGFloat? = nil, style: NEUBorderStyle = .unevenness) {
         self.shape = shape
         self.borderWidth = borderWidth
+        self.style = style
     }
 
     public func body(content: Content) -> some View {
-        let backgroundColors: [Color] = neuBacgroundColors(colorScheme).reversed()
-        
         GeometryReader { geometry in
+            let backgroundColors: [Color] = neuBacgroundColors(colorScheme)
             let neuBorderWidth = borderWidth ?? geometry.size.minLength / 15
-            
-            content
-                .mask(shape)
-                .modifier(NEUShadowModifier())
-            shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+            let topLeftStrokeColor: Color = colorScheme == .light ? .white : .white.opacity(0.33)
+            let topLeftstrokeWidth: CGFloat = geometry.size.minLength / 18
+
+            switch style {
+            case .concave:
+                content
+                    .mask(shape)
+                shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+            case .convex:
+                ZStack {
+                    content
+                        .mask(shape)
+                        .modifier(NEUShadowModifier())
+                    shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+                    shape.stroke(topLeftStrokeColor, lineWidth: topLeftstrokeWidth)
+                        .blur(radius: 1)
+                        .offset(x: topLeftstrokeWidth / 2, y: topLeftstrokeWidth / 2)
+                        .mask(shape.padding(neuBorderWidth / 2))
+                }
+            case .unevenness:
+                ZStack {
+                    content
+                        .mask(shape)
+                        .modifier(NEUShadowModifier())
+                    shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
+                }
+            }
         }
     }
 }
@@ -40,19 +69,36 @@ fileprivate struct NEUBorderModifierDEBUGView: View, NEUStyle {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
+        let backgroundColors: [Color] = neuBacgroundColors(colorScheme)
         let orangeColors: [Color] = neuOrangeColors(colorScheme)
         
         ZStack {
             NEUBackgroundView()
             VStack(spacing: 30) {
                 LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .modifier(NEUBorderModifier(shape: Capsule(), style: .concave))
+                    .frame(height: 30)
+                LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), style: .concave))
+                    .frame(height: 30)
+                LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .modifier(NEUBorderModifier(shape: Capsule(), style: .convex))
+                    .frame(height: 30)
+                LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), style: .convex))
+                    .frame(height: 30)
+                LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .modifier(NEUBorderModifier(shape: Capsule()))
                     .frame(height: 30)
-                
                 LinearGradient(gradient: Gradient(colors: orangeColors.reversed()), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
                     .frame(height: 30)
-
+                HStack {
+                    LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .modifier(NEUBorderModifier(shape: Capsule(), style: .convex))
+                        .frame(width: 50, height: 50)
+                }
+                Spacer()
             }
             .padding()
         }
