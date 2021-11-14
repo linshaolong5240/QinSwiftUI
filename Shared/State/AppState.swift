@@ -194,15 +194,3 @@ struct UserDefaultPublisher<T: Codable> {
         }
     }
 }
-
-enum QinCoverShape: Int, CaseIterable, Codable {
-    case circle = 0 ,rectangle
-    var systemName: String {
-        switch self {
-        case .circle:
-            return "circle"
-        case .rectangle:
-            return "rectangle"
-        }
-    }
-}

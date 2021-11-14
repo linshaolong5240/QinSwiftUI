@@ -7,14 +7,14 @@
 
 import SwiftUI
 
+public enum NEUBorderStyle{
+    case concave
+    case convex
+    case unevenness
+}
+
 public struct NEUBorderModifier<S>: ViewModifier, NEUStyle where S: Shape {
-    
-    enum NEUBorderStyle{
-        case concave
-        case convex
-        case unevenness
-    }
-    
+
     @Environment(\.colorScheme) private var colorScheme
 
     let shape: S

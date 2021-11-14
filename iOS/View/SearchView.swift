@@ -104,7 +104,7 @@ struct SearchPlaylistResultRowView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            QinKFImageView(viewModel.coverImgUrl, type: .little)
+            QinCoverView(viewModel.coverImgUrl, style: .little)
             VStack(alignment: .leading) {
                 Text(viewModel.name)
                     .foregroundColor(Color.mainText)

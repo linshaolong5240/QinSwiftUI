@@ -32,7 +32,7 @@ struct DescriptionView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            QinKFImageView(configuration.picUrl, type: .medium)
+            QinCoverView(configuration.picUrl, style: .medium)
             VStack(alignment: .leading) {
                 Text(configuration.name)
                     .fontWeight(.bold)

@@ -29,7 +29,7 @@ struct UserView: View {
                     }
                     .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
                 }
-                QinKFImageView(user?.profile.avatarUrl, type: .medium)
+                QinCoverView(user?.profile.avatarUrl, style: .medium)
                 if let uid = user?.profile.userId {
                     Text("uid: \(uid)")
                 }

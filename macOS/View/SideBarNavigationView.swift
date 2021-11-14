@@ -25,7 +25,7 @@ struct SideBarNavigationView: View {
                         QinBackgroundView()
                         List {
                             VStack(alignment: .center, spacing: 20) {
-                                QinKFImageView(user?.profile.avatarUrl, type: .small)
+                                QinCoverView(user?.profile.avatarUrl, style: .small)
                                 if let name = user?.profile.nickname {
                                     Text(name)
                                 }

@@ -99,7 +99,7 @@ class NeteaseCloudMusicApi {
                 print(str)
                 return $0.data
             }
-            .decode(type: action.responseType, decoder: JSONDecoder())
+            .decode(style: action.responseType, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
         #else
@@ -125,7 +125,7 @@ class NeteaseCloudMusicApi {
                 print(String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString)
                 return $0.data
             }
-            .decode(type: action.responseType, decoder: JSONDecoder())
+            .decode(style: action.responseType, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
         #else
