@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NeumorphismSwiftUI
 
 struct SubedPlaylistView: View {
     let playlist: [PlaylistResponse]

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import NeumorphismSwiftUI
 
 struct QinSFView: View {
     let systemName: String

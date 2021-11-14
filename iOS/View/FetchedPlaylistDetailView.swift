@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import NeumorphismSwiftUI
 import Combine
 
 struct FetchedPlaylistDetailView: View {

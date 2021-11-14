@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NeumorphismSwiftUI
 
 struct DiscoverView: View {
     enum DiscoverType: String, CaseIterable {

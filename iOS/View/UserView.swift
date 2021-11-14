@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import NeumorphismSwiftUI
 
 struct UserView: View {
     @EnvironmentObject var store: Store

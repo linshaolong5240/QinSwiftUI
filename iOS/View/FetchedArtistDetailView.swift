@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NeumorphismSwiftUI
 
 struct FetchedArtistDetailView: View {
     @State private var show: Bool = false
