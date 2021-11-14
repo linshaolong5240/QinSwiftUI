@@ -12,16 +12,23 @@ public struct NEUBorderModifier<S>: ViewModifier, NEUStyle where S: Shape {
     @Environment(\.colorScheme) private var colorScheme
 
     let shape: S
+    var borderWidth: CGFloat?
+    
+    init(shape: S, borderWidth: CGFloat? = nil) {
+        self.shape = shape
+        self.borderWidth = borderWidth
+    }
 
     public func body(content: Content) -> some View {
         let backgroundColors: [Color] = neuBacgroundColors(colorScheme).reversed()
         
         GeometryReader { geometry in
-            let borderWidth: CGFloat = geometry.size.minLength / 10
+            let neuBorderWidth = borderWidth ?? geometry.size.minLength / 15
+            
             content
                 .mask(shape)
                 .modifier(NEUShadowModifier())
-            shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: borderWidth))
+            shape.stroke(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: neuBorderWidth))
         }
     }
 }

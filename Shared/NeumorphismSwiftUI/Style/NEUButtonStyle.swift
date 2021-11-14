@@ -43,7 +43,7 @@ public struct NEUDefaultButtonStyle<S: Shape>: NEUButtonStyle {
     }
 }
 
-public struct NEUUnevennessButtonStyle<S: Shape>: NEUButtonStyle {
+public struct NEUBorderButtonStyle<S: Shape>: NEUButtonStyle {
     
     @Environment(\.colorScheme) private var colorScheme
     
@@ -61,19 +61,17 @@ public struct NEUUnevennessButtonStyle<S: Shape>: NEUButtonStyle {
             .contentShape(shape)
             .background(
                 GeometryReader { geometry in
-                    let minLength: CGFloat = min(geometry.size.width, geometry.size.height)
-                    let padding: CGFloat = minLength / 15.0
                     
                     let backgroundColors: [Color] = colorScheme == .light ? Color.lightBackgroundColors : Color.darkBackgroundColors
                     let pressedBackgroundColors: [Color] = backgroundColors.reversed()
                     
-                    shape
-                        .fill(LinearGradient(gradient: Gradient(colors: pressedBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .modifier(NEUShadowModifier())
                     if !configuration.isPressed && !toggle {
-                        shape
-                            .fill(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .padding(padding)
+                        LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                            .modifier(NEUBorderModifier(shape: shape))
+                    } else {
+                        LinearGradient(gradient: Gradient(colors: pressedBackgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                            .mask(shape)
+
                     }
                 }
             )
@@ -166,25 +164,25 @@ fileprivate struct NEUButtonStyleDebugView: View {
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
-                    .buttonStyle(NEUUnevennessButtonStyle(shape: Circle()))
+                    .buttonStyle(NEUBorderButtonStyle(shape: Circle()))
                     Button(action: {
                         onOff.toggle()
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
-                    .buttonStyle(NEUUnevennessButtonStyle(shape: Circle(), toggle: onOff))
+                    .buttonStyle(NEUBorderButtonStyle(shape: Circle(), toggle: onOff))
                     Button(action: {
                         onOff.toggle()
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
-                    .buttonStyle(NEUUnevennessButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
+                    .buttonStyle(NEUBorderButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous)))
                     Button(action: {
                         onOff.toggle()
                     }) {
                         QinSFView(systemName: "heart.fill", size: .medium)
                     }
-                    .buttonStyle(NEUUnevennessButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), toggle: onOff))
+                    .buttonStyle(NEUBorderButtonStyle(shape: RoundedRectangle(cornerRadius: 10, style: .continuous), toggle: onOff))
 
                 }
                 
