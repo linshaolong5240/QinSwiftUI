@@ -142,7 +142,7 @@ struct CommentRowView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            QinCoverView(viewModel.avatarUrl, style: .little)
+            QinCoverView(viewModel.avatarUrl, style: QinCoverStyle(size: .little, shape: .rectangle))
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
                     Text(viewModel.nickname)

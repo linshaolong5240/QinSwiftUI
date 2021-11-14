@@ -41,7 +41,7 @@ struct CommonGridItemView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            QinCoverView(configuration.picUrl, style: .small)
+            QinCoverView(configuration.picUrl, style: QinCoverStyle(size: .small, shape: .rectangle))
                 .padding()
             Group {
                 Text(configuration.name ?? "")

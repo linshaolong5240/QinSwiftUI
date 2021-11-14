@@ -9,6 +9,21 @@ import SwiftUI
 import Kingfisher
 import struct Kingfisher.DownsamplingImageProcessor
 
+struct AnyShape: Shape {
+    init<S: Shape>(_ wrapped: S) {
+        _path = { rect in
+            let path = wrapped.path(in: rect)
+            return path
+        }
+    }
+
+    func path(in rect: CGRect) -> Path {
+        return _path(rect)
+    }
+
+    private let _path: (CGRect) -> Path
+}
+
 enum QinCoverShape: Int, CaseIterable, Codable {
     case circle, rectangle
     var systemName: String {
@@ -37,10 +52,13 @@ enum QinCoverSize: Int, CaseIterable, Identifiable {
         }
     }
     
+    var width: CGFloat { size.width }
+    
+    var height: CGFloat { size.height }
+
     var minLength: CGFloat { min(size.width, size.height) }
     
     var cornerRadius: CGFloat { minLength / 4 }
-    var borderWidth: CGFloat { minLength / 10 }
 }
 
 struct QinCoverStyle {
@@ -48,10 +66,10 @@ struct QinCoverStyle {
     var shape: QinCoverShape
     var type: NEUBorderStyle = .unevenness
     
-    var cornerRadius: CGFloat { size.minLength / 4 }
+    var cornerRadius: CGFloat { size.cornerRadius }
     var borderWidth: CGFloat {
         switch shape {
-        case .circle:       return size.minLength / 15
+        case .circle:       return size.minLength / 20
         case .rectangle:    return size.minLength / 10
         }
     }
@@ -60,14 +78,22 @@ struct QinCoverStyle {
 struct QinCoverView: View {
     
     let urlString: String?
-    let style: QinCoverSize
+    let style: QinCoverStyle
+    
+    func getshape() -> AnyShape {
+        switch style.shape {
+        case .circle: return AnyShape(Circle())
+        case .rectangle: return AnyShape(RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous))
+        }
+    }
 
-    init(_ urlString: String?, style: QinCoverSize) {
+    init(_ urlString: String?, style: QinCoverStyle) {
         self.urlString = urlString
         self.style = style
     }
     
     var body: some View {
+        let shape: AnyShape = getshape()
         if let urlString = urlString {
             KFImage(URL(string: urlString))
                 .placeholder(
@@ -76,11 +102,10 @@ struct QinCoverView: View {
                             .resizable()
                             .renderingMode(.original)
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: style.minLength,
-                                   height: style.minLength)
+                            .frame(width: style.size.width, height: style.size.height)
                     }
                 )
-                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: style.minLength, height: style.minLength)))
+                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: style.size.width, height: style.size.height)))
               .fade(duration: 0.25)
               .onProgress { receivedSize, totalSize in  }
               .onSuccess { result in  }
@@ -88,18 +113,16 @@ struct QinCoverView: View {
               .resizable()
               .renderingMode(.original)
               .aspectRatio(contentMode: .fill)
-              .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous), borderWidth: style.borderWidth, style: .unevenness))
-              .frame(width: style.minLength, height: style.minLength)
+              .modifier(NEUBorderModifier(shape: shape, borderWidth: style.borderWidth, style: style.type))
+              .frame(width: style.size.width, height: style.size.height)
         } else {
             Image("PlaceholderImage")
                 .resizable()
                 .renderingMode(.original)
                 .aspectRatio(contentMode: .fill)
-                .frame(width: style.minLength,
-                       height: style.minLength)
-                .modifier(NEUBorderModifier(shape: RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous), borderWidth: style.borderWidth, style: .unevenness))
-                .frame(width: style.minLength,
-                       height: style.minLength)
+                .frame(width: style.size.width, height: style.size.height)
+                .modifier(NEUBorderModifier(shape: shape, borderWidth: style.borderWidth, style: style.type))
+                .frame(width: style.size.width, height: style.size.height)
         }
     }
 }
@@ -115,7 +138,9 @@ fileprivate struct QinImageBorderDEBUGView: View {
 //                let urlString: String? = nil
                 ForEach(QinCoverSize.allCases) { item in
                     HStack(spacing: 20) {
-                        QinCoverView(urlString, style: item)
+//                        QinCoverView(urlString, style: QinCoverStyle(size: item, shape: .rectangle))
+                        QinCoverView(urlString, style: QinCoverStyle(size: item, shape: .circle, type: .convexFlat))
+
                     }
                 }
             }

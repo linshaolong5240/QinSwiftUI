@@ -82,7 +82,7 @@ struct UserPlaylistRowView: View {
     
     var body: some View {
         HStack {
-            QinCoverView(playlist.coverImgUrl, style: .little)
+            QinCoverView(playlist.coverImgUrl, style: QinCoverStyle(size: .little, shape: .rectangle))
             VStack(alignment: .leading) {
                 Text(playlist.name)
                     .foregroundColor(.mainText)
