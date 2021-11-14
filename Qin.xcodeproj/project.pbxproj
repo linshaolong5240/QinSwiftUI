@@ -13,6 +13,7 @@
 		2B066912253177EF0007053C /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B066911253177EF0007053C /* DiscoverView.swift */; };
 		2B0E013A2741408A00F7C1DE /* NeumorphismSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B0E01392741408A00F7C1DE /* NeumorphismSwiftUI */; };
 		2B0E013C274140B400F7C1DE /* NeumorphismSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B0E013B274140B400F7C1DE /* NeumorphismSwiftUI */; };
+		2B0E013E27414B8400F7C1DE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2B0E013D27414B8400F7C1DE /* README.md */; };
 		2B1197FD257CA64100A67E56 /* PlaylistSongsManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1197FC257CA64100A67E56 /* PlaylistSongsManageView.swift */; };
 		2B1ABED325387E8800B9A15C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ABED225387E8800B9A15C /* LoginView.swift */; };
 		2B1ABED725387F5D00B9A15C /* QinNavigationBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ABED625387F5D00B9A15C /* QinNavigationBarTitleView.swift */; };
@@ -295,6 +296,7 @@
 		2B01EFE0257BE6FC00BEBD54 /* PlaylistManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistManageView.swift; sourceTree = "<group>"; };
 		2B0668FA25305AE40007053C /* SubedAlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubedAlbumsView.swift; sourceTree = "<group>"; };
 		2B066911253177EF0007053C /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
+		2B0E013D27414B8400F7C1DE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2B1197FC257CA64100A67E56 /* PlaylistSongsManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSongsManageView.swift; sourceTree = "<group>"; };
 		2B1ABED225387E8800B9A15C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		2B1ABED625387F5D00B9A15C /* QinNavigationBarTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QinNavigationBarTitleView.swift; sourceTree = "<group>"; };
@@ -500,6 +502,7 @@
 		2BCCB24824DC566F004CAD67 = {
 			isa = PBXGroup;
 			children = (
+				2B0E013D27414B8400F7C1DE /* README.md */,
 				2BCCB24D24DC566F004CAD67 /* Shared */,
 				2BCCB25724DC5671004CAD67 /* iOS */,
 				2BCCB25E24DC5671004CAD67 /* macOS */,
@@ -868,6 +871,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B0E013E27414B8400F7C1DE /* README.md in Resources */,
 				2BCCB26524DC5671004CAD67 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
