@@ -12,7 +12,7 @@ public struct ArtistAlbumsResponse: NeteaseCloudMusicResponse {
         public let alias: [String]
         public let artist: ArtistResponse
         public let artists: [ArtistResponse]
-        public let blurPicUrl: String
+        public let blurPicUrl: String?
         public let briefDesc: String?
         public let commentThreadId: String
         public let company: String?
