@@ -1008,7 +1008,7 @@ struct SearchRequestCommand: AppCommand {
                         store.dispatch(.searchSongRequestDone(result: .failure(AppError.searchError)))
                         return
                     }
-                    store.dispatch(.searchSongRequestDone(result: .success(searchSongResponse.result.songs.map(\.id))))
+                    store.dispatch(.searchSongRequestDone(result: .success(searchSongResponse.result.songs?.map(\.id) ?? [])))
                 }.store(in: &store.cancellableSet)
         }
         if type == .playlist {

@@ -38,9 +38,9 @@ public struct SearchSongResponse: NeteaseCloudMusicResponse {
             public let rUrl: String?
             public let status: Int
         }
-        public let hasMore: Bool
-        public let songCount: Int
-        public let songs: [Song]
+        public let hasMore: Bool?
+        public let songCount: Int?
+        public let songs: [Song]?
     }
     public let code: Int
     public let result: Result
