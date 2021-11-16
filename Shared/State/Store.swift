@@ -211,7 +211,9 @@ class Store: ObservableObject {
         case .commentMusicRequestDone(let result):
             switch result {
             case .success(let commentSongResponse):
-                appState.comment.hotComments = commentSongResponse.hotComments
+                if let hotComments = commentSongResponse.hotComments {
+                    appState.comment.hotComments = hotComments
+                }
                 appState.comment.comments = commentSongResponse.comments
 //                appState.comment.hotComments.append(contentsOf: result.0.map({CommentViewModel($0)}))
 //                appState.comment.comments.append(contentsOf: result.1.map({CommentViewModel($0)}))
