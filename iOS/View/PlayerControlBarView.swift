@@ -70,7 +70,7 @@ struct PlayerControlBarView: View {
         }
         .padding(.trailing)
         .background(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
-        .mask(Capsule())
+        .mask(UIDevice.current.hasNotch ? AnyShape(Capsule()) : AnyShape(Rectangle()))
     }
 }
 #if DEBUG
