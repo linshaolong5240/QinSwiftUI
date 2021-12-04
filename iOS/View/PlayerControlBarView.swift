@@ -9,7 +9,7 @@
 import SwiftUI
 import NeumorphismSwiftUI
 
-struct PlayerControlBarView: View {
+struct PlayerControlBarView: View, NEUStyle {
     
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var store: Store
@@ -17,11 +17,10 @@ struct PlayerControlBarView: View {
     
     private var playing: AppState.Playing { store.appState.playing }
 
-    private var backgroundColors: [Color] {
-        colorScheme == .light ? [Color(#colorLiteral(red: 0.937254902, green: 0.9411764706, blue: 0.9529411765, alpha: 1)), Color(#colorLiteral(red: 0.9019607843, green: 0.9098039216, blue: 0.9254901961, alpha: 1)), Color(#colorLiteral(red: 0.8862745098, green: 0.8980392157, blue: 0.9137254902, alpha: 1))] : [Color(#colorLiteral(red: 0.2352941176, green: 0.2509803922, blue: 0.2666666667, alpha: 1)), Color(#colorLiteral(red: 0.1647058824, green: 0.1725490196, blue: 0.1882352941, alpha: 1)), Color(#colorLiteral(red: 0.09411764706, green: 0.1019607843, blue: 0.1098039216, alpha: 1))]
-    }
-
     var body: some View {
+        let backgroundColors: [Color] = neuBacgroundColors(colorScheme)
+        let borderColors: [Color] = neuBorderColors(colorScheme)
+
         HStack {
             ZStack {
                 ProgressView(value: player.loadPercent)
@@ -69,8 +68,13 @@ struct PlayerControlBarView: View {
             .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
         }
         .padding(.trailing)
-        .background(LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing))
-        .mask(UIDevice.current.hasNotch ? AnyShape(Capsule()) : AnyShape(Rectangle()))
+        .background(
+            VStack(spacing: 0) {
+                LinearGradient(gradient: Gradient(colors: borderColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .frame(height: 6)
+                LinearGradient(gradient: Gradient(colors: backgroundColors), startPoint: .topLeading, endPoint: .bottomTrailing)
+            }
+        )
     }
 }
 #if DEBUG

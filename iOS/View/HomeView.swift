@@ -50,18 +50,12 @@ struct HomeView: View {
                                     SubedAlbumsView(albums: album.albumSublist)
                                     ArtistSublistView(artists: artist.artistSublist)
                                 }
-                                .padding(.bottom, 100)
                             }
+                            PlayerControlBarView()
                         }else {
                             Spacer()
                         }
                     }
-                    .overlay(
-                        VStack {
-                            Spacer()
-                            PlayerControlBarView()
-                        }
-                    )
                     .edgesIgnoringSafeArea(.bottom)
                 }else {
                     LoginView()

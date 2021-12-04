@@ -67,7 +67,8 @@ public struct CommentSongResponse: NeteaseCloudMusicResponse {
         public let status, time: Int
         public let user: User
     }
-    public let cnum, code: Int
+    public let cnum: Int?
+    public let code: Int
 //    public let commentBanner: Any?
     public let comments: [Comment]
     public let hotComments: [Comment]?
