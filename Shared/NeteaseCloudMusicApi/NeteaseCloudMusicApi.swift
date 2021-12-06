@@ -91,7 +91,7 @@ class NeteaseCloudMusicApi {
                 }
             }
         }
-        #if false
+        #if DEBUG
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
@@ -99,7 +99,7 @@ class NeteaseCloudMusicApi {
                 print(str)
                 return $0.data
             }
-            .decode(style: action.responseType, decoder: JSONDecoder())
+            .decode(type: action.responseType, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
         #else

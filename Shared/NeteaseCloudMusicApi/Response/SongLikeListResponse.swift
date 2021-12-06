@@ -8,7 +8,8 @@
 import Foundation
 
 public struct SongLikeListResponse: NeteaseCloudMusicResponse {
-    public let checkPoint: Int
-    public let code: Int
-    public let ids: [Int]
+    public var checkPoint: Int
+    public var code: Int
+    public var ids: [Int]
+    public var message: String?
 }

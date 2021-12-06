@@ -9,23 +9,24 @@ import Foundation
 
 public struct SongURLResponse: NeteaseCloudMusicResponse {
     public struct SongData: Codable {
-        public let br: Int
-        public let canExtend: Bool
-        public let code: Int
-//        public let encodeType: Any?
-        public let expi, fee, flag: Int
-//        public let freeTimeTrialPrivilege: FreeTimeTrialPrivilege
-//        public let freeTrialInfo: FreeTrialInfo
-//        public let freeTrialPrivilege: FreeTrialPrivilege
-        public let gain, id: Int
-//        public let level: Any?
-        public let md5: String?
-        public let payed, size: Int
-        public let type: String?
-//        public let uf: Any?
-        public let url: String?
-        public let urlSource: Int
+        public var br: Int
+        public var canExtend: Bool
+        public var code: Int
+//        public var encodeType: Any?
+        public var expi, fee, flag: Int
+//        public var freeTimeTrialPrivilege: FreeTimeTrialPrivilege
+//        public var freeTrialInfo: FreeTrialInfo
+//        public var freeTrialPrivilege: FreeTrialPrivilege
+        public var gain, id: Int
+//        public var level: Any?
+        public var md5: String?
+        public var payed, size: Int
+        public var type: String?
+//        public var uf: Any?
+        public var url: String?
+        public var urlSource: Int
     }
-    public let code: Int
-    public let data: [SongData]
+    public var code: Int
+    public var data: [SongData]
+    public var message: String?
 }

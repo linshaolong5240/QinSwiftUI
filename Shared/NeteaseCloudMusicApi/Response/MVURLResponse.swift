@@ -9,19 +9,20 @@ import Foundation
 
 public struct MVURLResponse: NeteaseCloudMusicResponse {
     public struct MVURLData: Codable {
-        public let code: Int
-        public let expi: Int
-        public let fee: Int
-        public let id: Int
-        public let md5: String
-        public let msg: String
-        public let mvFee: Int
-//        public let promotionVo: Any?
-        public let r: Int
-        public let size: Int
-        public let st: Int
-        public let url: String
+        public var code: Int
+        public var expi: Int
+        public var fee: Int
+        public var id: Int
+        public var md5: String
+        public var msg: String
+        public var mvFee: Int
+//        public var promotionVo: Any?
+        public var r: Int
+        public var size: Int
+        public var st: Int
+        public var url: String
     }
-    public let code: Int
-    public let data: MVURLData
+    public var code: Int
+    public var data: MVURLData
+    public var message: String?
 }

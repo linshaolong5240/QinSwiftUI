@@ -8,7 +8,7 @@
 import Foundation
 
 public struct ArtistSubResponse: NeteaseCloudMusicResponse {
-    public let code: Int
-//    public let data: Any?
-    public let message: String
+    public var code: Int
+//    public var data: Any?
+    public var message: String?
 }

@@ -11,14 +11,14 @@ public struct AlbumDetailResponse: NeteaseCloudMusicResponse {
 
     public struct AlbumSong: Codable {
         public struct Album: Codable {
-            public let id: Int
-            public let name: String
-            public let pic: Int
-            public let pic_str: String
+            public var id: Int
+            public var name: String
+            public var pic: Int
+            public var pic_str: String
         }
         public struct AlbumSongArtist: Codable {
-            public let id: Int
-            public let name: String
+            public var id: Int
+            public var name: String
         }
         public struct Quality: Codable {
             var br: Int
@@ -26,42 +26,43 @@ public struct AlbumDetailResponse: NeteaseCloudMusicResponse {
             var size: Int
             var vd: Double
         }
-//        public let a: Any?
-        public let al: Album
-        public let alia: [String]
-        public let ar: [AlbumSongArtist]
-        public let cd: String
-        public let cf: String
-        public let cp: Int
-//        public let crbt: Any?
-        public let djId: Int
-        public let dt: Int
-        public let fee: Int
-        public let ftype: Int
-        public let h: Quality?
-        public let id: Int
-        public let l: Quality?
-        public let m: Quality?
+//        public var a: Any?
+        public var al: Album
+        public var alia: [String]
+        public var ar: [AlbumSongArtist]
+        public var cd: String
+        public var cf: String
+        public var cp: Int
+//        public var crbt: Any?
+        public var djId: Int
+        public var dt: Int
+        public var fee: Int
+        public var ftype: Int
+        public var h: Quality?
+        public var id: Int
+        public var l: Quality?
+        public var m: Quality?
 
-        public let mst: Int
-        public let mv: Int
-        public let name: String
-        public let no: Int
-//        public let noCopyrightRcmd: Any?
-        public let pop: Int
-        public let privilege: PrivilegeResponse
-        public let pst: Int
-        public let rt: String?
-        public let rtUrl: String?
-        public let rtUrls: [String]
-        public let rtype: Int
-        public let rurl: String?
-        public let st: Int
-        public let t: Int
-        public let v: Int
+        public var mst: Int
+        public var mv: Int
+        public var name: String
+        public var no: Int
+//        public var noCopyrightRcmd: Any?
+        public var pop: Int
+        public var privilege: PrivilegeResponse
+        public var pst: Int
+        public var rt: String?
+        public var rtUrl: String?
+        public var rtUrls: [String]
+        public var rtype: Int
+        public var rurl: String?
+        public var st: Int
+        public var t: Int
+        public var v: Int
     }
-    public let album: AlbumResponse
-    public let code: Int
-    public let resourceState: Bool
-    public let songs: [AlbumSong]
+    public var album: AlbumResponse
+    public var code: Int
+    public var resourceState: Bool
+    public var songs: [AlbumSong]
+    public var message: String?
 }

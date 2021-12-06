@@ -8,7 +8,8 @@
 import Foundation
 //歌曲详情
 public struct SongDetailResponse: NeteaseCloudMusicResponse {
-    public let code: Int
-    public let privileges: [PrivilegeResponse]
-    public let songs: [SongResponse]
+    public var code: Int
+    public var privileges: [PrivilegeResponse]
+    public var songs: [SongResponse]
+    public var message: String?
 }

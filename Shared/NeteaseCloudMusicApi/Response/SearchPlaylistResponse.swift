@@ -11,29 +11,30 @@ public struct SearchPlaylistResponse: NeteaseCloudMusicResponse {
     public struct Result: Codable {
         public struct Playlist: Codable {
             public struct Creator: Codable {
-                public let authStatus: Int
-//                public let experts, expertTags: Any?
-                public let nickname: String
-                public let userId, userType: Int
+                public var authStatus: Int
+//                public var experts, expertTags: Any?
+                public var nickname: String
+                public var userId, userType: Int
             }
-            public let alg: String
-            public let bookCount: Int
-            public let coverImgUrl: String
-            public let creator: Creator
-            public let playlistDescription: String?
-            public let highQuality: Bool
-            public let id: Int
-            public let name: String
-//            public let officialTags: Any?
-            public let playCount, specialType: Int
-            public let subscribed: Bool
-//            public let track: Track
-            public let trackCount, userId: Int
+            public var alg: String
+            public var bookCount: Int
+            public var coverImgUrl: String
+            public var creator: Creator
+            public var playlistDescription: String?
+            public var highQuality: Bool
+            public var id: Int
+            public var name: String
+//            public var officialTags: Any?
+            public var playCount, specialType: Int
+            public var subscribed: Bool
+//            public var track: Track
+            public var trackCount, userId: Int
         }
-        public let hasMore: Bool
-        public let playlistCount: Int
-        public let playlists: [Playlist]
+        public var hasMore: Bool
+        public var playlistCount: Int
+        public var playlists: [Playlist]
     }
-    public let code: Int
-    public let result: Result
+    public var code: Int
+    public var result: Result
+    public var message: String?
 }

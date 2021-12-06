@@ -9,14 +9,15 @@ import Foundation
 
 public struct RecommendSongsResponse: NeteaseCloudMusicResponse {
     public struct RecommendReason: Codable {
-        public let reason: String
-        public let songId: Int
+        public var reason: String
+        public var songId: Int
     }
     public struct DataResponse: Codable {
-        public let dailySongs: [SongResponse]
-//        public let orderSongs: [Any]
-        public let recommendReasons: [RecommendReason]
+        public var dailySongs: [SongResponse]
+//        public var orderSongs: [Any]
+        public var recommendReasons: [RecommendReason]
     }
-    public let code: Int
-    public let data: DataResponse
+    public var code: Int
+    public var data: DataResponse
+    public var message: String?
 }
