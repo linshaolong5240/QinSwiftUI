@@ -8,10 +8,11 @@
 import Foundation
 
 public struct PlaylistDetailResponse: NeteaseCloudMusicResponse {
-    public let code: Int
-    public let playlist: PlaylistResponse
-    public let privileges: [PrivilegeResponse]
-//    public let relatedVideos: Any?
-//    public let sharedPrivilege: Any?
-//    public let urls: Any?
+    public var code: Int
+    public var playlist: PlaylistResponse
+    public var privileges: [PrivilegeResponse]
+//    public var relatedVideos: Any?
+//    public var sharedPrivilege: Any?
+//    public var urls: Any?
+    public var message: String?
 }

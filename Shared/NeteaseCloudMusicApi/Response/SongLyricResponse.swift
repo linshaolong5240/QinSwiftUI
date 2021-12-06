@@ -9,14 +9,15 @@ import Foundation
 
 public struct SongLyricResponse: NeteaseCloudMusicResponse {
     public struct Lyric: Codable {
-        public let lyric: String
-        public let version: Int
+        public var lyric: String
+        public var version: Int
     }
-    public let code: Int
-    public let klyric: Lyric
-    public let lrc: Lyric
-    public let qfy: Bool
-    public let sfy: Bool
-    public let sgc: Bool
-    public let tlyric: Lyric
+    public var code: Int
+    public var klyric: Lyric
+    public var lrc: Lyric
+    public var qfy: Bool
+    public var sfy: Bool
+    public var sgc: Bool
+    public var tlyric: Lyric
+    public var message: String?
 }

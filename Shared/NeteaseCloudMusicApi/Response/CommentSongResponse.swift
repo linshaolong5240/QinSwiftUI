@@ -10,71 +10,72 @@ import Foundation
 public struct CommentSongResponse: NeteaseCloudMusicResponse {
     public struct User: Codable {
         public struct AvatarDetail: Codable {
-            public let identityIconUrl: String
-            public let identityLevel, userType: Int
+            public var identityIconUrl: String
+            public var identityLevel, userType: Int
         }
         public struct CommonIdentity: Codable {
-            public let bizCode: String
-            public let iconUrl: String
-            public let link: String
-            public let target, title: String
+            public var bizCode: String
+            public var iconUrl: String
+            public var link: String
+            public var target, title: String
         }
         public struct VipRights: Codable {
             public struct Associator: Codable {
-                public let rights: Bool
-                public let vipCode: Int
+                public var rights: Bool
+                public var vipCode: Int
             }
-            public let associator: Associator?
-//            public let musicPackage: Any?
-            public let redVipAnnualCount, redVipLevel: Int
+            public var associator: Associator?
+//            public var musicPackage: Any?
+            public var redVipAnnualCount, redVipLevel: Int
         }
-        public let anonym, authStatus: Int
-        public let avatarDetail: AvatarDetail?
-        public let avatarUrl: String
-        public let commonIdentity: CommonIdentity?
-//        public let experts, expertTags: Any?
-        public let followed: Bool
-//        public let liveInfo: Any?
-        public let locationInfo: String?
-        public let mutual: Bool
-        public let nickname: String
-        public let remarkName: String?
-        public let userId, userType: Int
-        public let vipRights: VipRights?
-        public let vipType: Int
+        public var anonym, authStatus: Int
+        public var avatarDetail: AvatarDetail?
+        public var avatarUrl: String
+        public var commonIdentity: CommonIdentity?
+//        public var experts, expertTags: Any?
+        public var followed: Bool
+//        public var liveInfo: Any?
+        public var locationInfo: String?
+        public var mutual: Bool
+        public var nickname: String
+        public var remarkName: String?
+        public var userId, userType: Int
+        public var vipRights: VipRights?
+        public var vipType: Int
     }
     public struct Comment: Codable {
         public struct BeReplied: Codable {
-            public let beRepliedCommentId: Int
-            public let content: String?
-//            public let expressionUrl: String?
-            public let status: Int
-            public let user: User
+            public var beRepliedCommentId: Int
+            public var content: String?
+//            public var expressionUrl: String?
+            public var status: Int
+            public var user: User
         }
         public struct PendantData: Codable {
-            public let id: Int
-            public let imageUrl: String
+            public var id: Int
+            public var imageUrl: String
         }
-        public let beReplied: [BeReplied]
-        public let commentId, commentLocationType: Int
-        public let content: String
-//        public let decoration: Any
-//        public let expressionUrl: Any?
-        public let liked: Bool
-        public let likedCount, parentCommentId: Int
-        public let pendantData: PendantData?
-//        public let repliedMark, showFloorComment: Any?
-        public let status, time: Int
-        public let user: User
+        public var beReplied: [BeReplied]
+        public var commentId, commentLocationType: Int
+        public var content: String
+//        public var decoration: Any
+//        public var expressionUrl: Any?
+        public var liked: Bool
+        public var likedCount, parentCommentId: Int
+        public var pendantData: PendantData?
+//        public var repliedMark, showFloorComment: Any?
+        public var status, time: Int
+        public var user: User
     }
-    public let cnum: Int?
-    public let code: Int
-//    public let commentBanner: Any?
-    public let comments: [Comment]
-    public let hotComments: [Comment]?
-    public let isMusician: Bool
-    public let more: Bool
-    public let moreHot: Bool?
-    public let topComments: [Comment]
-    public let total, userId: Int
+    public var cnum: Int?
+    public var code: Int
+//    public var commentBanner: Any?
+    public var comments: [Comment]
+    public var hotComments: [Comment]?
+    public var isMusician: Bool
+    public var more: Bool
+    public var moreHot: Bool?
+    public var topComments: [Comment]
+    public var total, userId: Int
+    public var message: String?
 }

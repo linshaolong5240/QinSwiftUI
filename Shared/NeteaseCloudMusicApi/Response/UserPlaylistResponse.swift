@@ -8,8 +8,9 @@
 import Foundation
 //用户歌单
 public struct UserPlaylistResponse: NeteaseCloudMusicResponse {
-    public let code: Int
-    public let more: Bool
-    public let playlist: [PlaylistResponse]
-    public let version: String
+    public var code: Int
+    public var more: Bool
+    public var playlist: [PlaylistResponse]
+    public var version: String
+    public var message: String?
 }

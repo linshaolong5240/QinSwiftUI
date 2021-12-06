@@ -9,16 +9,17 @@ import Foundation
 
 public struct RecommendPlaylistResponse: NeteaseCloudMusicResponse {
     public struct RecommendPlaylist: Codable {
-        public let alg, copywriter: String
-        public let createTime: Int
-        public let creator: CrteatorResponse?
-        public let id: Int
-        public let name: String
-        public let picUrl: String
-        public let playcount, trackCount, type, userId: Int
+        public var alg, copywriter: String
+        public var createTime: Int
+        public var creator: CrteatorResponse?
+        public var id: Int
+        public var name: String
+        public var picUrl: String
+        public var playcount, trackCount, type, userId: Int
     }
-    public let code: Int
-    public let featureFirst: Bool
-    public let haveRcmdSongs: Bool
-    public let recommend: [RecommendPlaylist]
+    public var code: Int
+    public var featureFirst: Bool
+    public var haveRcmdSongs: Bool
+    public var recommend: [RecommendPlaylist]
+    public var message: String?
 }

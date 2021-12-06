@@ -9,22 +9,23 @@ import Foundation
 
 public struct AlbumSublistResponse: NeteaseCloudMusicResponse {
     public struct Album: Codable {
-        public let alias: [String]
-        public let artists: [ArtistResponse]
-        public let id: Int
-        public let msg: [String]
-        public let name: String
-        public let picId: Int
-        public let picUrl: String
-        public let size: Int
-        public let subTime: Int
-        public let transNames: [String]
+        public var alias: [String]
+        public var artists: [ArtistResponse]
+        public var id: Int
+        public var msg: [String]
+        public var name: String
+        public var picId: Int
+        public var picUrl: String
+        public var size: Int
+        public var subTime: Int
+        public var transNames: [String]
     }
-    public let code: Int
-    public let count: Int
-    public let data: [Album]
-    public let hasMore: Bool
-    public let paidCount: Int
+    public var code: Int
+    public var count: Int
+    public var data: [Album]
+    public var hasMore: Bool
+    public var paidCount: Int
+    public var message: String?
 }
 
 extension AlbumSublistResponse.Album: Identifiable {

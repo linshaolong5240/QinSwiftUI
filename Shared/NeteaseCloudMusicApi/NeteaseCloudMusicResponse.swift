@@ -9,6 +9,7 @@ import Foundation
 
 protocol NeteaseCloudMusicResponse: Codable {
     var code: Int { get }
+    var message: String? { get }
 }
 
 extension NeteaseCloudMusicResponse {

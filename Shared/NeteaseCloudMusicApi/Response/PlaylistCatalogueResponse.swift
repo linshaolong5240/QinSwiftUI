@@ -9,15 +9,15 @@ import Foundation
 
 public struct PlaylistCatalogueResponse: NeteaseCloudMusicResponse {
     public struct PlaylistCatalogue: Codable {
-        public let activity: Bool
-        public let category: Int
-        public let hot: Bool
-        public let imgId: Int
-        public let imgUrl: String?
-        public let name: String
-        public let resourceCount: Int
-        public let resourceType: Int
-        public let type: Int
+        public var activity: Bool
+        public var category: Int
+        public var hot: Bool
+        public var imgId: Int
+        public var imgUrl: String?
+        public var name: String
+        public var resourceCount: Int
+        public var resourceType: Int
+        public var type: Int
     }
 //    public struct Category: Codable {
 //        var _0: String
@@ -33,8 +33,9 @@ public struct PlaylistCatalogueResponse: NeteaseCloudMusicResponse {
 //            case _4 = "4"
 //        }
 //    }
-    public let all: PlaylistCatalogue
-    public let categories: [String: String]
-    public let code: Int
-    public let sub: [PlaylistCatalogue]
+    public var all: PlaylistCatalogue
+    public var categories: [String: String]
+    public var code: Int
+    public var sub: [PlaylistCatalogue]
+    public var message: String?
 }

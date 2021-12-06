@@ -8,5 +8,6 @@
 import Foundation
 
 public struct LoginRefreshResponse: NeteaseCloudMusicResponse {
-    public let code: Int
+    public var code: Int
+    public var message: String?
 }

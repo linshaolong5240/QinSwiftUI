@@ -9,17 +9,18 @@ import Foundation
 
 public struct ArtistIntroductionResponse: NeteaseCloudMusicResponse {
     public struct Introduction: Codable {
-        public let ti: String
-        public let txt: String
+        public var ti: String
+        public var txt: String
     }
     public struct TopicData: Codable {
         
     }
-    public let briefDesc: String
-    public let code: Int
-    public let count: Int
-    public let introduction: [Introduction]
-    public let topicData: [TopicData]?
+    public var briefDesc: String
+    public var code: Int
+    public var count: Int
+    public var introduction: [Introduction]
+    public var topicData: [TopicData]?
+    public var message: String?
 }
 
 extension ArtistIntroductionResponse {

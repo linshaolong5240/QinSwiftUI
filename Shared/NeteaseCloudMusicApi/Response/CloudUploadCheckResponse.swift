@@ -8,7 +8,8 @@
 import Foundation
 
 public struct CloudUploadCheckResponse: NeteaseCloudMusicResponse {
-    public let code: Int
-    public let needUpload: Bool
-    public let songId: String
+    public var code: Int
+    public var needUpload: Bool
+    public var songId: String
+    public var message: String?
 }

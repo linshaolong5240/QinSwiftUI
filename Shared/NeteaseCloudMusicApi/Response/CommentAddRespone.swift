@@ -8,6 +8,7 @@
 import Foundation
 
 public struct CommentAddRespone: NeteaseCloudMusicResponse {
-    public let code: Int
-//    public let comment: CommentSongResponse.Comment
+    public var code: Int
+//    public var comment: CommentSongResponse.Comment
+    public var message: String?
 }

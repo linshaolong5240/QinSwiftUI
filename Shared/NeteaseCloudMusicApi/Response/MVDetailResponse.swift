@@ -10,41 +10,42 @@ import Foundation
 public struct MVDetailResponse: NeteaseCloudMusicResponse {
     public struct MVData: Codable {
         public struct Br: Codable {
-            public let br, point, size: Int
+            public var br, point, size: Int
         }
-        public let artistId: Int
-        public let artistName: String
-//        public let artists: [Artist]
-        public let briefDesc: String
-        public let brs: [Br]
-        public let commentCount: Int
-        public let commentThreadId: String
-        public let cover: String
-        public let coverId: Double
-        public let coverId_str: String
-        public let desc: String
-        public let duration, id: Int
-        public let name: String
-        public let nType, playCount: Int
-//        public let price: Any?
-        public let publishTime: String
-        public let shareCount, subCount: Int
-//        public let videoGroup: [Any]
+        public var artistId: Int
+        public var artistName: String
+//        public var artists: [Artist]
+        public var briefDesc: String
+        public var brs: [Br]
+        public var commentCount: Int
+        public var commentThreadId: String
+        public var cover: String
+        public var coverId: Double
+        public var coverId_str: String
+        public var desc: String
+        public var duration, id: Int
+        public var name: String
+        public var nType, playCount: Int
+//        public var price: Any?
+        public var publishTime: String
+        public var shareCount, subCount: Int
+//        public var videoGroup: [Any]
     }
     public struct MP: Codable {
-        let cp, dl, fee, id: Int
-//        let msg: Any?
-        let mvFee: Int
-        let normal: Bool
-        let payed, pl, sid, st: Int
-        let unauthorized: Bool
+        var cp, dl, fee, id: Int
+//        var msg: Any?
+        var mvFee: Int
+        var normal: Bool
+        var payed, pl, sid, st: Int
+        var unauthorized: Bool
     }
-    public let bufferPic: String
-    public let bufferPicFS: String
-    public let code: Int
-    public let data: MVData
-    public let loadingPic: String
-    public let loadingPicFS: String
-    public let mp: MP
-    public let subed: Bool
+    public var bufferPic: String
+    public var bufferPicFS: String
+    public var code: Int
+    public var data: MVData
+    public var loadingPic: String
+    public var loadingPicFS: String
+    public var mp: MP
+    public var subed: Bool
+    public var message: String?
 }
