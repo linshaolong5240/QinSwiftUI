@@ -106,7 +106,7 @@ struct QinCoverView: View {
                             .frame(width: style.size.width, height: style.size.height)
                     }
                 )
-                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: style.size.width, height: style.size.height)))
+                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: style.size.width * UIScreen.main.scale, height: style.size.height * UIScreen.main.scale)))
               .fade(duration: 0.25)
               .onProgress { receivedSize, totalSize in  }
               .onSuccess { result in  }
