@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct QinApp: App {
+    @Environment(\.scenePhase) private var scenePhase
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate: AppDelegate
+
     @StateObject var store = Store.shared
     @StateObject var player = Player.shared
     let context = DataManager.shared.context()
@@ -38,6 +41,24 @@ struct QinApp: App {
                 .environmentObject(player)
                 .environment(\.managedObjectContext, context)
         }
+        .onChange(of: scenePhase) { newValue in
+            switch newValue {
+            case .active:
+                break
+            case .background:
+                break
+            case .inactive:
+                break
+            @unknown default:
+                break
+            }
+        }
         #endif
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        return true
     }
 }
