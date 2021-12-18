@@ -623,9 +623,9 @@
 		2BCCB2DD24DC79EB004CAD67 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2B82C19B276DFE12001E44C0 /* AudioSessionManager.swift */,
 				2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */,
 				2BCCB2DF24DC7A16004CAD67 /* Player.swift */,
-				2B82C19B276DFE12001E44C0 /* AudioSessionManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
