@@ -9,6 +9,8 @@
 import Foundation
 
 enum AppAction {
+    case initAction
+    case InitMPRemoteControl
     case albumDetailRequest(id: Int)
     case albumDetailRequestDone(result: Result<[Int], AppError>)
     case albumSubRequest(id: Int, sub: Bool)
@@ -43,7 +45,6 @@ enum AppAction {
     case commentMusicLoadMoreRequest
     case coverShape
     case error(AppError)
-    case initAction
     case loginRequest(email: String, password: String)
     case loginRequestDone(result: Result<LoginResponse, AppError>)
     case loginRefreshRequest
@@ -103,6 +104,7 @@ enum AppAction {
     case songsOrderUpdateRequestDone(result: Result<Int, AppError>)
     case songsURLRequest(ids: [Int])
     case songsURLRequestDone(result: Result<SongURLResponse, AppError>)
+    case updateMPNowPlayingInfo
     case userCloudRequest
     case userPlaylistRequest(uid: Int? = nil, limit: Int = 999, offset: Int = 0)
     case userPlaylistRequestDone(result: Result<[PlaylistResponse], AppError>)

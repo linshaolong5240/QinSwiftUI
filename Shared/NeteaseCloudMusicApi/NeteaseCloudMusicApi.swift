@@ -10,10 +10,6 @@ import CryptoSwift
 import Security
 import Combine
 
-#if os(macOS)
-import Alamofire
-#endif
-
 public protocol NeteaseCloudMusicAction {
     associatedtype Parameters: Encodable
     associatedtype Response: Decodable

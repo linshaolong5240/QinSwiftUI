@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NeumorphismSwiftUI
 
 struct SideBarNavigationView: View {
     @EnvironmentObject private var store: Store
@@ -25,7 +26,7 @@ struct SideBarNavigationView: View {
                         QinBackgroundView()
                         List {
                             VStack(alignment: .center, spacing: 20) {
-                                QinCoverView(user?.profile.avatarUrl, style: .small)
+                                QinCoverView(user?.profile.avatarUrl, style: QinCoverStyle(size: .large, shape: .rectangle))
                                 if let name = user?.profile.nickname {
                                     Text(name)
                                 }
