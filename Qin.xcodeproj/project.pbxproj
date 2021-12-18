@@ -64,6 +64,7 @@
 		2B82C197276DC735001E44C0 /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82C196276DC735001E44C0 /* SwiftUIHelper.swift */; };
 		2B82C198276DC735001E44C0 /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82C196276DC735001E44C0 /* SwiftUIHelper.swift */; };
 		2B82C19A276DC87B001E44C0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2B82C199276DC87B001E44C0 /* Kingfisher */; };
+		2B82C19C276DFE12001E44C0 /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82C19B276DFE12001E44C0 /* AudioSessionManager.swift */; };
 		2B89DA41254B6FF800FFD1BF /* CommonGridItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */; };
 		2B8EFEB2266BD15900FF42EF /* ArtistMVResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEB1266BD15900FF42EF /* ArtistMVResponse.swift */; };
 		2B8EFEB3266BD15900FF42EF /* ArtistMVResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEB1266BD15900FF42EF /* ArtistMVResponse.swift */; };
@@ -326,6 +327,7 @@
 		2B792B1B269B656C00788CE1 /* CloudSongAddAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSongAddAction.swift; sourceTree = "<group>"; };
 		2B792B1E269B658700788CE1 /* CloudSongAddResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSongAddResponse.swift; sourceTree = "<group>"; };
 		2B82C196276DC735001E44C0 /* SwiftUIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftUIHelper.swift; path = ../../../SwiftHelper/Shared/Helper/SwiftUIHelper.swift; sourceTree = "<group>"; };
+		2B82C19B276DFE12001E44C0 /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonGridItemView.swift; sourceTree = "<group>"; };
 		2B8EFEB1266BD15900FF42EF /* ArtistMVResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMVResponse.swift; sourceTree = "<group>"; };
 		2B8EFEB4266BDB0D00FF42EF /* ArtistMVAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMVAction.swift; sourceTree = "<group>"; };
@@ -623,6 +625,7 @@
 			children = (
 				2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */,
 				2BCCB2DF24DC7A16004CAD67 /* Player.swift */,
+				2B82C19B276DFE12001E44C0 /* AudioSessionManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				2BE66D90267004D700367778 /* CommentLikeAction.swift in Sources */,
 				2B1FBF8C2567BDBA0003ADC4 /* DataModel.xcdatamodeld in Sources */,
 				EF28DA34266E199800CE0369 /* PlaylistDeleteAction.swift in Sources */,
+				2B82C19C276DFE12001E44C0 /* AudioSessionManager.swift in Sources */,
 				2BDAED21269744970070CCAD /* UserCloudResponse.swift in Sources */,
 				2B8F56EA252F8969008FFF8F /* DescriptionView.swift in Sources */,
 				EF010A322673425D00DB2AF9 /* AlbumSubAction.swift in Sources */,

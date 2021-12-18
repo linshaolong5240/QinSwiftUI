@@ -13,6 +13,7 @@ import Kingfisher
 import MediaPlayer
 
 class Player: AVPlayer, ObservableObject {
+    let audioSession = AVAudioSession.sharedInstance()
     static let shared = Player()
     private var timeObserverToken: Any?
     private var cancellAble = AnyCancellable({})
@@ -27,14 +28,11 @@ class Player: AVPlayer, ObservableObject {
     override init() {
         super.init()
         self.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.old, .new], context: nil)
-        self.notificatioCancellAble = NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime).sink { (Notification) in
-            print("end play")
-            Store.shared.dispatch(.PlayerPlayToendAction)
-        }
-        #if !os(macOS)
-        initAudioSession()
-        #endif
         initMPRemoteCommand()
+    }
+    
+    deinit {
+        self.removeObserver(self, forKeyPath: #keyPath(AVPlayer.rate))
     }
     
     override func pause() {
@@ -206,20 +204,5 @@ class Player: AVPlayer, ObservableObject {
             Store.shared.dispatch(.playerPlayBackward)
             return .success
         }
-    }
-    #if !os(macOS)
-    func initAudioSession() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.playback)
-            try audioSession.setActive(true)
-        } catch let error {
-            debugPrint("AVAudioSession: \(error)")
-        }
-        UIApplication.shared.beginReceivingRemoteControlEvents()
-    }
-    #endif
-    deinit {
-        self.removeObserver(self, forKeyPath: #keyPath(AVPlayer.rate))
     }
 }

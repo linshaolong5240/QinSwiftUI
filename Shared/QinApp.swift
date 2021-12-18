@@ -44,7 +44,7 @@ struct QinApp: App {
         .onChange(of: scenePhase) { newValue in
             switch newValue {
             case .active:
-                break
+                AudioSessionManager.shared.active()
             case .background:
                 break
             case .inactive:
@@ -59,6 +59,7 @@ struct QinApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        AudioSessionManager.shared.configuration()
         return true
     }
 }

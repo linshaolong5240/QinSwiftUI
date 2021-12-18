@@ -17,6 +17,11 @@ protocol AppCommand {
 }
 struct InitAcionCommand: AppCommand {
     func execute(in store: Store) {
+        NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime).sink { (Notification) in
+            print("end play")
+            store.dispatch(.PlayerPlayToendAction)
+        }.store(in: &store.cancellableSet)
+        
         store.appState.initRequestingCount += 1
         store.dispatch(.albumSublistRequest())
         
