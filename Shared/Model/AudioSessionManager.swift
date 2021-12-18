@@ -23,7 +23,6 @@ class AudioSessionManager {
 #endif
         }
         NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
-        UIApplication.shared.beginReceivingRemoteControlEvents()
     }
     
     func active() {

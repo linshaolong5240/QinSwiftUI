@@ -10,7 +10,6 @@ import Foundation
 import AVFoundation
 import Combine
 import Kingfisher
-import MediaPlayer
 
 class Player: AVPlayer, ObservableObject {
     let audioSession = AVAudioSession.sharedInstance()
@@ -28,7 +27,6 @@ class Player: AVPlayer, ObservableObject {
     override init() {
         super.init()
         self.addObserver(self, forKeyPath: #keyPath(AVPlayer.rate), options: [.old, .new], context: nil)
-        initMPRemoteCommand()
     }
     
     deinit {
@@ -38,13 +36,12 @@ class Player: AVPlayer, ObservableObject {
     override func pause() {
         super.pause()
         self.removePeriodicTimeObserver()
-        self.updateMPNowPlayingInfo()
     }
     
     override func play() {
         super.play()
         self.addPeriodicTimeObserver()
-        self.updateMPNowPlayingInfo()
+        Store.shared.dispatch(.updateMPNowPlayingInfo)
     }
     func playWithURL(url: URL) {
         self.removePeriodicTimeObserver()
@@ -77,7 +74,7 @@ class Player: AVPlayer, ObservableObject {
         let cmtime = CMTime(seconds: seconds, preferredTimescale: 600)
         super.seek(to: cmtime)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//在global 会出错,在main中更新UI状态
-            Player.shared.updateMPNowPlayingInfo()//seek 后 AVPlayer 的当前时间获取有延迟
+            Store.shared.dispatch(.updateMPNowPlayingInfo)//seek 后 AVPlayer 的当前时间获取有延迟
         }
     }
     
@@ -140,69 +137,4 @@ class Player: AVPlayer, ObservableObject {
         }
     }
 
-    func updateMPNowPlayingInfo() {
-        #if os(iOS)
-        var info = [String : Any]()
-        info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
-        if let title = Store.shared.appState.playing.song?.name {
-            info[MPMediaItemPropertyTitle] = title//歌名
-        }
-        if let album = Store.shared.appState.playing.song?.album {
-            info[MPMediaItemPropertyAlbumTitle] = album.name//专辑名
-//                     info[MPMediaItemPropertyAlbumArtist] = mainChannels.first?.value.soundMeta?.artist//专辑作者
-        }
-
-        if let artists = Store.shared.appState.playing.song?.artists as? Set<Artist> {
-            info[MPMediaItemPropertyArtist] = artists.map{($0.name ?? "")}.joined(separator: " ")
-        }
-        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  Player.shared.currentItem?.currentTime().seconds
-        info[MPMediaItemPropertyPlaybackDuration] = Player.shared.currentItem?.duration.seconds//总时长
-//        info[MPNowPlayingInfoPropertyIsLiveStream] = 1.0
-        info[MPNowPlayingInfoPropertyPlaybackRate] = Player.shared.rate//播放速率
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
-        if let picUrl = Store.shared.appState.playing.song?.album?.picUrl {
-            if let url = URL(string: picUrl) {
-                let _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinCoverSize.medium.width * 2, height: QinCoverSize.medium.width * 2)))]) { (result) in
-                    switch result {
-                    case .success(let value):
-                                info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: value.image.size, requestHandler: { (size) -> UIImage in
-                                        return value.image
-                                    })//显示的图片
-                        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
-                    case .failure(_):
-                        break
-                    }
-                }
-            }
-        }
-        #endif
-//        #if os(macOS)
-//        MPNowPlayingInfoCenter.default().playbackState = Player.shared.isPlaying ? .playing : .paused
-//        #endif
-    }
-    func initMPRemoteCommand() {
-        let commandCenter = MPRemoteCommandCenter.shared()
-//耳机线控制无效
-//        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-//            Store.shared.dispatch(.playerPlay)
-//            return .success
-//        }
-//        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-//            Store.shared.dispatch(.playerPause)
-//            return .success
-//        }
-        //耳机线控制
-        commandCenter.togglePlayPauseCommand.addTarget{ (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playerPlayOrPause)
-            return .success
-        }
-        commandCenter.nextTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playerPlayForward)
-            return .success
-        }
-        commandCenter.previousTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playerPlayBackward)
-            return .success
-        }
-    }
 }

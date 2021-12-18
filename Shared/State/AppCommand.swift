@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import Combine
+import MediaPlayer
 import Kingfisher
 import struct CoreGraphics.CGSize
 
@@ -21,7 +22,7 @@ struct InitAcionCommand: AppCommand {
             print("end play")
             store.dispatch(.PlayerPlayToendAction)
         }.store(in: &store.cancellableSet)
-        
+        store.dispatch(.InitMPRemoteControl)
         store.appState.initRequestingCount += 1
         store.dispatch(.albumSublistRequest())
         
@@ -42,6 +43,36 @@ struct InitAcionCommand: AppCommand {
         
         store.appState.initRequestingCount += 1
         store.dispatch(.userPlaylistRequest())
+    }
+}
+
+struct InitMPRemoteControlCommand: AppCommand {
+    func execute(in store: Store) {
+        let commandCenter = MPRemoteCommandCenter.shared()
+    //耳机线控制无效
+    //        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+    //            Store.shared.dispatch(.playerPlay)
+    //            return .success
+    //        }
+    //        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+    //            Store.shared.dispatch(.playerPause)
+    //            return .success
+    //        }
+        //耳机线控制
+        commandCenter.togglePlayPauseCommand.addTarget{ (event) -> MPRemoteCommandHandlerStatus in
+            Store.shared.dispatch(.playerPlayOrPause)
+            return .success
+        }
+        commandCenter.nextTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+            Store.shared.dispatch(.playerPlayForward)
+            return .success
+        }
+        commandCenter.previousTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+            Store.shared.dispatch(.playerPlayBackward)
+            return .success
+        }
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+
     }
 }
 
@@ -1201,6 +1232,56 @@ struct TooglePlayCommand: AppCommand {
         }else {
             store.dispatch(.playerPlay)
         }
+    }
+}
+
+struct UpdateMPNowPlayingInfoCommand: AppCommand {
+    func execute(in store: Store) {
+#if os(iOS)
+        func makeInfo() -> [String : Any] {
+            var info = [String : Any]()
+            info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
+            if let title = store.appState.playing.song?.name {
+                info[MPMediaItemPropertyTitle] = title//歌名
+            }
+            if let album = store.appState.playing.song?.album {
+                info[MPMediaItemPropertyAlbumTitle] = album.name//专辑名
+                //                     info[MPMediaItemPropertyAlbumArtist] = mainChannels.first?.value.soundMeta?.artist//专辑作者
+            }
+            
+            if let artists = store.appState.playing.song?.artists as? Set<Artist> {
+                info[MPMediaItemPropertyArtist] = artists.map{($0.name ?? "")}.joined(separator: " ")
+            }
+            info[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  Player.shared.currentItem?.currentTime().seconds
+            info[MPMediaItemPropertyPlaybackDuration] = Player.shared.currentItem?.duration.seconds//总时长
+            //        info[MPNowPlayingInfoPropertyIsLiveStream] = 1.0
+            info[MPNowPlayingInfoPropertyPlaybackRate] = Player.shared.rate//播放速率
+            return info
+        }
+        guard let picUrl = store.appState.playing.song?.album?.picUrl, let url = URL(string: picUrl) else {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = makeInfo()
+            return
+        }
+        
+        let _ = KingfisherManager.shared.retrieveImage(with: .network(url), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: QinCoverSize.medium.width * UIScreen.main.scale, height: QinCoverSize.medium.width * UIScreen.main.scale)))]) { result in
+            switch result {
+            case .success(let value):
+                var info = makeInfo()
+                info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: value.image.size, requestHandler: { (size) -> UIImage in
+                    return value.image
+                })//显示的图片
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+            case .failure(let error):
+                #if DEBUG
+                print(error)
+                #endif
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = makeInfo()
+            }
+        }
+#endif
+        //        #if os(macOS)
+        //        MPNowPlayingInfoCenter.default().playbackState = Player.shared.isPlaying ? .playing : .paused
+        //        #endif
     }
 }
 

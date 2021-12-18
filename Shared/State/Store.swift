@@ -34,6 +34,15 @@ class Store: ObservableObject {
         var appCommand: AppCommand? = nil
         
         switch action {
+        case .initAction:
+            if appState.playing.playinglist.count > 0 {
+                let index = appState.playing.index
+                let songId = appState.playing.playinglist[index]
+                appState.playing.song = DataManager.shared.getSong(id: Int(songId))
+            }
+            appCommand = InitAcionCommand()
+        case  .InitMPRemoteControl:
+            appCommand = InitMPRemoteControlCommand()
         case .albumDetailRequest(let id):
                 appState.album.detailRequesting = true
             appCommand = AlbumDetailRequestCommand(id: id)
@@ -233,13 +242,6 @@ class Store: ObservableObject {
             appState.settings.coverShape = appState.settings.coverShape.next()
         case .error(let error):
             appState.error = error
-        case .initAction:
-            if appState.playing.playinglist.count > 0 {
-                let index = appState.playing.index
-                let songId = appState.playing.playinglist[index]
-                appState.playing.song = DataManager.shared.getSong(id: Int(songId))
-            }
-            appCommand = InitAcionCommand()
         case .loginRequest(let email, let password):
             appState.settings.loginRequesting = true
             appCommand = LoginRequestCommand(email: email, password: password)
@@ -539,6 +541,8 @@ class Store: ObservableObject {
             case .failure(let error):
                 appState.error = error
             }
+        case .updateMPNowPlayingInfo:
+            appCommand = UpdateMPNowPlayingInfoCommand()
         case .userCloudRequest:
             appCommand = UserCloudRequestCommand()
         case .userPlaylistRequest(let uid, let limit, let offset):
