@@ -36,6 +36,9 @@ public struct QinEditButton: View {
 }
 
 #if DEBUG
+@available(iOS 13.0, tvOS 13.0, *)
+@available(macOS, unavailable)
+@available(watchOS, unavailable)
 struct QinEditButton_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {

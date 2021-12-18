@@ -10,6 +10,13 @@ import NeumorphismSwiftUI
 import Kingfisher
 import struct Kingfisher.DownsamplingImageProcessor
 
+#if canImport(UIKit)
+fileprivate let screenScale: CGFloat = UIScreen.main.scale
+#endif
+#if canImport(AppKit)
+fileprivate let screenScale: CGFloat = 1.0
+#endif
+
 struct AnyShape: Shape {
     init<S: Shape>(_ wrapped: S) {
         _path = { rect in
@@ -106,7 +113,7 @@ struct QinCoverView: View {
                             .frame(width: style.size.width, height: style.size.height)
                     }
                 )
-                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: style.size.width * UIScreen.main.scale, height: style.size.height * UIScreen.main.scale)))
+                .setProcessor(DownsamplingImageProcessor(size: CGSize(width: style.size.width * screenScale, height: style.size.height * screenScale)))
               .fade(duration: 0.25)
               .onProgress { receivedSize, totalSize in  }
               .onSuccess { result in  }

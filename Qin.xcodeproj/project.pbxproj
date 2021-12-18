@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B019C4C261DCE4100E1E9D6 /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B019C4B261DCE4100E1E9D6 /* UINavigationController+Extension.swift */; };
 		2B01EFE1257BE6FC00BEBD54 /* PlaylistManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01EFE0257BE6FC00BEBD54 /* PlaylistManageView.swift */; };
 		2B0668FB25305AE40007053C /* SubedAlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0668FA25305AE40007053C /* SubedAlbumsView.swift */; };
 		2B066912253177EF0007053C /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B066911253177EF0007053C /* DiscoverView.swift */; };
@@ -62,6 +61,9 @@
 		2B792B1D269B656C00788CE1 /* CloudSongAddAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B792B1B269B656C00788CE1 /* CloudSongAddAction.swift */; };
 		2B792B1F269B658700788CE1 /* CloudSongAddResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B792B1E269B658700788CE1 /* CloudSongAddResponse.swift */; };
 		2B792B20269B658700788CE1 /* CloudSongAddResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B792B1E269B658700788CE1 /* CloudSongAddResponse.swift */; };
+		2B82C197276DC735001E44C0 /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82C196276DC735001E44C0 /* SwiftUIHelper.swift */; };
+		2B82C198276DC735001E44C0 /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82C196276DC735001E44C0 /* SwiftUIHelper.swift */; };
+		2B82C19A276DC87B001E44C0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2B82C199276DC87B001E44C0 /* Kingfisher */; };
 		2B89DA41254B6FF800FFD1BF /* CommonGridItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */; };
 		2B8EFEB2266BD15900FF42EF /* ArtistMVResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEB1266BD15900FF42EF /* ArtistMVResponse.swift */; };
 		2B8EFEB3266BD15900FF42EF /* ArtistMVResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8EFEB1266BD15900FF42EF /* ArtistMVResponse.swift */; };
@@ -127,8 +129,6 @@
 		2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29724DC5A2B004CAD67 /* UserView.swift */; };
 		2BCCB2C324DC5DB2004CAD67 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2C224DC5DB2004CAD67 /* CryptoSwift */; };
 		2BCCB2CF24DC74CD004CAD67 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2CE24DC74CD004CAD67 /* CryptoSwift */; };
-		2BCCB2D724DC79DC004CAD67 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */; };
-		2BCCB2D824DC79DC004CAD67 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */; };
 		2BCCB2DB24DC79DC004CAD67 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */; };
 		2BCCB2DC24DC79DC004CAD67 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */; };
 		2BCCB2E024DC7A16004CAD67 /* LyricParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */; };
@@ -293,7 +293,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2B019C4B261DCE4100E1E9D6 /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		2B01EFE0257BE6FC00BEBD54 /* PlaylistManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistManageView.swift; sourceTree = "<group>"; };
 		2B0668FA25305AE40007053C /* SubedAlbumsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubedAlbumsView.swift; sourceTree = "<group>"; };
 		2B066911253177EF0007053C /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
@@ -326,6 +325,7 @@
 		2B792B18269B5C3A00788CE1 /* CloudUploadInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudUploadInfoResponse.swift; sourceTree = "<group>"; };
 		2B792B1B269B656C00788CE1 /* CloudSongAddAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSongAddAction.swift; sourceTree = "<group>"; };
 		2B792B1E269B658700788CE1 /* CloudSongAddResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSongAddResponse.swift; sourceTree = "<group>"; };
+		2B82C196276DC735001E44C0 /* SwiftUIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftUIHelper.swift; path = ../../../SwiftHelper/Shared/Helper/SwiftUIHelper.swift; sourceTree = "<group>"; };
 		2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonGridItemView.swift; sourceTree = "<group>"; };
 		2B8EFEB1266BD15900FF42EF /* ArtistMVResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMVResponse.swift; sourceTree = "<group>"; };
 		2B8EFEB4266BDB0D00FF42EF /* ArtistMVAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistMVAction.swift; sourceTree = "<group>"; };
@@ -370,7 +370,6 @@
 		2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayingNowView.swift; sourceTree = "<group>"; };
 		2BCCB29724DC5A2B004CAD67 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		2BCCB29A24DC5A2B004CAD67 /* QinSFView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QinSFView.swift; sourceTree = "<group>"; };
-		2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricParser.swift; sourceTree = "<group>"; };
 		2BCCB2DF24DC7A16004CAD67 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -471,6 +470,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B82C19A276DC87B001E44C0 /* Kingfisher in Frameworks */,
 				2B0E013C274140B400F7C1DE /* NeumorphismSwiftUI in Frameworks */,
 				2BCCB2CF24DC74CD004CAD67 /* CryptoSwift in Frameworks */,
 			);
@@ -479,14 +479,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2B019C4A261DCDDD00E1E9D6 /* IOS */ = {
-			isa = PBXGroup;
-			children = (
-				2B019C4B261DCE4100E1E9D6 /* UINavigationController+Extension.swift */,
-			);
-			path = IOS;
-			sourceTree = "<group>";
-		};
 		2B09CF3424F0FC0000E03A12 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -499,6 +491,14 @@
 				2BCCB29A24DC5A2B004CAD67 /* QinSFView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		2B82C195276DC704001E44C0 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				2B82C196276DC735001E44C0 /* SwiftUIHelper.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		2BCCB24824DC566F004CAD67 = {
@@ -520,6 +520,7 @@
 				2BCCB24F24DC566F004CAD67 /* ContentView.swift */,
 				2BF59EFE256166BB004863D5 /* Data */,
 				2BCCB2D024DC79AB004CAD67 /* Extension */,
+				2B82C195276DC704001E44C0 /* Helper */,
 				2BCCB2DD24DC79EB004CAD67 /* Model */,
 				2BCCB31424DC7B7D004CAD67 /* NeteaseCloudMusicApi */,
 				2BCCB24E24DC566F004CAD67 /* QinApp.swift */,
@@ -605,13 +606,11 @@
 		2BCCB2D024DC79AB004CAD67 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				2B019C4A261DCDDD00E1E9D6 /* IOS */,
 				2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */,
 				2B1E4B302518176900D71F4A /* CaseIterable+Extension.swift */,
 				2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */,
 				2B1ABEDE253DE09500B9A15C /* Published+Extension.swift */,
 				2B41D87125336E3D000B6FAC /* SwiftUI+Extension.swift */,
-				2BCCB2D424DC79DC004CAD67 /* View+Extension.swift */,
 				EF3890D2262D803D00C39649 /* JSONHelper.swift */,
 				EF6EF0F0265E467300F164B5 /* String+Extension.swift */,
 				2B792B06269A1F8700788CE1 /* URL+Extension.swift */,
@@ -831,6 +830,7 @@
 			packageProductDependencies = (
 				2BCCB2CE24DC74CD004CAD67 /* CryptoSwift */,
 				2B0E013B274140B400F7C1DE /* NeumorphismSwiftUI */,
+				2B82C199276DC87B001E44C0 /* Kingfisher */,
 			);
 			productName = "Qin (macOS)";
 			productReference = 2BCCB25D24DC5671004CAD67 /* Qin.app */;
@@ -908,7 +908,6 @@
 				EFF3072C266F5B4400D5E1F4 /* PlaylistOrderUpdateAction.swift in Sources */,
 				EFF30735266F7E1D00D5E1F4 /* PlaylistSubscribeAction.swift in Sources */,
 				2B62FB7C2507A28F00097D5B /* QinSFView.swift in Sources */,
-				2B019C4C261DCE4100E1E9D6 /* UINavigationController+Extension.swift in Sources */,
 				2B792B13269A259500788CE1 /* CloudUploadResponse.swift in Sources */,
 				2B8EFEC7266BFDE600FF42EF /* SongLikeListAction.swift in Sources */,
 				EFDB8B4F265FB635005C3AEE /* ArtistAlbumsResponse.swift in Sources */,
@@ -977,7 +976,6 @@
 				EF28DA28266E097000CE0369 /* PlaylistListAction.swift in Sources */,
 				EF010A352673428800DB2AF9 /* AlbumSublistAction.swift in Sources */,
 				2BC83163257100CC003D8D10 /* RecommendPlaylistView.swift in Sources */,
-				2BCCB2D724DC79DC004CAD67 /* View+Extension.swift in Sources */,
 				2BE66D9326700A4600367778 /* CommentSongResponse.swift in Sources */,
 				EFF30726266F42EE00D5E1F4 /* SongDetailResponse.swift in Sources */,
 				2B2D517824E39C1C007B52A4 /* SearchView.swift in Sources */,
@@ -1040,6 +1038,7 @@
 				2BCCB31E24DC7BCC004CAD67 /* AppState.swift in Sources */,
 				2BE66D72266F93AC00367778 /* SongOrderUpdateResponse.swift in Sources */,
 				EF010A442673431F00DB2AF9 /* AlbumDetailAction.swift in Sources */,
+				2B82C197276DC735001E44C0 /* SwiftUIHelper.swift in Sources */,
 				EF010A3E267342E300DB2AF9 /* ArtistHotSongsAction.swift in Sources */,
 				2BD4D9CB251BC460006798ED /* LyricViewModel.swift in Sources */,
 				2BD42A2827411E27003B4F00 /* QinPlayerCoverView.swift in Sources */,
@@ -1070,6 +1069,7 @@
 				EF6EF0F5265E4D0200F164B5 /* CoreDataModel.swift in Sources */,
 				EF28DA35266E199800CE0369 /* PlaylistDeleteAction.swift in Sources */,
 				EFF3072D266F5B4400D5E1F4 /* PlaylistOrderUpdateAction.swift in Sources */,
+				2B82C198276DC735001E44C0 /* SwiftUIHelper.swift in Sources */,
 				EFDB8B50265FB635005C3AEE /* ArtistAlbumsResponse.swift in Sources */,
 				2BE66D91267004D700367778 /* CommentLikeAction.swift in Sources */,
 				EF399B39265F4F6F00783BAE /* AlbumDetailResponse.swift in Sources */,
@@ -1122,7 +1122,6 @@
 				2B6547E2274104D500AB0E22 /* QinCoverView.swift in Sources */,
 				2BCCB31F24DC7BCC004CAD67 /* AppState.swift in Sources */,
 				2B8EFEDD266C2A0300FF42EF /* SongURLAction.swift in Sources */,
-				2BCCB2D824DC79DC004CAD67 /* View+Extension.swift in Sources */,
 				EF010A362673428800DB2AF9 /* AlbumSublistAction.swift in Sources */,
 				EFF3072A266F451C00D5E1F4 /* SongDetailAction.swift in Sources */,
 				2B8EFEC2266BF99C00FF42EF /* SongLikeAction.swift in Sources */,
@@ -1473,6 +1472,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B0E01382741408A00F7C1DE /* XCRemoteSwiftPackageReference "NeumorphismSwiftUI" */;
 			productName = NeumorphismSwiftUI;
+		};
+		2B82C199276DC87B001E44C0 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EF2EBC76272015FF00FDA5BC /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		2BCCB2C224DC5DB2004CAD67 /* CryptoSwift */ = {
 			isa = XCSwiftPackageProductDependency;
