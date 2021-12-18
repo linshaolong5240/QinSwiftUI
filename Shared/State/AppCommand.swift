@@ -1215,8 +1215,8 @@ struct UserCloudRequestCommand: AppCommand {
                     store.dispatch(.userPlaylistRequestDone(result: .failure(AppError.neteaseCloudMusic(error: error))))
                 }
             } receiveValue: { userCloudResponse in
-                #if DEBUG
-                print(userCloudResponse.toJSONString)
+                #if false
+                print(userCloudResponse.toJSONString ?? "nil")
                 #endif
             }.store(in: &store.cancellableSet)
     }
