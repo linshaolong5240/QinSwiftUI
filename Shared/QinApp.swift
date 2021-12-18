@@ -44,7 +44,7 @@ struct QinApp: App {
         .onChange(of: scenePhase) { newValue in
             switch newValue {
             case .active:
-                AudioSessionManager.shared.active()
+                break
             case .background:
                 break
             case .inactive:

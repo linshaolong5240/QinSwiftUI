@@ -11,19 +11,18 @@ import UIKit
 
 class AudioSessionManager {
     static let shared: AudioSessionManager = AudioSessionManager()
-
+    
     var audioSession: AVAudioSession { AVAudioSession.sharedInstance()}
     
     func configuration() {
         do {
             try audioSession.setCategory(.playback)
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         } catch let error {
 #if DEBUG
             print("AVAudioSession: \(error)")
 #endif
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: .AVCaptureSessionWasInterrupted, object: AVAudioSession.sharedInstance())
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
         UIApplication.shared.beginReceivingRemoteControlEvents()
     }
     
@@ -39,7 +38,7 @@ class AudioSessionManager {
     
     func deactive() {
         do {
-            try audioSession.setActive(false)
+            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
         }catch let error{
 #if DEBUG
             print("AVAudioSession: \(error)")
@@ -59,21 +58,15 @@ class AudioSessionManager {
             
         case .began:
             // An interruption began. Update the UI as necessary.
-            Player.shared.pause()
+            break
         case .ended:
             // An interruption ended. Resume playback, if appropriate.
-            do {
-                try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
-            }catch let error {
-#if DEBUG
-                print(error)
-#endif
-            }
-            Player.shared.play()
+            
             guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
             if options.contains(.shouldResume) {
                 // An interruption ended. Resume playback.
+                Player.shared.play()
             } else {
                 // An interruption ended. Don't resume playback.
             }

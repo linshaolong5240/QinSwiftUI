@@ -277,9 +277,11 @@ class Store: ObservableObject {
         case .mvURLRequest(let id):
             appCommand = MVUrlCommand(id: id)
         case .playerPause:
+            AudioSessionManager.shared.active()
             Player.shared.pause()
             appState.lyric.lyric?.stopTimer()
         case .playerPlay:
+            AudioSessionManager.shared.deactive()
             Player.shared.play()
             appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
         case .playerPlayBackward:
