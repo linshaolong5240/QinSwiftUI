@@ -9,22 +9,46 @@ import Foundation
 import Combine
 import CloudKit
 
+extension NCMSearchSongResponse.Result.Song.Album: QinAlbumable {
+    func asQinAblbum() -> QinAlbum {
+        .init(coverURLString: nil, id: id, name: name)
+    }
+}
+
+extension NCMSearchSongResponse.Result.Song.Artist: QinArtistable {
+    func asQinArtist() -> QinArtist {
+        .init(id: id, name: name)
+    }
+}
+
+extension QinArtist {
+    init(ncmArtist: NCMSearchSongResponse.Result.Song.Artist) {
+        self.init(id: ncmArtist.id, name: ncmArtist.name)
+    }
+}
+
+extension QinSong {
+    init(_ ncmSong: NCMSearchSongResponse.Result.Song) {
+        self.init(album: ncmSong.album.asQinAblbum(), artists: ncmSong.artists.map(QinArtist.init), id: ncmSong.id, name: ncmSong.name)
+    }
+}
+
 class SearchViewModel: ObservableObject {
     struct SearchResult {
-        var songs: [NCMSearchSongResponse.Result.Song] = []
+        var songs: [QinSong] = []
         var hasMore: Bool = false
     }
     
     var cancellableSet: Set<AnyCancellable> = []
     @Published var key: String
-    @Published var type: NCMSearchType = .song
+    @Published var searchType: NCMSearchType = .song
     @Published var result: SearchResult = .init()
     @Published var requesting: Bool = false
     
     private var limit: Int = 100
     private var offset: Int = 0
 
-    init(_ key: String = "") {
+    init(key: String = "") {
         self.key = key
     }
     
@@ -34,7 +58,7 @@ class SearchViewModel: ObservableObject {
     
     func search() {
         guard !key.isEmpty else { return }
-        searchRequest(key: key,type: type)
+        searchRequest(key: key,type: searchType)
     }
     
     private func searchRequest(key: String, type: NCMSearchType) {
@@ -71,7 +95,7 @@ class SearchViewModel: ObservableObject {
                 Store.shared.dispatch(.error(.neteaseCloudMusic(code: response.code, message: response.message)))
                 return
             }
-            weakSelf.result = .init(songs: result.songs ?? [], hasMore: result.hasMore ?? false)
+            weakSelf.result = .init(songs: result.songs?.map(QinSong.init) ?? [], hasMore: result.hasMore ?? false)
         }.store(in: &cancellableSet)
     }
 }

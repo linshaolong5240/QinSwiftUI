@@ -9,44 +9,10 @@ import SwiftUI
 import NeumorphismSwiftUI
 import Combine
 
-extension SearchPlaylistResponse.Result.Playlist: Identifiable {
-    
-}
-
-extension NCMSearchSongResponse.Result.Song: Identifiable {
-    
-}
-
-extension NCMSearchSongResponse.Result.Song.Album: QinAlbumable {
-    func asQinAblbum() -> QinAlbum {
-        .init(coverURLString: nil, id: id, name: name)
-    }
-}
-
-extension NCMSearchSongResponse.Result.Song.Artist: QinArtistable {
-    func asQinArtist() -> QinArtist {
-        .init(id: id, name: name)
-    }
-}
-
-extension QinArtist {
-    init(ncmArtist: NCMSearchSongResponse.Result.Song.Artist) {
-        self.init(id: ncmArtist.id, name: ncmArtist.name)
-    }
-}
-
-extension QinSong {
-    init(_ ncmSong: NCMSearchSongResponse.Result.Song) {
-        self.init(album: ncmSong.album.asQinAblbum(), artists: ncmSong.artists.map(QinArtist.init), id: ncmSong.id, name: ncmSong.name)
-    }
-}
-
 struct QinSearchView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
     @ObservedObject var viewModel: SearchViewModel
-    
-    @State private var searchType: NCMSearchType = .song
     @State private var showCancell = false
     
     var body: some View {
@@ -71,7 +37,7 @@ struct QinSearchView: View {
                     }
                 }
                 .padding(.horizontal)
-                Picker(selection: $viewModel.type, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
+                Picker(selection: $viewModel.searchType, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) /*@START_MENU_TOKEN@*/{
                     Text("单曲").tag(NCMSearchType.song)
                     Text("歌单").tag(NCMSearchType.playlist)
                 }/*@END_MENU_TOKEN@*/
@@ -83,10 +49,10 @@ struct QinSearchView: View {
                         .foregroundColor(.secondTextColor)
                     Spacer()
                 }else {
-                    switch searchType {
+                    switch viewModel.searchType {
                     case .song:
                         //                        EmptyView()
-                        SearchSongResultView(songs: viewModel.result.songs.map(QinSong.init))
+                        SearchSongResultView(songs: viewModel.result.songs)
                     case .playlist:
                         EmptyView()
                         //                        SearchPlaylistResultView(playlists: search.result.playlists)
@@ -102,24 +68,24 @@ struct QinSearchView: View {
         }
     }
 }
-
-struct SearchPlaylistResultView: View {
-    let playlists: [SearchPlaylistResponse.Result.Playlist]
-    
-    var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(playlists) { item in
-                    NavigationLink(destination: FetchedPlaylistDetailView(id: Int(item.id))) {
-                        SearchPlaylistResultRowView(viewModel: item)
-                            .padding(.horizontal)
-                    }
-                }
-            }
-            .padding(.vertical)
-        }
-    }
-}
+//
+//struct SearchPlaylistResultView: View {
+//    let playlists: [SearchPlaylistResponse.Result.Playlist]
+//
+//    var body: some View {
+//        ScrollView {
+//            LazyVStack {
+//                ForEach(playlists) { item in
+//                    NavigationLink(destination: FetchedPlaylistDetailView(id: Int(item.id))) {
+//                        SearchPlaylistResultRowView(viewModel: item)
+//                            .padding(.horizontal)
+//                    }
+//                }
+//            }
+//            .padding(.vertical)
+//        }
+//    }
+//}
 
 struct SearchPlaylistResultRowView: View {
     let viewModel: SearchPlaylistResponse.Result.Playlist
@@ -161,7 +127,7 @@ struct QinSearchBarView: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: QinSearchView(viewModel: SearchViewModel(key)), isActive: $showSearch) {
+            NavigationLink(destination: QinSearchView(viewModel: SearchViewModel(key: key)), isActive: $showSearch) {
                 EmptyView()
             }
             HStack {
