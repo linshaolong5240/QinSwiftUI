@@ -51,7 +51,7 @@ extension QinAlbum {
     }
 }
 
-struct QinArtist: Codable {
+struct QinArtist: Codable, Hashable {
     var id: Int
     var name: String?
 }
@@ -63,7 +63,7 @@ extension QinArtist {
     }
 }
 
-struct QinSong: Codable {
+struct QinSong: Codable, Identifiable {
     var album: QinAlbum?
     var artists: [QinArtist]
     var id: Int

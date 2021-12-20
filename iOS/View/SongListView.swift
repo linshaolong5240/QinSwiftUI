@@ -51,7 +51,7 @@ struct SongListView: View {
                             SongRowView(song: item)
                                 .padding(.horizontal)
                                 .onTapGesture {
-                                    if item.id == Store.shared.appState.playing.song?.id {
+                                    if Int(item.id) == Store.shared.appState.playing.song?.id {
                                         showPlayingNow.toggle()
                                     }
                                 }

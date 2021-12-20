@@ -131,7 +131,8 @@ extension AppState {
         @CombineUserStorge(key: .playerPlaylist, container: .standard)
         var playinglist = [Int]()
         var playingError: AppError?
-        var song: Song? = nil
+        @CombineUserStorge(key: .playerSong, container: .standard)
+        var song: QinSong? = nil
         var songUrl: String?
         var mvUrl: String?
     }

@@ -44,25 +44,25 @@ struct SongRowView: View {
                     .foregroundColor(Color.mainText)
                     .padding(.horizontal)
             })
-            Button(action: {
-                if playing.song?.id == song.id {
-                    Store.shared.dispatch(.playerPlayOrPause)
-                }else {
-                    Store.shared.dispatch(.playinglistInsert(id: Int(song.id)))
-                }
-            }) {
-                QinSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",
-                          size: .small,
-                          active: song.id == playing.song?.id && player.isPlaying ?  true : false,
-                          activeColor: song.id == playing.song?.id ? Color.orange : Color.mainText,
-                          inactiveColor: song.id == playing.song?.id ? Color.orange : Color.mainText)
-            }
-            .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: song.id == playing.song?.id && player.isPlaying ?  true : false))
+//            Button(action: {
+//                if playing.song?.id == song.id {
+//                    Store.shared.dispatch(.playerPlayOrPause)
+//                }else {
+//                    Store.shared.dispatch(.playinglistInsert(id: Int(song.id)))
+//                }
+//            }) {
+//                QinSFView(systemName: player.isPlaying && song.id == playing.song?.id ? "pause.fill" : "play.fill",
+//                          size: .small,
+//                          active: song.id == playing.song?.id && player.isPlaying ?  true : false,
+//                          activeColor: song.id == playing.song?.id ? Color.orange : Color.mainText,
+//                          inactiveColor: song.id == playing.song?.id ? Color.orange : Color.mainText)
+//            }
+//            .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: song.id == playing.song?.id && player.isPlaying ?  true : false))
         }
         .padding(10)
-        .background(
-            NEUListRowBackgroundView(isHighlighted: song.id == playing.song?.id)
-        )
+//        .background(
+//            NEUListRowBackgroundView(isHighlighted: song.id == playing.song?.id)
+//        )
     }
 }
 

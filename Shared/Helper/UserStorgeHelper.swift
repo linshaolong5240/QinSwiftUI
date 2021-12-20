@@ -23,6 +23,7 @@ enum UserStorgeKey: String {
     case playerCoverShape
     case playerPlayingIndex
     case playerPlayingMode
+    case playerPlayingSong
     case playerPlaylist
     case playerSong
 }

@@ -21,7 +21,7 @@ struct PlayingNowButtonView: View {
             Button(action: {
                 showPlayingNow.toggle()
             }){
-                if let url = store.appState.playing.song?.album?.picUrl {
+                if let url = store.appState.playing.song?.album?.coverURLString {
                     KFImage(URL(string: url))
 //                      .placeholder(placeholderImage)
                       .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100)))

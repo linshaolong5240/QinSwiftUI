@@ -35,11 +35,6 @@ class Store: ObservableObject {
         
         switch action {
         case .initAction:
-            if appState.playing.playinglist.count > 0 {
-                let index = appState.playing.index
-                let songId = appState.playing.playinglist[index]
-                appState.playing.song = DataManager.shared.getSong(id: Int(songId))
-            }
             appCommand = InitAcionCommand()
         case  .InitMPRemoteControl:
             appCommand = InitMPRemoteControlCommand()
@@ -291,7 +286,9 @@ class Store: ObservableObject {
         case .playerPlayBy(let index):
             appState.playing.index = index
             let id = appState.playing.playinglist[index]
-            appState.playing.song = DataManager.shared.getSong(id: Int(id))
+            if let song = DataManager.shared.getSong(id: Int(id)) {
+                appState.playing.song = .init(song)
+            }
             appCommand = PlayerPlayRequestCommand(id: Int(id))
         case .playerPlayForward:
             appCommand = PlayerPlayForwardCommand()

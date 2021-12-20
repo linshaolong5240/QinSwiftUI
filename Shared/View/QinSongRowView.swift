@@ -13,26 +13,20 @@ class QinSongRowViewModel: ObservableObject {
     var artists: [String] = []
     var id: Int = 0
     @Published var like: Bool = false
-    var name: String = ""
+    var name: String?
     @Published var playing: Bool = false
     
-    init(id: Int, name: String, artists: [String]) {
+    init(id: Int, name: String?, artists: [String]) {
         self.id = id
         self.name = name
         self.artists = artists
     }
     
-    init(_ song: NCMSearchSongResponse.Result.Song) {
-        name = song.name
-        artists = song.artists.map(\.name)
-        config()
-    }
-    
     private func config() {
         let songId = id
         Store.shared.appState.playlist.$songlikedIds.map { $0.contains(songId) }.assign(to: &$like)
-        Publishers.CombineLatest(Player.shared.$isPlaying, Store.shared.appState.playing.$index).map { playing, index in
-            playing && Store.shared.appState.playing.song?.id ?? 0 == songId
+        Publishers.CombineLatest(Player.shared.$isPlaying, Store.shared.appState.playing.$song).map { playing, song in
+            playing && song?.id == songId
         }.assign(to: &$playing)
     }
     
@@ -45,13 +39,23 @@ class QinSongRowViewModel: ObservableObject {
     }
 }
 
+extension QinSongRowViewModel {
+    convenience init(qinSong: QinSong) {
+        self.init(id: qinSong.id, name: qinSong.name, artists: qinSong.artists.compactMap(\.name))
+    }
+    
+    convenience init(_ ncmSong: NCMSearchSongResponse.Result.Song) {
+        self.init(id: ncmSong.id, name: ncmSong.name, artists: ncmSong.artists.map(\.name))
+    }
+}
+
 struct QinSongRowView: View {
     @ObservedObject var viewModel: QinSongRowViewModel
     
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(viewModel.name)
+                Text(viewModel.name ?? "Unknown")
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainText)
                     .lineLimit(1)

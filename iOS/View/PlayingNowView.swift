@@ -179,18 +179,16 @@ struct PlayingNowStatusView: View {
                     .fontWeight(.bold)
                     .lineLimit(1)
                     .foregroundColor(Color.mainText)
-                if let artists = playing.song?.artists {
-                    HStack {
-                        ForEach(Array(artists as! Set<Artist>)) { item in
-                            Button(action: {
-                                if item.id != 0 {
-                                    artistId = Int(item.id)
-                                    showArtist.toggle()
-                                }
-                            }, label: {
-                                Text(item.name ?? "")
-                            })
-                        }
+                HStack {
+                    ForEach(playing.song?.artists ?? [], id: \.self) { item in
+                        Button(action: {
+                            if item.id != 0 {
+                                artistId = Int(item.id)
+                                showArtist.toggle()
+                            }
+                        }, label: {
+                            Text(item.name ?? "")
+                        })
                     }
                 }
             }
@@ -355,7 +353,7 @@ struct PlayingNowCoverView: View {
     }
     
     var body: some View {
-        let url = playing.song?.album?.picUrl
+        let url = playing.song?.album?.coverURLString
         QinCoverView(url, style: QinCoverStyle(size: showMore ? .medium : .large, shape: settings.coverShape, type: type))
             .contentShape(Circle())
             .onTapGesture(perform: tapAction)

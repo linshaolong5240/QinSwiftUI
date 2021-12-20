@@ -1207,16 +1207,14 @@ struct UpdateMPNowPlayingInfoCommand: AppCommand {
                 //                     info[MPMediaItemPropertyAlbumArtist] = mainChannels.first?.value.soundMeta?.artist//专辑作者
             }
             
-            if let artists = store.appState.playing.song?.artists as? Set<Artist> {
-                info[MPMediaItemPropertyArtist] = artists.map{($0.name ?? "")}.joined(separator: " ")
-            }
+            info[MPMediaItemPropertyArtist] = store.appState.playing.song?.artists.map{($0.name ?? "")}.joined(separator: " ")
             info[MPNowPlayingInfoPropertyElapsedPlaybackTime] =  Player.shared.currentItem?.currentTime().seconds
             info[MPMediaItemPropertyPlaybackDuration] = Player.shared.currentItem?.duration.seconds//总时长
             //        info[MPNowPlayingInfoPropertyIsLiveStream] = 1.0
             info[MPNowPlayingInfoPropertyPlaybackRate] = Player.shared.rate//播放速率
             return info
         }
-        guard let picUrl = store.appState.playing.song?.album?.picUrl, let url = URL(string: picUrl) else {
+        guard let picUrl = store.appState.playing.song?.album?.coverURLString, let url = URL(string: picUrl) else {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = makeInfo()
             return
         }

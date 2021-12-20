@@ -14,10 +14,11 @@ class SearchViewModel: ObservableObject {
         var songs: [NCMSearchSongResponse.Result.Song] = []
         var hasMore: Bool = false
     }
+    
     var cancellableSet: Set<AnyCancellable> = []
     @Published var key: String
     @Published var type: NCMSearchType = .song
-    @Published var result: SearchResult?
+    @Published var result: SearchResult = .init()
     @Published var requesting: Bool = false
     
     private var limit: Int = 100
@@ -25,12 +26,14 @@ class SearchViewModel: ObservableObject {
 
     init(_ key: String = "") {
         self.key = key
-        if !key.isEmpty {
-            search()
-        }
+    }
+    
+    func reset() {
+        key = ""
     }
     
     func search() {
+        guard !key.isEmpty else { return }
         searchRequest(key: key,type: type)
     }
     

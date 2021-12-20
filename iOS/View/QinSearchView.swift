@@ -17,6 +17,30 @@ extension NCMSearchSongResponse.Result.Song: Identifiable {
     
 }
 
+extension NCMSearchSongResponse.Result.Song.Album: QinAlbumable {
+    func asQinAblbum() -> QinAlbum {
+        .init(coverURLString: nil, id: id, name: name)
+    }
+}
+
+extension NCMSearchSongResponse.Result.Song.Artist: QinArtistable {
+    func asQinArtist() -> QinArtist {
+        .init(id: id, name: name)
+    }
+}
+
+extension QinArtist {
+    init(ncmArtist: NCMSearchSongResponse.Result.Song.Artist) {
+        self.init(id: ncmArtist.id, name: ncmArtist.name)
+    }
+}
+
+extension QinSong {
+    init(_ ncmSong: NCMSearchSongResponse.Result.Song) {
+        self.init(album: ncmSong.album.asQinAblbum(), artists: ncmSong.artists.map(QinArtist.init), id: ncmSong.id, name: ncmSong.name)
+    }
+}
+
 struct QinSearchView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
@@ -61,11 +85,11 @@ struct QinSearchView: View {
                 }else {
                     switch searchType {
                     case .song:
-                        EmptyView()
-//                        SearchSongResultView(songsId: search.songsId.map(Int64.init))
+                        //                        EmptyView()
+                        SearchSongResultView(songs: viewModel.result.songs.map(QinSong.init))
                     case .playlist:
                         EmptyView()
-//                        SearchPlaylistResultView(playlists: search.result.playlists)
+                        //                        SearchPlaylistResultView(playlists: search.result.playlists)
                     default:
                         Spacer()
                     }
@@ -73,6 +97,9 @@ struct QinSearchView: View {
             }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            viewModel.search()
+        }
     }
 }
 
@@ -112,50 +139,40 @@ struct SearchPlaylistResultRowView: View {
 }
 
 struct SearchSongResultView: View {
-    let songsId: [Int64]
+    let songs: [QinSong]
     
     var body: some View {
-        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
-            if let songs = results {
-                ScrollView {
-                    LazyVStack {
-                        ForEach(songs.sorted(by: { (left, right) -> Bool in
-                            let lIndex = songsId.firstIndex(of: left.id)!
-                            let rIndex = songsId.firstIndex(of: right.id)!
-                            return lIndex > rIndex ? false : true
-                        })) { item in
-                            SongRowView(song: item)
-                            .padding(.horizontal)
-                        }
-                    }
-                    .padding(.vertical)
+        ScrollView {
+            LazyVStack {
+                ForEach(songs) { item in
+                    QinSongRowView(viewModel: .init(qinSong: item))
+                        .padding(.horizontal)
                 }
             }
+            .padding(.vertical)
         }
     }
 }
 
 struct QinSearchBarView: View {
-    @ObservedObject var viewModel = SearchViewModel()
     @State private var key: String = ""
     @State private var showSearch: Bool = false
     @State private var showCancel = false
-
+    
     var body: some View {
         VStack {
-            NavigationLink(destination: QinSearchView(viewModel: viewModel), isActive: $showSearch) {
+            NavigationLink(destination: QinSearchView(viewModel: SearchViewModel(key)), isActive: $showSearch) {
                 EmptyView()
             }
             HStack {
                 TextField("搜索",
                           text: $key,
                           onEditingChanged: { isEditing in showCancel = isEditing
-                          },
+                },
                           onCommit: {
-                            if !key.isEmpty {
-                                showSearch = true
-                            }
-                          })
+                    guard !key.isEmpty else { return }
+                   showSearch = true
+                })
                     .textFieldStyle(NEUDefaultTextFieldStyle(label: Image(systemName: "magnifyingglass").foregroundColor(.mainText)))
                 if showCancel {
                     Button(action: {
@@ -179,8 +196,8 @@ struct SearchView_Previews: PreviewProvider {
                 .environmentObject(Store.shared)
         }
         
-//        SearchPlaylistResultRowView(viewModel: PlaylistViewModel())
-//            .padding(.horizontal)
+        //        SearchPlaylistResultRowView(viewModel: PlaylistViewModel())
+        //            .padding(.horizontal)
     }
 }
 #endif
