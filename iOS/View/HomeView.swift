@@ -30,7 +30,7 @@ struct HomeView: View {
                                 }
                             }
                             .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
-                            SearchBarView()
+                            QinSearchBarView()
                             Button(action: {}) {
                                 NavigationLink(destination: DiscoverPlaylistView(viewModel: .init(catalogue: store.appState.discoverPlaylist.catalogue))) {
                                     QinSFView(systemName: "square.grid.2x2", size:  .small)

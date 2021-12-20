@@ -16,8 +16,6 @@ extension NeteaseCloudMusicResponse {
     var isSuccess: Bool { code == 200 }
 }
 
-
-
 public struct SongQuality: Codable {
     public let br: Int
     public let fid: Int

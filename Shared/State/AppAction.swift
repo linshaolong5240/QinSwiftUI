@@ -89,9 +89,6 @@ enum AppAction {
     case recommendPlaylistRequestDone(result: Result<RecommendPlaylistResponse, AppError>)
     case recommendSongsRequest
     case recommendSongsRequestDone(result: Result<[Int], AppError>)
-    case searchRequest(keyword: String, type: SearchType = .song, limit: Int = 10, offset: Int = 0)
-    case searchSongRequestDone(result: Result<[Int], AppError>)
-    case searchPlaylistRequestDone(result: Result<SearchPlaylistResponse, AppError>)
     case songLikeRequest(id: Int, like: Bool)
     case songLikeRequestDone(result: Result<Bool, AppError>)
     case songLikeListRequest(uid: Int? = nil)

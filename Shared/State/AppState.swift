@@ -21,7 +21,6 @@ struct AppState {
     var lyric = Lyric()
     var playing = Playing()
     var playlist = Playlist()
-    var search = Search()
     var settings = Settings()
     var error: AppError?
 }
@@ -46,10 +45,10 @@ extension AppState {
             case dark, light, system
         }
         var accountBehavior = AccountBehavior.login
-        @UserDefault(key: "coverShape") var coverShape: QinCoverShape = .circle
+        @CombineUserStorge(key: .playerCoverShape, container: .standard) var coverShape: QinCoverShape = .circle
         var loginRequesting = false
-        @UserDefault(key: "loginUser") var loginUser: User? = nil
-        @UserDefault(key: "playMode") var playMode: PlayMode = .playlist
+        @CombineUserStorge(key: .loginUser, container: .standard) var loginUser: User? = nil
+        @CombineUserStorge(key: .playerPlayingMode, container: .standard) var playMode: PlayMode = .playlist
         var theme: Theme = .light
     }
     
@@ -74,9 +73,9 @@ extension AppState {
     }
     
     struct Cloud {
-        @UserDefault(key: "fileURL") var fileURL: URL? = nil
-        @UserDefault(key: "md5") var md5: String = ""
-        @UserDefault(key: "token") var token: CloudUploadTokenResponse.Result? = nil
+        var fileURL: URL? = nil
+        var md5: String = ""
+        var token: CloudUploadTokenResponse.Result? = nil
         var needUpload: Bool = false
         var songId: String = ""
     }
@@ -114,6 +113,7 @@ extension AppState {
         var detailRequesting: Bool = false
         
         //喜欢的音乐ID
+        @CombineUserStorge(key: .likedSongsId, container: .standard)
         var songlikedIds = [Int]()
         //喜欢的音乐歌单ID
         var likedPlaylistId: Int = 0
@@ -125,72 +125,14 @@ extension AppState {
     }
     
     struct Playing {
-        @UserDefault(key: "index") var index: Int = 0
+        @CombineUserStorge(key: .playerPlayingIndex, container: .standard)
+        var index: Int = 0
         var isSeeking: Bool = false
-        @UserDefault(key: "playinglist") var playinglist = [Int]()
+        @CombineUserStorge(key: .playerPlaylist, container: .standard)
+        var playinglist = [Int]()
         var playingError: AppError?
         var song: Song? = nil
         var songUrl: String?
         var mvUrl: String?
-    }
-    
-    struct Search {
-        struct Result {
-            var playlists = [SearchPlaylistResponse.Result.Playlist]()
-            var songs = [SearchSongResponse.Result.Song]()
-        }
-        var keyword: String = ""
-        var searchRequesting: Bool = false
-        var songsId = [Int]()
-        var result = Result()
-    }
-}
-
-@propertyWrapper
-struct UserDefault<T: Codable> {
-    private let key: String
-    private let defaultValue: T
-    public var wrappedValue: T {
-        set {
-            UserDefaults.standard.set(try? JSONEncoder().encode(newValue) , forKey: key)
-            UserDefaults.standard.synchronize()
-        }
-        get {
-            guard let data = UserDefaults.standard.data(forKey: key) else { return defaultValue }
-            return (try? JSONDecoder().decode(T.self, from: data)) ?? defaultValue
-        }
-    }
-    
-    init(wrappedValue: T, key: String) {
-        self.key = key
-        self.defaultValue = wrappedValue
-    }
-}
-
-@propertyWrapper
-struct UserDefaultPublisher<T: Codable> {
-    private let key: String
-    private let defaultValue: T
-    public let projectedValue: CurrentValueSubject<T, Never>
-    public var wrappedValue: T {
-        set {
-            UserDefaults.standard.set(try? JSONEncoder().encode(newValue) , forKey: key)
-            UserDefaults.standard.synchronize()
-            projectedValue.send(newValue)
-        }
-        get {
-            guard let data = UserDefaults.standard.data(forKey: key) else { return defaultValue }
-            return (try? JSONDecoder().decode(T.self, from: data)) ?? defaultValue
-        }
-    }
-    
-    init(wrappedValue: T, key: String) {
-        self.key = key
-        self.defaultValue = wrappedValue
-        if let data = UserDefaults.standard.data(forKey: key) {
-            projectedValue = .init((try? JSONDecoder().decode(T.self, from: data)) ?? wrappedValue)
-        }else {
-            projectedValue = .init(wrappedValue)
-        }
     }
 }

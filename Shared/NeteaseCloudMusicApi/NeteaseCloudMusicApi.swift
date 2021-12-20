@@ -33,6 +33,7 @@ extension NeteaseCloudMusicAction {
 
 public struct EmptyParameters: Encodable { }
 
+let NCM = NeteaseCloudMusicApi.shared
 
 class NeteaseCloudMusicApi {
     
@@ -92,7 +93,7 @@ class NeteaseCloudMusicApi {
             .dataTaskPublisher(for: request)
             .map {
                 let str = String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString
-                print(str)
+                print(str ?? "data: nil")
                 return $0.data
             }
             .decode(type: action.responseType, decoder: JSONDecoder())

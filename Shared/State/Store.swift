@@ -140,7 +140,7 @@ class Store: ObservableObject {
             appCommand = CloudSongAddRequstCommand(id: songId)
         case .cloudSongAddRequstDone(let result):
             switch result {
-            case .success(let response):
+            case .success(_):
                 break
             case .failure(let error):
                 appState.error = error
@@ -451,28 +451,6 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .searchRequest(let keyword, let type, let limit, let offset):
-            if keyword.count > 0 {
-                appState.search.searchRequesting = true
-                appCommand = SearchRequestCommand(keyword: keyword, type: type, limit: limit, offset: offset)
-            }
-        case .searchPlaylistRequestDone(let result):
-            switch result {
-            case .success(let searchPlaylistResponse):
-                appState.search.result.playlists = searchPlaylistResponse.result.playlists
-            case .failure(let error):
-                appState.error = error
-            }
-            appState.search.searchRequesting = false
-        case .searchSongRequestDone(let result):
-            switch result {
-            case .success(let ids):
-                appState.search.songsId = ids
-                appCommand = SearchSongDoneCommand(ids: ids)
-            case .failure(let error):
-                appState.error = error
-            }
-            appState.search.searchRequesting = false
         case .songsDetailRequest(let ids):
             appCommand = SongsDetailCommand(ids: ids)
         case .songsDetailRequestDone(let result):

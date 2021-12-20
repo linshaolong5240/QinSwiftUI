@@ -1,5 +1,5 @@
 //
-//  SearchSongResponse.swift
+//  NCMSearchSongResponse.swift
 //  Qin
 //
 //  Created by 林少龙 on 2021/6/9.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SearchSongResponse: NeteaseCloudMusicResponse {
+public struct NCMSearchSongResponse: NeteaseCloudMusicResponse {
     public struct Result: Codable {
         public struct Song: Codable {
             public struct Album: Codable {
@@ -43,6 +43,6 @@ public struct SearchSongResponse: NeteaseCloudMusicResponse {
         public var songs: [Song]?
     }
     public var code: Int
-    public var result: Result
+    public var result: Result?
     public var message: String?
 }

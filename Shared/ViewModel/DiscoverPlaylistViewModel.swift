@@ -34,7 +34,7 @@ class DiscoverPlaylistViewModel: ObservableObject {
             .requestPublisher(action: PlaylistListAction(parameters: .init(cat: cat, order: .hot, limit: 30, offset: 0 * 30, total: true)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
+                    Store.shared.dispatch(.error(.error(error)))
                 }
             } receiveValue: {[weak self] playlistListResponse in
                 self?.playlists = playlistListResponse.playlists

@@ -10,6 +10,7 @@ import Foundation
 
 enum AppError: Error, Identifiable {
     var id: String { localizedDescription }
+    case error(Error)
     case albumDetailRequest
     case albumSubRequest
     case albumSublistRequest
@@ -35,7 +36,7 @@ enum AppError: Error, Identifiable {
     case logoutRequest
     case lyricError
     case mvDetailRequest
-    case neteaseCloudMusic(error: Error)
+    case neteaseCloudMusic(code: Int, message: String?)
     case playlistCategoriesRequest
     case playlistCreateRequest
     case playlistDeleteError
@@ -57,6 +58,7 @@ enum AppError: Error, Identifiable {
 extension AppError {
     var localizedDescription: String {
         switch self {
+        case .error(let error):  return error.localizedDescription
         case .albumDetailRequest: return "Album detail request failure"
         case .albumSubRequest: return "Album sub or unsub failure"
         case .albumSublistRequest: return "Album sublist failure"
@@ -82,7 +84,7 @@ extension AppError {
         case .logoutRequest: return "Logout request failure"
         case .lyricError: return "获取歌词错误"
         case .mvDetailRequest: return "MV Detail request failure"
-        case .neteaseCloudMusic(let error): return "NeteaseCloudMusic:\n\(error)"
+        case .neteaseCloudMusic(let code, let message): return "NeteaseCloudMusic:\ncode:\(code)\nmessage:\(message ?? "")"
         case .playlistCategoriesRequest: return "Playlist categories request failure"
         case .playlistCreateRequest: return "Playlist create request failure"
         case .playlistDeleteError: return "删除歌单错误"

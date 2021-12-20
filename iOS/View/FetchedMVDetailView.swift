@@ -92,7 +92,7 @@ struct MVDetailView: View {
             .requestPublisher(action: MVURLAction(parameters: .init(id: Int(mv.id))))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
+                    Store.shared.dispatch(.error(.error(error)))
                 }
             } receiveValue: { mvURLResponse in
 //                store.dispatch(.mvDetaillRequestDone(result: .success(id)))
