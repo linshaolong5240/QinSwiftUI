@@ -46,7 +46,7 @@ struct PlayerControlBarView: View, NEUStyle {
                             .foregroundColor(Color.mainText)
                         HStack {
                             HStack {
-                                ForEach(playing.song?.artists ?? [], id: \.self) { item in
+                                ForEach(playing.song?.artists ?? []) { item in
                                     Text(item.name ?? "")
                                         .fontWeight(.bold)
                                         .lineLimit(1)

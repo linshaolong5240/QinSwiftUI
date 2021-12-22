@@ -11,55 +11,34 @@ protocol QinAlbumable {
     func asQinAblbum() -> QinAlbum
 }
 
-extension Album: QinAlbumable {
-    func asQinAblbum() -> QinAlbum {
-        .init(coverURLString: picUrl, id: Int(id), name: name)
-    }
-}
-
 protocol QinArtistable {
     func asQinArtist() -> QinArtist
-}
-
-extension Artist: QinArtistable {
-    func asQinArtist() -> QinArtist {
-        .init(id: Int(id), name: name)
-    }
 }
 
 protocol QinSongable {
     func asQinSong() -> QinSong
 }
 
-extension Song: QinSongable {
-    func asQinSong() -> QinSong {
-        .init(album: album?.asQinAblbum(), artists: (artists?.allObjects as? [Artist])?.map(QinArtist.init) ?? [], id: Int(id), name: name)
-    }
-}
-
-struct QinAlbum: Codable {
+struct QinAlbum: Codable, Identifiable {
     var coverURLString: String?
     var id: Int
     var name: String?
 }
 
 extension QinAlbum {
-    init(_ album: Album) {
-        self.coverURLString = album.picUrl
-        self.id = Int(album.id)
-        self.name = album.name
+    init<Album>(_ album: Album) where Album: QinAlbumable {
+        self = album.asQinAblbum()
     }
 }
 
-struct QinArtist: Codable, Hashable {
+struct QinArtist: Codable, Identifiable {
     var id: Int
     var name: String?
 }
 
 extension QinArtist {
-    init(_ artist: Artist) {
-        self.id = Int(artist.id)
-        self.name = artist.name
+    init<Artist>(_ artist: Artist) where Artist: QinArtistable {
+        self = artist.asQinArtist()
     }
 }
 
@@ -71,10 +50,44 @@ struct QinSong: Codable, Identifiable {
 }
 
 extension QinSong {
-    init(_ song: Song) {
-        self.album = song.album?.asQinAblbum()
-        self.artists = (song.artists?.allObjects as? [Artist])?.map(QinArtist.init) ?? []
-        self.id = Int(song.id)
-        self.name = song.name
+    init<Song>(_ song: Song) where Song: QinSongable {
+        self = song.asQinSong()
     }
 }
+
+extension Album: QinAlbumable {
+    func asQinAblbum() -> QinAlbum {
+        .init(coverURLString: picUrl, id: Int(id), name: name)
+    }
+}
+
+extension Artist: QinArtistable {
+    func asQinArtist() -> QinArtist {
+        .init(id: Int(id), name: name)
+    }
+}
+
+extension Song: QinSongable {
+    func asQinSong() -> QinSong {
+        .init(album: album?.asQinAblbum(), artists: (artists?.allObjects as? [Artist])?.map(QinArtist.init) ?? [], id: Int(id), name: name)
+    }
+}
+
+extension NCMSearchSongResponse.Result.Song.Album: QinAlbumable {
+    func asQinAblbum() -> QinAlbum {
+        .init(coverURLString: nil, id: id, name: name)
+    }
+}
+
+extension NCMSearchSongResponse.Result.Song.Artist: QinArtistable {
+    func asQinArtist() -> QinArtist {
+        .init(id: id, name: name)
+    }
+}
+
+extension NCMSearchSongResponse.Result.Song: QinSongable {
+    func asQinSong() -> QinSong {
+        .init(album: album.asQinAblbum(), artists: self.artists.map({ $0.asQinArtist() }), id: id, name: name)
+    }
+}
+

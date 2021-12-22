@@ -9,30 +9,6 @@ import Foundation
 import Combine
 import CloudKit
 
-extension NCMSearchSongResponse.Result.Song.Album: QinAlbumable {
-    func asQinAblbum() -> QinAlbum {
-        .init(coverURLString: nil, id: id, name: name)
-    }
-}
-
-extension NCMSearchSongResponse.Result.Song.Artist: QinArtistable {
-    func asQinArtist() -> QinArtist {
-        .init(id: id, name: name)
-    }
-}
-
-extension QinArtist {
-    init(ncmArtist: NCMSearchSongResponse.Result.Song.Artist) {
-        self.init(id: ncmArtist.id, name: ncmArtist.name)
-    }
-}
-
-extension QinSong {
-    init(_ ncmSong: NCMSearchSongResponse.Result.Song) {
-        self.init(album: ncmSong.album.asQinAblbum(), artists: ncmSong.artists.map(QinArtist.init), id: ncmSong.id, name: ncmSong.name)
-    }
-}
-
 class SearchViewModel: ObservableObject {
     struct SearchResult {
         var songs: [QinSong] = []

@@ -180,7 +180,7 @@ struct PlayingNowStatusView: View {
                     .lineLimit(1)
                     .foregroundColor(Color.mainText)
                 HStack {
-                    ForEach(playing.song?.artists ?? [], id: \.self) { item in
+                    ForEach(playing.song?.artists ?? []) { item in
                         Button(action: {
                             if item.id != 0 {
                                 artistId = Int(item.id)

@@ -1350,7 +1350,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.Qin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.Qin2;
 				PRODUCT_NAME = Qin;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -1375,7 +1375,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.Qin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teenloong.Qin2;
 				PRODUCT_NAME = Qin;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;

@@ -88,7 +88,7 @@ struct QinSongRowView: View {
         }
         .padding(10)
         .background(
-            NEUListRowBackgroundView(isHighlighted: true)
+            NEUListRowBackgroundView(isHighlighted: viewModel.playing)
         )
     }
 }
