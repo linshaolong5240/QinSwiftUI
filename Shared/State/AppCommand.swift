@@ -769,7 +769,7 @@ struct PlayerTooglePlayCommand: AppCommand {
         }else if let index = playing.playinglist.firstIndex(of: song) {
             store.dispatch(.playerPlayBy(index: index))
         }else {
-            store.dispatch(.playinglistInsert(songs: [song]))
+            store.dispatch(.playinglistInsertAndPlay(songs: [song]))
         }
     }
 }

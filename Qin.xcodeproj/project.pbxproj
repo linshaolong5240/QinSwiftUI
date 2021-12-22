@@ -117,8 +117,6 @@
 		2B9BE027251A132F000AFB6A /* BidirectionalCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */; };
 		2BC530D2273D9656006CEDF6 /* QinBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */; };
 		2BC530D3273D9656006CEDF6 /* QinBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */; };
-		2BC664AB250C03F700A08BD7 /* SongRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC664AA250C03F700A08BD7 /* SongRowView.swift */; };
-		2BC664AC250C03F700A08BD7 /* SongRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC664AA250C03F700A08BD7 /* SongRowView.swift */; };
 		2BC83163257100CC003D8D10 /* RecommendPlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */; };
 		2BC8316925710ED4003D8D10 /* CreatedPlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC8316825710ED4003D8D10 /* CreatedPlaylistView.swift */; };
 		2BC8316D2571116A003D8D10 /* SubedPlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC8316C2571116A003D8D10 /* SubedPlaylistView.swift */; };
@@ -364,7 +362,6 @@
 		2B95469B25508F3500903B27 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidirectionalCollection+Extension.swift"; sourceTree = "<group>"; };
 		2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QinBackgroundView.swift; sourceTree = "<group>"; };
-		2BC664AA250C03F700A08BD7 /* SongRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRowView.swift; sourceTree = "<group>"; };
 		2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendPlaylistView.swift; sourceTree = "<group>"; };
 		2BC8316825710ED4003D8D10 /* CreatedPlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedPlaylistView.swift; sourceTree = "<group>"; };
 		2BC8316C2571116A003D8D10 /* SubedPlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubedPlaylistView.swift; sourceTree = "<group>"; };
@@ -604,7 +601,6 @@
 				2B2D517724E39C1C007B52A4 /* QinSearchView.swift */,
 				2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */,
 				2B95469B25508F3500903B27 /* SongListView.swift */,
-				2BC664AA250C03F700A08BD7 /* SongRowView.swift */,
 				2B0668FA25305AE40007053C /* SubedAlbumsView.swift */,
 				2BC8316C2571116A003D8D10 /* SubedPlaylistView.swift */,
 				2BCCB28824DC5A2A004CAD67 /* TestView.swift */,
@@ -1027,7 +1023,6 @@
 				2BCCB32E24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,
 				2BCCB2AD24DC5A2C004CAD67 /* PlayingNowView.swift in Sources */,
 				2BE66D9F267015E400367778 /* CommentAction.swift in Sources */,
-				2BC664AB250C03F700A08BD7 /* SongRowView.swift in Sources */,
 				2BCCB29F24DC5A2C004CAD67 /* PlayerControlBarView.swift in Sources */,
 				2B8EFEB2266BD15900FF42EF /* ArtistMVResponse.swift in Sources */,
 				2B1E4B312518176900D71F4A /* CaseIterable+Extension.swift in Sources */,
@@ -1198,7 +1193,6 @@
 				EFA08EC0266DC0320032B47E /* MVURLResponse.swift in Sources */,
 				EF474B222660EF440021F3D1 /* LogoutAction.swift in Sources */,
 				EF010A39267342A400DB2AF9 /* ArtistSublistAction.swift in Sources */,
-				2BC664AC250C03F700A08BD7 /* SongRowView.swift in Sources */,
 				2B1ABEE0253DE09600B9A15C /* Published+Extension.swift in Sources */,
 				2BE66D76266F940B00367778 /* SongOrderUpdateAction.swift in Sources */,
 				2B792B1A269B5C3A00788CE1 /* CloudUploadInfoResponse.swift in Sources */,

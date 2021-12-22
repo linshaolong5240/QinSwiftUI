@@ -324,7 +324,7 @@ class Store: ObservableObject {
             }
         case .playerTogglePlay(let song):
             appCommand = PlayerTooglePlayCommand(song: song)
-        case .playinglistInsert(let songs):
+        case .playinglistInsertAndPlay(let songs):
             var index: Int = appState.playing.index
             songs.forEach { song in
                 appState.playing.playinglist.insert(song, at: index + 1)

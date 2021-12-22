@@ -68,7 +68,7 @@ enum AppAction {
     case playerReplay
     case playerSeek(isSeeking: Bool, time: Double)
     case playerTogglePlay(song: QinSong)
-    case playinglistInsert(songs: [QinSong])
+    case playinglistInsertAndPlay(songs: [QinSong])
     case playlistCatalogueRequest
     case playlistCatalogueRequestsDone(result: Result<[PlaylistCatalogue], AppError>)
     case playlistCreateRequest(name: String, privacy: PlaylistCreateAction.Privacy = .common)
