@@ -149,7 +149,7 @@ struct PlayinglistView: View {
                             let rIndex = songsId.firstIndex(of: Int(right.id))!
                             return lIndex > rIndex ? false : true
                         })) { item in
-                            SongRowView(song: item)
+                            QinSongRowView(viewModel: .init(item))
                                 .padding(.horizontal)
                         }
                     }
@@ -248,7 +248,9 @@ struct PlayingNowStatusView: View {
                         NEUPlayButtonBackgroundView(shape: Circle())
                     )
                     .onTapGesture {
-                        Store.shared.dispatch(.playerPlayOrPause)
+                        if let song = store.appState.playing.song {
+                            Store.shared.dispatch(.playerTogglePlay(song: song))
+                        }
                     }
                 Button(action: {
                     Store.shared.dispatch(.playerPlayForward)
@@ -387,7 +389,7 @@ struct PlayingNowListView: View {
             
             ZStack {
                 let offset = UIScreen.main.bounds.height
-                PlayinglistView(songsId: store.appState.playing.playinglist)
+                PlayinglistView(songsId: store.appState.playing.playinglist.map(\.id))
                     .offset(y: listType == 0 ? 0 : offset)
                 if listType == 1 {
                     CommentListView(id: Int(store.appState.playing.song?.id  ?? 0))

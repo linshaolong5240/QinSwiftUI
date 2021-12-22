@@ -274,22 +274,19 @@ class Store: ObservableObject {
         case .mvURLRequest(let id):
             appCommand = MVUrlCommand(id: id)
         case .playerPause:
-            AudioSessionManager.shared.active()
             Player.shared.pause()
             appState.lyric.lyric?.stopTimer()
         case .playerPlay:
-            AudioSessionManager.shared.deactive()
-            Player.shared.play()
-            appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
+            appCommand = QinPlayerPlayCommand()
         case .playerPlayBackward:
             appCommand = PlayerPlayBackwardCommand()
         case .playerPlayBy(let index):
             appState.playing.index = index
-            let id = appState.playing.playinglist[index]
-            if let song = DataManager.shared.getSong(id: Int(id)) {
+            let id = appState.playing.playinglist[index].id
+            if let song = DataManager.shared.getSong(id: id) {
                 appState.playing.song = .init(song)
             }
-            appCommand = PlayerPlayRequestCommand(id: Int(id))
+            appCommand = PlayerPlayRequestCommand(id: id)
         case .playerPlayForward:
             appCommand = PlayerPlayForwardCommand()
         case .playerPlayMode:
@@ -301,7 +298,7 @@ class Store: ObservableObject {
             case .success(let songURL):
                 appState.playing.songUrl = songURL
                 if let url = songURL {
-                    appCommand = PlayerPlayRequestDoneCommand(url: url)
+                    appCommand = PlayerPlayWithUrlCommand(url: url)
                 }else {
                     appCommand = PlayerPlayForwardCommand()
                     appState.error = AppError.songsURLError
@@ -310,12 +307,14 @@ class Store: ObservableObject {
                 appState.error = error
                 break
             }
-        case .playerPlayOrPause:
-            if appState.playing.song != nil {
-                appCommand = TooglePlayCommand()
-            }
         case .PlayerPlayToendAction:
             appCommand = PlayerPlayToEndActionCommand()
+        case .PlayerPlaySongs(let songs):
+            if !songs.isEmpty {
+                appState.playing.playinglist = songs
+                appState.playing.index = 0
+                appCommand = PlayerPlayRequestCommand(id: songs[0].id)
+            }
         case .playerReplay:
             appCommand = RePlayCommand()
         case .playerSeek(let isSeeking, let time):
@@ -323,23 +322,26 @@ class Store: ObservableObject {
             if isSeeking == false {
                 appCommand = SeeKCommand(time: time)
             }
-        case .playinglistInsert(let id):
-            var index: Int = 0
-            if appState.playing.playinglist.count > 0 {
-                if let i = appState.playing.playinglist.firstIndex(of: id) {
-                    index = i
-                }else {
-                    index = appState.playing.index + 1
-                    appState.playing.playinglist.insert(id, at: index)
-                }
-            }else {
-                appState.playing.playinglist.append(id)
-                index = 0
+        case .playerTogglePlay(let song):
+            appCommand = PlayerTooglePlayCommand(song: song)
+        case .playinglistInsert(let songs):
+            var index: Int = appState.playing.index
+            songs.forEach { song in
+                appState.playing.playinglist.insert(song, at: index + 1)
+                index += 1
             }
+//            if appState.playing.playinglist.count > 0 {
+//                if let i = appState.playing.playinglist.firstIndex(of: id) {
+//                    index = i
+//                }else {
+//                    index = appState.playing.index + 1
+//                    appState.playing.playinglist.insert(id, at: index)
+//                }
+//            }else {
+//                appState.playing.playinglist.append(id)
+//                index = 0
+//            }
             appCommand = PlayinglistInsertCommand(index: index)
-        case .PlayinglistSet(let playlist, let index):
-            appState.playing.playinglist = playlist
-            appState.playing.index = index
         case .playlistCatalogueRequest:
             appState.discoverPlaylist.requesting = true
             appCommand = PlaylistCategoriesRequestCommand()

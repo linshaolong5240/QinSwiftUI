@@ -34,11 +34,13 @@ class Player: AVPlayer, ObservableObject {
     }
     
     override func pause() {
+        AudioSessionManager.shared.deactive()
         super.pause()
         self.removePeriodicTimeObserver()
     }
     
     override func play() {
+        AudioSessionManager.shared.active()
         super.play()
         self.addPeriodicTimeObserver()
         Store.shared.dispatch(.updateMPNowPlayingInfo)

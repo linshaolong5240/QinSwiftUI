@@ -63,12 +63,12 @@ enum AppAction {
     case playerPlayMode
     case playerPlayRequest(id: Int)
     case playerPlayRequestDone(result: Result<String?, AppError>)
-    case playerPlayOrPause
+    case PlayerPlaySongs(songs: [QinSong])
     case PlayerPlayToendAction
     case playerReplay
     case playerSeek(isSeeking: Bool, time: Double)
-    case playinglistInsert(id: Int)
-    case PlayinglistSet(playinglist: [Int], index: Int)
+    case playerTogglePlay(song: QinSong)
+    case playinglistInsert(songs: [QinSong])
     case playlistCatalogueRequest
     case playlistCatalogueRequestsDone(result: Result<[PlaylistCatalogue], AppError>)
     case playlistCreateRequest(name: String, privacy: PlaylistCreateAction.Privacy = .common)

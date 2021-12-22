@@ -10,24 +10,24 @@ import NeumorphismSwiftUI
 import Combine
 
 class QinSongRowViewModel: ObservableObject {
-    var artists: [String] = []
-    var id: Int = 0
+    var song: QinSong
+
     @Published var like: Bool = false
-    var name: String?
     @Published var playing: Bool = false
-    
-    init(id: Int, name: String?, artists: [String]) {
-        self.id = id
-        self.name = name
-        self.artists = artists
+    @Published var isPlaying: Bool = false
+
+    init<Song>(_ song: Song) where Song: QinSongable {
+        self.song = song.asQinSong()
+        config()
     }
     
     private func config() {
-        let songId = id
+        let songId = song.id
         Store.shared.appState.playlist.$songlikedIds.map { $0.contains(songId) }.assign(to: &$like)
+        Store.shared.appState.playing.$song.map { $0?.id == songId }.assign(to: &$playing)
         Publishers.CombineLatest(Player.shared.$isPlaying, Store.shared.appState.playing.$song).map { playing, song in
             playing && song?.id == songId
-        }.assign(to: &$playing)
+        }.assign(to: &$isPlaying)
     }
     
     func toogleLike() {
@@ -35,17 +35,7 @@ class QinSongRowViewModel: ObservableObject {
     }
     
     func togglePlay() {
-        playing = !playing
-    }
-}
-
-extension QinSongRowViewModel {
-    convenience init(qinSong: QinSong) {
-        self.init(id: qinSong.id, name: qinSong.name, artists: qinSong.artists.compactMap(\.name))
-    }
-    
-    convenience init(_ ncmSong: NCMSearchSongResponse.Result.Song) {
-        self.init(id: ncmSong.id, name: ncmSong.name, artists: ncmSong.artists.map(\.name))
+        Store.shared.dispatch(.playerTogglePlay(song: song))
     }
 }
 
@@ -55,12 +45,12 @@ struct QinSongRowView: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(viewModel.name ?? "Unknown")
+                Text(viewModel.song.name ?? "Unknown")
                     .fontWeight(.bold)
                     .foregroundColor(Color.mainText)
                     .lineLimit(1)
                 HStack {
-                    ForEach(viewModel.artists, id: \.self) { item in
+                    ForEach(viewModel.song.artists.compactMap(\.name), id: \.self) { item in
                         Text(item)
                             .lineLimit(1)
                             .foregroundColor(Color.secondTextColor)
@@ -78,13 +68,13 @@ struct QinSongRowView: View {
             Button(action: {
                 viewModel.togglePlay()
             }) {
-                QinSFView(systemName: viewModel.playing ? "pause.fill" : "play.fill",
+                QinSFView(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill",
                           size: .small,
-                          active: viewModel.playing,
-                          activeColor: viewModel.playing ? Color.orange : Color.mainText,
-                          inactiveColor: viewModel.playing ? Color.orange : Color.mainText)
+                          active: viewModel.isPlaying,
+                          activeColor: viewModel.isPlaying ? Color.orange : Color.mainText,
+                          inactiveColor: viewModel.isPlaying ? Color.orange : Color.mainText)
             }
-            .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: viewModel.playing ?  true : false))
+            .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle(), toggle: viewModel.isPlaying ?  true : false))
         }
         .padding(10)
         .background(
@@ -96,7 +86,7 @@ struct QinSongRowView: View {
 #if DEBUG
 struct QinSongRowView_Previews: PreviewProvider {
     static var previews: some View {
-        QinSongRowView(viewModel: .init(id: 0, name: "name", artists: ["artist", "artist"]))
+        QinSongRowView(viewModel: .init(QinSong(artists: [.init(id: 0, name: "artist")], id: 0, name: "name")))
             .padding(.horizontal)
     }
 }

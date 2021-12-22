@@ -60,7 +60,11 @@ struct InitMPRemoteControlCommand: AppCommand {
     //        }
         //耳机线控制
         commandCenter.togglePlayPauseCommand.addTarget{ (event) -> MPRemoteCommandHandlerStatus in
-            Store.shared.dispatch(.playerPlayOrPause)
+            guard let song = store.appState.playing.song else {
+                return .noSuchContent
+            }
+            
+            Store.shared.dispatch(.playerTogglePlay(song: song))
             return .success
         }
         commandCenter.nextTrackCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
@@ -674,6 +678,22 @@ struct PlayerPlayForwardCommand: AppCommand {
     }
 }
 
+struct QinPlayerPlayCommand: AppCommand {
+
+    func execute(in store: Store) {
+        let playing = store.appState.playing
+        guard let song = playing.song else {
+            return
+        }
+        guard playing.songUrl != nil else {
+            store.dispatch(.playerPlayRequest(id: song.id))
+            return
+        }
+
+        Player.shared.play()
+    }
+}
+
 struct PlayerPlayRequestCommand: AppCommand {
     let id: Int
     
@@ -711,16 +731,14 @@ struct PlayerPlayRequestCommand: AppCommand {
     }
 }
 
-struct PlayerPlayRequestDoneCommand: AppCommand {
+struct PlayerPlayWithUrlCommand: AppCommand {
     let url: String
     
     func execute(in store: Store) {
-        let index = store.appState.playing.index
-        let songId = store.appState.playing.playinglist[index]
-        store.dispatch(.songLyricRequest(id: Int(songId)))
-        if let url = URL(string: url) {
-            Player.shared.playWithURL(url: url)
+        guard let url = URL(string: url) else {
+            return
         }
+        Player.shared.playWithURL(url: url)
     }
 }
 
@@ -733,6 +751,25 @@ struct PlayerPlayToEndActionCommand: AppCommand {
         case .relplay:
             store.dispatch(.playerReplay)
             break
+        }
+    }
+}
+
+struct PlayerTooglePlayCommand: AppCommand {
+    let song: QinSong
+    
+    func execute(in store: Store) {
+        let playing = store.appState.playing
+        if song == playing.song {
+            if Player.shared.isPlaying {
+                store.dispatch(.playerPause)
+            }else {
+                store.dispatch(.playerPlay)
+            }
+        }else if let index = playing.playinglist.firstIndex(of: song) {
+            store.dispatch(.playerPlayBy(index: index))
+        }else {
+            store.dispatch(.playinglistInsert(songs: [song]))
         }
     }
 }
@@ -1175,21 +1212,6 @@ struct SeeKCommand: AppCommand {
     
     func execute(in store: Store) {
         Player.shared.seek(seconds: time)
-    }
-}
-
-struct TooglePlayCommand: AppCommand {
-    
-    func execute(in store: Store) {
-        guard store.appState.playing.songUrl != nil else {
-            store.dispatch(.playerPlayBy(index: store.appState.playing.index))
-            return
-        }
-        if Player.shared.isPlaying {
-            store.dispatch(.playerPause)
-        }else {
-            store.dispatch(.playerPlay)
-        }
     }
 }
 

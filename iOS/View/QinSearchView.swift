@@ -111,7 +111,7 @@ struct SearchSongResultView: View {
         ScrollView {
             LazyVStack {
                 ForEach(songs) { item in
-                    QinSongRowView(viewModel: .init(qinSong: item))
+                    QinSongRowView(viewModel: .init(item))
                         .padding(.horizontal)
                 }
             }

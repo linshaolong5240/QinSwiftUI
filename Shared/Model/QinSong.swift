@@ -19,7 +19,7 @@ protocol QinSongable {
     func asQinSong() -> QinSong
 }
 
-struct QinAlbum: Codable, Identifiable {
+struct QinAlbum: Codable, Identifiable, Equatable {
     var coverURLString: String?
     var id: Int
     var name: String?
@@ -31,7 +31,7 @@ extension QinAlbum {
     }
 }
 
-struct QinArtist: Codable, Identifiable {
+struct QinArtist: Codable, Identifiable, Equatable {
     var id: Int
     var name: String?
 }
@@ -42,7 +42,7 @@ extension QinArtist {
     }
 }
 
-struct QinSong: Codable, Identifiable {
+struct QinSong: Codable, Identifiable, Equatable {
     var album: QinAlbum?
     var artists: [QinArtist]
     var id: Int
@@ -52,6 +52,12 @@ struct QinSong: Codable, Identifiable {
 extension QinSong {
     init<Song>(_ song: Song) where Song: QinSongable {
         self = song.asQinSong()
+    }
+}
+
+extension QinSong: QinSongable {
+    func asQinSong() -> QinSong {
+        self
     }
 }
 

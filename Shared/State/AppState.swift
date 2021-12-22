@@ -129,7 +129,7 @@ extension AppState {
         var index: Int = 0
         var isSeeking: Bool = false
         @CombineUserStorge(key: .playerPlaylist, container: .standard)
-        var playinglist = [Int]()
+        var playinglist:[QinSong] = []
         var playingError: AppError?
         @CombineUserStorge(key: .playerSong, container: .standard)
         var song: QinSong? = nil

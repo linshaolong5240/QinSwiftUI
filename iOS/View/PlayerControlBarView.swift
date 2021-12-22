@@ -28,7 +28,9 @@ struct PlayerControlBarView: View, NEUStyle {
                     .padding()
                     .frame(width: 90, height: 90)
                 Button(action: {
-                    Store.shared.dispatch(.playerPlayOrPause)
+                    if let song = store.appState.playing.song {
+                        Store.shared.dispatch(.playerTogglePlay(song: song))
+                    }
                 }) {
                     QinSFView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
                         .background(
