@@ -38,7 +38,6 @@ struct PlayingNowView: View {
                 if !showMore {
                     HStack {
                         QinBackwardButton()
-                            .transition(.move(edge: .bottom))
                             .matchedGeometryEffect(id: 0, in: namespace)
                         Spacer()
                         QinNavigationBarTitleView("PLAYING NOW")
@@ -53,7 +52,6 @@ struct PlayingNowView: View {
                             QinSFView(systemName: "plus" , size:  .medium)
                         }
                         .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
-                        .transition(.move(edge: .bottom))
                         .matchedGeometryEffect(id: 1, in: namespace)
                     }
                     .padding(.horizontal)
@@ -81,7 +79,6 @@ struct PlayingNowView: View {
                             .matchedGeometryEffect(id: 1, in: namespace)
                         }
                         .padding(.horizontal)
-                        .transition(.move(edge: .top))
                     }
                     PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType)
                     HStack {
