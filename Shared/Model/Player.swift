@@ -12,7 +12,6 @@ import Combine
 import Kingfisher
 
 class Player: AVPlayer, ObservableObject {
-    let audioSession = AVAudioSession.sharedInstance()
     static let shared = Player()
     private var timeObserverToken: Any?
     private var cancellAble = AnyCancellable({})
