@@ -32,13 +32,17 @@ class Player: AVPlayer, ObservableObject {
     }
     
     override func pause() {
+        #if canImport(UIKit)
         AudioSessionManager.shared.deactive()
+        #endif
         super.pause()
         self.removePeriodicTimeObserver()
     }
     
     override func play() {
+        #if canImport(UIKit)
         AudioSessionManager.shared.active()
+        #endif
         super.play()
         self.addPeriodicTimeObserver()
         Store.shared.dispatch(.updateMPNowPlayingInfo)

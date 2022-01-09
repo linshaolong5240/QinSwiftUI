@@ -75,8 +75,9 @@ struct InitMPRemoteControlCommand: AppCommand {
             Store.shared.dispatch(.playerPlayBackward)
             return .success
         }
+        #if canImport(UIKit)
         UIApplication.shared.beginReceivingRemoteControlEvents()
-
+        #endif
     }
 }
 
