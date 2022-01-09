@@ -17,7 +17,7 @@ struct SongListView: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
+            NavigationLink(destination: PlayerView(), isActive: $showPlayingNow, label: {EmptyView()})
                 .navigationViewStyle(StackNavigationViewStyle())
             HStack {
                 Button(action: {

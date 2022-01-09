@@ -132,7 +132,7 @@
 		2BCCB2A324DC5A2C004CAD67 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */; };
 		2BCCB2A524DC5A2C004CAD67 /* FetchedPlaylistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB28D24DC5A2A004CAD67 /* FetchedPlaylistDetailView.swift */; };
 		2BCCB2A924DC5A2C004CAD67 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB28F24DC5A2A004CAD67 /* HomeView.swift */; };
-		2BCCB2AD24DC5A2C004CAD67 /* PlayingNowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */; };
+		2BCCB2AD24DC5A2C004CAD67 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29124DC5A2B004CAD67 /* PlayerView.swift */; };
 		2BCCB2B924DC5A2D004CAD67 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB29724DC5A2B004CAD67 /* UserView.swift */; };
 		2BCCB2C324DC5DB2004CAD67 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2C224DC5DB2004CAD67 /* CryptoSwift */; };
 		2BCCB2CF24DC74CD004CAD67 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCB2CE24DC74CD004CAD67 /* CryptoSwift */; };
@@ -379,7 +379,7 @@
 		2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2BCCB28D24DC5A2A004CAD67 /* FetchedPlaylistDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedPlaylistDetailView.swift; sourceTree = "<group>"; };
 		2BCCB28F24DC5A2A004CAD67 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayingNowView.swift; sourceTree = "<group>"; };
+		2BCCB29124DC5A2B004CAD67 /* PlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		2BCCB29724DC5A2B004CAD67 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		2BCCB29A24DC5A2B004CAD67 /* QinSFView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QinSFView.swift; sourceTree = "<group>"; };
 		2BCCB2D624DC79DC004CAD67 /* Color+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
@@ -593,12 +593,12 @@
 				2B1ABED225387E8800B9A15C /* LoginView.swift */,
 				2BED107F253439B4005A14AA /* LyricView.swift */,
 				2BCCB28A24DC5A2A004CAD67 /* PlayerControlBarView.swift */,
+				2BCCB29124DC5A2B004CAD67 /* PlayerView.swift */,
 				2BD09854257BBDFB0062480F /* PlayingNowButtonView.swift */,
-				2BCCB29124DC5A2B004CAD67 /* PlayingNowView.swift */,
 				2B01EFE0257BE6FC00BEBD54 /* PlaylistManageView.swift */,
 				2B1197FC257CA64100A67E56 /* PlaylistSongsManageView.swift */,
-				2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */,
 				2B2D517724E39C1C007B52A4 /* QinSearchView.swift */,
+				2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */,
 				2BCCB28C24DC5A2A004CAD67 /* SettingsView.swift */,
 				2B95469B25508F3500903B27 /* SongListView.swift */,
 				2B0668FA25305AE40007053C /* SubedAlbumsView.swift */,
@@ -1021,7 +1021,7 @@
 				EF6EF0F4265E4D0200F164B5 /* CoreDataModel.swift in Sources */,
 				EFF3073B266F823E00D5E1F4 /* PlaylistTracksAction.swift in Sources */,
 				2BCCB32E24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */,
-				2BCCB2AD24DC5A2C004CAD67 /* PlayingNowView.swift in Sources */,
+				2BCCB2AD24DC5A2C004CAD67 /* PlayerView.swift in Sources */,
 				2BE66D9F267015E400367778 /* CommentAction.swift in Sources */,
 				2BCCB29F24DC5A2C004CAD67 /* PlayerControlBarView.swift in Sources */,
 				2B8EFEB2266BD15900FF42EF /* ArtistMVResponse.swift in Sources */,

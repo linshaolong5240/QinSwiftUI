@@ -17,7 +17,7 @@ struct PlayingNowButtonView: View {
     
     var body: some View {
         HStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
+            NavigationLink(destination: PlayerView(), isActive: $showPlayingNow, label: {EmptyView()})
             Button(action: {
                 showPlayingNow.toggle()
             }){

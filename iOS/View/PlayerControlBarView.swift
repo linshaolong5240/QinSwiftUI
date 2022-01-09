@@ -38,7 +38,7 @@ struct PlayerControlBarView: View, NEUStyle {
                         )
                 }
             }
-            NavigationLink(destination: PlayingNowView()) {
+            NavigationLink(destination: PlayerView()) {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(playing.song?.name ?? "")

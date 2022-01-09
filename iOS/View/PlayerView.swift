@@ -1,5 +1,5 @@
 //
-//  PlayingView.swift
+//  PlayerView.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/4/28.
@@ -15,7 +15,7 @@ enum PlayingNowBottomType {
     case playingStatus
 }
 
-struct PlayingNowView: View {
+struct PlayerView: View {
     @EnvironmentObject var store: Store
  
     private var playing: AppState.Playing { store.appState.playing }
@@ -116,12 +116,12 @@ struct PlayingNowView: View {
 #if DEBUG
 struct PlayingView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayingNowView()
+        PlayerView()
             .preferredColorScheme(.light)
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
             .environment(\.managedObjectContext, DataManager.shared.context())
-        PlayingNowView()
+        PlayerView()
             .preferredColorScheme(.dark)
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
