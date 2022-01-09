@@ -14,8 +14,7 @@ import Kingfisher
 class Player: AVPlayer, ObservableObject {
     static let shared = Player()
     private var timeObserverToken: Any?
-    private var cancellAble = AnyCancellable({})
-    private var notificatioCancellAble = AnyCancellable({})
+    private var timerCancell: AnyCancellable?
     
     //playingStatus
     @Published var isPlaying: Bool = false
@@ -88,7 +87,7 @@ class Player: AVPlayer, ObservableObject {
         //                // update player transport UI
         //                block()
         //        }
-        cancellAble = Timer
+        timerCancell = Timer
             .publish(every: 1, on: .main, in: .default)
             .autoconnect()
             .sink(receiveValue: { _ in
@@ -109,7 +108,7 @@ class Player: AVPlayer, ObservableObject {
 //        if timeObserverToken != nil {
 //            self.removeTimeObserver(timeObserverToken!)
 //        }
-        cancellAble.cancel()
+        timerCancell?.cancel()
     }
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(AVPlayer.currentItem.status) {
