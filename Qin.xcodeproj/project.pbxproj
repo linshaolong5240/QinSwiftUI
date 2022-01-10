@@ -506,6 +506,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		2B3F0D8E278AC97A00185ED5 /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Modifier;
+			sourceTree = "<group>";
+		};
 		2B82C195276DC704001E44C0 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -537,6 +544,7 @@
 				2BCCB2D024DC79AB004CAD67 /* Extension */,
 				2B82C195276DC704001E44C0 /* Helper */,
 				2BCCB2DD24DC79EB004CAD67 /* Model */,
+				2B3F0D8E278AC97A00185ED5 /* Modifier */,
 				2BCCB31424DC7B7D004CAD67 /* NeteaseCloudMusicApi */,
 				2BCCB24E24DC566F004CAD67 /* QinApp.swift */,
 				2BCCB31824DC7BCC004CAD67 /* State */,

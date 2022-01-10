@@ -8,6 +8,7 @@
 
 import SwiftUI
 import NeumorphismSwiftUI
+import Combine
 
 enum PlayingNowBottomType {
     case createdPlaylist
@@ -15,12 +16,39 @@ enum PlayingNowBottomType {
     case playingStatus
 }
 
+class PlayerViewModel: ObservableObject {
+    enum DisplayMode {
+        case stand
+        case playlist
+        case addToMyPlaylist
+    }
+    @Published var displayMode: DisplayMode = .stand
+    @Published var isShowArtist: Bool = false
+    
+    func setDisplayMode(_ mode: DisplayMode) {
+        displayMode = mode
+    }
+    
+    func tapCover() {
+        if displayMode != .stand {
+            displayMode = .stand
+        }else if displayMode == .stand {
+            displayMode = .playlist
+        }
+    }
+    
+    func showMyPlaylist() {
+        
+    }
+}
+
 struct PlayerView: View {
     @EnvironmentObject var store: Store
- 
+    @StateObject var viewModel: PlayerViewModel = .init()
+    
     private var playing: AppState.Playing { store.appState.playing }
     private var playlist: AppState.Playlist { store.appState.playlist }
-
+    
     @State private var showMore: Bool = false
     @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
@@ -31,35 +59,15 @@ struct PlayerView: View {
     var body: some View {
         ZStack {
             QinBackgroundView()
-            VStack {
-                NavigationLink(destination: FetchedArtistDetailView(id: artistId), isActive: $showArtist) {
-                    EmptyView()
-                }
-                if !showMore {
-                    HStack {
-                        QinBackwardButton()
-                            .matchedGeometryEffect(id: 0, in: namespace)
-                        Spacer()
-                        QinNavigationBarTitleView("PLAYING NOW")
-                            .transition(.move(edge: .top))
-                        Spacer()
-                        Button(action: {
-                            withAnimation(.default) {
-                                showMore = true
-                                bottomType = .createdPlaylist
-                            }
-                        }) {
-                            QinSFView(systemName: "plus" , size:  .medium)
-                        }
-                        .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
-                        .matchedGeometryEffect(id: 1, in: namespace)
-                    }
-                    .padding(.horizontal)
-                }else {
-                    QinNavigationBarTitleView(playing.song?.name ?? "")
+            NavigationLink(destination: FetchedArtistDetailView(id: artistId), isActive: $showArtist) {
+                EmptyView()
+            }
+            VStack(spacing: 20) {
+                if viewModel.displayMode == .stand {
+                    PlayerNavgationBarView(namespace: namespace, viewModel: viewModel)
                 }
                 ZStack {
-                    if showMore {
+                    if viewModel.displayMode != .stand {
                         HStack {
                             Button {
                                 let id = Int(playing.song?.id ?? 0)
@@ -80,94 +88,88 @@ struct PlayerView: View {
                         }
                         .padding(.horizontal)
                     }
-                    PlayingNowCoverView(showMore: $showMore, bottomType: $bottomType)
-                    HStack {
-                        Spacer()
-                        if !showMore {
+                    PlayerCoverView(viewModel: viewModel)
+                    if viewModel.displayMode == .stand {
+                        HStack {
+                            Spacer()
                             PlayingExtensionControllView()
                         }
                     }
                 }
-                ZStack {
-                    let screen = UIScreen.main.bounds
-                    if bottomType == .playingStatus {
-                        PlayingNowStatusView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
-//                            .offset(y: bottomType == .playingStatus ? 0 : screen.height)
+                Group {
+                    if viewModel.displayMode == .stand {
+                        PlayerControllView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
                             .transition(.move(edge: .bottom))
                     }
-                    PlayingNowListView()
-                        .offset(y: bottomType == .playinglist ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
-                    if bottomType == .createdPlaylist {
+                    if viewModel.displayMode == .playlist {
+                        PlayingNowListView()
+                            .transition(.move(edge: .bottom))
+                    }
+                    if viewModel.displayMode == .addToMyPlaylist {
                         PlaylistTracksView(playlist: store.appState.playlist.createdPlaylist, showList: $showMore, bottomType: $bottomType)
-                        .offset(y: bottomType == .createdPlaylist ? 0 : screen.height)
-                        .transition(.move(edge: .bottom))
+                            .transition(.move(edge: .bottom))
                     }
                 }
             }
         }
         .navigationBarHidden(true)
-        .alert(item: $store.appState.error) { error in
-            Alert(title: Text(error.localizedDescription))
-        }
     }
 }
 
 #if DEBUG
 struct PlayingView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerView()
-            .preferredColorScheme(.light)
-            .environmentObject(Store.shared)
-            .environmentObject(Player.shared)
-            .environment(\.managedObjectContext, DataManager.shared.context())
+        //        PlayerView()
+        //            .preferredColorScheme(.light)
+        //            .environmentObject(Store.shared)
+        //            .environmentObject(Player.shared)
+        //            .environment(\.managedObjectContext, DataManager.shared.context())
         PlayerView()
             .preferredColorScheme(.dark)
             .environmentObject(Store.shared)
             .environmentObject(Player.shared)
             .environment(\.managedObjectContext, DataManager.shared.context())
-
+        
     }
 }
 #endif
 
-struct PlayinglistView: View {
-    let songsId: [Int]
-    
-    @State private var show: Bool = false
+struct PlayerNavgationBarView: View {
+    let namespace: Namespace.ID
+    @ObservedObject var viewModel: PlayerViewModel
     
     var body: some View {
-        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
-            ScrollView {
-                if let songs = results {
-                    LazyVStack {
-                        ForEach(songs.sorted(by: { (left, right) -> Bool in
-                            let lIndex = songsId.firstIndex(of: Int(left.id))!
-                            let rIndex = songsId.firstIndex(of: Int(right.id))!
-                            return lIndex > rIndex ? false : true
-                        })) { item in
-                            QinSongRowView(viewModel: .init(item))
-                                .padding(.horizontal)
-                        }
-                    }
-                    .padding(.vertical)
+        HStack {
+            QinBackwardButton()
+                .matchedGeometryEffect(id: 0, in: namespace)
+            Spacer()
+            QinNavigationBarTitleView("PLAYING NOW")
+            Spacer()
+            Button(action: {
+                withAnimation(.default) {
+                    viewModel.setDisplayMode(.addToMyPlaylist)
                 }
+            }) {
+                QinSFView(systemName: "plus" , size:  .medium)
             }
+            .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
+            .matchedGeometryEffect(id: 1, in: namespace)
         }
+        .padding(.horizontal)
     }
 }
 
-struct PlayingNowStatusView: View {
+struct PlayerControllView: View {
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
     
     private var playing: AppState.Playing { store.appState.playing }
-
+    
     @State private var showLyric: Bool = false
     @Binding var showMore: Bool
     @Binding var showArtist: Bool
     @Binding var artistId: Int
-
+    
     var body: some View {
         VStack {
             VStack {
@@ -226,7 +228,7 @@ struct PlayingNowStatusView: View {
                     Store.shared.dispatch(.playerSeek(isSeeking: isEdit, time: player.loadTime)
                     )
                 })
-                .modifier(NEUShadow())
+                    .modifier(NEUShadow())
                 Text(String(format: "%02d:%02d", Int(player.totalTime/60),Int(player.totalTime)%60))
                     .frame(width: 50, alignment: Alignment.trailing)
             }
@@ -257,6 +259,32 @@ struct PlayingNowStatusView: View {
                 .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
             }
             .padding(.vertical)
+        }
+    }
+}
+
+struct PlayinglistView: View {
+    let songsId: [Int]
+    
+    @State private var show: Bool = false
+    
+    var body: some View {
+        FetchedResultsView(entity: Song.entity(), predicate: NSPredicate(format: "%K IN %@", "id", songsId)) { (results: FetchedResults<Song>) in
+            ScrollView {
+                if let songs = results {
+                    LazyVStack {
+                        ForEach(songs.sorted(by: { (left, right) -> Bool in
+                            let lIndex = songsId.firstIndex(of: Int(left.id))!
+                            let rIndex = songsId.firstIndex(of: Int(right.id))!
+                            return lIndex > rIndex ? false : true
+                        })) { item in
+                            QinSongRowView(viewModel: .init(item))
+                                .padding(.horizontal)
+                        }
+                    }
+                    .padding(.vertical)
+                }
+            }
         }
     }
 }
@@ -302,7 +330,7 @@ struct PlaylistTracksView: View {
                                 }
                             }) {
                                 UserPlaylistRowView(playlist: item)
-                                .padding(.horizontal)
+                                    .padding(.horizontal)
                             }
                         }
                     }
@@ -314,9 +342,9 @@ struct PlaylistTracksView: View {
 
 struct PlayingExtensionControllView: View {
     @EnvironmentObject var store: Store
-
+    
     private var settings: AppState.Settings { store.appState.settings }
-
+    
     var body: some View {
         VStack {
             Spacer()
@@ -336,14 +364,13 @@ struct PlayingExtensionControllView: View {
     }
 }
 
-struct PlayingNowCoverView: View {
+struct PlayerCoverView: View {
     @EnvironmentObject var store: Store
     private var playing: AppState.Playing { store.appState.playing }
     private var settings: AppState.Settings { store.appState.settings }
     
-    @Binding var showMore: Bool
-    @Binding var bottomType: PlayingNowBottomType
-
+    @ObservedObject var viewModel: PlayerViewModel
+    
     var type: NEUBorderStyle {
         switch settings.coverShape {
         case .circle:       return .convexFlat
@@ -353,21 +380,14 @@ struct PlayingNowCoverView: View {
     
     var body: some View {
         let url = playing.song?.album?.coverURLString
-        QinCoverView(url, style: QinCoverStyle(size: showMore ? .medium : .large, shape: settings.coverShape, type: type))
+        QinCoverView(url, style: QinCoverStyle(size: viewModel.displayMode != .stand ? .medium : .large, shape: settings.coverShape, type: type))
             .contentShape(Circle())
-            .onTapGesture(perform: tapAction)
-    }
-    
-    func tapAction() {
-        self.hideKeyboard()
-        withAnimation(.default) {
-            showMore.toggle()
-            if showMore {
-                bottomType = .playinglist
-            }else {
-                bottomType = .playingStatus
+            .onTapGesture {
+                hideKeyboard()
+                withAnimation(.default) {
+                    viewModel.tapCover()
+                }
             }
-        }
     }
 }
 
