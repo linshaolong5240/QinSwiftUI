@@ -10,20 +10,14 @@ import SwiftUI
 import NeumorphismSwiftUI
 import Combine
 
-enum PlayingNowBottomType {
-    case createdPlaylist
-    case playinglist
-    case playingStatus
-}
-
 class PlayerViewModel: ObservableObject {
     enum DisplayMode {
         case stand
         case playlist
         case addToMyPlaylist
     }
-    @Published var displayMode: DisplayMode = .stand
-    @Published var isShowArtist: Bool = false
+    @Published private(set) var displayMode: DisplayMode = .stand
+    @Published var showArtist: Bool = false
     
     func setDisplayMode(_ mode: DisplayMode) {
         displayMode = mode
@@ -49,8 +43,6 @@ struct PlayerView: View {
     private var playing: AppState.Playing { store.appState.playing }
     private var playlist: AppState.Playlist { store.appState.playlist }
     
-    @State private var showMore: Bool = false
-    @State private var bottomType: PlayingNowBottomType = .playingStatus
     @State private var showComment: Bool = false
     @State private var showArtist: Bool = false
     @State private var artistId: Int = 0
@@ -98,7 +90,7 @@ struct PlayerView: View {
                 }
                 Group {
                     if viewModel.displayMode == .stand {
-                        PlayerControllView(showMore: $showMore, showArtist: $showArtist, artistId: $artistId)
+                        PlayerControllView(viewModel: viewModel, showArtist: $showArtist, artistId: $artistId)
                             .transition(.move(edge: .bottom))
                     }
                     if viewModel.displayMode == .playlist {
@@ -106,7 +98,7 @@ struct PlayerView: View {
                             .transition(.move(edge: .bottom))
                     }
                     if viewModel.displayMode == .addToMyPlaylist {
-                        PlaylistTracksView(playlist: store.appState.playlist.createdPlaylist, showList: $showMore, bottomType: $bottomType)
+                        PlaylistTracksView(viewModel: viewModel, playlist: store.appState.playlist.createdPlaylist)
                             .transition(.move(edge: .bottom))
                     }
                 }
@@ -162,11 +154,10 @@ struct PlayerNavgationBarView: View {
 struct PlayerControllView: View {
     @EnvironmentObject private var store: Store
     @EnvironmentObject private var player: Player
-    
+    @ObservedObject var viewModel: PlayerViewModel
     private var playing: AppState.Playing { store.appState.playing }
     
     @State private var showLyric: Bool = false
-    @Binding var showMore: Bool
     @Binding var showArtist: Bool
     @Binding var artistId: Int
     
@@ -196,11 +187,6 @@ struct PlayerControllView: View {
                 if showLyric {
                     if let lyric = store.appState.lyric.lyric {
                         LyricView(lyric)
-                            .onTapGesture {
-                                withAnimation(.default) {
-                                    showMore.toggle()
-                                }
-                            }
                     }else {
                         Text("无歌词")
                             .foregroundColor(.secondTextColor)
@@ -212,9 +198,6 @@ struct PlayerControllView: View {
                         Spacer()
                         Button(action: {
                             showLyric.toggle()
-                            withAnimation(.default) {
-                                showMore = showLyric
-                            }
                         }) {
                             QinSFView(systemName: "text.justify", size: .small, inactiveColor: Color.secondTextColor)
                         }
@@ -290,9 +273,8 @@ struct PlayinglistView: View {
 }
 
 struct PlaylistTracksView: View {
+    @ObservedObject var viewModel: PlayerViewModel
     let playlist: [PlaylistResponse]
-    @Binding var showList: Bool
-    @Binding  var bottomType: PlayingNowBottomType
     
     @State private var showCreate: Bool = false
     
@@ -325,8 +307,7 @@ struct PlaylistTracksView: View {
                                     }
                                 }
                                 withAnimation(.default){
-                                    showList = false
-                                    bottomType = .playingStatus
+                                    viewModel.setDisplayMode(.stand)
                                 }
                             }) {
                                 UserPlaylistRowView(playlist: item)
