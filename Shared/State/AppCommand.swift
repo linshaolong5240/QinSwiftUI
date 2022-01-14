@@ -49,16 +49,15 @@ struct InitAcionCommand: AppCommand {
 struct InitMPRemoteControlCommand: AppCommand {
     func execute(in store: Store) {
         let commandCenter = MPRemoteCommandCenter.shared()
-    //耳机线控制无效
-    //        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-    //            Store.shared.dispatch(.playerPlay)
-    //            return .success
-    //        }
-    //        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
-    //            Store.shared.dispatch(.playerPause)
-    //            return .success
-    //        }
-        //耳机线控制
+
+        commandCenter.playCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+            Store.shared.dispatch(.playerPlay)
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
+            Store.shared.dispatch(.playerPause)
+            return .success
+        }
         commandCenter.togglePlayPauseCommand.addTarget{ (event) -> MPRemoteCommandHandlerStatus in
             guard let song = store.appState.playing.song else {
                 return .noSuchContent
