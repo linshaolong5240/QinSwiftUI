@@ -3,14 +3,14 @@
 //  Qin
 //
 //  Created by 林少龙 on 2020/5/1.
-//  Copyright © 2020 teenloong. All rights reserved.
+//  Copyright © 2022 com.teenloong. All rights reserved.
 //
 import Foundation
 import CryptoSwift
 import Security
 import Combine
 
-public protocol NeteaseCloudMusicAction {
+public protocol NCMAction {
     associatedtype Parameters: Encodable
     associatedtype Response: Decodable
     var headers: [String: String]? { get }
@@ -20,24 +20,24 @@ public protocol NeteaseCloudMusicAction {
     var responseType: Response.Type { get }
 }
 
-extension NeteaseCloudMusicAction {
+extension NCMAction {
     public var headers: [String: String]? { nil }
 }
 
-extension NeteaseCloudMusicAction {
+extension NCMAction {
     public var host: String { Self.defaultHost }
     public static var defaultHost: String { "https://music.163.com" }
     public var cloudHost: String { "https://interface.music.163.com" }
     public var cloudUploadHost: String { "http://45.127.129.8" }
 }
 
-public struct EmptyParameters: Encodable { }
+public struct NCMEmptyParameters: Encodable { }
 
-let NCM = NeteaseCloudMusicApi.shared
+public let NCM = NeteaseCloudMusicApi.shared
 
-class NeteaseCloudMusicApi {
+public class NeteaseCloudMusicApi {
     
-    enum HttpMethod: String {
+    public enum HttpMethod: String {
         case GET = "GET"
         case POST = "POST"
     }
@@ -47,7 +47,7 @@ class NeteaseCloudMusicApi {
     
     private let host: String = "https://music.163.com"
     
-    init() {
+    public init() {
         let cookie = HTTPCookie(properties: [.name : "os",
                                              .value: "pc",
                                              .domain: ".music.163.com",
@@ -60,7 +60,7 @@ class NeteaseCloudMusicApi {
         HTTPCookieStorage.shared.setCookie(cookie2!)
     }
     
-    public func requestPublish<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
+    public func requestPublish<Action: NCMAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
         let url: String =  action.host + action.uri
 
         let httpHeader = [ //"Accept": "*/*",
@@ -109,7 +109,7 @@ class NeteaseCloudMusicApi {
         #endif
     }
     
-    public func uploadPublisher(method: HttpMethod = .POST, action: CloudUploadAction) -> AnyPublisher<CloudUploadResponse, Error> {
+    public func uploadPublish(method: HttpMethod = .POST, action: NCMCloudUploadAction) -> AnyPublisher<NCMCloudUploadResponse, Error> {
         let url: String =  action.host + action.uri
         var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
         request.httpMethod = method.rawValue

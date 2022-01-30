@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ArtistSublistView: View {
-    let artists: [ArtistSublistResponse.Artist]
+    let artists: [NCMArtistSublistResponse.Artist]
     @State private var artistId: Int = 0
     @State private var showArtistDetail: Bool = false
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
@@ -50,7 +50,7 @@ struct ArtistSublistView: View {
 #if DEBUG
 struct ArtistSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        ArtistSublistView(artists: [ArtistSublistResponse.Artist]())
+        ArtistSublistView(artists: [NCMArtistSublistResponse.Artist]())
     }
 }
 #endif

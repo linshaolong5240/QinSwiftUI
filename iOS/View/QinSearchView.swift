@@ -70,7 +70,7 @@ struct QinSearchView: View {
 }
 //
 //struct SearchPlaylistResultView: View {
-//    let playlists: [SearchPlaylistResponse.Result.Playlist]
+//    let playlists: [NCMSearchPlaylistResponse.Result.Playlist]
 //
 //    var body: some View {
 //        ScrollView {
@@ -88,7 +88,7 @@ struct QinSearchView: View {
 //}
 
 struct SearchPlaylistResultRowView: View {
-    let viewModel: SearchPlaylistResponse.Result.Playlist
+    let viewModel: NCMSearchPlaylistResponse.Result.Playlist
     
     var body: some View {
         HStack(alignment: .top) {

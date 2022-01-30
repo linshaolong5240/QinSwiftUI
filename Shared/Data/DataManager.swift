@@ -222,7 +222,7 @@ class DataManager {
             #endif
         }
     }
-    public func updateAlbum(model: AlbumDetailResponse) {
+    public func updateAlbum(model: NCMAlbumDetailResponse) {
         defer { save() }
         
         let album = model.album.entity(context: context())
@@ -257,7 +257,7 @@ class DataManager {
         let artist = artistModel.entity(context: context())
         artist.introduction = introduction
     }
-    public func updateArtistAlbums(id: Int, model: ArtistAlbumsResponse) {
+    public func updateArtistAlbums(id: Int, model: NCMArtistAlbumsResponse) {
         defer { save() }
         if let artist = getArtist(id: id) {
             if let albums = artist.albums {
@@ -296,7 +296,7 @@ class DataManager {
         }
     }
     
-    public func updateMV(model: ArtistMVResponse) {
+    public func updateMV(model: NCMArtistMVResponse) {
         defer { save() }
         model.mvs.forEach { item in
             let mv = item.entity(context: context())
@@ -322,7 +322,7 @@ class DataManager {
         }
     }
     
-    public func updateSongs(model: ArtistHotSongsResponse) {
+    public func updateSongs(model: NCMArtistHotSongsResponse) {
         defer { save() }
         model.hotSongs.forEach { item in
             let song = item.entity(context: self.context())
@@ -364,7 +364,7 @@ class DataManager {
         }
     }
     
-    public func updateUserPlaylist(model: UserPlaylistResponse) {
+    public func updateUserPlaylist(model: NCMUserPlaylistResponse) {
         defer { save() }
         model.playlist.forEach { item in
             _ = item.entity(context: context())

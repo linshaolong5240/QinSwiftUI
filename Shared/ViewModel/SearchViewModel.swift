@@ -61,7 +61,7 @@ class SearchViewModel: ObservableObject {
     }
     
     private func SearchSongRequest(key: String, type: NCMSearchType) {
-        NCM.requestPublish(action: SearchSongAction(.init(s: key, type: type, limit: limit, offset: offset * limit))).sink { completion in
+        NCM.requestPublish(action: NCMSearchSongAction(.init(s: key, type: type, limit: limit, offset: offset * limit))).sink { completion in
             if case .failure(let error) = completion {
                 Store.shared.dispatch(.error(.error(error)))
             }

@@ -8,11 +8,11 @@
 import SwiftUI
 import NeumorphismSwiftUI
 
-extension CommentSongResponse.Comment: Identifiable {
+extension NCMCommentSongResponse.Comment: Identifiable {
     public var id: Int { commentId }
 }
 
-extension CommentSongResponse.Comment.BeReplied: Identifiable {
+extension NCMCommentSongResponse.Comment.BeReplied: Identifiable {
     public var id: Int { beRepliedCommentId }
 }
 
@@ -118,7 +118,7 @@ struct CommentRowView: View {
 
     @StateObject var viewModel: CommentViewModel
     let id: Int
-    let type: CommentType
+    let type: NCMCommentType
     
     @State var showBeReplied = false
     

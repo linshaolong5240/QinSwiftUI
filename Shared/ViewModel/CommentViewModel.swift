@@ -24,7 +24,7 @@ class CommentViewModel: ObservableObject, Identifiable {
         
     }
     
-    init(_ comment: CommentSongResponse.Comment) {
+    init(_ comment: NCMCommentSongResponse.Comment) {
         self.beReplied = comment.beReplied.map{CommentViewModel($0)}
         self.commentId = comment.commentId
         self.content = comment.content
@@ -37,7 +37,7 @@ class CommentViewModel: ObservableObject, Identifiable {
         self.nickname = comment.user.nickname
     }
     
-    init(_ comment: CommentSongResponse.Comment.BeReplied) {
+    init(_ comment: NCMCommentSongResponse.Comment.BeReplied) {
         self.commentId = comment.beRepliedCommentId
         self.content = comment.content ?? ""
         self.id = comment.user.userId

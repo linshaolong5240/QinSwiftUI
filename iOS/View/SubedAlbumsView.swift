@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SubedAlbumsView: View {
-    let albums: [AlbumSublistResponse.Album]
+    let albums: [NCMAlbumSublistResponse.Album]
     @State private var albumDetailId: Int = 0
     @State private var showAlbumDetail: Bool = false
     
@@ -49,7 +49,7 @@ struct SubedAlbumsView: View {
 #if DEBUG
 struct AlbumSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        SubedAlbumsView(albums: [AlbumSublistResponse.Album]())
+        SubedAlbumsView(albums: [NCMAlbumSublistResponse.Album]())
     }
 }
 #endif

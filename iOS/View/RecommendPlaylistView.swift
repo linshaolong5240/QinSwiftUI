@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-extension RecommendPlaylistResponse.RecommendPlaylist: Identifiable {
+extension NCMRecommendPlaylistResponse.RecommendPlaylist: Identifiable {
     
 }
 
 struct RecommendPlaylistView: View {
-    let playlist: [RecommendPlaylistResponse.RecommendPlaylist]
+    let playlist: [NCMRecommendPlaylistResponse.RecommendPlaylist]
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
 
@@ -60,7 +60,7 @@ struct RecommendPlaylistView: View {
 #if DEBUG
 struct RecommendPlaylistView_Previews: PreviewProvider {
     static var previews: some View {
-        RecommendPlaylistView(playlist: [RecommendPlaylistResponse.RecommendPlaylist]())
+        RecommendPlaylistView(playlist: [NCMRecommendPlaylistResponse.RecommendPlaylist]())
     }
 }
 #endif

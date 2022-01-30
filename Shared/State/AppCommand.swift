@@ -84,7 +84,7 @@ struct AlbumDetailRequestCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: AlbumDetailAction(id: id))
+       NCM.requestPublish(action: NCMAlbumDetailAction(id: id))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.albumDetailRequestDone(result: .failure(.error(error))))
@@ -105,7 +105,7 @@ struct AlbumSubRequestCommand: AppCommand {
     let sub: Bool
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: AlbumSubAction(parameters: .init(id: id), sub: sub))
+       NCM.requestPublish(action: NCMAlbumSubAction(parameters: .init(id: id), sub: sub))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.albumSubRequestDone(result: .failure(.error(error))))
@@ -131,7 +131,7 @@ struct AlbumSublistRequestCommand: AppCommand {
     let offset: Int
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: AlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset)))
+       NCM.requestPublish(action: NCMAlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.albumSublistRequestDone(result: .failure(.error(error))))
@@ -152,7 +152,7 @@ struct ArtistAlbumsRequestCommand: AppCommand {
     let offset: Int
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: ArtistAlbumsAction(id: id, parameters: .init(limit: limit, offset: offset * limit)))
+       NCM.requestPublish(action: NCMArtistAlbumsAction(id: id, parameters: .init(limit: limit, offset: offset * limit)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistAlbumsRequestDone(result: .failure(.error(error))))
@@ -172,8 +172,8 @@ struct ArtistDetailRequestCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-        let artistHotSongsPublisher =  NeteaseCloudMusicApi.shared.requestPublish(action: ArtistHotSongsAction(id: id))
-        let artistIntroductionPublisher = NeteaseCloudMusicApi.shared.requestPublish(action: ArtistIntroductionAction(parameters: .init(id: id)))
+        let artistHotSongsPublisher =  NeteaseCloudMusicApi.shared.requestPublish(action: NCMArtistHotSongsAction(id: id))
+        let artistIntroductionPublisher = NeteaseCloudMusicApi.shared.requestPublish(action: NCMArtistIntroductionAction(parameters: .init(id: id)))
         let artistInfoPublisher = Publishers.CombineLatest(artistHotSongsPublisher, artistIntroductionPublisher)
         artistInfoPublisher
             .sink { completion in
@@ -201,7 +201,7 @@ struct ArtistMVsRequestCommand: AppCommand {
     let total: Bool
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: ArtistMVAction(parameters: .init(artistId: id, limit: limit, offset: offset * limit, total: total)))
+       NCM.requestPublish(action: NCMArtistMVAction(parameters: .init(artistId: id, limit: limit, offset: offset * limit, total: total)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistMVsRequestDone(result: .failure(.error(error))))
@@ -222,7 +222,7 @@ struct ArtistSubRequestCommand: AppCommand {
     let sub: Bool
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: ArtistSubAction(sub: sub, parameters: .init(artistId: id, artistIds: [id])))
+       NCM.requestPublish(action: NCMArtistSubAction(sub: sub, parameters: .init(artistId: id, artistIds: [id])))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistSubRequestDone(result: .failure(.error(error))))
@@ -254,7 +254,7 @@ struct ArtistSublistRequestCommand: AppCommand {
     }
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.requestPublish(action: ArtistSublistAction(parameters: .init(limit: limit, offset: offset)))
+        NeteaseCloudMusicApi.shared.requestPublish(action: NCMArtistSublistAction(parameters: .init(limit: limit, offset: offset)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistSublistRequestDone(result: .failure(.error(error))))
@@ -275,7 +275,7 @@ struct CloudUploadCommand: AppCommand {
     let md5: String
     let data: Data
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.uploadPublisher(action: CloudUploadAction(objectKey: token.objectKey, token: token.token, md5: md5, size: fileSize, data: data))
+        NeteaseCloudMusicApi.shared.uploadPublish(action: NCMCloudUploadAction(objectKey: token.objectKey, token: token.token, md5: md5, size: fileSize, data: data))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistSublistRequestDone(result: .failure(.error(error))))
@@ -295,7 +295,7 @@ struct CloudSongAddRequstCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.requestPublish(action: CloudSongAddAction(parameters: .init(songid: id)))
+        NeteaseCloudMusicApi.shared.requestPublish(action: NCMCloudSongAddAction(parameters: .init(songid: id)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.cloudSongAddRequstDone(result: .failure(.error(error))))
@@ -317,7 +317,7 @@ struct CloudUploadCheckRequestCommand: AppCommand {
         guard let fileSize = try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize, let md5 = try? Data(contentsOf: fileURL).md5().toHexString() else {
             return
         }
-        NeteaseCloudMusicApi.shared.requestPublish(action: CloudUploadCheckAction(parameters: .init(length: fileSize, md5: md5)))
+        NeteaseCloudMusicApi.shared.requestPublish(action: NCMCloudUploadCheckAction(parameters: .init(length: fileSize, md5: md5)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.cloudUploadCheckRequestDone(result: .failure(.error(error))))
@@ -342,10 +342,10 @@ struct CloudUploadCheckRequestDoneCommand: AppCommand {
 }
 
 struct CloudUploadInfoRequestCommand: AppCommand {
-    let info: CloudUploadInfoAction.CloudUploadInfoParameters
+    let info: NCMCloudUploadInfoAction.CloudUploadInfoParameters
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.requestPublish(action: CloudUploadInfoAction(parameters: info))
+        NeteaseCloudMusicApi.shared.requestPublish(action: NCMCloudUploadInfoAction(parameters: info))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.cloudUploadInfoRequestDone(result: .failure(.error(error))))
@@ -362,7 +362,7 @@ struct CloudUploadInfoRequestCommand: AppCommand {
 }
 
 struct CloudUploadInfoRequestDoneCommand: AppCommand {
-    let info: CloudUploadInfoAction.Response
+    let info: NCMCloudUploadInfoAction.Response
     
     func execute(in store: Store) {
         store.dispatch(.cloudSongAddRequst(songId: Int(info.songId)!))
@@ -374,7 +374,7 @@ struct CloudUploadTokenRequestCommand: AppCommand {
     let md5: String
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.requestPublish(action: CloudUploadTokenAction(parameters: .init(filename: fileURL.fileNameWithoutExtension ?? "", md5: md5)))
+        NeteaseCloudMusicApi.shared.requestPublish(action: NCMCloudUploadTokenAction(parameters: .init(filename: fileURL.fileNameWithoutExtension ?? "", md5: md5)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.cloudUploadTokenRequestDone(result: .failure(.error(error))))
@@ -408,12 +408,12 @@ struct CommentRequestCommand: AppCommand {
     let id: Int
     let commentId: Int?
     let content: String?
-    let type: CommentType
-    let action: CommentAction
+    let type: NCMCommentType
+    let action: NCMCommentAction
     
     func execute(in store: Store) {
         if let content = content, action == .add {
-            NeteaseCloudMusicApi.shared.requestPublish(action: CommentAddAction(parameters: .init(threadId: id, content: content, type: type)))
+            NeteaseCloudMusicApi.shared.requestPublish(action: NCMCommentAddAction(parameters: .init(threadId: id, content: content, type: type)))
                 .sink { completion in
                     if case .failure(let error) = completion {
                         store.dispatch(.commentDoneRequest(result: .failure(.error(error))))
@@ -428,7 +428,7 @@ struct CommentRequestCommand: AppCommand {
                 }.store(in: &store.cancells)
         }
         if let commentId = commentId, action == .delete {
-            NeteaseCloudMusicApi.shared.requestPublish(action: CommentDeleteAction(parameters: .init(threadId: id, commentId: commentId, type: type)))
+            NeteaseCloudMusicApi.shared.requestPublish(action: NCMCommentDeleteAction(parameters: .init(threadId: id, commentId: commentId, type: type)))
                 .sink { completion in
                     if case .failure(let error) = completion {
                         store.dispatch(.commentDoneRequest(result: .failure(.error(error))))
@@ -447,8 +447,8 @@ struct CommentRequestCommand: AppCommand {
 
 struct CommentRequestDoneCommand: AppCommand {
     let id: Int
-    let type: CommentType
-    let action: CommentAction
+    let type: NCMCommentType
+    let action: NCMCommentAction
     
     func execute(in store: Store) {
         if type == .song {
@@ -463,10 +463,10 @@ struct CommentLikeRequestCommand: AppCommand {
     let id: Int
     let cid: Int
     let like: Bool
-    let type: CommentType
+    let type: NCMCommentType
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.requestPublish(action: CommentLikeAction(like: like, parameters: .init(threadId: id, commentId: cid, commentType: type)))
+        NeteaseCloudMusicApi.shared.requestPublish(action: NCMCommentLikeAction(like: like, parameters: .init(threadId: id, commentId: cid, commentType: type)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.commentLikeDone(result: .failure(.error(error))))
@@ -488,7 +488,7 @@ struct CommentMusicRequestCommand: AppCommand {
     let beforeTime: Int
     
     func execute(in store: Store) {
-        NeteaseCloudMusicApi.shared.requestPublish(action: CommentSongAction(rid: rid, parameters: .init(rid: rid, limit: limit, offset: limit * offset, beforeTime: beforeTime)))
+        NeteaseCloudMusicApi.shared.requestPublish(action: NCMCommentSongAction(rid: rid, parameters: .init(rid: rid, limit: limit, offset: limit * offset, beforeTime: beforeTime)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.commentMusicRequestDone(result: .failure(.error(error))))
@@ -508,7 +508,7 @@ struct LoginRequestCommand: AppCommand {
     let password: String
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: LoginAction(parameters: .init(email: email, password: password)))
+       NCM.requestPublish(action: NCMLoginAction(parameters: .init(email: email, password: password)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.loginRequestDone(result: .failure(.error(error))))
@@ -534,7 +534,7 @@ struct LoginRequestDoneCommand: AppCommand {
 struct LoginRefreshRequestCommand: AppCommand {
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: LoginRefreshAction())
+       NCM.requestPublish(action: NCMLoginRefreshAction())
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.loginRefreshRequestDone(result: .failure(.error(error))))
@@ -565,7 +565,7 @@ struct LoginRefreshDoneCommand: AppCommand {
 
 struct LogoutRequestCommand: AppCommand {
     func execute(in store: Store) {
-       NCM.requestPublish(action: LogoutAction())
+       NCM.requestPublish(action: NCMLogoutAction())
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.logoutRequestDone(result: .failure(.error(error))))
@@ -584,7 +584,7 @@ struct MVDetailRequestCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: LogoutAction())
+       NCM.requestPublish(action: NCMLogoutAction())
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.mvDetaillRequestDone(result: .failure(.error(error))))
@@ -605,7 +605,7 @@ struct MVUrlCommand: AppCommand {
     func execute(in store: Store) {
         //        NeteaseCloudMusicApi
         //            .shared
-        //            .requestPublisher(action: MVURLAction(parameters: .init(id: Int(mv.id))))
+        //            .requestPublisher(action: NCMMVURLAction(parameters: .init(id: Int(mv.id))))
         //            .sink { completion in
         //                if case .failure(let error) = completion {
         //                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
@@ -698,7 +698,7 @@ struct PlayerPlayRequestCommand: AppCommand {
                 }
             }
         }
-       NCM.requestPublish(action: SongURLAction(parameters: .init(ids: [id])))
+       NCM.requestPublish(action: NCMSongURLAction(parameters: .init(ids: [id])))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playerPlayRequestDone(result: .failure(.error(error))))
@@ -762,7 +762,7 @@ struct PlayinglistInsertCommand: AppCommand {
 
 struct PlaylistCategoriesRequestCommand: AppCommand {
     func execute(in store: Store) {
-       NCM.requestPublish(action: PlaylistCatalogueAction())
+       NCM.requestPublish(action: NCMPlaylistCatalogueAction())
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playlistCatalogueRequestsDone(result: .failure(.error(error))))
@@ -791,10 +791,10 @@ struct PlaylistCategoriesRequestCommand: AppCommand {
 
 struct PlaylistCreateRequestCommand: AppCommand {
     let name: String
-    let privacy: PlaylistCreateAction.Privacy
+    let privacy: NCMPlaylistCreateAction.Privacy
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: PlaylistCreateAction(parameters: .init(name: name, privacy: privacy)))
+       NCM.requestPublish(action: NCMPlaylistCreateAction(parameters: .init(name: name, privacy: privacy)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playlistCreateRequestDone(result: .failure(.error(error))))
@@ -820,7 +820,7 @@ struct PlaylistDeleteRequestCommand: AppCommand {
     let pid: Int
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: PlaylistDeleteAction(parameters: .init(pid: pid)))
+       NCM.requestPublish(action: NCMPlaylistDeleteAction(parameters: .init(pid: pid)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playlistDeleteRequestDone(result: .failure(.error(error))))
@@ -842,7 +842,7 @@ struct PlaylistDetailRequestCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: PlaylistDetailAction(parameters: .init(id: id)))
+       NCM.requestPublish(action: NCMPlaylistDetailAction(parameters: .init(id: id)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playlistDetailRequestDone(result: .failure(.error(error))))
@@ -867,7 +867,7 @@ struct PlaylistDetailSongsRequestCommand: AppCommand {
     
     func execute(in store: Store) {
         if let ids = playlist.trackIds?.map(\.id) {
-            NCM.requestPublish(action: SongDetailAction(parameters: .init(ids: ids)))
+            NCM.requestPublish(action: NCMSongDetailAction(parameters: .init(ids: ids)))
                 .sink { completion in
                     if case .failure(let error) = completion {
                         store.dispatch(.playlistDetailSongsRequestDone(result: .failure(.error(error))))
@@ -890,7 +890,7 @@ struct PlaylistOrderUpdateRequestCommand: AppCommand {
     
     func execute(in store: Store) {
        NCM
-            .requestPublish(action: PlaylistOrderUpdateAction(parameters: .init(ids: ids)))
+            .requestPublish(action: NCMPlaylistOrderUpdateAction(parameters: .init(ids: ids)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playlistOrderUpdateDone(result: .failure(.error(error))))
@@ -912,7 +912,7 @@ struct PlaylisSubscribeRequestCommand: AppCommand {
     let sub: Bool
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: PlaylistSubscribeAction(sub: sub, parameters: .init(id: id)))
+       NCM.requestPublish(action: NCMPlaylistSubscribeAction(sub: sub, parameters: .init(id: id)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playlistSubscibeRequestDone(result: .failure(.error(error))))
@@ -939,7 +939,7 @@ struct PlaylistTracksRequestCommand: AppCommand {
     let op: Bool
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: PlaylistTracksAction(parameters: .init(pid: pid, ids: ids, op: op ? .add : .del)))
+       NCM.requestPublish(action: NCMPlaylistTracksAction(parameters: .init(pid: pid, ids: ids, op: op ? .add : .del)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.playlistTracksRequestDone(result: .failure(.error(error))))
@@ -964,7 +964,7 @@ struct PlaylistTracksRequestDoneCommand: AppCommand {
 
 struct RecommendPlaylistRequestCommand: AppCommand {
     func execute(in store: Store) {
-       NCM.requestPublish(action: RecommendPlaylistAction())
+       NCM.requestPublish(action: NCMRecommendPlaylistAction())
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.recommendPlaylistRequestDone(result: .failure(.error(error))))
@@ -981,7 +981,7 @@ struct RecommendPlaylistRequestCommand: AppCommand {
 
 struct RecommendSongsRequestCommand: AppCommand {
     func execute(in store: Store) {
-       NCM.requestPublish(action: RecommendSongAction())
+       NCM.requestPublish(action: NCMRecommendSongAction())
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.recommendSongsRequestDone(result: .failure(.error(error))))
@@ -995,7 +995,7 @@ struct RecommendSongsRequestCommand: AppCommand {
                 DataManager.shared.update(model: recommendSongsResponse)
                 NeteaseCloudMusicApi
                     .shared
-                    .requestPublish(action: SongDetailAction(parameters: .init(ids: ids)))
+                    .requestPublish(action: NCMSongDetailAction(parameters: .init(ids: ids)))
                     .sink { completion in
                         if case .failure(let error) = completion {
                             store.dispatch(.recommendSongsRequestDone(result: .failure(.error(error))))
@@ -1032,7 +1032,7 @@ struct SongsDetailCommand: AppCommand {
     let ids: [Int]
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: SongDetailAction(parameters: .init(ids: ids)))
+       NCM.requestPublish(action: NCMSongDetailAction(parameters: .init(ids: ids)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.songsDetailRequestDone(result: .failure(.error(error))))
@@ -1049,7 +1049,7 @@ struct SongLikeRequestCommand: AppCommand {
     let like: Bool
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: SongLikeAction(parameters: .init(trackId: id, like: like)))
+       NCM.requestPublish(action: NCMSongLikeAction(parameters: .init(trackId: id, like: like)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.songLikeRequestDone(result: .failure(.error(error))))
@@ -1073,7 +1073,7 @@ struct SongLikeListRequestCommand: AppCommand {
     let uid: Int
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: SongLikeListAction(parameters: .init(uid: uid)))
+       NCM.requestPublish(action: NCMSongLikeListAction(parameters: .init(uid: uid)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.songLikeListRequestDone(result: .failure(.error(error))))
@@ -1087,7 +1087,7 @@ struct SongLikeListRequestCommand: AppCommand {
 struct SongLyricRequestCommand: AppCommand {
     let id: Int
     func execute(in store: Store) {
-        NCM.requestPublish(action: SongLyricAction(id: id))
+        NCM.requestPublish(action: NCMSongLyricAction(id: id))
             .sink { completion in
                 if case .failure(let error) = completion {
                     Store.shared.dispatch(.error(error.asAppError()))
@@ -1104,7 +1104,7 @@ struct SongsOrderUpdateRequestCommand: AppCommand {
     let ids: [Int]
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: SongOrderUpdateAction(parameters: .init(pid: pid, trackIds: ids)))
+       NCM.requestPublish(action: NCMSongOrderUpdateAction(parameters: .init(pid: pid, trackIds: ids)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.songsOrderUpdateRequestDone(result: .failure(.error(error))))
@@ -1215,7 +1215,7 @@ struct UpdateMPNowPlayingInfoCommand: AppCommand {
 struct UserCloudRequestCommand: AppCommand {
     
     func execute(in store: Store) {
-       NCM.requestPublish(action: UserCloudAction(parameters: .init(limit: 30, offset: 0)))
+       NCM.requestPublish(action: NCMUserCloudAction(parameters: .init(limit: 30, offset: 0)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.userPlaylistRequestDone(result: .failure(.error(error))))
@@ -1235,7 +1235,7 @@ struct UserPlayListRequestCommand: AppCommand {
     
     func execute(in store: Store) {
        NCM
-            .requestPublish(action: UserPlaylistAction(parameters: .init(uid: uid, limit: limit, offset: offset)))
+            .requestPublish(action: NCMUserPlaylistAction(parameters: .init(uid: uid, limit: limit, offset: offset)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.userPlaylistRequestDone(result: .failure(.error(error))))

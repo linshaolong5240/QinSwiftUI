@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-typealias User = LoginResponse
+typealias User = NCMLoginResponse
 
 struct AppState {
     var initRequestingCount: Int = 0
@@ -56,7 +56,7 @@ extension AppState {
         var detailRequesting: Bool = false
         var sublistRequesting: Bool = false
 
-        var albumSublist = [AlbumSublistResponse.Album]()
+        var albumSublist = [NCMAlbumSublistResponse.Album]()
         var subedIds: [Int] { albumSublist.map(\.id) }
     }
     
@@ -66,7 +66,7 @@ extension AppState {
         var introductionRequesting: Bool = false
         var mvRequesting: Bool = false
         var artistSublistRequesting: Bool = false
-        var artistSublist = [ArtistSublistResponse.Artist]()
+        var artistSublist = [NCMArtistSublistResponse.Artist]()
         var subedIds: [Int] { artistSublist.map(\.id) }
 
         var error: AppError?
@@ -83,8 +83,8 @@ extension AppState {
     struct Comment {
         var commentRequesting = false
         var commentMusicRequesting = false
-        var hotComments = [CommentSongResponse.Comment]()
-        var comments = [CommentSongResponse.Comment]()
+        var hotComments = [NCMCommentSongResponse.Comment]()
+        var comments = [NCMCommentSongResponse.Comment]()
         var id: Int = 0
         var limit: Int = 0
         var offset: Int = 0
@@ -105,7 +105,7 @@ extension AppState {
     
     struct Playlist {
         //用户相关歌单
-        var recommendPlaylist = [RecommendPlaylistResponse.RecommendPlaylist]()
+        var recommendPlaylist = [NCMRecommendPlaylistResponse.RecommendPlaylist]()
         var recommendPlaylistRequesting: Bool = false
         var recommendSongsRequesting = false
         var userPlaylistRequesting: Bool = false

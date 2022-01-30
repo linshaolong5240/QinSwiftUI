@@ -17,10 +17,10 @@ struct CommonGridItemView: View {
     init(_ item: Album) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ model: AlbumSublistResponse.Album) {
+    init(_ model: NCMAlbumSublistResponse.Album) {
         self.configuration = CommonGridItemConfiguration(model)
     }
-    init(_ item: ArtistSublistResponse.Artist) {
+    init(_ item: NCMArtistSublistResponse.Artist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: PlaylistResponse) {
@@ -35,7 +35,7 @@ struct CommonGridItemView: View {
     init(_ item: PlaylistViewModel) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ item: RecommendPlaylistResponse.RecommendPlaylist) {
+    init(_ item: NCMRecommendPlaylistResponse.RecommendPlaylist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
     
@@ -82,13 +82,13 @@ class CommonGridItemConfiguration: ObservableObject {
         self.picUrl = item.picUrl
         self.subscribed = nil
     }
-    init(_ model: AlbumSublistResponse.Album) {
+    init(_ model: NCMAlbumSublistResponse.Album) {
         self.id = model.id
         self.name = model.name
         self.picUrl = model.picUrl
         self.subscribed = true
     }
-    init(_ model: ArtistSublistResponse.Artist) {
+    init(_ model: NCMArtistSublistResponse.Artist) {
         self.id = model.id
         self.name = model.name
         self.picUrl = model.img1v1Url
@@ -118,7 +118,7 @@ class CommonGridItemConfiguration: ObservableObject {
         self.picUrl = item.coverImgUrl
         self.subscribed = item.subscribed
     }
-    init(_ item: RecommendPlaylistResponse.RecommendPlaylist) {
+    init(_ item: NCMRecommendPlaylistResponse.RecommendPlaylist) {
         self.id = item.id
         self.name = item.name
         self.picUrl = item.picUrl
