@@ -29,9 +29,7 @@ class DiscoverPlaylistViewModel: ObservableObject {
     }
     
     func playlistRequest(cat: String) {
-        cancell = NeteaseCloudMusicApi
-            .shared
-            .requestPublisher(action: NCMPlaylistListAction(parameters: .init(cat: cat, order: .hot, limit: 30, offset: 0 * 30, total: true)))
+        cancell = NCM.requestPublisher(action: NCMPlaylistListAction(parameters: .init(cat: cat, order: .hot, limit: 30, offset: 0 * 30, total: true)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     Store.shared.dispatch(.error(.error(error)))
