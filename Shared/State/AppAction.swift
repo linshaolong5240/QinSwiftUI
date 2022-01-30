@@ -76,8 +76,8 @@ enum AppAction {
     case playlistDeleteRequest(pid: Int)
     case playlistDeleteRequestDone(result: Result<Int, AppError>)
     case playlistDetailRequest(id: Int)
-    case playlistDetailRequestDone(result: Result<PlaylistResponse, AppError>)
-    case playlistDetailSongsRequest(playlist: PlaylistResponse)
+    case playlistDetailRequestDone(result: Result<NCMPlaylistResponse, AppError>)
+    case playlistDetailSongsRequest(playlist: NCMPlaylistResponse)
     case playlistDetailSongsRequestDone(result: Result<[Int], AppError>)
     case playlistOrderUpdateRequesting(ids: [Int])
     case playlistOrderUpdateDone(result: Result<Bool, AppError>)
@@ -104,5 +104,5 @@ enum AppAction {
     case updateMPNowPlayingInfo
     case userCloudRequest
     case userPlaylistRequest(uid: Int? = nil, limit: Int = 999, offset: Int = 0)
-    case userPlaylistRequestDone(result: Result<[PlaylistResponse], AppError>)
+    case userPlaylistRequestDone(result: Result<[NCMPlaylistResponse], AppError>)
 }

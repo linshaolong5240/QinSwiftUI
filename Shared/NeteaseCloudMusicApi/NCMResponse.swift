@@ -17,14 +17,14 @@ public extension NCMResponse {
     var isSuccess: Bool { code == 200 }
 }
 
-public struct SongQuality: Codable {
+public struct NCMSongQuality: Codable {
     public var br: Int
     public var fid: Int
     public var size: Int
     public var vd: Double
 }
 
-public struct AlbumResponse: Codable {
+public struct NCMAlbumResponse: Codable {
     public struct Info: Codable {
         public struct CommentThread: Codable {
             public struct ResourceInfo: Codable {
@@ -61,8 +61,8 @@ public struct AlbumResponse: Codable {
         public var threadId: String
     }
     public var alias: [String]
-    public var artist: ArtistResponse
-    public var artists: [ArtistResponse]
+    public var artist: NCMArtistResponse
+    public var artists: [NCMArtistResponse]
     public var blurPicUrl: String?
     public var briefDesc: String?
     public var commentThreadId: String
@@ -89,7 +89,7 @@ public struct AlbumResponse: Codable {
     public var type: String?
 }
 
-public struct ArtistResponse: Codable {
+public struct NCMArtistResponse: Codable {
     public var accountId: Int?
     public var albumSize: Int
     public var alias: [String]
@@ -107,7 +107,7 @@ public struct ArtistResponse: Codable {
     public var trans: String
 }
 
-public struct CrteatorResponse: Codable {
+public struct NCMCrteatorResponse: Codable {
     public var accountStatus: Int
     public var anchor: Bool
     public var authenticationTypes: Int
@@ -139,7 +139,7 @@ public struct CrteatorResponse: Codable {
     public var userId, userType, vipType: Int
 }
 
-public struct SongResponse: Codable {
+public struct NCMSongResponse: Codable {
     public struct Al: Codable {
         public var id: Int
         public var name: String?
@@ -188,10 +188,10 @@ public struct SongResponse: Codable {
     public var dt: Int
     public var fee: Int
     public var ftype: Int
-    public var h: SongQuality?
+    public var h: NCMSongQuality?
     public var id: Int
-    public var l: SongQuality?
-    public var m: SongQuality?
+    public var l: NCMSongQuality?
+    public var m: NCMSongQuality?
     public var mark: Double
     public var mst: Int
     public var mv: Int
@@ -216,7 +216,7 @@ public struct SongResponse: Codable {
     public var v: Int
 }
 
-public struct PlaylistResponse: Codable {
+public struct NCMPlaylistResponse: Codable {
     public struct TrackId: Codable {
 //        public var alg: Any?
         public var at: Int
@@ -240,7 +240,7 @@ public struct PlaylistResponse: Codable {
     public var coverImgUrl: String
     public var coverStatus: Int?
     public var createTime: Int
-    public var creator: CrteatorResponse?
+    public var creator: NCMCrteatorResponse?
     public var description: String?
     //        public var englishTitle: Any?
     public var playlistDescription: String?
@@ -259,7 +259,7 @@ public struct PlaylistResponse: Codable {
     public var status: Int
     public var subscribed: Bool?
     public var subscribedCount: Int
-    public var subscribers: [CrteatorResponse]
+    public var subscribers: [NCMCrteatorResponse]
     public var tags: [String]
     public var titleImage: Int?
     public var titleImageUrl: String?
@@ -276,7 +276,7 @@ public struct PlaylistResponse: Codable {
 //    public var videos: Any?
 }
 
-public struct PrivilegeResponse: Codable {
+public struct NCMPrivilegeResponse: Codable {
     public struct ChargeInfoList: Codable {
         public var chargeMessage: String?
         public var chargeType: Int

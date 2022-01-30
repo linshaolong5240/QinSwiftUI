@@ -284,7 +284,7 @@ struct PlayinglistView: View {
 
 struct PlaylistTracksView: View {
     @ObservedObject var viewModel: PlayerViewModel
-    let playlist: [PlaylistResponse]
+    let playlist: [NCMPlaylistResponse]
     
     @State private var showCreate: Bool = false
     

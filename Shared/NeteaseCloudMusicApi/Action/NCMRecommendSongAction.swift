@@ -23,7 +23,7 @@ public struct NCMRecommendSongsResponse: NCMResponse {
         public var songId: Int
     }
     public struct DataResponse: Codable {
-        public var dailySongs: [SongResponse]
+        public var dailySongs: [NCMSongResponse]
 //        public var orderSongs: [Any]
         public var recommendReasons: [RecommendReason]
     }

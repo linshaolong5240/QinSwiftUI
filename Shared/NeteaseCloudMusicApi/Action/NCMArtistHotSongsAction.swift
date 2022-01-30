@@ -31,9 +31,9 @@ public struct NCMArtistHotSongsResponse: NCMResponse {
             public var sr: Int
             public var volumeDelta: Double
         }
-        public var album: AlbumResponse
+        public var album: NCMAlbumResponse
         public var alias: [String]
-        public var artists: [ArtistResponse]
+        public var artists: [NCMArtistResponse]
 //        public var audition: Any?
         public var bMusic: Quality?
         public var copyFrom: String
@@ -69,7 +69,7 @@ public struct NCMArtistHotSongsResponse: NCMResponse {
         public var starredNum: Int
         public var status: Int
     }
-    public var artist: ArtistResponse
+    public var artist: NCMArtistResponse
     public var code: Int
     public var hotSongs: [HotSong]
     public var more: Bool

@@ -21,7 +21,7 @@ public struct NCMRecommendPlaylistResponse: NCMResponse {
     public struct RecommendPlaylist: Codable {
         public var alg, copywriter: String
         public var createTime: Int
-        public var creator: CrteatorResponse?
+        public var creator: NCMCrteatorResponse?
         public var id: Int
         public var name: String
         public var picUrl: String

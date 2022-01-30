@@ -9,7 +9,7 @@ import SwiftUI
 import NeumorphismSwiftUI
 
 struct SubedPlaylistView: View {
-    let playlist: [PlaylistResponse]
+    let playlist: [NCMPlaylistResponse]
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var showPlaylistManage: Bool = false
@@ -113,7 +113,7 @@ struct SubedPlaylistView: View {
 //#if DEBUG
 //struct SubedPlaylistView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        SubedPlaylistView(playlist: <#[PlaylistResponse]#>)
+//        SubedPlaylistView(playlist: <#[NCMPlaylistResponse]#>)
 //    }
 //}
 //#endif

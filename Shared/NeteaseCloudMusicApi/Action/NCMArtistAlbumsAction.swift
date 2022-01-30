@@ -26,8 +26,8 @@ public struct NCMArtistAlbumsAction: NCMAction {
 public struct NCMArtistAlbumsResponse: NCMResponse {
     public struct ArtistAlbum: Codable {
         public var alias: [String]
-        public var artist: ArtistResponse
-        public var artists: [ArtistResponse]
+        public var artist: NCMArtistResponse
+        public var artists: [NCMArtistResponse]
         public var blurPicUrl: String?
         public var briefDesc: String?
         public var commentThreadId: String
@@ -52,7 +52,7 @@ public struct NCMArtistAlbumsResponse: NCMResponse {
         public var tags: String
         public var type: String
     }
-    public var artist: ArtistResponse
+    public var artist: NCMArtistResponse
     public var code: Int
     public var hotAlbums: [ArtistAlbum]
     public var more: Bool

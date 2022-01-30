@@ -60,7 +60,7 @@ public struct NCMAlbumDetailResponse: NCMResponse {
         public var no: Int
 //        public var noCopyrightRcmd: Any?
         public var pop: Int
-        public var privilege: PrivilegeResponse
+        public var privilege: NCMPrivilegeResponse
         public var pst: Int
         public var rt: String?
         public var rtUrl: String?
@@ -71,7 +71,7 @@ public struct NCMAlbumDetailResponse: NCMResponse {
         public var t: Int
         public var v: Int
     }
-    public var album: AlbumResponse
+    public var album: NCMAlbumResponse
     public var code: Int
     public var resourceState: Bool
     public var songs: [AlbumSong]

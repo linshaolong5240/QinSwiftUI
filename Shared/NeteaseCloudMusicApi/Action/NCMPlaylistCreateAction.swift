@@ -28,6 +28,6 @@ public struct NCMPlaylistCreateAction: NCMAction {
 public struct NCMPlaylistCreateResponse: NCMResponse {
     public var code: Int
     public var id: Int
-    public var playlist: PlaylistResponse
+    public var playlist: NCMPlaylistResponse
     public var message: String?
 }

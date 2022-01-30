@@ -9,7 +9,7 @@ import SwiftUI
 import NeumorphismSwiftUI
 
 struct CreatedPlaylistView: View {
-    let playlist: [PlaylistResponse]
+    let playlist: [NCMPlaylistResponse]
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var showPlaylistCreate: Bool = false

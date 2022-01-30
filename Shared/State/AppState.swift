@@ -120,8 +120,8 @@ extension AppState {
         var createdPlaylistIds = [Int]()
         var subedPlaylistIds = [Int]()
         var userPlaylistIds = [Int]()
-        var userPlaylist = [PlaylistResponse]()
-        var createdPlaylist: [PlaylistResponse] { userPlaylist.filter({createdPlaylistIds.contains($0.id)}) }
+        var userPlaylist = [NCMPlaylistResponse]()
+        var createdPlaylist: [NCMPlaylistResponse] { userPlaylist.filter({createdPlaylistIds.contains($0.id)}) }
     }
     
     struct Playing {

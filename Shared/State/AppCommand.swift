@@ -855,7 +855,7 @@ struct PlaylistDetailRequestCommand: AppCommand {
 }
 
 struct PlaylistDetailDoneCommand: AppCommand {
-    let playlist: PlaylistResponse
+    let playlist: NCMPlaylistResponse
     
     func execute(in store: Store) {
         store.dispatch(.playlistDetailSongsRequest(playlist: playlist))
@@ -863,7 +863,7 @@ struct PlaylistDetailDoneCommand: AppCommand {
 }
 
 struct PlaylistDetailSongsRequestCommand: AppCommand {
-    let playlist: PlaylistResponse
+    let playlist: NCMPlaylistResponse
     
     func execute(in store: Store) {
         if let ids = playlist.trackIds?.map(\.id) {

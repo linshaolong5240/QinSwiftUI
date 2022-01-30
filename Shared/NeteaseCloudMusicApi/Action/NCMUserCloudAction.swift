@@ -67,10 +67,10 @@ public struct NCMUserCloudResponse: NCMResponse {
         public var dt: Int
         public var fee: Int
         public var ftype: Int
-        public var h: SongQuality?
+        public var h: NCMSongQuality?
         public var id: Int
-        public var l: SongQuality?
-        public var m: SongQuality?
+        public var l: NCMSongQuality?
+        public var m: NCMSongQuality?
         public var mark: Int
         public var mst: Int
         public var mv: Int

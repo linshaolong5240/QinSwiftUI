@@ -23,7 +23,7 @@ struct CommonGridItemView: View {
     init(_ item: NCMArtistSublistResponse.Artist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ item: PlaylistResponse) {
+    init(_ item: NCMPlaylistResponse) {
         self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: MV) {
@@ -94,7 +94,7 @@ class CommonGridItemConfiguration: ObservableObject {
         self.picUrl = model.img1v1Url
         self.subscribed = nil
     }
-    init(_ item: PlaylistResponse) {
+    init(_ item: NCMPlaylistResponse) {
         self.id = item.id
         self.name = item.name
         self.picUrl = item.coverImgUrl

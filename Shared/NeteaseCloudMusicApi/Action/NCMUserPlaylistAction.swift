@@ -25,7 +25,7 @@ public struct NCMUserPlaylistAction: NCMAction {
 public struct NCMUserPlaylistResponse: NCMResponse {
     public var code: Int
     public var more: Bool
-    public var playlist: [PlaylistResponse]
+    public var playlist: [NCMPlaylistResponse]
     public var version: String
     public var message: String?
 }

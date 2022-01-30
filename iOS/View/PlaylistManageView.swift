@@ -79,7 +79,7 @@ struct PlaylistManageView_Previews: PreviewProvider {
 
 
 struct UserPlaylistRowView: View {
-   let playlist: PlaylistResponse
+   let playlist: NCMPlaylistResponse
     
     var body: some View {
         HStack {

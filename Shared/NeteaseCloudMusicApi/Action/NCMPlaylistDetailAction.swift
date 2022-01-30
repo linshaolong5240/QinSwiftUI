@@ -25,8 +25,8 @@ public struct NCMPlaylistDetailAction: NCMAction {
 
 public struct NCMPlaylistDetailResponse: NCMResponse {
     public var code: Int
-    public var playlist: PlaylistResponse
-    public var privileges: [PrivilegeResponse]
+    public var playlist: NCMPlaylistResponse
+    public var privileges: [NCMPrivilegeResponse]
 //    public var relatedVideos: Any?
 //    public var sharedPrivilege: Any?
 //    public var urls: Any?

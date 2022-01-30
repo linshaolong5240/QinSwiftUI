@@ -28,7 +28,7 @@ public struct NCMSongDetailAction: NCMAction {
 
 public struct NCMSongDetailResponse: NCMResponse {
     public var code: Int
-    public var privileges: [PrivilegeResponse]
-    public var songs: [SongResponse]
+    public var privileges: [NCMPrivilegeResponse]
+    public var songs: [NCMSongResponse]
     public var message: String?
 }

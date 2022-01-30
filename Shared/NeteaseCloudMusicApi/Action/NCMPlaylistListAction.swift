@@ -31,7 +31,7 @@ public struct NCMPlaylistListResponse: NCMResponse {
     public var cat: String
     public var code: Int
     public var more: Bool
-    public var playlists: [PlaylistResponse]
+    public var playlists: [NCMPlaylistResponse]
     public var total: Int
     public var message: String?
 }

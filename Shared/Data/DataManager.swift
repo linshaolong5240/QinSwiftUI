@@ -248,11 +248,11 @@ class DataManager {
             }
         }
     }
-    public func updateArtist(model: ArtistResponse) {
+    public func updateArtist(model: NCMArtistResponse) {
         defer { save() }
         _ = model.entity(context: context())
     }
-    public func updateArtist(artistModel: ArtistResponse, introduction: String) {
+    public func updateArtist(artistModel: NCMArtistResponse, introduction: String) {
         defer { save() }
         let artist = artistModel.entity(context: context())
         artist.introduction = introduction
@@ -343,7 +343,7 @@ class DataManager {
         }
     }
     
-    public func updateSongs(model: [SongResponse]) {
+    public func updateSongs(model: [NCMSongResponse]) {
         defer { save() }
         model.forEach { item in
             let song = item.entity(context: context())
