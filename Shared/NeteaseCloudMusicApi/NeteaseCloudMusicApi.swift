@@ -60,7 +60,7 @@ public class NeteaseCloudMusicApi {
         HTTPCookieStorage.shared.setCookie(cookie2!)
     }
     
-    public func requestPublish<Action: NCMAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
+    public func requestPublisher<Action: NCMAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
         let url: String =  action.host + action.uri
 
         let httpHeader = [ //"Accept": "*/*",
@@ -109,7 +109,7 @@ public class NeteaseCloudMusicApi {
         #endif
     }
     
-    public func uploadPublish(method: HttpMethod = .POST, action: NCMCloudUploadAction) -> AnyPublisher<NCMCloudUploadResponse, Error> {
+    public func uploadPublisher(method: HttpMethod = .POST, action: NCMCloudUploadAction) -> AnyPublisher<NCMCloudUploadResponse, Error> {
         let url: String =  action.host + action.uri
         var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
         request.httpMethod = method.rawValue
