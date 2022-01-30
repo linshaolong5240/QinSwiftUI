@@ -21,6 +21,11 @@ public struct NCMArtistAlbumsAction: NCMAction {
     public var uri: String { "/weapi/artist/albums/\(id)" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(id: Int, limit: Int, offset: Int, total: Bool = true) {
+        self.id = id
+        self.parameters = .init(limit: limit, offset: offset, total: total)
+    }
 }
 
 public struct NCMArtistAlbumsResponse: NCMResponse {

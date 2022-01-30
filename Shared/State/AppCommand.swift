@@ -105,7 +105,7 @@ struct AlbumSubRequestCommand: AppCommand {
     let sub: Bool
     
     func execute(in store: Store) {
-       NCM.requestPublisher(action: NCMAlbumSubAction(parameters: .init(id: id), sub: sub))
+       NCM.requestPublisher(action: NCMAlbumSubAction(id: id, sub: sub))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.albumSubRequestDone(result: .failure(.error(error))))
@@ -131,7 +131,7 @@ struct AlbumSublistRequestCommand: AppCommand {
     let offset: Int
     
     func execute(in store: Store) {
-       NCM.requestPublisher(action: NCMAlbumSublistAction(parameters: .init(limit: limit, offset: limit * offset)))
+       NCM.requestPublisher(action: NCMAlbumSublistAction(limit: limit, offset: limit * offset))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.albumSublistRequestDone(result: .failure(.error(error))))
@@ -152,7 +152,7 @@ struct ArtistAlbumsRequestCommand: AppCommand {
     let offset: Int
     
     func execute(in store: Store) {
-       NCM.requestPublisher(action: NCMArtistAlbumsAction(id: id, parameters: .init(limit: limit, offset: offset * limit)))
+       NCM.requestPublisher(action: NCMArtistAlbumsAction(id: id, limit: limit, offset: offset * limit))
             .sink { completion in
                 if case .failure(let error) = completion {
                     store.dispatch(.artistAlbumsRequestDone(result: .failure(.error(error))))

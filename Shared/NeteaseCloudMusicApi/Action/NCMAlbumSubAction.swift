@@ -20,6 +20,11 @@ public struct NCMAlbumSubAction: NCMAction {
     public var responseType = Response.self
     
     public var sub: Bool
+    
+    public init(id: Int,sub: Bool) {
+        self.parameters = .init(id: id)
+        self.sub = sub
+    }
 }
 
 public struct NCMAlbumSubResponse: NCMResponse {

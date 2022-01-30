@@ -20,6 +20,10 @@ public struct NCMAlbumSublistAction: NCMAction {
     public var uri: String = "/weapi/album/sublist"
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(limit: Int, offset: Int, total: Bool = true) {
+        self.parameters = .init(limit: limit, offset: offset, total: total)
+    }
 }
 
 public struct NCMAlbumSublistResponse: NCMResponse {
