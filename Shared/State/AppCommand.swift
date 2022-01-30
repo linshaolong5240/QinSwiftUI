@@ -614,7 +614,7 @@ struct MVUrlCommand: AppCommand {
         ////                store.dispatch(.mvDetaillRequestDone(result: .success(id)))
         //                mvURL = URL(string: mvURLResponse.data.url)
         //                showPlayer = true
-        //            }.store(in: &Store.shared.cancellableSet)
+        //            }.store(in: &Store.shared.cancells)
     }
 }
 

@@ -43,9 +43,7 @@ public class NeteaseCloudMusicApi {
     }
     
     public static let shared = NeteaseCloudMusicApi()
-    public var cancellableSet = Set<AnyCancellable>()
-    
-    private let host: String = "https://music.163.com"
+    public var cancells = Set<AnyCancellable>()
     
     public init() {
         let cookie = HTTPCookie(properties: [.name : "os",
@@ -63,7 +61,7 @@ public class NeteaseCloudMusicApi {
     public func requestPublisher<Action: NCMAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
         let url: String =  action.host + action.uri
 
-        let httpHeader = [ //"Accept": "*/*",
+        var httpHeader = [ //"Accept": "*/*",
             //"Accept-Encoding": "gzip,deflate,sdch",
             //"Connection": "keep-alive",
             "Content-Type": "application/x-www-form-urlencoded",
@@ -71,6 +69,13 @@ public class NeteaseCloudMusicApi {
             "Referer": "https://music.163.com",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15"
         ]
+        
+        if let headers = action.headers {
+            httpHeader.merge(headers) { current, new in
+                new
+            }
+        }
+        
 //        let cookies = HTTPCookieStorage.shared.cookies
 //        let cookiesString = cookies!.map({ cookie in
 //            cookie.name + "=" + cookie.value
@@ -198,20 +203,6 @@ extension String {
     }
 }
 
-extension NeteaseCloudMusicApi {
-    public static func parseErrorMessage(_ data: [String: Any]) -> (code: Int, message: String) {
-        var code: Int = -1
-        var message: String = "no message"
-        if let c = data["code"] as? Int {
-            code = c
-        }
-        if let m = data["message"] as? String {
-            message = m
-        }
-        return (code,message)
-    }
-}
-
 //getCSRFToken
 extension NeteaseCloudMusicApi {
     func getCSRFToken() -> String {
@@ -231,7 +222,7 @@ extension NeteaseCloudMusicApi {
     typealias ResponseData = Dictionary<String, Any>
     typealias CompletionBlock = (_ result: Result<ResponseData, AppError>) -> Void
     
-    func httpRequest(method: HttpMethod, url: String, data: String?, complete: @escaping CompletionBlock) {
+    func httpRequest(method: HttpMethod, url: String, data: String?, completion: @escaping CompletionBlock) {
         
         var httpHeader = [ //"Accept": "*/*",
             //"Accept-Encoding": "gzip,deflate,sdch",
@@ -260,7 +251,7 @@ extension NeteaseCloudMusicApi {
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { finished in
                 if case .failure(let error) = finished {
-                    complete(.failure(.httpRequestError(error: error)))
+                    completion(.failure(.httpRequestError(error: error)))
                 }
             }) { (data, response) in
                 #if DEBUG
@@ -276,10 +267,10 @@ extension NeteaseCloudMusicApi {
                     if httpURLResponse.statusCode == 200 {
                         if let json = try? JSONSerialization.jsonObject(with: data) {
                             let jsonDict = json as! ResponseData
-                            complete(.success(jsonDict))
+                            completion(.success(jsonDict))
                         }
                     }
                 }
-            }.store(in: &cancellableSet)
+            }.store(in: &cancells)
     }
 }
