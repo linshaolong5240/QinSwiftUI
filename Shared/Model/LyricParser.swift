@@ -9,12 +9,11 @@
 import Foundation
 
 class LyricParser {
-    private var lyric: String = ""
+    private(set) var lyric: String
     private var times = [[Double]]()
     var lyrics = [String]()
-    init() {
-    }
-    init(_ lyric: String) {
+    
+    init(lyric: String) {
         self.lyric = lyric
         if lyric.count > 0 {
             parseLyric()

@@ -60,7 +60,7 @@ class NeteaseCloudMusicApi {
         HTTPCookieStorage.shared.setCookie(cookie2!)
     }
     
-    public func requestPublisher<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
+    public func requestPublish<Action: NeteaseCloudMusicAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
         let url: String =  action.host + action.uri
 
         let httpHeader = [ //"Accept": "*/*",

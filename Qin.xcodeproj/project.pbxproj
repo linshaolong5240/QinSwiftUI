@@ -115,6 +115,7 @@
 		2B95469C25508F3500903B27 /* SongListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B95469B25508F3500903B27 /* SongListView.swift */; };
 		2B9BE026251A132F000AFB6A /* BidirectionalCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */; };
 		2B9BE027251A132F000AFB6A /* BidirectionalCollection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */; };
+		2BB96E4E27A3CCD8000E8292 /* CommentBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB96E4D27A3CCD8000E8292 /* CommentBarView.swift */; };
 		2BC530D2273D9656006CEDF6 /* QinBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */; };
 		2BC530D3273D9656006CEDF6 /* QinBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */; };
 		2BC83163257100CC003D8D10 /* RecommendPlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */; };
@@ -361,6 +362,7 @@
 		2B8F56E9252F8969008FFF8F /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		2B95469B25508F3500903B27 /* SongListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListView.swift; sourceTree = "<group>"; };
 		2B9BE025251A132F000AFB6A /* BidirectionalCollection+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidirectionalCollection+Extension.swift"; sourceTree = "<group>"; };
+		2BB96E4D27A3CCD8000E8292 /* CommentBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentBarView.swift; sourceTree = "<group>"; };
 		2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QinBackgroundView.swift; sourceTree = "<group>"; };
 		2BC83162257100CC003D8D10 /* RecommendPlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendPlaylistView.swift; sourceTree = "<group>"; };
 		2BC8316825710ED4003D8D10 /* CreatedPlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedPlaylistView.swift; sourceTree = "<group>"; };
@@ -522,6 +524,14 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		2BB96E4C27A3CCC8000E8292 /* Commment */ = {
+			isa = PBXGroup;
+			children = (
+				2BB96E4D27A3CCD8000E8292 /* CommentBarView.swift */,
+			);
+			path = Commment;
+			sourceTree = "<group>";
+		};
 		2BCCB24824DC566F004CAD67 = {
 			isa = PBXGroup;
 			children = (
@@ -586,6 +596,7 @@
 		2BCCB28724DC59E7004CAD67 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2BB96E4C27A3CCC8000E8292 /* Commment */,
 				2B69172B252EFB7100F05DB9 /* ArtistSublistView.swift */,
 				2B1FBF922568225A0003ADC4 /* CommentView.swift */,
 				2B89DA40254B6FF800FFD1BF /* CommonGridItemView.swift */,
@@ -867,8 +878,10 @@
 		2BCCB24924DC566F004CAD67 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1230;
+				ORGANIZATIONNAME = com.teenloong;
 				TargetAttributes = {
 					2BCCB25424DC5671004CAD67 = {
 						CreatedOnToolsVersion = 12.0;
@@ -1011,6 +1024,7 @@
 				2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
 				EFF30732266F7E0100D5E1F4 /* PlaylistSubscribeResponse.swift in Sources */,
 				2BC8316925710ED4003D8D10 /* CreatedPlaylistView.swift in Sources */,
+				2BB96E4E27A3CCD8000E8292 /* CommentBarView.swift in Sources */,
 				EF474B1D2660EECE0021F3D1 /* LogoutResponse.swift in Sources */,
 				2BE66D7E266FEA8C00367778 /* RecommendPlaylistResponse.swift in Sources */,
 				2BCCB32024DC7BCC004CAD67 /* AppCommand.swift in Sources */,

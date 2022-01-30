@@ -32,7 +32,7 @@ public struct ArtistAlbumsResponse: NeteaseCloudMusicResponse {
         public var size: Int
 //        public var songs: [Any]
         public var status: Int
-        public var subType: String
+        public var subType: String?
         public var tags: String
         public var type: String
     }

@@ -92,7 +92,7 @@ class Player: AVPlayer, ObservableObject {
         //                block()
         //        }
         timerCancell = Timer
-            .publish(every: 1, on: .main, in: .default)
+            .publish(every: 0.1, on: .main, in: .default)
             .autoconnect()
             .sink(receiveValue: { _ in
                 let store = Store.shared

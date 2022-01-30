@@ -87,9 +87,7 @@ struct MVDetailView: View {
     }
     
     func fetchMVURL() {
-        NeteaseCloudMusicApi
-            .shared
-            .requestPublisher(action: MVURLAction(parameters: .init(id: Int(mv.id))))
+       NCM.requestPublish(action: MVURLAction(parameters: .init(id: Int(mv.id))))
             .sink { completion in
                 if case .failure(let error) = completion {
                     Store.shared.dispatch(.error(.error(error)))
@@ -98,7 +96,7 @@ struct MVDetailView: View {
 //                store.dispatch(.mvDetaillRequestDone(result: .success(id)))
                 mvURL = URL(string: mvURLResponse.data.url)
                 showPlayer = true
-            }.store(in: &Store.shared.cancellableSet)
+            }.store(in: &Store.shared.cancells)
     }
 }
 

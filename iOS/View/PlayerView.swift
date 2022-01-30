@@ -13,8 +13,10 @@ import Combine
 class PlayerViewModel: ObservableObject {
     enum DisplayMode {
         case stand
-        case playlist
         case addToMyPlaylist
+        case comment
+        case lyric
+        case playinglist
     }
     @Published private(set) var displayMode: DisplayMode = .stand
     @Published var showArtist: Bool = false
@@ -27,7 +29,10 @@ class PlayerViewModel: ObservableObject {
         if displayMode != .stand {
             displayMode = .stand
         }else if displayMode == .stand {
-            displayMode = .playlist
+            displayMode = .lyric
+            if let id = Store.shared.appState.playing.song?.id {
+                Store.shared.dispatch(.songlyricRequest(id: id))
+            }
         }
     }
     
@@ -88,19 +93,44 @@ struct PlayerView: View {
                         }
                     }
                 }
-                Group {
-                    if viewModel.displayMode == .stand {
-                        PlayerControllView(viewModel: viewModel, showArtist: $showArtist, artistId: $artistId)
-                            .transition(.move(edge: .bottom))
+                VStack {
+                    Text(playing.song?.name ?? "")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .lineLimit(1)
+                        .foregroundColor(Color.mainText)
+                    HStack {
+                        ForEach(playing.song?.artists ?? []) { item in
+                            Button(action: {
+                                if item.id != 0 {
+                                    artistId = Int(item.id)
+                                    showArtist.toggle()
+                                }
+                            }, label: {
+                                Text(item.name ?? "")
+                            })
+                        }
                     }
-                    if viewModel.displayMode == .playlist {
-                        PlayingNowListView()
-                            .transition(.move(edge: .bottom))
-                    }
-                    if viewModel.displayMode == .addToMyPlaylist {
-                        PlaylistTracksView(viewModel: viewModel, playlist: store.appState.playlist.createdPlaylist)
-                            .transition(.move(edge: .bottom))
-                    }
+                }
+                if viewModel.displayMode == .stand {
+                    PlayerControllView(viewModel: viewModel, showArtist: $showArtist, artistId: $artistId)
+                        .transition(.move(edge: .bottom))
+                }
+                if viewModel.displayMode == .comment {
+                    CommentListView(id: playing.song?.id ?? 0)
+                        .transition(.move(edge: .bottom))
+                }
+                if viewModel.displayMode == .lyric {
+                    LyricView(lyric: store.appState.lrc.lyric)
+                        .transition(.move(edge: .bottom))
+                }
+                if viewModel.displayMode == .playinglist {
+                    PlayinglistView(songsId: playing.playinglist.map(\.id))
+                        .transition(.move(edge: .bottom))
+                }
+                if viewModel.displayMode == .addToMyPlaylist {
+                    PlaylistTracksView(viewModel: viewModel, playlist: store.appState.playlist.createdPlaylist)
+                        .transition(.move(edge: .bottom))
                 }
             }
         }
@@ -163,47 +193,6 @@ struct PlayerControllView: View {
     
     var body: some View {
         VStack {
-            VStack {
-                Text(playing.song?.name ?? "")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .lineLimit(1)
-                    .foregroundColor(Color.mainText)
-                HStack {
-                    ForEach(playing.song?.artists ?? []) { item in
-                        Button(action: {
-                            if item.id != 0 {
-                                artistId = Int(item.id)
-                                showArtist.toggle()
-                            }
-                        }, label: {
-                            Text(item.name ?? "")
-                        })
-                    }
-                }
-            }
-            .padding()
-            ZStack {
-                if showLyric {
-                    if let lyric = store.appState.lyric.lyric {
-                        LyricView(lyric)
-                    }else {
-                        Text("无歌词")
-                            .foregroundColor(.secondTextColor)
-                    }
-                }
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            showLyric.toggle()
-                        }) {
-                            QinSFView(systemName: "text.justify", size: .small, inactiveColor: Color.secondTextColor)
-                        }
-                    }
-                }
-            }
             HStack {
                 Text(String(format: "%02d:%02d", Int(player.loadTime/60),Int(player.loadTime)%60))
                     .frame(width: 50, alignment: Alignment.leading)
@@ -242,7 +231,28 @@ struct PlayerControllView: View {
                 .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
             }
             .padding(.vertical)
+            HStack(spacing: 30) {
+                Button {
+                    viewModel.setDisplayMode(.playinglist)
+                } label: {
+                    QinSFView(systemName: "text.aligncenter", size: .small)
+                }
+                .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
+                Button {
+                    
+                } label: {
+                    QinSFView(systemName: "airplayaudio", size: .small)
+                }
+                .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
+                Button {
+                    viewModel.setDisplayMode(.comment)
+                } label: {
+                    QinSFView(systemName: "bubble.right", size: .small)
+                }
+                .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
+            }
         }
+        .padding(.bottom)
     }
 }
 
@@ -369,30 +379,5 @@ struct PlayerCoverView: View {
                     viewModel.tapCover()
                 }
             }
-    }
-}
-
-struct PlayingNowListView: View {
-    @EnvironmentObject private var store: Store
-    @State private var listType: Int = 0
-    
-    var body: some View {
-        VStack {
-            Picker(selection: $listType, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                Text("播放列表").tag(0)
-                Text("歌曲评论").tag(1)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .fixedSize()
-            
-            ZStack {
-                let offset = UIScreen.main.bounds.height
-                PlayinglistView(songsId: store.appState.playing.playinglist.map(\.id))
-                    .offset(y: listType == 0 ? 0 : offset)
-                if listType == 1 {
-                    CommentListView(id: Int(store.appState.playing.song?.id  ?? 0))
-                }
-            }
-        }
     }
 }

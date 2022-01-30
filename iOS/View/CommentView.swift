@@ -22,20 +22,7 @@ struct CommentView: View {
     var body: some View {
         ZStack {
             QinBackgroundView()
-            VStack {
-                HStack {
-                    QinBackwardButton()
-                    Spacer()
-                    QinNavigationBarTitleView("歌曲评论")
-                    Spacer()
-                    Button(action: {}) {
-                        QinSFView(systemName: "ellipsis" , size:  .medium)
-                    }
-                    .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
-                }
-                .padding(.horizontal)
-                CommentListView(id: id)
-            }
+            CommentListView(id: id)
         }
     }
 }
@@ -96,20 +83,14 @@ struct CommentListView: View {
             }else {
                 ScrollView {
                     LazyVStack(alignment: .leading) {
-                        HStack {
-                            Text("热门评论(\(String(comment.hotComments.count)))")
-                                .foregroundColor(.mainText)
-                            Spacer()
-                        }
+                        Text("热门评论(\(String(comment.hotComments.count)))")
+                            .foregroundColor(.mainText)
                         ForEach(comment.hotComments) { item in
                             CommentRowView(viewModel: CommentViewModel(item), id: id, type: .song)
                             Divider()
                         }
-                        HStack {
-                            Text("最新评论(\(String(comment.total)))")
-                                .foregroundColor(.mainText)
-                            Spacer()
-                        }
+                        Text("最新评论(\(String(comment.total)))")
+                            .foregroundColor(.mainText)
                         ForEach(comment.comments) { item in
                             CommentRowView(viewModel: CommentViewModel(item), id: id, type: .song)
                             Divider()

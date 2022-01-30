@@ -12,7 +12,7 @@ import Combine
 class Store: ObservableObject {
     public static let shared = Store()
     
-    var cancellableSet = Set<AnyCancellable>()
+    var cancells = Set<AnyCancellable>()
 
     @Published var appState = AppState()
     func dispatch(_ action: AppAction) {
@@ -275,7 +275,6 @@ class Store: ObservableObject {
             appCommand = MVUrlCommand(id: id)
         case .playerPause:
             Player.shared.pause()
-            appState.lyric.lyric?.stopTimer()
         case .playerPlay:
             appCommand = QinPlayerPlayCommand()
         case .playerPlayBackward:
@@ -483,22 +482,20 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .songLyricRequest(let id):
-            appState.lyric.requesting = true
-            appCommand = SongLyricRequestCommand(id: id)
-        case .songLyricRequestDone(result: let result):
-            switch result {
-            case .success(let lyric):
-                if lyric != nil {
-                    appState.lyric.lyric = LyricViewModel(lyric: lyric!)
-                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
-                }else {
-                    appState.lyric.lyric = nil
-                }
-            case .failure(let error):
-                appState.lyric.getlyricError = error
+        case .songlyricRequest(let id):
+            if id != appState.lrc.id {
+                appState.lrc.isRequesting = true
+                appState.lrc.id = id
+                appCommand = SongLyricRequestCommand(id: id)
             }
-            appState.lyric.requesting = false
+        case .songlyricRequestDone(let result):
+            switch result {
+            case .success(let response):
+                appState.lrc.lyric = response.lrc.lyric
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.lrc.isRequesting = false
         case .songsOrderUpdateRequesting(let pid, let ids):
             appCommand = SongsOrderUpdateRequestCommand(pid: pid, ids: ids)
         case .songsOrderUpdateRequestDone(let result):

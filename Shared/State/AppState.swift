@@ -18,7 +18,7 @@ struct AppState {
     var cloud = Cloud()
     var comment = Comment()
     var discoverPlaylist = DiscoverPlaylist()
-    var lyric = Lyric()
+    var lrc = Lyric()
     var playing = Playing()
     var playlist = Playlist()
     var settings = Settings()
@@ -98,9 +98,9 @@ extension AppState {
     }
     
     struct Lyric {
-        var requesting = false
-        var getlyricError: AppError?
-        var lyric: LyricViewModel?
+        var isRequesting = false
+        var id: Int = 0
+        var lyric: String = ""
     }
     
     struct Playlist {

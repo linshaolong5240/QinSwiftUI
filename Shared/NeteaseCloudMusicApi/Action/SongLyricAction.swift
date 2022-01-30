@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 //歌曲歌词
 public struct SongLyricAction: NeteaseCloudMusicAction {
     public struct SongLyricParameters: Encodable {
@@ -20,4 +21,8 @@ public struct SongLyricAction: NeteaseCloudMusicAction {
     public var uri: String { "/weapi/song/lyric" }
     public let parameters: Parameters
     public let responseType = Response.self
+    
+    public init(id: Int) {
+        self.parameters = .init(id: id)
+    }
 }

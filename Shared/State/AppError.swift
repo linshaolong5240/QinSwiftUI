@@ -8,6 +8,12 @@
 
 import Foundation
 
+extension Error {
+    func asAppError() -> AppError {
+        .error(self)
+    }
+}
+
 enum AppError: Error, Identifiable {
     var id: String { localizedDescription }
     case error(Error)
