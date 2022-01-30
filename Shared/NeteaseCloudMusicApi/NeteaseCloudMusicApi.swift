@@ -10,18 +10,27 @@ import CryptoSwift
 import Security
 import Combine
 
+public enum NCMHttpMethod: String {
+    case get
+    case post
+}
+
 public protocol NCMAction {
     associatedtype Parameters: Encodable
     associatedtype Response: Decodable
-    var headers: [String: String]? { get }
+    var method: NCMHttpMethod { get }
     var host: String { get }
     var uri: String { get }
+    var headers: [String: String]? { get }
+    var timeoutInterval: TimeInterval { get }
     var parameters: Parameters { get }
     var responseType: Response.Type { get }
 }
 
 extension NCMAction {
+    public var method: NCMHttpMethod { .post }
     public var headers: [String: String]? { nil }
+    public var timeoutInterval: TimeInterval { 20 }
 }
 
 extension NCMAction {
@@ -36,14 +45,18 @@ public struct NCMEmptyParameters: Encodable { }
 public let NCM = NeteaseCloudMusicApi.shared
 
 public class NeteaseCloudMusicApi {
-    
-    public enum HttpMethod: String {
-        case GET = "GET"
-        case POST = "POST"
-    }
-    
+
     public static let shared = NeteaseCloudMusicApi()
     public var cancells = Set<AnyCancellable>()
+    
+    public var requestHttpHeader = [ //"Accept": "*/*",
+        //"Accept-Encoding": "gzip,deflate,sdch",
+        //"Connection": "keep-alive",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Host": "music.163.com",
+        "Referer": "https://music.163.com",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15"
+    ]
     
     public init() {
         let cookie = HTTPCookie(properties: [.name : "os",
@@ -56,88 +69,6 @@ public class NeteaseCloudMusicApi {
                                              .path: "/"])
         HTTPCookieStorage.shared.setCookie(cookie!)
         HTTPCookieStorage.shared.setCookie(cookie2!)
-    }
-    
-    public func requestPublisher<Action: NCMAction>(method: HttpMethod = .POST, action: Action) -> AnyPublisher<Action.Response, Error> {
-        let url: String =  action.host + action.uri
-
-        var httpHeader = [ //"Accept": "*/*",
-            //"Accept-Encoding": "gzip,deflate,sdch",
-            //"Connection": "keep-alive",
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Host": "music.163.com",
-            "Referer": "https://music.163.com",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15"
-        ]
-        
-        if let headers = action.headers {
-            httpHeader.merge(headers) { current, new in
-                new
-            }
-        }
-        
-//        let cookies = HTTPCookieStorage.shared.cookies
-//        let cookiesString = cookies!.map({ cookie in
-//            cookie.name + "=" + cookie.value
-//        }).joined(separator: "; ")
-//        httpHeader["Cookie"] = cookiesString
-//        print(httpHeader)
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = method.rawValue
-        request.allHTTPHeaderFields = httpHeader
-        request.timeoutInterval = 10
-        if method == .POST {
-            if let data = try? JSONEncoder().encode(action.parameters) {
-                if let str = String(data: data, encoding: .utf8) {
-                    request.httpBody = encrypto(text: str).data(using: .utf8)
-                }
-            }
-        }
-        #if DEBUG
-        return URLSession.shared
-            .dataTaskPublisher(for: request)
-            .map {
-                let str = String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString
-                print(str ?? "data: nil")
-                return $0.data
-            }
-            .decode(type: action.responseType, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-        #else
-        return URLSession.shared
-            .dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: action.responseType, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-        #endif
-    }
-    
-    public func uploadPublisher(method: HttpMethod = .POST, action: NCMCloudUploadAction) -> AnyPublisher<NCMCloudUploadResponse, Error> {
-        let url: String =  action.host + action.uri
-        var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
-        request.httpMethod = method.rawValue
-        request.allHTTPHeaderFields = action.headers
-        request.httpBody = action.data
-        #if false
-        return URLSession.shared
-            .dataTaskPublisher(for: request)
-            .map {
-                print(String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString)
-                return $0.data
-            }
-            .decode(style: action.responseType, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-        #else
-        return URLSession.shared
-            .dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: action.responseType, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-        #endif
     }
     
     private func encrypto(text: String) -> String {
@@ -195,6 +126,129 @@ public class NeteaseCloudMusicApi {
         let encSecKey = rsaEncrypt(text: String(secKey.reversed()), pubKey: pubKey)
         return "params=\(encText!)&encSecKey=\(encSecKey)".plusSymbolToPercent()
     }
+    
+    @discardableResult
+    public func request<Action: NCMAction>(action: Action, completion: @escaping (Result<Action.Response?, Error>) -> Void) -> URLSessionDataTask {
+        let url: String =  action.host + action.uri
+        
+        if let headers = action.headers {
+            requestHttpHeader.merge(headers) { current, new in
+                new
+            }
+        }
+        
+//        let cookies = HTTPCookieStorage.shared.cookies
+//        let cookiesString = cookies!.map({ cookie in
+//            cookie.name + "=" + cookie.value
+//        }).joined(separator: "; ")
+//        httpHeader["Cookie"] = cookiesString
+//        print(httpHeader)
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = action.method.rawValue
+        request.allHTTPHeaderFields = requestHttpHeader
+        request.timeoutInterval = action.timeoutInterval
+        if action.method == .post {
+            if let data = try? JSONEncoder().encode(action.parameters) {
+                if let str = String(data: data, encoding: .utf8) {
+                    request.httpBody = encrypto(text: str).data(using: .utf8)
+                }
+            }
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { responseData, response, error in
+            guard error == nil else {
+                completion(.failure(error!))
+                return
+            }
+            
+            guard let data = responseData, !data.isEmpty else {
+                completion(.success(nil))
+                return
+            }
+
+            do {
+                let model = try JSONDecoder().decode(action.responseType, from: data)
+                completion(.success(model))
+            } catch let error {
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+        return task
+    }
+    
+    public func requestPublisher<Action: NCMAction>(action: Action) -> AnyPublisher<Action.Response, Error> {
+        let url: String =  action.host + action.uri
+        
+        if let headers = action.headers {
+            requestHttpHeader.merge(headers) { current, new in
+                new
+            }
+        }
+        
+//        let cookies = HTTPCookieStorage.shared.cookies
+//        let cookiesString = cookies!.map({ cookie in
+//            cookie.name + "=" + cookie.value
+//        }).joined(separator: "; ")
+//        httpHeader["Cookie"] = cookiesString
+//        print(httpHeader)
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = action.method.rawValue
+        request.allHTTPHeaderFields = requestHttpHeader
+        request.timeoutInterval = action.timeoutInterval
+        if action.method == .post {
+            if let data = try? JSONEncoder().encode(action.parameters) {
+                if let str = String(data: data, encoding: .utf8) {
+                    request.httpBody = encrypto(text: str).data(using: .utf8)
+                }
+            }
+        }
+        #if false
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map {
+                let str = String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString
+                print(str ?? "data: nil")
+                return $0.data
+            }
+            .decode(type: action.responseType, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+        #else
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: action.responseType, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+        #endif
+    }
+    
+    public func uploadPublisher(method: NCMHttpMethod = .post, action: NCMCloudUploadAction) -> AnyPublisher<NCMCloudUploadResponse, Error> {
+        let url: String =  action.host + action.uri
+        var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
+        request.httpMethod = method.rawValue
+        request.allHTTPHeaderFields = action.headers
+        request.httpBody = action.data
+        #if false
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map {
+                print(String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString)
+                return $0.data
+            }
+            .decode(style: action.responseType, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+        #else
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map(\.data)
+            .decode(type: action.responseType, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+        #endif
+    }
 }
 
 extension String {
@@ -214,63 +268,5 @@ extension NeteaseCloudMusicApi {
             }
         }
         return ""
-    }
-}
-
-//httprequest
-extension NeteaseCloudMusicApi {
-    typealias ResponseData = Dictionary<String, Any>
-    typealias CompletionBlock = (_ result: Result<ResponseData, AppError>) -> Void
-    
-    func httpRequest(method: HttpMethod, url: String, data: String?, completion: @escaping CompletionBlock) {
-        
-        var httpHeader = [ //"Accept": "*/*",
-            //"Accept-Encoding": "gzip,deflate,sdch",
-            //"Connection": "keep-alive",
-            "Content-Type": "application/x-www-form-urlencoded",
-//            "Host": "music.163.com",
-            "Referer": "https://music.163.com",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15",
-        ]
-        let cookies = HTTPCookieStorage.shared.cookies
-        let cookiesString = cookies!.map({ cookie in
-            cookie.name + "=" + cookie.value
-        }).joined(separator: "; ")
-        httpHeader["Cookie"] = cookiesString
-        print(httpHeader)
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = method.rawValue
-        request.allHTTPHeaderFields = httpHeader
-        request.timeoutInterval = 10
-        if method == .POST {
-            request.httpBody = data?.data(using: .utf8)
-        }
-        
-        URLSession.shared
-            .dataTaskPublisher(for: request)
-            .receive(on: RunLoop.main)
-            .sink(receiveCompletion: { finished in
-                if case .failure(let error) = finished {
-                    completion(.failure(.httpRequestError(error: error)))
-                }
-            }) { (data, response) in
-                #if DEBUG
-                let cookies = HTTPCookieStorage.shared.cookies
-                for cookie in cookies! {
-                    print("name: \(cookie.name) value: \(cookie.value)")
-                }
-                #endif
-                if let httpURLResponse = response as? HTTPURLResponse {
-                    #if DEBUG
-                    print("statusCode: \(httpURLResponse.statusCode)")
-                    #endif
-                    if httpURLResponse.statusCode == 200 {
-                        if let json = try? JSONSerialization.jsonObject(with: data) {
-                            let jsonDict = json as! ResponseData
-                            completion(.success(jsonDict))
-                        }
-                    }
-                }
-            }.store(in: &cancells)
     }
 }
