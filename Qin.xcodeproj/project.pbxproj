@@ -135,6 +135,10 @@
 		2BCCB32F24DC7EF9004CAD67 /* PlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB32A24DC7EF8004CAD67 /* PlaylistViewModel.swift */; };
 		2BCCB33024DC7EF9004CAD67 /* SongViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB32B24DC7EF8004CAD67 /* SongViewModel.swift */; };
 		2BCCB33124DC7EF9004CAD67 /* SongViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB32B24DC7EF8004CAD67 /* SongViewModel.swift */; };
+		2BCCD68A27A67620001F8F71 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCD68927A67620001F8F71 /* RxBlocking */; };
+		2BCCD68C27A67620001F8F71 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCD68B27A67620001F8F71 /* RxCocoa */; };
+		2BCCD68E27A67620001F8F71 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCD68D27A67620001F8F71 /* RxRelay */; };
+		2BCCD69027A67620001F8F71 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2BCCD68F27A67620001F8F71 /* RxSwift */; };
 		2BD09855257BBDFB0062480F /* PlayingNowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD09854257BBDFB0062480F /* PlayingNowButtonView.swift */; };
 		2BD42A2827411E27003B4F00 /* QinPlayerCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD42A2727411E27003B4F00 /* QinPlayerCoverView.swift */; };
 		2BD42A2927411E27003B4F00 /* QinPlayerCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD42A2727411E27003B4F00 /* QinPlayerCoverView.swift */; };
@@ -345,9 +349,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BCCD68E27A67620001F8F71 /* RxRelay in Frameworks */,
 				EF2EBC78272015FF00FDA5BC /* Kingfisher in Frameworks */,
+				2BCCD68A27A67620001F8F71 /* RxBlocking in Frameworks */,
+				2BCCD68C27A67620001F8F71 /* RxCocoa in Frameworks */,
 				2BCCB2C324DC5DB2004CAD67 /* CryptoSwift in Frameworks */,
 				2B0E013A2741408A00F7C1DE /* NeumorphismSwiftUI in Frameworks */,
+				2BCCD69027A67620001F8F71 /* RxSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,6 +673,10 @@
 				2BCCB2C224DC5DB2004CAD67 /* CryptoSwift */,
 				EF2EBC77272015FF00FDA5BC /* Kingfisher */,
 				2B0E01392741408A00F7C1DE /* NeumorphismSwiftUI */,
+				2BCCD68927A67620001F8F71 /* RxBlocking */,
+				2BCCD68B27A67620001F8F71 /* RxCocoa */,
+				2BCCD68D27A67620001F8F71 /* RxRelay */,
+				2BCCD68F27A67620001F8F71 /* RxSwift */,
 			);
 			productName = "Qin (iOS)";
 			productReference = 2BCCB25524DC5671004CAD67 /* Qin.app */;
@@ -724,6 +736,7 @@
 				2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				EF2EBC76272015FF00FDA5BC /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2B0E01382741408A00F7C1DE /* XCRemoteSwiftPackageReference "NeumorphismSwiftUI" */,
+				2BCCD68827A67620001F8F71 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 2BCCB25624DC5671004CAD67 /* Products */;
 			projectDirPath = "";
@@ -1234,6 +1247,14 @@
 				minimumVersion = 1.3.1;
 			};
 		};
+		2BCCD68827A67620001F8F71 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 		EF2EBC76272015FF00FDA5BC /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1269,6 +1290,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */;
 			productName = CryptoSwift;
+		};
+		2BCCD68927A67620001F8F71 /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BCCD68827A67620001F8F71 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		2BCCD68B27A67620001F8F71 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BCCD68827A67620001F8F71 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		2BCCD68D27A67620001F8F71 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BCCD68827A67620001F8F71 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		2BCCD68F27A67620001F8F71 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BCCD68827A67620001F8F71 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 		EF2EBC77272015FF00FDA5BC /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

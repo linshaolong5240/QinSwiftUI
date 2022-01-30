@@ -224,10 +224,15 @@ public class NeteaseCloudMusicApi {
         #endif
     }
     
-    public func uploadPublisher(method: NCMHttpMethod = .post, action: NCMCloudUploadAction) -> AnyPublisher<NCMCloudUploadResponse, Error> {
+    public func uploadPublisher(action: NCMCloudUploadAction) -> AnyPublisher<NCMCloudUploadResponse, Error> {
         let url: String =  action.host + action.uri
+        if let headers = action.headers {
+            requestHttpHeader.merge(headers) { current, new in
+                new
+            }
+        }
         var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
-        request.httpMethod = method.rawValue
+        request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = action.headers
         request.httpBody = action.data
         #if false
@@ -237,7 +242,7 @@ public class NeteaseCloudMusicApi {
                 print(String(data: $0.data, encoding: .utf8)?.jsonToDictionary?.toJSONString)
                 return $0.data
             }
-            .decode(style: action.responseType, decoder: JSONDecoder())
+            .decode(type: action.responseType, decoder: JSONDecoder())
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
         #else
@@ -250,6 +255,63 @@ public class NeteaseCloudMusicApi {
         #endif
     }
 }
+
+#if canImport(RxSwift)
+import RxSwift
+extension NeteaseCloudMusicApi {
+    public func requestObserver<Action: NCMAction>(action: Action) -> Single<Action.Response?> {
+        let url: String =  action.host + action.uri
+        if let headers = action.headers {
+            requestHttpHeader.merge(headers) { current, new in
+                new
+            }
+        }
+//        let cookies = HTTPCookieStorage.shared.cookies
+//        let cookiesString = cookies!.map({ cookie in
+//            cookie.name + "=" + cookie.value
+//        }).joined(separator: "; ")
+//        httpHeader["Cookie"] = cookiesString
+//        print(httpHeader)
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = action.method.rawValue
+        request.allHTTPHeaderFields = requestHttpHeader
+        request.timeoutInterval = action.timeoutInterval
+        if action.method == .post {
+            if let data = try? JSONEncoder().encode(action.parameters) {
+                if let str = String(data: data, encoding: .utf8) {
+                    request.httpBody = encrypto(text: str).data(using: .utf8)
+                }
+            }
+        }
+        
+        return Single.create { single in
+            let task = URLSession.shared.dataTask(with: request) { responseData, response, error in
+                guard error == nil else {
+                    single(.failure(error!))
+                    return
+                }
+                
+                guard let data = responseData, !data.isEmpty else {
+                    single(.success(nil))
+                    return
+                }
+
+                do {
+                    let model = try JSONDecoder().decode(action.responseType, from: data)
+                    single(.success(model))
+                } catch let error {
+                    single(.failure(error))
+                }
+            }
+            task.resume()
+            
+            return Disposables.create {
+                task.cancel()
+            }
+        }
+    }
+}
+#endif
 
 extension String {
     func plusSymbolToPercent() -> String {
