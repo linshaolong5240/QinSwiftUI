@@ -34,6 +34,8 @@
 		2B20BC152525EE5A00679D0D /* FetchedArtistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B20BC142525EE5A00679D0D /* FetchedArtistDetailView.swift */; };
 		2B21674A276E2204001B6B0D /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B216749276E2204001B6B0D /* SwiftUIHelper.swift */; };
 		2B21674B276E2204001B6B0D /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B216749276E2204001B6B0D /* SwiftUIHelper.swift */; };
+		2B229F9E27A79B920054BF2B /* NCMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B229F9D27A79B920054BF2B /* NCMAction.swift */; };
+		2B229F9F27A79B920054BF2B /* NCMAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B229F9D27A79B920054BF2B /* NCMAction.swift */; };
 		2B2D517824E39C1C007B52A4 /* QinSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D517724E39C1C007B52A4 /* QinSearchView.swift */; };
 		2B41D86E25336D5F000B6FAC /* DiscoverPlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41D86D25336D5F000B6FAC /* DiscoverPlaylistView.swift */; };
 		2B41D87225336E3D000B6FAC /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41D87125336E3D000B6FAC /* SwiftUI+Extension.swift */; };
@@ -237,6 +239,7 @@
 		2B1FBF922568225A0003ADC4 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		2B20BC142525EE5A00679D0D /* FetchedArtistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedArtistDetailView.swift; sourceTree = "<group>"; };
 		2B216749276E2204001B6B0D /* SwiftUIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIHelper.swift; sourceTree = "<group>"; };
+		2B229F9D27A79B920054BF2B /* NCMAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMAction.swift; sourceTree = "<group>"; };
 		2B2D517724E39C1C007B52A4 /* QinSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QinSearchView.swift; sourceTree = "<group>"; };
 		2B41D86D25336D5F000B6FAC /* DiscoverPlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverPlaylistView.swift; sourceTree = "<group>"; };
 		2B41D87125336E3D000B6FAC /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
@@ -544,9 +547,10 @@
 		2BCCB31424DC7B7D004CAD67 /* NeteaseCloudMusicApi */ = {
 			isa = PBXGroup;
 			children = (
-				EF474B1F2660EF1A0021F3D1 /* Action */,
-				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift */,
+				2B229F9D27A79B920054BF2B /* NCMAction.swift */,
 				EF010A462673439F00DB2AF9 /* NCMResponse.swift */,
+				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift */,
+				EF474B1F2660EF1A0021F3D1 /* Action */,
 			);
 			path = NeteaseCloudMusicApi;
 			sourceTree = "<group>";
@@ -827,6 +831,7 @@
 				EF474B212660EF440021F3D1 /* NCMLogoutAction.swift in Sources */,
 				2B792B01269A171400788CE1 /* NCMCloudUploadCheckAction.swift in Sources */,
 				2B1FBF932568225A0003ADC4 /* CommentView.swift in Sources */,
+				2B229F9E27A79B920054BF2B /* NCMAction.swift in Sources */,
 				EF28DA28266E097000CE0369 /* NCMPlaylistCategoryListAction.swift in Sources */,
 				EF010A352673428800DB2AF9 /* NCMAlbumSublistAction.swift in Sources */,
 				2BC83163257100CC003D8D10 /* RecommendPlaylistView.swift in Sources */,
@@ -913,6 +918,7 @@
 				2B792B02269A171400788CE1 /* NCMCloudUploadCheckAction.swift in Sources */,
 				2B8EFED4266C035900FF42EF /* NCMSongLyricAction.swift in Sources */,
 				2BCCB32724DC7BCD004CAD67 /* Store.swift in Sources */,
+				2B229F9F27A79B920054BF2B /* NCMAction.swift in Sources */,
 				2B792B17269B5BF000788CE1 /* NCMCloudUploadInfoAction.swift in Sources */,
 				2BCCB2F524DC7A62004CAD67 /* DataManager.swift in Sources */,
 				EF010A42267342FB00DB2AF9 /* NCMArtistIntroductionAction.swift in Sources */,
