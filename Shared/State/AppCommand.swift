@@ -603,7 +603,7 @@ struct MVUrlCommand: AppCommand {
     let id: Int
     
     func execute(in store: Store) {
-        //        NeteaseCloudMusicApi
+        //        NeteaseCloudMusicAPI
         //            .shared
         //            .requestPublisher(action: NCMMVURLAction(parameters: .init(id: Int(mv.id))))
         //            .sink { completion in
@@ -1129,10 +1129,10 @@ struct SongsURLRequestCommand: AppCommand {
     let ids: [Int]
     
     func execute(in store: Store) {
-        //        NeteaseCloudMusicApi.shared.songsURL(ids) { result in
+        //        NeteaseCloudMusicAPI.shared.songsURL(ids) { result in
         //            switch result {
         //            case .success(let json):
-        //                if let songsURLDict = json["data"] as? [NeteaseCloudMusicApi.ResponseData] {
+        //                if let songsURLDict = json["data"] as? [NeteaseCloudMusicAPI.ResponseData] {
         //                    if songsURLDict.count > 0 {
         //                        store.dispatch(.songsURLRequestDone(result: .success(songsURLDict.map{$0.toData!.toModel(SongURLJSONModel.self)!})))
         //                    }

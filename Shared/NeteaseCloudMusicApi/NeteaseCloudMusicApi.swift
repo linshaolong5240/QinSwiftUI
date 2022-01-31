@@ -1,5 +1,5 @@
 //
-//  NeteaseCloudMusicApi.swift
+//  NeteaseCloudMusicAPI.swift
 //  Qin
 //
 //  Created by 林少龙 on 2020/5/1.
@@ -46,11 +46,11 @@ extension NCMAction {
 }
 
 
-public let NCM = NeteaseCloudMusicApi.shared
+public let NCM = NeteaseCloudMusicAPI.shared
 
-public class NeteaseCloudMusicApi {
+public class NeteaseCloudMusicAPI {
 
-    public static let shared = NeteaseCloudMusicApi()
+    public static let shared = NeteaseCloudMusicAPI()
     public var cancells = Set<AnyCancellable>()
     
     public var requestHttpHeader = [ //"Accept": "*/*",
@@ -262,7 +262,7 @@ public class NeteaseCloudMusicApi {
 
 #if canImport(RxSwift)
 import RxSwift
-extension NeteaseCloudMusicApi {
+extension NeteaseCloudMusicAPI {
     public func requestObserver<Action: NCMAction>(action: Action) -> Single<Action.Response?> {
         let url: String =  action.host + action.uri
         if let headers = action.headers {
@@ -324,7 +324,7 @@ extension String {
 }
 
 //getCSRFToken
-extension NeteaseCloudMusicApi {
+extension NeteaseCloudMusicAPI {
     func getCSRFToken() -> String {
         if let cookies = HTTPCookieStorage.shared.cookies{
             for cookie in cookies {

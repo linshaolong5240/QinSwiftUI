@@ -117,8 +117,8 @@
 		2BCCB2E324DC7A17004CAD67 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2DF24DC7A16004CAD67 /* Player.swift */; };
 		2BCCB2F424DC7A62004CAD67 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2EA24DC7A61004CAD67 /* DataManager.swift */; };
 		2BCCB2F524DC7A62004CAD67 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB2EA24DC7A61004CAD67 /* DataManager.swift */; };
-		2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */; };
-		2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */; };
+		2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift */; };
+		2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift */; };
 		2BCCB31E24DC7BCC004CAD67 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB31924DC7BCC004CAD67 /* AppState.swift */; };
 		2BCCB31F24DC7BCC004CAD67 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB31924DC7BCC004CAD67 /* AppState.swift */; };
 		2BCCB32024DC7BCC004CAD67 /* AppCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCCB31A24DC7BCC004CAD67 /* AppCommand.swift */; };
@@ -292,7 +292,7 @@
 		2BCCB2DE24DC7A16004CAD67 /* LyricParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricParser.swift; sourceTree = "<group>"; };
 		2BCCB2DF24DC7A16004CAD67 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		2BCCB2EA24DC7A61004CAD67 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeteaseCloudMusicApi.swift; sourceTree = "<group>"; };
+		2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeteaseCloudMusicAPI.swift; sourceTree = "<group>"; };
 		2BCCB31924DC7BCC004CAD67 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		2BCCB31A24DC7BCC004CAD67 /* AppCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCommand.swift; sourceTree = "<group>"; };
 		2BCCB31B24DC7BCC004CAD67 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
@@ -545,7 +545,7 @@
 			isa = PBXGroup;
 			children = (
 				EF474B1F2660EF1A0021F3D1 /* Action */,
-				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift */,
+				2BCCB31524DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift */,
 				EF010A462673439F00DB2AF9 /* NCMResponse.swift */,
 			);
 			path = NeteaseCloudMusicApi;
@@ -831,7 +831,7 @@
 				EF010A352673428800DB2AF9 /* NCMAlbumSublistAction.swift in Sources */,
 				2BC83163257100CC003D8D10 /* RecommendPlaylistView.swift in Sources */,
 				2B2D517824E39C1C007B52A4 /* QinSearchView.swift in Sources */,
-				2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
+				2BCCB31624DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift in Sources */,
 				2BC8316925710ED4003D8D10 /* CreatedPlaylistView.swift in Sources */,
 				2BB96E4E27A3CCD8000E8292 /* CommentBarView.swift in Sources */,
 				2BCCB32024DC7BCC004CAD67 /* AppCommand.swift in Sources */,
@@ -938,7 +938,7 @@
 				2B792B11269A251300788CE1 /* NCMCloudUploadAction.swift in Sources */,
 				2BE66D88266FF5A300367778 /* NCMSearchAction.swift in Sources */,
 				2BE66D82266FEBD800367778 /* NCMRecommendPlaylistAction.swift in Sources */,
-				2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicApi.swift in Sources */,
+				2BCCB31724DC7B9A004CAD67 /* NeteaseCloudMusicAPI.swift in Sources */,
 				EF3890D4262D803D00C39649 /* JSONHelper.swift in Sources */,
 				2B8EFECE266C00FC00FF42EF /* NCMLoginRefreshAction.swift in Sources */,
 				2B792B0B269A1FE300788CE1 /* NCMCloudUploadTokenAction.swift in Sources */,
