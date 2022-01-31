@@ -19,6 +19,10 @@ public struct NCMUserCloudAction: NCMAction {
     public var uri: String { "/weapi/v1/cloud/get" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(limit: Int, offset: Int) {
+        self.parameters = Parameters(limit: limit, offset: offset)
+    }
 }
 
 public struct NCMUserCloudResponse: NCMResponse {

@@ -15,10 +15,14 @@ public struct NCMMVURLAction: NCMAction {
     }
     public typealias Parameters = MVURLParameters
     public typealias Response = NCMMVURLResponse
-
+    
     public var uri: String { "/weapi/song/enhance/play/mv/url" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(id: Int, resolution: Int = 1080) {
+        self.parameters = Parameters(id: id, r: resolution)
+    }
 }
 
 public struct NCMMVURLResponse: NCMResponse {

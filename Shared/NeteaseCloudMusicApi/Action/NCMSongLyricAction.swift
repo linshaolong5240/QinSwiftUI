@@ -23,7 +23,7 @@ public struct NCMSongLyricAction: NCMAction {
     public var responseType = Response.self
     
     public init(id: Int) {
-        self.parameters = .init(id: id)
+        self.parameters = Parameters(id: id)
     }
 }
 

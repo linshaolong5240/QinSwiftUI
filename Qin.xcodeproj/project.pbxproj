@@ -185,10 +185,10 @@
 		EF010A482673439F00DB2AF9 /* NCMResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF010A462673439F00DB2AF9 /* NCMResponse.swift */; };
 		EF28DA1C266DC33B00CE0369 /* NCMMVURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA1B266DC33B00CE0369 /* NCMMVURLAction.swift */; };
 		EF28DA1D266DC33B00CE0369 /* NCMMVURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA1B266DC33B00CE0369 /* NCMMVURLAction.swift */; };
-		EF28DA1F266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA1E266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift */; };
-		EF28DA20266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA1E266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift */; };
-		EF28DA28266E097000CE0369 /* NCMPlaylistListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA27266E097000CE0369 /* NCMPlaylistListAction.swift */; };
-		EF28DA29266E097000CE0369 /* NCMPlaylistListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA27266E097000CE0369 /* NCMPlaylistListAction.swift */; };
+		EF28DA1F266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA1E266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift */; };
+		EF28DA20266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA1E266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift */; };
+		EF28DA28266E097000CE0369 /* NCMPlaylistCategoryListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA27266E097000CE0369 /* NCMPlaylistCategoryListAction.swift */; };
+		EF28DA29266E097000CE0369 /* NCMPlaylistCategoryListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA27266E097000CE0369 /* NCMPlaylistCategoryListAction.swift */; };
 		EF28DA2B266E144A00CE0369 /* NCMPlaylistCreateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA2A266E144A00CE0369 /* NCMPlaylistCreateAction.swift */; };
 		EF28DA2C266E144A00CE0369 /* NCMPlaylistCreateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA2A266E144A00CE0369 /* NCMPlaylistCreateAction.swift */; };
 		EF28DA34266E199800CE0369 /* NCMPlaylistDeleteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF28DA33266E199700CE0369 /* NCMPlaylistDeleteAction.swift */; };
@@ -326,8 +326,8 @@
 		EF010A432673431F00DB2AF9 /* NCMAlbumDetailAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMAlbumDetailAction.swift; sourceTree = "<group>"; };
 		EF010A462673439F00DB2AF9 /* NCMResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMResponse.swift; sourceTree = "<group>"; };
 		EF28DA1B266DC33B00CE0369 /* NCMMVURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMMVURLAction.swift; sourceTree = "<group>"; };
-		EF28DA1E266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMPlaylistCatalogueAction.swift; sourceTree = "<group>"; };
-		EF28DA27266E097000CE0369 /* NCMPlaylistListAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMPlaylistListAction.swift; sourceTree = "<group>"; };
+		EF28DA1E266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMPlaylistCategoriesAction.swift; sourceTree = "<group>"; };
+		EF28DA27266E097000CE0369 /* NCMPlaylistCategoryListAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMPlaylistCategoryListAction.swift; sourceTree = "<group>"; };
 		EF28DA2A266E144A00CE0369 /* NCMPlaylistCreateAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMPlaylistCreateAction.swift; sourceTree = "<group>"; };
 		EF28DA33266E199700CE0369 /* NCMPlaylistDeleteAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMPlaylistDeleteAction.swift; sourceTree = "<group>"; };
 		EF3890D2262D803D00C39649 /* JSONHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
@@ -630,11 +630,11 @@
 				EF474B202660EF440021F3D1 /* NCMLogoutAction.swift */,
 				2B8EFEE4266D317A00FF42EF /* NCMMVDetailAction.swift */,
 				EF28DA1B266DC33B00CE0369 /* NCMMVURLAction.swift */,
-				EF28DA1E266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift */,
+				EF28DA1E266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift */,
+				EF28DA27266E097000CE0369 /* NCMPlaylistCategoryListAction.swift */,
 				EF28DA2A266E144A00CE0369 /* NCMPlaylistCreateAction.swift */,
 				EF28DA33266E199700CE0369 /* NCMPlaylistDeleteAction.swift */,
 				EFF30722266F3C8700D5E1F4 /* NCMPlaylistDetailAction.swift */,
-				EF28DA27266E097000CE0369 /* NCMPlaylistListAction.swift */,
 				EFF3072B266F5B4400D5E1F4 /* NCMPlaylistOrderUpdateAction.swift */,
 				EFF30734266F7E1D00D5E1F4 /* NCMPlaylistSubscribeAction.swift */,
 				EFF3073A266F823E00D5E1F4 /* NCMPlaylistTracksAction.swift */,
@@ -788,7 +788,7 @@
 				2BE66D81266FEBD800367778 /* NCMRecommendPlaylistAction.swift in Sources */,
 				2B0195EC2770F2FE0070081A /* UserStorgeHelper.swift in Sources */,
 				2BCCB29B24DC5A2B004CAD67 /* TestView.swift in Sources */,
-				EF28DA1F266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift in Sources */,
+				EF28DA1F266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift in Sources */,
 				2B792B16269B5BF000788CE1 /* NCMCloudUploadInfoAction.swift in Sources */,
 				2BED108625343E5D005A14AA /* DiscoverPlaylistViewModel.swift in Sources */,
 				EF6EF0F1265E467300F164B5 /* String+Extension.swift in Sources */,
@@ -827,7 +827,7 @@
 				EF474B212660EF440021F3D1 /* NCMLogoutAction.swift in Sources */,
 				2B792B01269A171400788CE1 /* NCMCloudUploadCheckAction.swift in Sources */,
 				2B1FBF932568225A0003ADC4 /* CommentView.swift in Sources */,
-				EF28DA28266E097000CE0369 /* NCMPlaylistListAction.swift in Sources */,
+				EF28DA28266E097000CE0369 /* NCMPlaylistCategoryListAction.swift in Sources */,
 				EF010A352673428800DB2AF9 /* NCMAlbumSublistAction.swift in Sources */,
 				2BC83163257100CC003D8D10 /* RecommendPlaylistView.swift in Sources */,
 				2B2D517824E39C1C007B52A4 /* QinSearchView.swift in Sources */,
@@ -916,7 +916,7 @@
 				2B792B17269B5BF000788CE1 /* NCMCloudUploadInfoAction.swift in Sources */,
 				2BCCB2F524DC7A62004CAD67 /* DataManager.swift in Sources */,
 				EF010A42267342FB00DB2AF9 /* NCMArtistIntroductionAction.swift in Sources */,
-				EF28DA29266E097000CE0369 /* NCMPlaylistListAction.swift in Sources */,
+				EF28DA29266E097000CE0369 /* NCMPlaylistCategoryListAction.swift in Sources */,
 				2BCCB32524DC7BCD004CAD67 /* AppAction.swift in Sources */,
 				2BCCB32324DC7BCD004CAD67 /* AppError.swift in Sources */,
 				EF010A332673425D00DB2AF9 /* NCMAlbumSubAction.swift in Sources */,
@@ -925,7 +925,7 @@
 				2BCCB2DC24DC79DC004CAD67 /* Color+Extension.swift in Sources */,
 				2BDAED242699F8570070CCAD /* CloudUploadView.swift in Sources */,
 				2B62FB782507A10300097D5B /* QinSFView.swift in Sources */,
-				EF28DA20266DC87900CE0369 /* NCMPlaylistCatalogueAction.swift in Sources */,
+				EF28DA20266DC87900CE0369 /* NCMPlaylistCategoriesAction.swift in Sources */,
 				2BCCB26224DC5671004CAD67 /* QinApp.swift in Sources */,
 				2B0195EA2770EC2D0070081A /* QinSongRowView.swift in Sources */,
 				2B8EFEC8266BFDE600FF42EF /* NCMSongLikeListAction.swift in Sources */,

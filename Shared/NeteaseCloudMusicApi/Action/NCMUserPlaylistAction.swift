@@ -20,6 +20,10 @@ public struct NCMUserPlaylistAction: NCMAction {
     public var uri: String { "/weapi/user/playlist" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(uid: Int, limit: Int, offset: Int) {
+        self.parameters = Parameters(uid: uid, limit: limit, offset: offset)
+    }
 }
 
 public struct NCMUserPlaylistResponse: NCMResponse {

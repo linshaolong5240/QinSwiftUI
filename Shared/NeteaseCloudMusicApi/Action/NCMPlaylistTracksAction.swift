@@ -9,11 +9,11 @@
 import Foundation
 //对歌单添加或删除歌曲
 public struct NCMPlaylistTracksAction: NCMAction {
+    public enum Option: String, Codable {
+        case add
+        case del
+    }
     public struct PlaylistTracksParameters: Encodable {
-        public enum Option: String, Codable {
-            case add
-            case del
-        }
         public var op: Option
         public var pid: Int
         public var trackIds: String
@@ -30,6 +30,10 @@ public struct NCMPlaylistTracksAction: NCMAction {
     public var uri: String { "/weapi/playlist/manipulate/tracks" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(pid: Int, ids: [Int], op: Option) {
+        self.parameters = Parameters(pid: pid, ids: ids, op: op)
+    }
 }
 
 public struct NCMPlaylistTracksResponse: NCMResponse {

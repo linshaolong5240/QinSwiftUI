@@ -24,6 +24,10 @@ public struct NCMSongDetailAction: NCMAction {
     public var uri: String { "/weapi/v3/song/detail" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(ids: [Int]) {
+        self.parameters = Parameters(ids: ids)
+    }
 }
 
 public struct NCMSongDetailResponse: NCMResponse {

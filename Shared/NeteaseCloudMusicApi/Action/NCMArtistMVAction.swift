@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 //歌手MV
 public struct NCMArtistMVAction: NCMAction {
     public struct ArtistMVParameters: Encodable {
@@ -21,6 +22,10 @@ public struct NCMArtistMVAction: NCMAction {
     public var uri: String { "/weapi/artist/mvs" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(id: Int, limit: Int, offset: Int, total: Bool) {
+        self.parameters = Parameters(artistId: id, limit: limit, offset: offset, total: total)
+    }
 }
 
 public struct NCMArtistMVResponse: NCMResponse {

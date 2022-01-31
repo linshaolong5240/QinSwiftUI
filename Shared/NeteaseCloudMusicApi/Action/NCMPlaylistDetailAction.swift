@@ -21,6 +21,10 @@ public struct NCMPlaylistDetailAction: NCMAction {
     public var uri: String { "/weapi/v3/playlist/detail" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(id: Int) {
+        self.parameters = Parameters(id: id)
+    }
 }
 
 public struct NCMPlaylistDetailResponse: NCMResponse {

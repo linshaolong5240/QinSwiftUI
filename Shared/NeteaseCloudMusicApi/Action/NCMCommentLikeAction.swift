@@ -26,6 +26,11 @@ public struct NCMCommentLikeAction: NCMAction {
     public var uri: String { "/weapi/v1/comment/\(like ? "like" : "unlike")" }
     public let parameters: Parameters
     public let responseType = Response.self
+    
+    public init(threadId: Int, commentId: Int, commentType: NCMCommentType, like: Bool) {
+        self.parameters = Parameters(threadId: threadId, commentId: commentId, commentType: commentType)
+        self.like = like
+    }
 }
 
 public struct NCMCommentLikeResponse: NCMResponse {

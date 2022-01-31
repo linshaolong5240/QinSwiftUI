@@ -18,6 +18,10 @@ public struct NCMPlaylistDeleteAction: NCMAction {
     public var uri: String { "/weapi/playlist/delete" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(id: Int) {
+        self.parameters = Parameters(pid: id)
+    }
 }
 
 public struct NCMPlaylistDeleteResponse: NCMResponse {

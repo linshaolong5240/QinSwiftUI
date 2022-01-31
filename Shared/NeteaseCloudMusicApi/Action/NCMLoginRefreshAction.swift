@@ -16,6 +16,10 @@ public struct NCMLoginRefreshAction: NCMAction {
     public var uri: String { "/weapi/login/token/refresh" }
     public var parameters = Parameters()
     public var responseType = Response.self
+    
+    public init() {
+        
+    }
 }
 
 public struct NCMLoginRefreshResponse: NCMResponse {

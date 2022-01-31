@@ -23,7 +23,7 @@ public enum NCMSearchType: Int, Encodable {
     case vedio = 1014
 }
 
-public struct NCMSearchActionParameters: Encodable {
+public struct NCMSearchInfo: Encodable {
     public var s: String
     public var type: NCMSearchType
     public var limit: Int
@@ -31,15 +31,15 @@ public struct NCMSearchActionParameters: Encodable {
 }
 
 public struct NCMSearchSongAction: NCMAction {
-    public typealias Parameters = NCMSearchActionParameters
+    public typealias Parameters = NCMSearchInfo
     public typealias Response = NCMSearchSongResponse
 
     public var uri: String { searchURI }
     public var parameters: Parameters
     public var responseType = Response.self
     
-    public init(_ parameters: Parameters) {
-        self.parameters = parameters
+    public init(Info: NCMSearchInfo) {
+        self.parameters = Info
     }
 }
 
@@ -84,7 +84,7 @@ public struct NCMSearchSongResponse: NCMResponse {
 }
 
 public struct NCMSearchPlaylistAction: NCMAction {
-    public typealias Parameters = NCMSearchActionParameters
+    public typealias Parameters = NCMSearchInfo
     public typealias Response = NCMSearchPlaylistResponse
 
     public var uri: String { searchURI }

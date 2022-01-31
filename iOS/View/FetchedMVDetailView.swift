@@ -87,7 +87,7 @@ struct MVDetailView: View {
     }
     
     func fetchMVURL() {
-       NCM.requestPublisher(action: NCMMVURLAction(parameters: .init(id: Int(mv.id))))
+       NCM.requestPublisher(action: NCMMVURLAction(id: Int(mv.id)))
             .sink { completion in
                 if case .failure(let error) = completion {
                     Store.shared.dispatch(.error(.error(error)))

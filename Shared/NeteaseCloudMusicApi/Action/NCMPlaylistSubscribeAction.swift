@@ -19,6 +19,11 @@ public struct NCMPlaylistSubscribeAction: NCMAction {
     public var uri: String { "/weapi/playlist/\(sub ? "subscribe" : "unsubscribe")" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(id: Int, sub: Bool) {
+        self.parameters = Parameters(id: id)
+        self.sub = sub
+    }
 }
 
 public struct NCMPlaylistSubscribeResponse: NCMResponse {

@@ -16,6 +16,10 @@ public struct NCMArtistHotSongsAction: NCMAction {
     public var uri: String { "/weapi/artist/\(id)" }
     public let parameters = Parameters()
     public let responseType = Response.self
+    
+    public init(id: Int) {
+        self.id = id
+    }
 }
 
 public struct NCMArtistHotSongsResponse: NCMResponse {

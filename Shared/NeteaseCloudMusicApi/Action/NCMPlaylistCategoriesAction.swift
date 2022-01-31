@@ -1,5 +1,5 @@
 //
-//  NCMPlaylistCatalogueAction.swift
+//  NCMPlaylistCategoriesAction.swift
 //  Qin
 //
 //  Created by 林少龙 on 2021/6/7.
@@ -9,13 +9,17 @@
 import Foundation
 
 //歌单分类
-public struct NCMPlaylistCatalogueAction: NCMAction {
+public struct NCMPlaylistCategoriesAction: NCMAction {
     public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMPlaylistCatalogueResponse
 
     public var uri: String { "/weapi/playlist/catalogue" }
     public var parameters = Parameters()
     public var responseType = Response.self
+    
+    public init() {
+        
+    }
 }
 
 public struct NCMPlaylistCatalogueResponse: NCMResponse {

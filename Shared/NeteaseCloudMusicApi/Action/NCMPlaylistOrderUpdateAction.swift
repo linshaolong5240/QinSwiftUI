@@ -23,6 +23,10 @@ public struct NCMPlaylistOrderUpdateAction: NCMAction {
     public var uri: String { "/weapi/playlist/order/update" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(ids: [Int]) {
+        self.parameters = Parameters(ids: ids)
+    }
 }
 
 public struct NCMPlaylistOrderUpdateResponse: NCMResponse {

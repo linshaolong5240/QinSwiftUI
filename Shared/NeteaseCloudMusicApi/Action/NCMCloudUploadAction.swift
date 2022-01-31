@@ -28,12 +28,17 @@ public struct NCMCloudUploadAction: NCMAction {
     }
     
     public var host: String { cloudUploadHost }
-    
-    
-    
     public var uri: String { "/ymusic/\(objectKey.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) ?? "")?offset=0&complete=true&version=1.0"}
     public var parameters = Parameters()
     public var responseType = Response.self
+    
+    public init(objectKey: String, token: String, md5: String, size: Int, data: Data) {
+        self.objectKey = objectKey
+        self.token = token
+        self.md5 = md5
+        self.size = size
+        self.data = data
+    }
 }
 
 public struct NCMCloudUploadResponse: NCMResponse {

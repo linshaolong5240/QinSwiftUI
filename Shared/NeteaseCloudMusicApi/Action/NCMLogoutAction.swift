@@ -16,6 +16,10 @@ public struct NCMLogoutAction: NCMAction {
     public var uri: String { "/weapi/logout" }
     public var parameters = Parameters()
     public var responseType = Response.self
+    
+    public init() {
+        
+    }
 }
 
 public struct NCMLogoutResponse: NCMResponse {

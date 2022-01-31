@@ -15,6 +15,10 @@ public struct NCMRecommendSongAction: NCMAction {
     public var uri: String { "/weapi/v3/discovery/recommend/songs" }
     public var parameters = Parameters()
     public var responseType = Response.self
+    
+    public init() {
+        
+    }
 }
 
 public struct NCMRecommendSongsResponse: NCMResponse {

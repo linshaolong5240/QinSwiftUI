@@ -9,7 +9,7 @@
 import Foundation
 
 public struct NCMCloudUploadInfoAction: NCMAction {
-    public struct CloudUploadInfoParameters: Encodable {
+    public struct CloudUploadInfo: Encodable {
         var album: String = "Unknown"
         var artist: String = "Unknown"
         var bitrate: String = "999000"
@@ -19,12 +19,16 @@ public struct NCMCloudUploadInfoAction: NCMAction {
         var song: String
         var songid: String
     }
-    public typealias Parameters = CloudUploadInfoParameters
+    public typealias Parameters = CloudUploadInfo
     public typealias Response = NCMCloudUploadInfoResponse
     
     public var uri: String { "/weapi/upload/cloud/info/v2"}
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(info: CloudUploadInfo) {
+        self.parameters = info
+    }
 }
 
 public struct NCMCloudUploadInfoResponse: NCMResponse {

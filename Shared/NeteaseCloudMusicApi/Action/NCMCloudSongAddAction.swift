@@ -18,6 +18,10 @@ public struct NCMCloudSongAddAction: NCMAction {
     public var uri: String { "/weapi/cloud/pub/v2"}
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(id: Int) {
+        self.parameters = Parameters(songid: id)
+    }
 }
 
 public struct NCMCloudSongAddResponse: NCMResponse {

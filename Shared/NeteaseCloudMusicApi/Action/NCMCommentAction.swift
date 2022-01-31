@@ -7,7 +7,7 @@
 
 import Foundation
 
-fileprivate let uri = "/weapi/resource/comments/"
+fileprivate let URI = "/weapi/resource/comments/"
 
 public enum NCMCommentType: String, Encodable {
     case song = "R_SO_4_"//  歌曲
@@ -37,9 +37,13 @@ public struct NCMCommentAddAction: NCMAction {
     public typealias Parameters = CommentAddParameters
     public typealias Response = NCMCommentAddRespone
     
-    public var uri: String { "\(uri)\(NCMCommentAction.add.rawValue)" }
+    public var uri: String { "\(URI)\(NCMCommentAction.add.rawValue)" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(threadId: Int, content: String, type: NCMCommentType) {
+        self.parameters = Parameters(threadId: threadId, content: content, type: type)
+    }
 }
 
 public struct NCMCommentAddRespone: NCMResponse {
@@ -61,9 +65,13 @@ public struct NCMCommentDeleteAction: NCMAction {
     public typealias Parameters = CommentDeleteParameters
     public typealias Response = NCMCommentDeleteResponse
     
-    public var uri: String { "\(uri)\(NCMCommentAction.delete.rawValue)" }
+    public var uri: String { "\(URI)\(NCMCommentAction.delete.rawValue)" }
     public var parameters: Parameters
     public var responseType = Response.self
+    
+    public init(threadId: Int, commentId: Int, type: NCMCommentType) {
+        self.parameters = Parameters(threadId: threadId, commentId: commentId, type: type)
+    }
 }
 
 public struct NCMCommentDeleteResponse: NCMResponse {
