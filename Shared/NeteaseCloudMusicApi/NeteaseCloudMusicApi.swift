@@ -151,8 +151,8 @@ public class NeteaseCloudMusicApi {
         request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = requestHttpHeader
         request.timeoutInterval = action.timeoutInterval
-        if action.method == .post, let parameters = action.parameters {
-            if let data = try? JSONEncoder().encode(parameters) {
+        if action.method == .post {
+            if let data = try? JSONEncoder().encode(action.parameters) {
                 if let str = String(data: data, encoding: .utf8) {
                     request.httpBody = encrypto(text: str).data(using: .utf8)
                 }
@@ -200,14 +200,14 @@ public class NeteaseCloudMusicApi {
         request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = requestHttpHeader
         request.timeoutInterval = action.timeoutInterval
-        if action.method == .post, let parameters = action.parameters {
-            if let data = try? JSONEncoder().encode(parameters) {
+        if action.method == .post {
+            if let data = try? JSONEncoder().encode(action.parameters) {
                 if let str = String(data: data, encoding: .utf8) {
                     request.httpBody = encrypto(text: str).data(using: .utf8)
                 }
             }
         }
-        #if DEBUG
+        #if false
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
@@ -280,8 +280,8 @@ extension NeteaseCloudMusicApi {
         request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = requestHttpHeader
         request.timeoutInterval = action.timeoutInterval
-        if action.method == .post, let parameters = action.parameters {
-            if let data = try? JSONEncoder().encode(parameters) {
+        if action.method == .post {
+            if let data = try? JSONEncoder().encode(action.parameters) {
                 if let str = String(data: data, encoding: .utf8) {
                     request.httpBody = encrypto(text: str).data(using: .utf8)
                 }
