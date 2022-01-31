@@ -16,7 +16,7 @@ public struct NCMSongLikeListAction: NCMAction {
     public typealias Response = NCMSongLikeListResponse
 
     public var uri: String { "/weapi/song/like/get" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(uid: Int) {

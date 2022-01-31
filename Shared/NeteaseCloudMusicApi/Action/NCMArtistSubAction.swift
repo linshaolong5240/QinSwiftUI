@@ -18,7 +18,7 @@ public struct NCMArtistSubAction: NCMAction {
 
     public var sub: Bool
     public var uri: String { "/weapi/artist/\(sub ? "sub" : "unsub")" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int, sub: Bool) {

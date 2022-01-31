@@ -16,7 +16,7 @@ public struct NCMMVDetailAction: NCMAction {
     public typealias Response = NCMMVDetailResponse
 
     public var uri: String { "/weapi/v1/mv/detail" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int) {

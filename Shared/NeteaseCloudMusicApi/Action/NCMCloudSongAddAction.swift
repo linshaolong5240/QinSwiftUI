@@ -16,7 +16,7 @@ public struct NCMCloudSongAddAction: NCMAction {
     public typealias Response = NCMCloudSongAddResponse
     public var host: String { cloudHost }
     public var uri: String { "/weapi/cloud/pub/v2"}
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int) {

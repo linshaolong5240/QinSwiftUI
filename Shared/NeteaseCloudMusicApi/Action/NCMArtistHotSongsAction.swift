@@ -9,12 +9,10 @@
 import Foundation
 //歌手热门歌曲
 public struct NCMArtistHotSongsAction: NCMAction {
-    public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMArtistHotSongsResponse
 
     public let id: Int
     public var uri: String { "/weapi/artist/\(id)" }
-    public let parameters = Parameters()
     public let responseType = Response.self
     
     public init(id: Int) {

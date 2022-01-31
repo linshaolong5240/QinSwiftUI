@@ -21,7 +21,7 @@ public struct NCMPlaylistCreateAction: NCMAction {
     public typealias Response = NCMPlaylistCreateResponse
 
     public var uri: String { "/weapi/playlist/create" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(name: String, privacy: Privacy) {

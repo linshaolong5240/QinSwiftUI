@@ -19,7 +19,7 @@ public struct NCMSongOrderUpdateAction: NCMAction {
     public typealias Response = NCMSongOrderUpdateResponse
 
     public var uri: String { "/weapi/playlist/manipulate/tracks" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(pid: Int, songIds: [Int]) {

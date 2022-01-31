@@ -24,7 +24,7 @@ public struct NCMPlaylistCategoryListAction: NCMAction {
     public typealias Response = NCMPlaylistListResponse
 
     public var uri: String { "/weapi/playlist/list" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(category: String, order: Order, limit: Int, offset: Int, total: Bool) {

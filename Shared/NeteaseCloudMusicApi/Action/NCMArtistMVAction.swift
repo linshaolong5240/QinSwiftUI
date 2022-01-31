@@ -20,7 +20,7 @@ public struct NCMArtistMVAction: NCMAction {
     public typealias Response = NCMArtistMVResponse
 
     public var uri: String { "/weapi/artist/mvs" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int, limit: Int, offset: Int, total: Bool) {

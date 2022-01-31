@@ -25,7 +25,7 @@ public struct NCMCommentSongAction: NCMAction {
     
     public var rid: Int
     public var uri: String { "/weapi/v1/resource/comments/R_SO_4_\(rid)" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(rid: Int, limit: Int, offset: Int, beforeTime: Int) {

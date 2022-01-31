@@ -9,11 +9,9 @@
 import Foundation
 //推荐歌单( 需要登录 )
 public struct NCMRecommendPlaylistAction: NCMAction {
-    public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMRecommendPlaylistResponse
 
     public var uri: String { "/weapi/v1/discovery/recommend/resource" }
-    public var parameters = Parameters()
     public var responseType = Response.self
     
     public init() {

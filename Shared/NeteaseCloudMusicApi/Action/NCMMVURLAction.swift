@@ -17,7 +17,7 @@ public struct NCMMVURLAction: NCMAction {
     public typealias Response = NCMMVURLResponse
     
     public var uri: String { "/weapi/song/enhance/play/mv/url" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int, resolution: Int = 1080) {

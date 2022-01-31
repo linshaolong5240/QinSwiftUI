@@ -19,7 +19,7 @@ public struct NCMSongLikeAction: NCMAction {
     public typealias Response = NCMSongLikeResponse
 
     public var uri: String { "/weapi/radio/like" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int, like: Bool) {

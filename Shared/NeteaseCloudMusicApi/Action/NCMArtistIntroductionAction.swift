@@ -16,7 +16,7 @@ public struct NCMArtistIntroductionAction: NCMAction {
     public typealias Response = NCMArtistIntroductionResponse
 
     public var uri: String { "/weapi/artist/introduction" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int) {

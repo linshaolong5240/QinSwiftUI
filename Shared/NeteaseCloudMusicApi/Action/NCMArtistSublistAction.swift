@@ -18,7 +18,7 @@ public struct NCMArtistSublistAction: NCMAction {
     public typealias Response = NCMArtistSublistResponse
 
     public var uri: String = "/weapi/artist/sublist"
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(limit: Int, offset: Int, total: Bool = true) {

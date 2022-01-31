@@ -16,7 +16,7 @@ public struct NCMPlaylistDeleteAction: NCMAction {
     public typealias Response = NCMPlaylistDeleteResponse
 
     public var uri: String { "/weapi/playlist/delete" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int) {

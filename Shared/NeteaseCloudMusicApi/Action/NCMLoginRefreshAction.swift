@@ -10,11 +10,9 @@ import Foundation
 
 //登陆状态
 public struct NCMLoginRefreshAction: NCMAction {
-    public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMLoginRefreshResponse
 
     public var uri: String { "/weapi/login/token/refresh" }
-    public var parameters = Parameters()
     public var responseType = Response.self
     
     public init() {

@@ -21,7 +21,7 @@ public struct NCMCloudUploadCheckAction: NCMAction {
     public typealias Response = NCMCloudUploadCheckResponse
     public var host: String { cloudHost }
     public var uri: String { "/weapi/cloud/upload/check"}
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(fileLength: Int, md5: String) {

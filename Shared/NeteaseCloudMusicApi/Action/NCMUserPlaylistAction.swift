@@ -18,7 +18,7 @@ public struct NCMUserPlaylistAction: NCMAction {
     public typealias Response = NCMUserPlaylistResponse
 
     public var uri: String { "/weapi/user/playlist" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(uid: Int, limit: Int, offset: Int) {

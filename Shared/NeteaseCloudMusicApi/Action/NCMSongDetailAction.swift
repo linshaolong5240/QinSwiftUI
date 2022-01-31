@@ -22,7 +22,7 @@ public struct NCMSongDetailAction: NCMAction {
     public typealias Response = NCMSongDetailResponse
 
     public var uri: String { "/weapi/v3/song/detail" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(ids: [Int]) {

@@ -9,7 +9,6 @@
 import Foundation
 
 public struct NCMCloudUploadAction: NCMAction {
-    public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMCloudUploadResponse
     
     public var objectKey: String
@@ -29,7 +28,6 @@ public struct NCMCloudUploadAction: NCMAction {
     
     public var host: String { cloudUploadHost }
     public var uri: String { "/ymusic/\(objectKey.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) ?? "")?offset=0&complete=true&version=1.0"}
-    public var parameters = Parameters()
     public var responseType = Response.self
     
     public init(objectKey: String, token: String, md5: String, size: Int, data: Data) {

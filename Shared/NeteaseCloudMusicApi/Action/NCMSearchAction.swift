@@ -35,7 +35,7 @@ public struct NCMSearchSongAction: NCMAction {
     public typealias Response = NCMSearchSongResponse
 
     public var uri: String { searchURI }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(Info: NCMSearchInfo) {
@@ -88,7 +88,7 @@ public struct NCMSearchPlaylistAction: NCMAction {
     public typealias Response = NCMSearchPlaylistResponse
 
     public var uri: String { searchURI }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
 }
 

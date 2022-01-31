@@ -9,12 +9,10 @@
 import Foundation
 //专辑内容
 public struct NCMAlbumDetailAction: NCMAction {
-    public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMAlbumDetailResponse
     
     public var id: Int
     public var uri: String { "/weapi/v1/album/\(id)"}
-    public var parameters = Parameters()
     public var responseType = Response.self
     
     public init (id: Int) {

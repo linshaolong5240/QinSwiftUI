@@ -10,11 +10,9 @@ import Foundation
 
 //歌单分类
 public struct NCMPlaylistCategoriesAction: NCMAction {
-    public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMPlaylistCatalogueResponse
 
     public var uri: String { "/weapi/playlist/catalogue" }
-    public var parameters = Parameters()
     public var responseType = Response.self
     
     public init() {

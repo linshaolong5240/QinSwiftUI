@@ -28,7 +28,7 @@ public struct NCMPlaylistTracksAction: NCMAction {
     public typealias Response = NCMPlaylistTracksResponse
     
     public var uri: String { "/weapi/playlist/manipulate/tracks" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(pid: Int, ids: [Int], op: Option) {

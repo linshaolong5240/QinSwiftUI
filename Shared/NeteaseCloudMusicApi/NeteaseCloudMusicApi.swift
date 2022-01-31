@@ -15,6 +15,10 @@ public enum NCMHttpMethod: String {
     case post
 }
 
+public struct NCMEmptyParameters: Encodable {
+
+}
+
 public protocol NCMAction {
     associatedtype Parameters: Encodable
     associatedtype Response: Decodable
@@ -23,7 +27,7 @@ public protocol NCMAction {
     var uri: String { get }
     var headers: [String: String]? { get }
     var timeoutInterval: TimeInterval { get }
-    var parameters: Parameters { get }
+    var parameters: Parameters? { get }
     var responseType: Response.Type { get }
 }
 
@@ -31,6 +35,7 @@ extension NCMAction {
     public var method: NCMHttpMethod { .post }
     public var headers: [String: String]? { nil }
     public var timeoutInterval: TimeInterval { 20 }
+    public var parameters: NCMEmptyParameters? { nil }
 }
 
 extension NCMAction {
@@ -40,7 +45,6 @@ extension NCMAction {
     public var cloudUploadHost: String { "http://45.127.129.8" }
 }
 
-public struct NCMEmptyParameters: Encodable { }
 
 public let NCM = NeteaseCloudMusicApi.shared
 
@@ -147,8 +151,8 @@ public class NeteaseCloudMusicApi {
         request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = requestHttpHeader
         request.timeoutInterval = action.timeoutInterval
-        if action.method == .post {
-            if let data = try? JSONEncoder().encode(action.parameters) {
+        if action.method == .post, let parameters = action.parameters {
+            if let data = try? JSONEncoder().encode(parameters) {
                 if let str = String(data: data, encoding: .utf8) {
                     request.httpBody = encrypto(text: str).data(using: .utf8)
                 }
@@ -196,14 +200,14 @@ public class NeteaseCloudMusicApi {
         request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = requestHttpHeader
         request.timeoutInterval = action.timeoutInterval
-        if action.method == .post {
-            if let data = try? JSONEncoder().encode(action.parameters) {
+        if action.method == .post, let parameters = action.parameters {
+            if let data = try? JSONEncoder().encode(parameters) {
                 if let str = String(data: data, encoding: .utf8) {
                     request.httpBody = encrypto(text: str).data(using: .utf8)
                 }
             }
         }
-        #if false
+        #if DEBUG
         return URLSession.shared
             .dataTaskPublisher(for: request)
             .map {
@@ -276,8 +280,8 @@ extension NeteaseCloudMusicApi {
         request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = requestHttpHeader
         request.timeoutInterval = action.timeoutInterval
-        if action.method == .post {
-            if let data = try? JSONEncoder().encode(action.parameters) {
+        if action.method == .post, let parameters = action.parameters {
+            if let data = try? JSONEncoder().encode(parameters) {
                 if let str = String(data: data, encoding: .utf8) {
                     request.httpBody = encrypto(text: str).data(using: .utf8)
                 }

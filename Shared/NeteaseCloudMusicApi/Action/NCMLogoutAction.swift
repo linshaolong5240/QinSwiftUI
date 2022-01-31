@@ -10,11 +10,9 @@ import Foundation
 
 //退出登录
 public struct NCMLogoutAction: NCMAction {
-    public typealias Parameters = NCMEmptyParameters
     public typealias Response = NCMLogoutResponse
 
     public var uri: String { "/weapi/logout" }
-    public var parameters = Parameters()
     public var responseType = Response.self
     
     public init() {

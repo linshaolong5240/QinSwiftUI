@@ -21,7 +21,7 @@ public struct NCMSongURLAction: NCMAction {
     public typealias Response = NCMSongURLResponse
 
     public var uri: String { "/weapi/song/enhance/player/url" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(ids: [Int], br: Int = 999000) {

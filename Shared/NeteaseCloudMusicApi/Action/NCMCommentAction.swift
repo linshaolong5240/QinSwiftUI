@@ -38,7 +38,7 @@ public struct NCMCommentAddAction: NCMAction {
     public typealias Response = NCMCommentAddRespone
     
     public var uri: String { "\(URI)\(NCMCommentAction.add.rawValue)" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(threadId: Int, content: String, type: NCMCommentType) {
@@ -66,7 +66,7 @@ public struct NCMCommentDeleteAction: NCMAction {
     public typealias Response = NCMCommentDeleteResponse
     
     public var uri: String { "\(URI)\(NCMCommentAction.delete.rawValue)" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(threadId: Int, commentId: Int, type: NCMCommentType) {

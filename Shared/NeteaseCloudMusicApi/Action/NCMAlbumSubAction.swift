@@ -16,7 +16,7 @@ public struct NCMAlbumSubAction: NCMAction {
     public typealias Response = NCMAlbumSubResponse
     
     public var uri: String { "/weapi/album/\(sub ? "sub" : "unsub")"}
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public var sub: Bool

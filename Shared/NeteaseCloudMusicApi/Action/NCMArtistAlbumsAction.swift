@@ -19,7 +19,7 @@ public struct NCMArtistAlbumsAction: NCMAction {
 
     public var id: Int
     public var uri: String { "/weapi/artist/albums/\(id)" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int, limit: Int, offset: Int, total: Bool = true) {

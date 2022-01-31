@@ -23,7 +23,7 @@ public struct NCMCloudUploadInfoAction: NCMAction {
     public typealias Response = NCMCloudUploadInfoResponse
     
     public var uri: String { "/weapi/upload/cloud/info/v2"}
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(info: CloudUploadInfo) {

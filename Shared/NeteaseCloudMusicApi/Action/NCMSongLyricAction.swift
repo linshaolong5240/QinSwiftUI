@@ -19,7 +19,7 @@ public struct NCMSongLyricAction: NCMAction {
     public typealias Response = NCMSongLyricResponse
 
     public var uri: String { "/weapi/song/lyric" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int) {

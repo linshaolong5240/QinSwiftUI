@@ -25,7 +25,7 @@ public struct NCMLoginAction: NCMAction {
     public typealias Response = NCMLoginResponse
 
     public var uri: String { "/weapi/login" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(email: String, password: String, rememberLogin: Bool = true) {

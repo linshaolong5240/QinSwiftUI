@@ -19,7 +19,7 @@ public struct NCMPlaylistDetailAction: NCMAction {
     public typealias Response = NCMPlaylistDetailResponse
 
     public var uri: String { "/weapi/v3/playlist/detail" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(id: Int) {

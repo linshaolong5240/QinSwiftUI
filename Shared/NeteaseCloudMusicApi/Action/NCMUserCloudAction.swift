@@ -17,7 +17,7 @@ public struct NCMUserCloudAction: NCMAction {
     public typealias Response = NCMUserCloudResponse
 
     public var uri: String { "/weapi/v1/cloud/get" }
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(limit: Int, offset: Int) {

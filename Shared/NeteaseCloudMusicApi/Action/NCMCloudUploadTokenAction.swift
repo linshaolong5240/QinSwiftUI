@@ -21,7 +21,7 @@ public struct NCMCloudUploadTokenAction: NCMAction {
     public typealias Parameters = CloudUploadTokenParameters
     public typealias Response = CloudUploadTokenResponse
     public var uri: String { "/weapi/nos/token/alloc"}
-    public var parameters: Parameters
+    public var parameters: Parameters?
     public var responseType = Response.self
     
     public init(fileName: String, md5: String) {
