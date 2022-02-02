@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NeteaseCloudMusicAPI
 
 extension NCMRecommendPlaylistResponse.RecommendPlaylist: Identifiable {
     

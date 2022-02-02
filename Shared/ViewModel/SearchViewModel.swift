@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import CloudKit
+import NeteaseCloudMusicAPI
 
 class SearchViewModel: ObservableObject {
     struct SearchResult {
@@ -61,7 +62,7 @@ class SearchViewModel: ObservableObject {
     }
     
     private func SearchSongRequest(key: String, type: NCMSearchType) {
-        NCM.requestPublisher(action: NCMSearchSongAction(Info: .init(s: key, type: type, limit: limit, offset: offset * limit))).sink { completion in
+        NCM.requestPublisher(action: NCMSearchSongAction(Info: .init(searchKey: key, type: type, limit: limit, offset: offset * limit))).sink { completion in
             if case .failure(let error) = completion {
                 Store.shared.dispatch(.error(.error(error)))
             }

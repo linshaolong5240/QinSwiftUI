@@ -8,6 +8,7 @@
 import SwiftUI
 import NeumorphismSwiftUI
 import Combine
+import NeteaseCloudMusicAPI
 
 struct QinSearchView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>

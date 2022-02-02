@@ -9,6 +9,7 @@ import SwiftUI
 import Kingfisher
 import AVKit
 import UIKit
+import NeteaseCloudMusicAPI
 
 struct FetchedMVDetailView: View {
     @State private var show: Bool = false

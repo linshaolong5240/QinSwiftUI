@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import NeteaseCloudMusicAPI
 
 typealias User = NCMLoginResponse
 

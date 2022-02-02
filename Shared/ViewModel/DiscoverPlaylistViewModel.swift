@@ -6,6 +6,7 @@
 //
 
 import Combine
+import NeteaseCloudMusicAPI
 
 struct PlaylistCatalogue: Identifiable {
     public var id: Int

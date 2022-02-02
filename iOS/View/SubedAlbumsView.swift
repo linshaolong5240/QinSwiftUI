@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NeteaseCloudMusicAPI
 
 struct SubedAlbumsView: View {
     let albums: [NCMAlbumSublistResponse.Album]

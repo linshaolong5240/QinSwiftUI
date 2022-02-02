@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NeteaseCloudMusicAPI
 
 protocol QinAlbumable {
     func asQinAblbum() -> QinAlbum

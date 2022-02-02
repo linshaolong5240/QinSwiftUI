@@ -9,6 +9,7 @@
 import SwiftUI
 import NeumorphismSwiftUI
 import Combine
+import NeteaseCloudMusicAPI
 
 class PlayerViewModel: ObservableObject {
     enum DisplayMode {

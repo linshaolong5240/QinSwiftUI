@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NeumorphismSwiftUI
+import NeteaseCloudMusicAPI
 
 struct PlaylistManageView: View {
     let playlist = Store.shared.appState.playlist.userPlaylist

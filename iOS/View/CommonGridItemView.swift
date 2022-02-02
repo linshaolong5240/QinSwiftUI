@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import NeteaseCloudMusicAPI
 
 struct CommonGridItemView: View {
     @ObservedObject var configuration: CommonGridItemConfiguration

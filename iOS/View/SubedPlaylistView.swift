@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NeumorphismSwiftUI
+import NeteaseCloudMusicAPI
 
 struct SubedPlaylistView: View {
     let playlist: [NCMPlaylistResponse]

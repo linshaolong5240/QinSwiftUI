@@ -12,6 +12,7 @@ import Combine
 import MediaPlayer
 import Kingfisher
 import struct CoreGraphics.CGSize
+import NeteaseCloudMusicAPI
 
 protocol AppCommand {
     func execute(in store: Store)
@@ -400,7 +401,7 @@ struct CloudUploadTokenDoneCommand: AppCommand {
         guard let size = fileURL.fileSize else { return }
         guard let data = try? Data(contentsOf: fileURL) else { return }
         store.dispatch(.cloudUploadSongRequest(token: token, md5: md5, size: size, data: data))
-        store.dispatch(.cloudUploadInfoRequest(.init(filename: fileName, md5: md5, resourceId: token.resourceId, song: songName, songid: store.appState.cloud.songId)))
+        store.dispatch(.cloudUploadInfoRequest(.init(album: "", artist: "", filename: fileName, md5: md5, resourceId: token.resourceId, songName: songName, songid: store.appState.cloud.songId)))
     }
 }
 

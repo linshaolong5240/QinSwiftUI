@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NeteaseCloudMusicAPI
 
 enum AppAction {
     case initAction

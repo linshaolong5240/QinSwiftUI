@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NeumorphismSwiftUI
+import NeteaseCloudMusicAPI
 
 extension NCMCommentSongResponse.Comment: Identifiable {
     public var id: Int { commentId }

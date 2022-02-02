@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import NeteaseCloudMusicAPI
 
 extension NCMArtistSublistResponse.Artist {
     struct ArtistSubDataModel: Codable {

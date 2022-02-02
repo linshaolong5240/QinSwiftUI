@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NeteaseCloudMusicAPI
 
 class CommentViewModel: ObservableObject, Identifiable {
     var beReplied = [CommentViewModel]()
