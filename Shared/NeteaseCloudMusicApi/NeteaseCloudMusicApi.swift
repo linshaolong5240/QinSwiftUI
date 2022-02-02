@@ -100,22 +100,13 @@ public class NeteaseCloudMusicAPI {
         return "params=\(encText!)&encSecKey=\(encSecKey)".plusSymbolToPercent()
     }
     
-    @discardableResult
-    public func request<Action: NCMAction>(action: Action, completion: @escaping (Result<Action.Response?, Error>) -> Void) -> URLSessionDataTask {
+    private func makeRequest<Action: NCMAction>(action: Action) -> URLRequest {
         let url: String =  action.host + action.uri
-        
         if let headers = action.headers {
             requestHttpHeader.merge(headers) { current, new in
                 new
             }
         }
-        
-//        let cookies = HTTPCookieStorage.shared.cookies
-//        let cookiesString = cookies!.map({ cookie in
-//            cookie.name + "=" + cookie.value
-//        }).joined(separator: "; ")
-//        httpHeader["Cookie"] = cookiesString
-//        print(httpHeader)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = action.method.rawValue
         request.allHTTPHeaderFields = requestHttpHeader
@@ -127,6 +118,19 @@ public class NeteaseCloudMusicAPI {
                 }
             }
         }
+        
+//        let cookies = HTTPCookieStorage.shared.cookies
+//        let cookiesString = cookies!.map({ cookie in
+//            cookie.name + "=" + cookie.value
+//        }).joined(separator: "; ")
+//        httpHeader["Cookie"] = cookiesString
+//        print(httpHeader)
+        return request
+    }
+    
+    @discardableResult
+    public func request<Action: NCMAction>(action: Action, completion: @escaping (Result<Action.Response?, Error>) -> Void) -> URLSessionDataTask {
+        let request = makeRequest(action: action)
         
         let task = URLSession.shared.dataTask(with: request) { responseData, response, error in
             guard error == nil else {
@@ -151,31 +155,8 @@ public class NeteaseCloudMusicAPI {
     }
     
     public func requestPublisher<Action: NCMAction>(action: Action) -> AnyPublisher<Action.Response, Error> {
-        let url: String =  action.host + action.uri
-        
-        if let headers = action.headers {
-            requestHttpHeader.merge(headers) { current, new in
-                new
-            }
-        }
-        
-//        let cookies = HTTPCookieStorage.shared.cookies
-//        let cookiesString = cookies!.map({ cookie in
-//            cookie.name + "=" + cookie.value
-//        }).joined(separator: "; ")
-//        httpHeader["Cookie"] = cookiesString
-//        print(httpHeader)
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = action.method.rawValue
-        request.allHTTPHeaderFields = requestHttpHeader
-        request.timeoutInterval = action.timeoutInterval
-        if action.method == .post {
-            if let data = try? JSONEncoder().encode(action.parameters) {
-                if let str = String(data: data, encoding: .utf8) {
-                    request.httpBody = encrypto(text: str).data(using: .utf8)
-                }
-            }
-        }
+        let request = makeRequest(action: action)
+
         #if false
         return URLSession.shared
             .dataTaskPublisher(for: request)
@@ -229,33 +210,86 @@ public class NeteaseCloudMusicAPI {
     }
 }
 
-#if canImport(RxSwift)
-import RxSwift
+@available(iOS 15.0, *)
 extension NeteaseCloudMusicAPI {
-    public func requestObserver<Action: NCMAction>(action: Action) -> Single<Action.Response?> {
+    public func requestAsync<Action: NCMAction>(action: Action) async -> Result<Action.Response, Error> {
+        let request = makeRequest(action: action)
+
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request, delegate: nil)
+            let model = try JSONDecoder().decode(action.responseType, from: data)
+            return .success(model)
+        }catch let error {
+            return .failure(error)
+        }
+    }
+    
+    public func uploadAsync(action: NCMCloudUploadAction) async -> Result<NCMCloudUploadResponse, Error> {
         let url: String =  action.host + action.uri
         if let headers = action.headers {
             requestHttpHeader.merge(headers) { current, new in
                 new
             }
         }
-//        let cookies = HTTPCookieStorage.shared.cookies
-//        let cookiesString = cookies!.map({ cookie in
-//            cookie.name + "=" + cookie.value
-//        }).joined(separator: "; ")
-//        httpHeader["Cookie"] = cookiesString
-//        print(httpHeader)
-        var request = URLRequest(url: URL(string: url)!)
+        var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
         request.httpMethod = action.method.rawValue
-        request.allHTTPHeaderFields = requestHttpHeader
-        request.timeoutInterval = action.timeoutInterval
-        if action.method == .post {
-            if let data = try? JSONEncoder().encode(action.parameters) {
-                if let str = String(data: data, encoding: .utf8) {
-                    request.httpBody = encrypto(text: str).data(using: .utf8)
+        request.allHTTPHeaderFields = action.headers
+        request.httpBody = action.data
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request, delegate: nil)
+            let model = try JSONDecoder().decode(action.responseType, from: data)
+            return .success(model)
+        }catch let error {
+            return .failure(error)
+        }
+    }
+}
+
+#if canImport(RxSwift)
+import RxSwift
+extension NeteaseCloudMusicAPI {
+    public func requestObserver<Action: NCMAction>(action: Action) -> Single<Action.Response?> {
+        let request = makeRequest(action: action)
+
+        return Single.create { single in
+            let task = URLSession.shared.dataTask(with: request) { responseData, response, error in
+                guard error == nil else {
+                    single(.failure(error!))
+                    return
+                }
+                
+                guard let data = responseData, !data.isEmpty else {
+                    single(.success(nil))
+                    return
+                }
+
+                do {
+                    let model = try JSONDecoder().decode(action.responseType, from: data)
+                    single(.success(model))
+                } catch let error {
+                    single(.failure(error))
                 }
             }
+            task.resume()
+            
+            return Disposables.create {
+                task.cancel()
+            }
         }
+    }
+    
+    public func uploadObserver(action: NCMCloudUploadAction) -> Single<NCMCloudUploadResponse?> {
+        let url: String =  action.host + action.uri
+        if let headers = action.headers {
+            requestHttpHeader.merge(headers) { current, new in
+                new
+            }
+        }
+        var request = URLRequest(url: URL(string: url)!, cachePolicy: .reloadIgnoringLocalCacheData)
+        request.httpMethod = action.method.rawValue
+        request.allHTTPHeaderFields = action.headers
+        request.httpBody = action.data
         
         return Single.create { single in
             let task = URLSession.shared.dataTask(with: request) { responseData, response, error in
