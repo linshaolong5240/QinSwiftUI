@@ -34,8 +34,6 @@
 		2B20BC152525EE5A00679D0D /* FetchedArtistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B20BC142525EE5A00679D0D /* FetchedArtistDetailView.swift */; };
 		2B21674A276E2204001B6B0D /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B216749276E2204001B6B0D /* SwiftUIHelper.swift */; };
 		2B21674B276E2204001B6B0D /* SwiftUIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B216749276E2204001B6B0D /* SwiftUIHelper.swift */; };
-		2B2B2AE227AA884C0081534F /* NeteaseCloudMusicAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B2B2AE127AA884C0081534F /* NeteaseCloudMusicAPI */; };
-		2B2B2AE427AA98710081534F /* NeteaseCloudMusicAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B2B2AE327AA98710081534F /* NeteaseCloudMusicAPI */; };
 		2B2D517824E39C1C007B52A4 /* QinSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D517724E39C1C007B52A4 /* QinSearchView.swift */; };
 		2B41D86E25336D5F000B6FAC /* DiscoverPlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41D86D25336D5F000B6FAC /* DiscoverPlaylistView.swift */; };
 		2B41D87225336E3D000B6FAC /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B41D87125336E3D000B6FAC /* SwiftUI+Extension.swift */; };
@@ -120,6 +118,8 @@
 		2BED1080253439B4005A14AA /* LyricView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BED107F253439B4005A14AA /* LyricView.swift */; };
 		2BED108625343E5D005A14AA /* DiscoverPlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BED108525343E5D005A14AA /* DiscoverPlaylistViewModel.swift */; };
 		2BED108725343E5D005A14AA /* DiscoverPlaylistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BED108525343E5D005A14AA /* DiscoverPlaylistViewModel.swift */; };
+		2BF5D32227AAC2090045A3D9 /* NeteaseCloudMusicAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF5D32127AAC2090045A3D9 /* NeteaseCloudMusicAPI */; };
+		2BF5D32427AAC2560045A3D9 /* NeteaseCloudMusicAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2BF5D32327AAC2560045A3D9 /* NeteaseCloudMusicAPI */; };
 		EF2EBC78272015FF00FDA5BC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = EF2EBC77272015FF00FDA5BC /* Kingfisher */; };
 		EF3890D3262D803D00C39649 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3890D2262D803D00C39649 /* JSONHelper.swift */; };
 		EF3890D4262D803D00C39649 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3890D2262D803D00C39649 /* JSONHelper.swift */; };
@@ -219,9 +219,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF2EBC78272015FF00FDA5BC /* Kingfisher in Frameworks */,
-				2B2B2AE227AA884C0081534F /* NeteaseCloudMusicAPI in Frameworks */,
 				2BCCB2C324DC5DB2004CAD67 /* CryptoSwift in Frameworks */,
 				2B0E013A2741408A00F7C1DE /* NeumorphismSwiftUI in Frameworks */,
+				2BF5D32227AAC2090045A3D9 /* NeteaseCloudMusicAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +232,7 @@
 				2B82C19A276DC87B001E44C0 /* Kingfisher in Frameworks */,
 				2B0E013C274140B400F7C1DE /* NeumorphismSwiftUI in Frameworks */,
 				2BCCB2CF24DC74CD004CAD67 /* CryptoSwift in Frameworks */,
-				2B2B2AE427AA98710081534F /* NeteaseCloudMusicAPI in Frameworks */,
+				2BF5D32427AAC2560045A3D9 /* NeteaseCloudMusicAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +481,7 @@
 				2BCCB2C224DC5DB2004CAD67 /* CryptoSwift */,
 				EF2EBC77272015FF00FDA5BC /* Kingfisher */,
 				2B0E01392741408A00F7C1DE /* NeumorphismSwiftUI */,
-				2B2B2AE127AA884C0081534F /* NeteaseCloudMusicAPI */,
+				2BF5D32127AAC2090045A3D9 /* NeteaseCloudMusicAPI */,
 			);
 			productName = "Qin (iOS)";
 			productReference = 2BCCB25524DC5671004CAD67 /* Qin.app */;
@@ -504,7 +504,7 @@
 				2BCCB2CE24DC74CD004CAD67 /* CryptoSwift */,
 				2B0E013B274140B400F7C1DE /* NeumorphismSwiftUI */,
 				2B82C199276DC87B001E44C0 /* Kingfisher */,
-				2B2B2AE327AA98710081534F /* NeteaseCloudMusicAPI */,
+				2BF5D32327AAC2560045A3D9 /* NeteaseCloudMusicAPI */,
 			);
 			productName = "Qin (macOS)";
 			productReference = 2BCCB25D24DC5671004CAD67 /* Qin.app */;
@@ -542,7 +542,7 @@
 				2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				EF2EBC76272015FF00FDA5BC /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2B0E01382741408A00F7C1DE /* XCRemoteSwiftPackageReference "NeumorphismSwiftUI" */,
-				2B2B2AE027AA884C0081534F /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */,
+				2BF5D32027AAC2090045A3D9 /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */,
 			);
 			productRefGroup = 2BCCB25624DC5671004CAD67 /* Products */;
 			projectDirPath = "";
@@ -959,20 +959,20 @@
 				kind = branch;
 			};
 		};
-		2B2B2AE027AA884C0081534F /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/linshaolong5240/NeteaseCloudMusicAPI";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/CryptoSwift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.3.1;
+			};
+		};
+		2BF5D32027AAC2090045A3D9 /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/linshaolong5240/NeteaseCloudMusicAPI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		EF2EBC76272015FF00FDA5BC /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
@@ -996,16 +996,6 @@
 			package = 2B0E01382741408A00F7C1DE /* XCRemoteSwiftPackageReference "NeumorphismSwiftUI" */;
 			productName = NeumorphismSwiftUI;
 		};
-		2B2B2AE127AA884C0081534F /* NeteaseCloudMusicAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B2B2AE027AA884C0081534F /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */;
-			productName = NeteaseCloudMusicAPI;
-		};
-		2B2B2AE327AA98710081534F /* NeteaseCloudMusicAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B2B2AE027AA884C0081534F /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */;
-			productName = NeteaseCloudMusicAPI;
-		};
 		2B82C199276DC87B001E44C0 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EF2EBC76272015FF00FDA5BC /* XCRemoteSwiftPackageReference "Kingfisher" */;
@@ -1020,6 +1010,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */;
 			productName = CryptoSwift;
+		};
+		2BF5D32127AAC2090045A3D9 /* NeteaseCloudMusicAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BF5D32027AAC2090045A3D9 /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */;
+			productName = NeteaseCloudMusicAPI;
+		};
+		2BF5D32327AAC2560045A3D9 /* NeteaseCloudMusicAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BF5D32027AAC2090045A3D9 /* XCRemoteSwiftPackageReference "NeteaseCloudMusicAPI" */;
+			productName = NeteaseCloudMusicAPI;
 		};
 		EF2EBC77272015FF00FDA5BC /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
