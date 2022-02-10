@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import NeteaseCloudMusicAPI
 
-protocol CoreDataManged {
+protocol CoreDataManaged {
     associatedtype Entity: NSManagedObject
     func entity(context: NSManagedObjectContext) -> Entity
 }
@@ -75,7 +75,7 @@ class DataManager {
             print("\(#function):\(error)")
         }
     }
-    public func batchInsert<T: NSManagedObject, Element: CoreDataManged>(type: T.Type, models: [Element]) {
+    public func batchInsert<T: NSManagedObject, Element: CoreDataManaged>(type: T.Type, models: [Element]) {
         #if DEBUG
         print("\(#function): \(type)")
         #endif
@@ -84,7 +84,7 @@ class DataManager {
             _ = item.entity(context: context())
         }
     }
-    public func batchOrderInsert<T: NSManagedObject, Element: CoreDataManged>(type: T.Type, models: [Element]) where T: CoreDataOrdered {
+    public func batchOrderInsert<T: NSManagedObject, Element: CoreDataManaged>(type: T.Type, models: [Element]) where T: CoreDataOrdered {
         #if DEBUG
         print("\(#function): \(type)")
         #endif
@@ -123,7 +123,7 @@ class DataManager {
             print("\(#function):\(error)")
         }
     }
-    public func update<T: CoreDataManged>(model: T) {
+    public func update<T: CoreDataManaged>(model: T) {
         #if DEBUG
         print("\(#function): \(type(of: model))")
         #endif

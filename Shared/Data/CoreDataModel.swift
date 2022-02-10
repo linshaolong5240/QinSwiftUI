@@ -18,7 +18,7 @@ extension NCMArtistSublistResponse.Artist {
     var dataModel: ArtistSubDataModel { ArtistSubDataModel(id: Int64(id), name: name, img1v1Url: img1v1Url) }
 }
 
-extension NCMPlaylistResponse: CoreDataManged {
+extension NCMPlaylistResponse: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Playlist {
         let entity = Playlist(context: context)
         entity.coverImgUrl = coverImgUrl
@@ -30,7 +30,7 @@ extension NCMPlaylistResponse: CoreDataManged {
     }
 }
 
-extension NCMSongResponse: CoreDataManged {
+extension NCMSongResponse: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(dt)
@@ -40,7 +40,7 @@ extension NCMSongResponse: CoreDataManged {
     }
 }
 
-extension NCMSongResponse.Al: CoreDataManged {
+extension NCMSongResponse.Al: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
         entity.id = Int64(id)
@@ -52,7 +52,7 @@ extension NCMSongResponse.Al: CoreDataManged {
     }
 }
 
-extension NCMSongResponse.Ar: CoreDataManged {
+extension NCMSongResponse.Ar: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
 //        entity.followed = followed
@@ -64,7 +64,7 @@ extension NCMSongResponse.Ar: CoreDataManged {
     }
 }
 
-extension NCMAlbumResponse: CoreDataManged {
+extension NCMAlbumResponse: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
         entity.id = Int64(id)
@@ -76,7 +76,7 @@ extension NCMAlbumResponse: CoreDataManged {
     }
 }
 
-extension NCMArtistResponse: CoreDataManged {
+extension NCMArtistResponse: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.id = Int64(id)
@@ -87,7 +87,7 @@ extension NCMArtistResponse: CoreDataManged {
     }
 }
 
-extension NCMAlbumDetailResponse.AlbumSong: CoreDataManged {
+extension NCMAlbumDetailResponse.AlbumSong: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(dt)
@@ -97,7 +97,7 @@ extension NCMAlbumDetailResponse.AlbumSong: CoreDataManged {
     }
 }
 
-extension NCMAlbumDetailResponse.AlbumSong.AlbumSongArtist: CoreDataManged {
+extension NCMAlbumDetailResponse.AlbumSong.AlbumSongArtist: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.id = Int64(id)
@@ -106,7 +106,7 @@ extension NCMAlbumDetailResponse.AlbumSong.AlbumSongArtist: CoreDataManged {
     }
 }
 
-extension NCMArtistAlbumsResponse.ArtistAlbum: CoreDataManged {
+extension NCMArtistAlbumsResponse.ArtistAlbum: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Album {
         let entity = Album(context: context)
         entity.id = Int64(id)
@@ -118,7 +118,7 @@ extension NCMArtistAlbumsResponse.ArtistAlbum: CoreDataManged {
     }
 }
 
-extension NCMArtistHotSongsResponse.HotSong: CoreDataManged {
+extension NCMArtistHotSongsResponse.HotSong: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Song {
         let entity = Song(context: context)
         entity.durationTime = Int64(duration)
@@ -128,7 +128,7 @@ extension NCMArtistHotSongsResponse.HotSong: CoreDataManged {
     }
 }
 
-extension NCMArtistMVResponse.MV.Artist: CoreDataManged {
+extension NCMArtistMVResponse.MV.Artist: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Artist {
         let entity = Artist(context: context)
         entity.id = Int64(id)
@@ -139,7 +139,7 @@ extension NCMArtistMVResponse.MV.Artist: CoreDataManged {
     }
 }
 
-extension NCMArtistMVResponse.MV: CoreDataManged {
+extension NCMArtistMVResponse.MV: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> MV {
         let entity = MV(context: context)
         entity.duration = Int64(duration)
@@ -149,7 +149,7 @@ extension NCMArtistMVResponse.MV: CoreDataManged {
     }
 }
 
-extension NCMRecommendSongsResponse: CoreDataManged {
+extension NCMRecommendSongsResponse: CoreDataManaged {
     func entity(context: NSManagedObjectContext) -> Playlist {
         let entity = Playlist(context: context)
         entity.id = 0
