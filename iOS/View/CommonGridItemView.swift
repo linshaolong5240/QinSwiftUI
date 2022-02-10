@@ -2,11 +2,12 @@
 //  CommonGridItemView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/10/30.
+//  Created by teenloong on 2020/10/30.
 //
 
 import SwiftUI
 import Combine
+import NeteaseCloudMusicAPI
 
 struct CommonGridItemView: View {
     @ObservedObject var configuration: CommonGridItemConfiguration
@@ -17,13 +18,13 @@ struct CommonGridItemView: View {
     init(_ item: Album) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ model: AlbumSublistResponse.Album) {
+    init(_ model: NCMAlbumSublistResponse.Album) {
         self.configuration = CommonGridItemConfiguration(model)
     }
-    init(_ item: ArtistSublistResponse.Artist) {
+    init(_ item: NCMArtistSublistResponse.Artist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ item: PlaylistResponse) {
+    init(_ item: NCMPlaylistResponse) {
         self.configuration = CommonGridItemConfiguration(item)
     }
     init(_ item: MV) {
@@ -35,7 +36,7 @@ struct CommonGridItemView: View {
     init(_ item: PlaylistViewModel) {
         self.configuration = CommonGridItemConfiguration(item)
     }
-    init(_ item: RecommendPlaylistResponse.RecommendPlaylist) {
+    init(_ item: NCMRecommendPlaylistResponse.RecommendPlaylist) {
         self.configuration = CommonGridItemConfiguration(item)
     }
     
@@ -82,19 +83,19 @@ class CommonGridItemConfiguration: ObservableObject {
         self.picUrl = item.picUrl
         self.subscribed = nil
     }
-    init(_ model: AlbumSublistResponse.Album) {
+    init(_ model: NCMAlbumSublistResponse.Album) {
         self.id = model.id
         self.name = model.name
         self.picUrl = model.picUrl
         self.subscribed = true
     }
-    init(_ model: ArtistSublistResponse.Artist) {
+    init(_ model: NCMArtistSublistResponse.Artist) {
         self.id = model.id
         self.name = model.name
         self.picUrl = model.img1v1Url
         self.subscribed = nil
     }
-    init(_ item: PlaylistResponse) {
+    init(_ item: NCMPlaylistResponse) {
         self.id = item.id
         self.name = item.name
         self.picUrl = item.coverImgUrl
@@ -118,7 +119,7 @@ class CommonGridItemConfiguration: ObservableObject {
         self.picUrl = item.coverImgUrl
         self.subscribed = item.subscribed
     }
-    init(_ item: RecommendPlaylistResponse.RecommendPlaylist) {
+    init(_ item: NCMRecommendPlaylistResponse.RecommendPlaylist) {
         self.id = item.id
         self.name = item.name
         self.picUrl = item.picUrl

@@ -2,7 +2,7 @@
 //  ArtistView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/1.
+//  Created by teenloong on 2020/10/1.
 //
 
 import SwiftUI

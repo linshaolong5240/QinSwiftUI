@@ -2,13 +2,14 @@
 //  ArtistSublistView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/8.
+//  Created by teenloong on 2020/10/8.
 //
 
 import SwiftUI
+import NeteaseCloudMusicAPI
 
 struct ArtistSublistView: View {
-    let artists: [ArtistSublistResponse.Artist]
+    let artists: [NCMArtistSublistResponse.Artist]
     @State private var artistId: Int = 0
     @State private var showArtistDetail: Bool = false
     private let rows: [GridItem] = [.init(.adaptive(minimum: 130))]
@@ -50,7 +51,7 @@ struct ArtistSublistView: View {
 #if DEBUG
 struct ArtistSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        ArtistSublistView(artists: [ArtistSublistResponse.Artist]())
+        ArtistSublistView(artists: [NCMArtistSublistResponse.Artist]())
     }
 }
 #endif

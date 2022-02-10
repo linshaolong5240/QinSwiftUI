@@ -2,7 +2,7 @@
 //  Store.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/6/14.
+//  Created by teenloong on 2020/6/14.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 
@@ -12,7 +12,7 @@ import Combine
 class Store: ObservableObject {
     public static let shared = Store()
     
-    var cancellableSet = Set<AnyCancellable>()
+    var cancells = Set<AnyCancellable>()
 
     @Published var appState = AppState()
     func dispatch(_ action: AppAction) {
@@ -35,11 +35,6 @@ class Store: ObservableObject {
         
         switch action {
         case .initAction:
-            if appState.playing.playinglist.count > 0 {
-                let index = appState.playing.index
-                let songId = appState.playing.playinglist[index]
-                appState.playing.song = DataManager.shared.getSong(id: Int(songId))
-            }
             appCommand = InitAcionCommand()
         case  .InitMPRemoteControl:
             appCommand = InitMPRemoteControlCommand()
@@ -140,7 +135,7 @@ class Store: ObservableObject {
             appCommand = CloudSongAddRequstCommand(id: songId)
         case .cloudSongAddRequstDone(let result):
             switch result {
-            case .success(let response):
+            case .success(_):
                 break
             case .failure(let error):
                 appState.error = error
@@ -279,20 +274,18 @@ class Store: ObservableObject {
         case .mvURLRequest(let id):
             appCommand = MVUrlCommand(id: id)
         case .playerPause:
-            AudioSessionManager.shared.active()
             Player.shared.pause()
-            appState.lyric.lyric?.stopTimer()
         case .playerPlay:
-            AudioSessionManager.shared.deactive()
-            Player.shared.play()
-            appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
+            appCommand = QinPlayerPlayCommand()
         case .playerPlayBackward:
             appCommand = PlayerPlayBackwardCommand()
         case .playerPlayBy(let index):
             appState.playing.index = index
-            let id = appState.playing.playinglist[index]
-            appState.playing.song = DataManager.shared.getSong(id: Int(id))
-            appCommand = PlayerPlayRequestCommand(id: Int(id))
+            let id = appState.playing.playinglist[index].id
+            if let song = DataManager.shared.getSong(id: id) {
+                appState.playing.song = .init(song)
+            }
+            appCommand = PlayerPlayRequestCommand(id: id)
         case .playerPlayForward:
             appCommand = PlayerPlayForwardCommand()
         case .playerPlayMode:
@@ -304,7 +297,7 @@ class Store: ObservableObject {
             case .success(let songURL):
                 appState.playing.songUrl = songURL
                 if let url = songURL {
-                    appCommand = PlayerPlayRequestDoneCommand(url: url)
+                    appCommand = PlayerPlayWithUrlCommand(url: url)
                 }else {
                     appCommand = PlayerPlayForwardCommand()
                     appState.error = AppError.songsURLError
@@ -313,12 +306,14 @@ class Store: ObservableObject {
                 appState.error = error
                 break
             }
-        case .playerPlayOrPause:
-            if appState.playing.song != nil {
-                appCommand = TooglePlayCommand()
-            }
         case .PlayerPlayToendAction:
             appCommand = PlayerPlayToEndActionCommand()
+        case .PlayerPlaySongs(let songs):
+            if !songs.isEmpty {
+                appState.playing.playinglist = songs
+                appState.playing.index = 0
+                appCommand = PlayerPlayRequestCommand(id: songs[0].id)
+            }
         case .playerReplay:
             appCommand = RePlayCommand()
         case .playerSeek(let isSeeking, let time):
@@ -326,23 +321,26 @@ class Store: ObservableObject {
             if isSeeking == false {
                 appCommand = SeeKCommand(time: time)
             }
-        case .playinglistInsert(let id):
-            var index: Int = 0
-            if appState.playing.playinglist.count > 0 {
-                if let i = appState.playing.playinglist.firstIndex(of: id) {
-                    index = i
-                }else {
-                    index = appState.playing.index + 1
-                    appState.playing.playinglist.insert(id, at: index)
-                }
-            }else {
-                appState.playing.playinglist.append(id)
-                index = 0
+        case .playerTogglePlay(let song):
+            appCommand = PlayerTooglePlayCommand(song: song)
+        case .playinglistInsertAndPlay(let songs):
+            var index: Int = appState.playing.index
+            songs.forEach { song in
+                appState.playing.playinglist.insert(song, at: index + 1)
+                index += 1
             }
+//            if appState.playing.playinglist.count > 0 {
+//                if let i = appState.playing.playinglist.firstIndex(of: id) {
+//                    index = i
+//                }else {
+//                    index = appState.playing.index + 1
+//                    appState.playing.playinglist.insert(id, at: index)
+//                }
+//            }else {
+//                appState.playing.playinglist.append(id)
+//                index = 0
+//            }
             appCommand = PlayinglistInsertCommand(index: index)
-        case .PlayinglistSet(let playlist, let index):
-            appState.playing.playinglist = playlist
-            appState.playing.index = index
         case .playlistCatalogueRequest:
             appState.discoverPlaylist.requesting = true
             appCommand = PlaylistCategoriesRequestCommand()
@@ -451,28 +449,6 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .searchRequest(let keyword, let type, let limit, let offset):
-            if keyword.count > 0 {
-                appState.search.searchRequesting = true
-                appCommand = SearchRequestCommand(keyword: keyword, type: type, limit: limit, offset: offset)
-            }
-        case .searchPlaylistRequestDone(let result):
-            switch result {
-            case .success(let searchPlaylistResponse):
-                appState.search.result.playlists = searchPlaylistResponse.result.playlists
-            case .failure(let error):
-                appState.error = error
-            }
-            appState.search.searchRequesting = false
-        case .searchSongRequestDone(let result):
-            switch result {
-            case .success(let ids):
-                appState.search.songsId = ids
-                appCommand = SearchSongDoneCommand(ids: ids)
-            case .failure(let error):
-                appState.error = error
-            }
-            appState.search.searchRequesting = false
         case .songsDetailRequest(let ids):
             appCommand = SongsDetailCommand(ids: ids)
         case .songsDetailRequestDone(let result):
@@ -506,22 +482,20 @@ class Store: ObservableObject {
             if appState.initRequestingCount > 0 {
                 appState.initRequestingCount -= 1
             }
-        case .songLyricRequest(let id):
-            appState.lyric.requesting = true
-            appCommand = SongLyricRequestCommand(id: id)
-        case .songLyricRequestDone(result: let result):
-            switch result {
-            case .success(let lyric):
-                if lyric != nil {
-                    appState.lyric.lyric = LyricViewModel(lyric: lyric!)
-                    appState.lyric.lyric?.setTimer(every: 0.1, offset: -1)
-                }else {
-                    appState.lyric.lyric = nil
-                }
-            case .failure(let error):
-                appState.lyric.getlyricError = error
+        case .songlyricRequest(let id):
+            if id != appState.lrc.id {
+                appState.lrc.isRequesting = true
+                appState.lrc.id = id
+                appCommand = SongLyricRequestCommand(id: id)
             }
-            appState.lyric.requesting = false
+        case .songlyricRequestDone(let result):
+            switch result {
+            case .success(let response):
+                appState.lrc.lyric = response.lrc.lyric
+            case .failure(let error):
+                appState.error = error
+            }
+            appState.lrc.isRequesting = false
         case .songsOrderUpdateRequesting(let pid, let ids):
             appCommand = SongsOrderUpdateRequestCommand(pid: pid, ids: ids)
         case .songsOrderUpdateRequestDone(let result):

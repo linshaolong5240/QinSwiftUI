@@ -2,7 +2,7 @@
 //  QinNavigationBarTitleView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/10/15.
+//  Created by teenloong on 2020/10/15.
 //
 
 import SwiftUI

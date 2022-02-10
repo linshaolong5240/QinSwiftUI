@@ -2,7 +2,7 @@
 //  PlayingNowButtonView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/12/5.
+//  Created by teenloong on 2020/12/5.
 //
 
 import SwiftUI
@@ -17,11 +17,11 @@ struct PlayingNowButtonView: View {
     
     var body: some View {
         HStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
+            NavigationLink(destination: PlayerView(), isActive: $showPlayingNow, label: {EmptyView()})
             Button(action: {
                 showPlayingNow.toggle()
             }){
-                if let url = store.appState.playing.song?.album?.picUrl {
+                if let url = store.appState.playing.song?.album?.coverURLString {
                     KFImage(URL(string: url))
 //                      .placeholder(placeholderImage)
                       .setProcessor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100)))

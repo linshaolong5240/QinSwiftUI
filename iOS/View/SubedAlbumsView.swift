@@ -2,13 +2,14 @@
 //  AlbumSublistView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/9.
+//  Created by teenloong on 2020/10/9.
 //
 
 import SwiftUI
+import NeteaseCloudMusicAPI
 
 struct SubedAlbumsView: View {
-    let albums: [AlbumSublistResponse.Album]
+    let albums: [NCMAlbumSublistResponse.Album]
     @State private var albumDetailId: Int = 0
     @State private var showAlbumDetail: Bool = false
     
@@ -49,7 +50,7 @@ struct SubedAlbumsView: View {
 #if DEBUG
 struct AlbumSublistView_Previews: PreviewProvider {
     static var previews: some View {
-        SubedAlbumsView(albums: [AlbumSublistResponse.Album]())
+        SubedAlbumsView(albums: [NCMAlbumSublistResponse.Album]())
     }
 }
 #endif

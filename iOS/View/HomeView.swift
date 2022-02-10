@@ -2,7 +2,7 @@
 //  HomeView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/6/30.
+//  Created by teenloong on 2020/6/30.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 
@@ -30,7 +30,7 @@ struct HomeView: View {
                                 }
                             }
                             .buttonStyle(NEUDefaultButtonStyle(shape: Circle()))
-                            SearchBarView()
+                            QinSearchBarView()
                             Button(action: {}) {
                                 NavigationLink(destination: DiscoverPlaylistView(viewModel: .init(catalogue: store.appState.discoverPlaylist.catalogue))) {
                                     QinSFView(systemName: "square.grid.2x2", size:  .small)

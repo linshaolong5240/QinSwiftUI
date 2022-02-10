@@ -2,14 +2,15 @@
 //  SubedPlaylistView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/11/27.
+//  Created by teenloong on 2020/11/27.
 //
 
 import SwiftUI
 import NeumorphismSwiftUI
+import NeteaseCloudMusicAPI
 
 struct SubedPlaylistView: View {
-    let playlist: [PlaylistResponse]
+    let playlist: [NCMPlaylistResponse]
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var showPlaylistManage: Bool = false
@@ -113,7 +114,7 @@ struct SubedPlaylistView: View {
 //#if DEBUG
 //struct SubedPlaylistView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        SubedPlaylistView(playlist: <#[PlaylistResponse]#>)
+//        SubedPlaylistView(playlist: <#[NCMPlaylistResponse]#>)
 //    }
 //}
 //#endif

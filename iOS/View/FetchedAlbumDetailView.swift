@@ -2,7 +2,7 @@
 //  FetchedAlbumDetailView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/8.
+//  Created by teenloong on 2020/10/8.
 //
 
 import SwiftUI

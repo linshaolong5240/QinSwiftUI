@@ -2,42 +2,43 @@
 //  LyricViewModel.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/9/24.
+//  Created by teenloong on 2020/9/24.
 //
 
 import SwiftUI
 import Combine
 
 class LyricViewModel: ObservableObject {
-    let lyricParser: LyricParser
-    private var cancell: Cancellable = AnyCancellable({})
+    private var timerCancell = AnyCancellable({ })
+    private var cancells = Set<AnyCancellable>()
+    @Published var isRequesting: Bool = false
 
+    private(set) var lyricParser: LyricParser
     @Published var index: Int = 0
-    @Published var lyric: String = ""
     
     init(lyric: String) {
-        self.lyricParser = LyricParser(lyric)
+        self.lyricParser = LyricParser(lyric: lyric)
     }
     
-    func setTimer(every: Double, offset: Double = 0.0) {
-        if lyricParser.lyrics.count > 1 {
-            cancell = Timer.publish(every: every, on: .main, in: .default)
-                .autoconnect()
-                .sink(receiveValue: { [weak self] (value) in
-                    if let lyricViewModel = self {
-                        let result =  lyricViewModel.lyricParser.lyricByTime(Player.shared.currentTime().seconds, offset: offset)
-                        if lyricViewModel.lyric != result.0 {
-                            lyricViewModel.lyric = result.0
-                        }
-                        if lyricViewModel.index != result.1 {
-                            lyricViewModel.index = result.1
-                        }
-                    }
-                })
-        }
+    func setTimer(every interval: TimeInterval, offset: Double = 0.0) {
+        timerCancell = Timer.publish(every: interval, on: .main, in: .default)
+            .autoconnect()
+            .sink(receiveValue: { [weak self] (value) in
+                guard let weakSelf = self else {
+                    return
+                }
+                
+                let result =  weakSelf.lyricParser.lyricByTime(Player.shared.currentTime().seconds, offset: offset)
+//                if weakSelf.lyric != result.0 {
+//                    weakSelf.lyric = result.0
+//                }
+                if weakSelf.index != result.1 {
+                    weakSelf.index = result.1
+                }
+            })
     }
     
     func stopTimer() {
-        cancell.cancel()
+        timerCancell.cancel()
     }
 }

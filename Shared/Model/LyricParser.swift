@@ -2,19 +2,18 @@
 //  LyricParser.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/8/3.
+//  Created by teenloong on 2020/8/3.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 
 import Foundation
 
 class LyricParser {
-    private var lyric: String = ""
+    private(set) var lyric: String
     private var times = [[Double]]()
     var lyrics = [String]()
-    init() {
-    }
-    init(_ lyric: String) {
+    
+    init(lyric: String) {
         self.lyric = lyric
         if lyric.count > 0 {
             parseLyric()

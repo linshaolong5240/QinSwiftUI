@@ -2,7 +2,7 @@
 //  Player.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/7/2.
+//  Created by teenloong on 2020/7/2.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 
@@ -12,16 +12,14 @@ import Combine
 import Kingfisher
 
 class Player: AVPlayer, ObservableObject {
-    let audioSession = AVAudioSession.sharedInstance()
     static let shared = Player()
     private var timeObserverToken: Any?
-    private var cancellAble = AnyCancellable({})
-    private var notificatioCancellAble = AnyCancellable({})
+    private var timerCancell: AnyCancellable?
     
     //playingStatus
     @Published var isPlaying: Bool = false
     @Published var loadTime: Double = 0.0
-    @Published var totalTime: Double = 0.0
+    @Published var totalTime: Double = 1.0
     @Published var loadPercent: Double = 0.0
 
     override init() {
@@ -34,11 +32,17 @@ class Player: AVPlayer, ObservableObject {
     }
     
     override func pause() {
+        #if canImport(UIKit)
+        AudioSessionManager.shared.deactive()
+        #endif
         super.pause()
         self.removePeriodicTimeObserver()
     }
     
     override func play() {
+        #if canImport(UIKit)
+        AudioSessionManager.shared.active()
+        #endif
         super.play()
         self.addPeriodicTimeObserver()
         Store.shared.dispatch(.updateMPNowPlayingInfo)
@@ -87,15 +91,15 @@ class Player: AVPlayer, ObservableObject {
         //                // update player transport UI
         //                block()
         //        }
-        cancellAble = Timer
-            .publish(every: 1, on: .main, in: .default)
+        timerCancell = Timer
+            .publish(every: 0.1, on: .main, in: .default)
             .autoconnect()
             .sink(receiveValue: { _ in
                 let store = Store.shared
                 let player = Player.shared
                 if !store.appState.playing.isSeeking {
                     let loadTime = player.currentTime().seconds
-                    player.loadTime = loadTime.isNaN || loadTime.isInfinite ? 0 : loadTime
+                    player.loadTime = loadTime.isNaN || loadTime.isInfinite ? 0 : (loadTime > 0 ? loadTime : 0)
                     if let totalTime = player.currentItem?.duration.seconds {
                         player.totalTime = totalTime
                         player.loadPercent = player.loadTime / player.totalTime
@@ -108,7 +112,7 @@ class Player: AVPlayer, ObservableObject {
 //        if timeObserverToken != nil {
 //            self.removeTimeObserver(timeObserverToken!)
 //        }
-        cancellAble.cancel()
+        timerCancell?.cancel()
     }
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(AVPlayer.currentItem.status) {

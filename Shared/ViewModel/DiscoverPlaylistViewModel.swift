@@ -2,10 +2,11 @@
 //  DiscoverPlaylistViewModel.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/12.
+//  Created by teenloong on 2020/10/12.
 //
 
 import Combine
+import NeteaseCloudMusicAPI
 
 struct PlaylistCatalogue: Identifiable {
     public var id: Int
@@ -13,7 +14,7 @@ struct PlaylistCatalogue: Identifiable {
     public let subs: [String]
 }
 
-extension PlaylistResponse: Identifiable {
+extension NCMPlaylistResponse: Identifiable {
     
 }
 
@@ -22,19 +23,17 @@ class DiscoverPlaylistViewModel: ObservableObject {
         
     @Published var requesting = false
     var catalogue: [PlaylistCatalogue]
-    @Published var playlists = [PlaylistResponse]()
+    @Published var playlists = [NCMPlaylistResponse]()
     
     init(catalogue: [PlaylistCatalogue]) {
         self.catalogue = catalogue
     }
     
     func playlistRequest(cat: String) {
-        cancell = NeteaseCloudMusicApi
-            .shared
-            .requestPublisher(action: PlaylistListAction(parameters: .init(cat: cat, order: .hot, limit: 30, offset: 0 * 30, total: true)))
+        cancell = NCM.requestPublisher(action: NCMPlaylistCategoryListAction(category: cat, order: .hot, limit: 30, offset: 0 * 30, total: true))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
+                    Store.shared.dispatch(.error(.error(error)))
                 }
             } receiveValue: {[weak self] playlistListResponse in
                 self?.playlists = playlistListResponse.playlists

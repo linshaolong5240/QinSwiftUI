@@ -2,14 +2,15 @@
 //  DataManager.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/6/15.
+//  Created by teenloong on 2020/6/15.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 
 import Foundation
 import CoreData
+import NeteaseCloudMusicAPI
 
-protocol CoreDataManged {
+protocol CoreDataManaged {
     associatedtype Entity: NSManagedObject
     func entity(context: NSManagedObjectContext) -> Entity
 }
@@ -74,7 +75,7 @@ class DataManager {
             print("\(#function):\(error)")
         }
     }
-    public func batchInsert<T: NSManagedObject, Element: CoreDataManged>(type: T.Type, models: [Element]) {
+    public func batchInsert<T: NSManagedObject, Element: CoreDataManaged>(type: T.Type, models: [Element]) {
         #if DEBUG
         print("\(#function): \(type)")
         #endif
@@ -83,7 +84,7 @@ class DataManager {
             _ = item.entity(context: context())
         }
     }
-    public func batchOrderInsert<T: NSManagedObject, Element: CoreDataManged>(type: T.Type, models: [Element]) where T: CoreDataOrdered {
+    public func batchOrderInsert<T: NSManagedObject, Element: CoreDataManaged>(type: T.Type, models: [Element]) where T: CoreDataOrdered {
         #if DEBUG
         print("\(#function): \(type)")
         #endif
@@ -122,7 +123,7 @@ class DataManager {
             print("\(#function):\(error)")
         }
     }
-    public func update<T: CoreDataManged>(model: T) {
+    public func update<T: CoreDataManaged>(model: T) {
         #if DEBUG
         print("\(#function): \(type(of: model))")
         #endif
@@ -222,7 +223,7 @@ class DataManager {
             #endif
         }
     }
-    public func updateAlbum(model: AlbumDetailResponse) {
+    public func updateAlbum(model: NCMAlbumDetailResponse) {
         defer { save() }
         
         let album = model.album.entity(context: context())
@@ -248,16 +249,16 @@ class DataManager {
             }
         }
     }
-    public func updateArtist(model: ArtistResponse) {
+    public func updateArtist(model: NCMArtistResponse) {
         defer { save() }
         _ = model.entity(context: context())
     }
-    public func updateArtist(artistModel: ArtistResponse, introduction: String) {
+    public func updateArtist(artistModel: NCMArtistResponse, introduction: String) {
         defer { save() }
         let artist = artistModel.entity(context: context())
         artist.introduction = introduction
     }
-    public func updateArtistAlbums(id: Int, model: ArtistAlbumsResponse) {
+    public func updateArtistAlbums(id: Int, model: NCMArtistAlbumsResponse) {
         defer { save() }
         if let artist = getArtist(id: id) {
             if let albums = artist.albums {
@@ -296,7 +297,7 @@ class DataManager {
         }
     }
     
-    public func updateMV(model: ArtistMVResponse) {
+    public func updateMV(model: NCMArtistMVResponse) {
         defer { save() }
         model.mvs.forEach { item in
             let mv = item.entity(context: context())
@@ -322,7 +323,7 @@ class DataManager {
         }
     }
     
-    public func updateSongs(model: ArtistHotSongsResponse) {
+    public func updateSongs(model: NCMArtistHotSongsResponse) {
         defer { save() }
         model.hotSongs.forEach { item in
             let song = item.entity(context: self.context())
@@ -343,7 +344,7 @@ class DataManager {
         }
     }
     
-    public func updateSongs(model: [SongResponse]) {
+    public func updateSongs(model: [NCMSongResponse]) {
         defer { save() }
         model.forEach { item in
             let song = item.entity(context: context())
@@ -364,7 +365,7 @@ class DataManager {
         }
     }
     
-    public func updateUserPlaylist(model: UserPlaylistResponse) {
+    public func updateUserPlaylist(model: NCMUserPlaylistResponse) {
         defer { save() }
         model.playlist.forEach { item in
             _ = item.entity(context: context())

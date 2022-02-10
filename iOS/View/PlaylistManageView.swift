@@ -2,11 +2,12 @@
 //  PlaylistManageView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/12/6.
+//  Created by teenloong on 2020/12/6.
 //
 
 import SwiftUI
 import NeumorphismSwiftUI
+import NeteaseCloudMusicAPI
 
 struct PlaylistManageView: View {
     let playlist = Store.shared.appState.playlist.userPlaylist
@@ -79,7 +80,7 @@ struct PlaylistManageView_Previews: PreviewProvider {
 
 
 struct UserPlaylistRowView: View {
-   let playlist: PlaylistResponse
+   let playlist: NCMPlaylistResponse
     
     var body: some View {
         HStack {

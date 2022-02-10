@@ -2,13 +2,14 @@
 //  FetchedMVDetailView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/12/9.
+//  Created by teenloong on 2020/12/9.
 //
 
 import SwiftUI
 import Kingfisher
 import AVKit
 import UIKit
+import NeteaseCloudMusicAPI
 
 struct FetchedMVDetailView: View {
     @State private var show: Bool = false
@@ -87,18 +88,16 @@ struct MVDetailView: View {
     }
     
     func fetchMVURL() {
-        NeteaseCloudMusicApi
-            .shared
-            .requestPublisher(action: MVURLAction(parameters: .init(id: Int(mv.id))))
+       NCM.requestPublisher(action: NCMMVURLAction(id: Int(mv.id)))
             .sink { completion in
                 if case .failure(let error) = completion {
-                    Store.shared.dispatch(.error(AppError.neteaseCloudMusic(error: error)))
+                    Store.shared.dispatch(.error(.error(error)))
                 }
             } receiveValue: { mvURLResponse in
 //                store.dispatch(.mvDetaillRequestDone(result: .success(id)))
                 mvURL = URL(string: mvURLResponse.data.url)
                 showPlayer = true
-            }.store(in: &Store.shared.cancellableSet)
+            }.store(in: &Store.shared.cancells)
     }
 }
 

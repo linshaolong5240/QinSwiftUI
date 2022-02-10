@@ -2,7 +2,7 @@
 //  PlayerControlBarView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/6/26.
+//  Created by teenloong on 2020/6/26.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 
@@ -28,7 +28,9 @@ struct PlayerControlBarView: View, NEUStyle {
                     .padding()
                     .frame(width: 90, height: 90)
                 Button(action: {
-                    Store.shared.dispatch(.playerPlayOrPause)
+                    if let song = store.appState.playing.song {
+                        Store.shared.dispatch(.playerTogglePlay(song: song))
+                    }
                 }) {
                     QinSFView(systemName: player.isPlaying ? "pause" : "play.fill", size: .small, active: true)
                         .background(
@@ -36,7 +38,7 @@ struct PlayerControlBarView: View, NEUStyle {
                         )
                 }
             }
-            NavigationLink(destination: PlayingNowView()) {
+            NavigationLink(destination: PlayerView()) {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(playing.song?.name ?? "")
@@ -45,14 +47,12 @@ struct PlayerControlBarView: View, NEUStyle {
                             .lineLimit(1)
                             .foregroundColor(Color.mainText)
                         HStack {
-                            if let artists = playing.song?.artists {
-                                HStack {
-                                    ForEach(Array(artists as! Set<Artist>)) { item in
-                                        Text(item.name ?? "")
-                                            .fontWeight(.bold)
-                                            .lineLimit(1)
-                                            .foregroundColor(Color.secondTextColor)
-                                    }
+                            HStack {
+                                ForEach(playing.song?.artists ?? []) { item in
+                                    Text(item.name ?? "")
+                                        .fontWeight(.bold)
+                                        .lineLimit(1)
+                                        .foregroundColor(Color.secondTextColor)
                                 }
                             }
                         }

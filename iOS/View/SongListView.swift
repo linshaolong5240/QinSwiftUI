@@ -2,7 +2,7 @@
 //  SongListView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/11/3.
+//  Created by teenloong on 2020/11/3.
 //
 
 import SwiftUI
@@ -17,17 +17,16 @@ struct SongListView: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: PlayingNowView(), isActive: $showPlayingNow, label: {EmptyView()})
+            NavigationLink(destination: PlayerView(), isActive: $showPlayingNow, label: {EmptyView()})
                 .navigationViewStyle(StackNavigationViewStyle())
             HStack {
                 Button(action: {
                     if showLike {
                         let likeIds = Store.shared.appState.playlist.songlikedIds
-                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{Int($0.id)}.filter({ (id) -> Bool in
-                            return likeIds.contains(id)
-                        }), index: 0))
+                        Store.shared.dispatch(.PlayerPlaySongs(songs: songs.map(QinSong.init)
+                                                                .filter({ likeIds.contains($0.id) })))
                     }else {
-                        Store.shared.dispatch(.PlayinglistSet(playinglist: songs.map{Int($0.id)}, index: 0))
+                        Store.shared.dispatch(.PlayerPlaySongs(songs: songs.map(QinSong.init)))
                     }
                     Store.shared.dispatch(.playerPlayBy(index: 0))
                 }) {
@@ -48,10 +47,10 @@ struct SongListView: View {
                 LazyVStack {
                     ForEach(songs) { item in
                         if !showLike || store.appState.playlist.songlikedIds.contains(Int(item.id)) {
-                            SongRowView(song: item)
+                            QinSongRowView(viewModel: .init(item.asQinSong()))
                                 .padding(.horizontal)
                                 .onTapGesture {
-                                    if item.id == Store.shared.appState.playing.song?.id {
+                                    if Int(item.id) == Store.shared.appState.playing.song?.id {
                                         showPlayingNow.toggle()
                                     }
                                 }

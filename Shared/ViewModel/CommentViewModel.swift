@@ -2,11 +2,12 @@
 //  CommentViewModel.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/8/1.
+//  Created by teenloong on 2020/8/1.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 
 import Foundation
+import NeteaseCloudMusicAPI
 
 class CommentViewModel: ObservableObject, Identifiable {
     var beReplied = [CommentViewModel]()
@@ -24,7 +25,7 @@ class CommentViewModel: ObservableObject, Identifiable {
         
     }
     
-    init(_ comment: CommentSongResponse.Comment) {
+    init(_ comment: NCMCommentSongResponse.Comment) {
         self.beReplied = comment.beReplied.map{CommentViewModel($0)}
         self.commentId = comment.commentId
         self.content = comment.content
@@ -37,7 +38,7 @@ class CommentViewModel: ObservableObject, Identifiable {
         self.nickname = comment.user.nickname
     }
     
-    init(_ comment: CommentSongResponse.Comment.BeReplied) {
+    init(_ comment: NCMCommentSongResponse.Comment.BeReplied) {
         self.commentId = comment.beRepliedCommentId
         self.content = comment.content ?? ""
         self.id = comment.user.userId

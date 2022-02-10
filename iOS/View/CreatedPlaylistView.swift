@@ -2,14 +2,15 @@
 //  CreatedPlaylistView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/11/27.
+//  Created by teenloong on 2020/11/27.
 //
 
 import SwiftUI
 import NeumorphismSwiftUI
+import NeteaseCloudMusicAPI
 
 struct CreatedPlaylistView: View {
-    let playlist: [PlaylistResponse]
+    let playlist: [NCMPlaylistResponse]
     @State private var playlistDetailId: Int = 0
     @State private var showPlaylistDetail: Bool = false
     @State private var showPlaylistCreate: Bool = false
