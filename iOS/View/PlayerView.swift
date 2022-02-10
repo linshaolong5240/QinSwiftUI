@@ -238,15 +238,20 @@ struct PlayerControllView: View {
                         viewModel.setDisplayMode(.playinglist)
                     }
                 } label: {
-                    QinSFView(systemName: "text.aligncenter", size: .small)
+                    QinSFView(systemName: "music.note.list", size: .small)
                 }
                 .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
                 Button {
                     
                 } label: {
                     QinSFView(systemName: "airplayaudio", size: .small)
+                        .hidden()
                 }
                 .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
+                .overlay (
+                    AVRoutePicker()
+                        .accentColor(.mainText)
+                )
                 Button {
                     withAnimation(.default) {
                         viewModel.setDisplayMode(.comment)

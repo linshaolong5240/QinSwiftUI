@@ -22,6 +22,10 @@
 		2B0E013C274140B400F7C1DE /* NeumorphismSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B0E013B274140B400F7C1DE /* NeumorphismSwiftUI */; };
 		2B0E013E27414B8400F7C1DE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2B0E013D27414B8400F7C1DE /* README.md */; };
 		2B1197FD257CA64100A67E56 /* PlaylistSongsManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1197FC257CA64100A67E56 /* PlaylistSongsManageView.swift */; };
+		2B11D37E27B4E32400BE2F8D /* AVRoutePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B11D37D27B4E32400BE2F8D /* AVRoutePicker.swift */; };
+		2B11D37F27B4E32400BE2F8D /* AVRoutePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B11D37D27B4E32400BE2F8D /* AVRoutePicker.swift */; };
+		2B11D38127B4E5FC00BE2F8D /* CrossHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B11D38027B4E5FC00BE2F8D /* CrossHelper.swift */; };
+		2B11D38227B4E5FC00BE2F8D /* CrossHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B11D38027B4E5FC00BE2F8D /* CrossHelper.swift */; };
 		2B1ABED325387E8800B9A15C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ABED225387E8800B9A15C /* LoginView.swift */; };
 		2B1ABED725387F5D00B9A15C /* QinNavigationBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ABED625387F5D00B9A15C /* QinNavigationBarTitleView.swift */; };
 		2B1ABEDF253DE09500B9A15C /* Published+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1ABEDE253DE09500B9A15C /* Published+Extension.swift */; };
@@ -141,6 +145,8 @@
 		2B0CCABC2770BF6800B2F124 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		2B0E013D27414B8400F7C1DE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2B1197FC257CA64100A67E56 /* PlaylistSongsManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSongsManageView.swift; sourceTree = "<group>"; };
+		2B11D37D27B4E32400BE2F8D /* AVRoutePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVRoutePicker.swift; sourceTree = "<group>"; };
+		2B11D38027B4E5FC00BE2F8D /* CrossHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossHelper.swift; sourceTree = "<group>"; };
 		2B1ABED225387E8800B9A15C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		2B1ABED625387F5D00B9A15C /* QinNavigationBarTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QinNavigationBarTitleView.swift; sourceTree = "<group>"; };
 		2B1ABEDE253DE09500B9A15C /* Published+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Published+Extension.swift"; sourceTree = "<group>"; };
@@ -242,6 +248,7 @@
 		2B09CF3424F0FC0000E03A12 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2B11D37D27B4E32400BE2F8D /* AVRoutePicker.swift */,
 				2BC530D1273D9656006CEDF6 /* QinBackgroundView.swift */,
 				2B69AA96273D7C9D00DD824B /* QinBackwardButton.swift */,
 				2B6547E0274104D500AB0E22 /* QinCoverView.swift */,
@@ -264,6 +271,7 @@
 		2B82C195276DC704001E44C0 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				2B11D38027B4E5FC00BE2F8D /* CrossHelper.swift */,
 				2B216749276E2204001B6B0D /* SwiftUIHelper.swift */,
 				2B0195EB2770F2FE0070081A /* UserStorgeHelper.swift */,
 			);
@@ -619,6 +627,7 @@
 				2B066912253177EF0007053C /* DiscoverView.swift in Sources */,
 				2BCCB32224DC7BCD004CAD67 /* AppError.swift in Sources */,
 				2B1197FD257CA64100A67E56 /* PlaylistSongsManageView.swift in Sources */,
+				2B11D38127B4E5FC00BE2F8D /* CrossHelper.swift in Sources */,
 				2B69AA9A273D7D0700DD824B /* QinEditButton.swift in Sources */,
 				2BCCB2F424DC7A62004CAD67 /* DataManager.swift in Sources */,
 				2BCCB2A524DC5A2C004CAD67 /* FetchedPlaylistDetailView.swift in Sources */,
@@ -639,6 +648,7 @@
 				2B792B07269A1F8700788CE1 /* URL+Extension.swift in Sources */,
 				2B1ABED325387E8800B9A15C /* LoginView.swift in Sources */,
 				2B0668FB25305AE40007053C /* SubedAlbumsView.swift in Sources */,
+				2B11D37E27B4E32400BE2F8D /* AVRoutePicker.swift in Sources */,
 				2BCCB29D24DC5A2B004CAD67 /* ViewModifier.swift in Sources */,
 				2BCCB31E24DC7BCC004CAD67 /* AppState.swift in Sources */,
 				2B21674A276E2204001B6B0D /* SwiftUIHelper.swift in Sources */,
@@ -658,6 +668,7 @@
 				2BEC681A269068AF00772DB1 /* QinNavigationBarTitleView.swift in Sources */,
 				EF6EF0F5265E4D0200F164B5 /* CoreDataModel.swift in Sources */,
 				2BED108725343E5D005A14AA /* DiscoverPlaylistViewModel.swift in Sources */,
+				2B11D37F27B4E32400BE2F8D /* AVRoutePicker.swift in Sources */,
 				2BCCB26424DC5671004CAD67 /* ContentView.swift in Sources */,
 				EF6EF0F2265E467300F164B5 /* String+Extension.swift in Sources */,
 				2B792B08269A1F8700788CE1 /* URL+Extension.swift in Sources */,
@@ -695,6 +706,7 @@
 				2B69AA9B273D7D0700DD824B /* QinEditButton.swift in Sources */,
 				2BEC68182690664200772DB1 /* SideBarNavigationView.swift in Sources */,
 				2B0195F12770FD130070081A /* QinSong.swift in Sources */,
+				2B11D38227B4E5FC00BE2F8D /* CrossHelper.swift in Sources */,
 				2B9BE027251A132F000AFB6A /* BidirectionalCollection+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
