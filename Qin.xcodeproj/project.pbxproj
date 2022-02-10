@@ -967,8 +967,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/linshaolong5240/NeumorphismSwiftUI";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		2BCCB2C124DC5DB2004CAD67 /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
