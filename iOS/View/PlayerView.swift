@@ -234,7 +234,9 @@ struct PlayerControllView: View {
             .padding(.vertical)
             HStack(spacing: 30) {
                 Button {
-                    viewModel.setDisplayMode(.playinglist)
+                    withAnimation(.default) {
+                        viewModel.setDisplayMode(.playinglist)
+                    }
                 } label: {
                     QinSFView(systemName: "text.aligncenter", size: .small)
                 }
@@ -246,7 +248,9 @@ struct PlayerControllView: View {
                 }
                 .buttonStyle(NEUConvexBorderButtonStyle(shape: Circle()))
                 Button {
-                    viewModel.setDisplayMode(.comment)
+                    withAnimation(.default) {
+                        viewModel.setDisplayMode(.comment)
+                    }
                 } label: {
                     QinSFView(systemName: "bubble.right", size: .small)
                 }
