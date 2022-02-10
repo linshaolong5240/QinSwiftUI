@@ -2,7 +2,7 @@
 //  CloudUploadView.swift
 //  Qin (macOS)
 //
-//  Created by 林少龙 on 2021/7/10.
+//  Created by teenloong on 2021/7/10.
 //
 
 import SwiftUI

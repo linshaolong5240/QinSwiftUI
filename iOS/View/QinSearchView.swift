@@ -2,7 +2,7 @@
 //  QinSearchBarView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/8/12.
+//  Created by teenloong on 2020/8/12.
 //
 
 import SwiftUI

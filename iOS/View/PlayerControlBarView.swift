@@ -2,7 +2,7 @@
 //  PlayerControlBarView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/6/26.
+//  Created by teenloong on 2020/6/26.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 

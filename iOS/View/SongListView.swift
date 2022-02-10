@@ -2,7 +2,7 @@
 //  SongListView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/11/3.
+//  Created by teenloong on 2020/11/3.
 //
 
 import SwiftUI

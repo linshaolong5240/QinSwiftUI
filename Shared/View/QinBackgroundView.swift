@@ -2,7 +2,7 @@
 //  QinBackgroundView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2021/11/12.
+//  Created by teenloong on 2021/11/12.
 //
 
 import SwiftUI

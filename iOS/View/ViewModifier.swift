@@ -2,7 +2,7 @@
 //  ViewModifier.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/7/19.
+//  Created by teenloong on 2020/7/19.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 

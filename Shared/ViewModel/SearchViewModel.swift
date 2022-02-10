@@ -2,7 +2,7 @@
 //  SearchViewModel.swift
 //  Qin
 //
-//  Created by 林少龙 on 2021/12/20.
+//  Created by teenloong on 2021/12/20.
 //
 
 import Foundation

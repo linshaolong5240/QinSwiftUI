@@ -2,7 +2,7 @@
 //  AppError.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/6/17.
+//  Created by teenloong on 2020/6/17.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 

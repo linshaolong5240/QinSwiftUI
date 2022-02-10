@@ -2,7 +2,7 @@
 //  UIDevice+Extension.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2021/11/18.
+//  Created by teenloong on 2021/11/18.
 //
 
 import UIKit

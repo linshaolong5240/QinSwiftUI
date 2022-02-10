@@ -2,7 +2,7 @@
 //  LyricViewModel.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/9/24.
+//  Created by teenloong on 2020/9/24.
 //
 
 import SwiftUI

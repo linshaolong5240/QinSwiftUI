@@ -2,7 +2,7 @@
 //  QinSongRowView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2021/12/21.
+//  Created by teenloong on 2021/12/21.
 //
 
 import SwiftUI

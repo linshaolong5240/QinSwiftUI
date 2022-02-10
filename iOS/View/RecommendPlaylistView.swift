@@ -2,7 +2,7 @@
 //  RecommendPlaylistView.swift
 //  Qin (iOS)
 //
-//  Created by 林少龙 on 2020/11/27.
+//  Created by teenloong on 2020/11/27.
 //
 
 import SwiftUI

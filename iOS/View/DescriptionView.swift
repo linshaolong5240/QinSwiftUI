@@ -2,7 +2,7 @@
 //  DescriptionView.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/10/9.
+//  Created by teenloong on 2020/10/9.
 //
 
 import SwiftUI

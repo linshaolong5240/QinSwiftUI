@@ -2,7 +2,7 @@
 //  LyricParser.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/8/3.
+//  Created by teenloong on 2020/8/3.
 //  Copyright © 2020 teenloong. All rights reserved.
 //
 

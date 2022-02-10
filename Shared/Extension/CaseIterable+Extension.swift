@@ -2,7 +2,7 @@
 //  CaseIterable+Extension.swift
 //  Qin
 //
-//  Created by 林少龙 on 2020/9/21.
+//  Created by teenloong on 2020/9/21.
 //
 
 import Foundation
