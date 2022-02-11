@@ -8,6 +8,7 @@
 * https://dribbble.com/shots/9338617-Simple-Music-Player/attachments/1373153?mode=media
 
 ## Based on: 
+* https://github.com/linshaolong5240/NeteaseCloudMusicAPI
 * https://github.com/linshaolong5240/NeumorphismSwiftUI
 
 ## Screenshots:
