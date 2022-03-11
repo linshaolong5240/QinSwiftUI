@@ -67,7 +67,6 @@ struct HomeView: View {
             .navigationBarHidden(true)
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .accentColor(.orange)
         .alert(item: $store.appState.error) { error in
             Alert(title: Text(error.localizedDescription))
         }
